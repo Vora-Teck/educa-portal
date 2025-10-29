@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/static/logos/logo.png" />
+    <link rel="shortcut" href="/static/logos/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/fontawesome.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/rigan.css">
+    <link rel="stylesheet" type="text/css" href="/static/themes/w-theme-blue.css">
+    <link rel="stylesheet" type="text/css" href="/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/sweetalert.min.css">
+    <link rel="stylesheet" href="/static/css/owl.carousel.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/toastify.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/login.css">
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/module/swif.js"></script>
+    <script src="/static/module/educa-sdk.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/owl.carousel.min.js"></script>
+    <script src="/static/js/toastify.min.js"></script>
+    <script src="/static/js/sweetalert.min.js"></script>
+    <script src="/dist/semantic.min.js"></script> 
+    <title>Educa Admin - Login</title>
+
+    <template id="login_page">
+        <div class="row">
+            <div class="carou col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-4">
+                
+                <div class="carou-con">
+                    <img class="logo-img" src="/static/logos/logo_trans_white.png" alt="" />
+                    <div class="p w-small w-text-white">Education Management System</div>
+                    <div class="carou-content h1">
+                        Hi! Welcome
+                    </div>
+
+                    <p class="w-text-white">Not a member yet? Register and setup your school profile</p>
+                    <a href="#signup">
+                        <button class="reg-btn">Register</button>
+                    </a>
+                    <p class="copyright w-text-white w-bold">Copyright &copy; Educa.</p>
+                </div>
+            </div>
+    
+            <div class="login-page col col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8">
+                
+                    <form class="item login-form">
+                        
+                        <h2 class="w-bold-x mt-3">Login</h2>
+                        <p class="w-text-gray">Log in to your account.</p>
+    
+                        <div class="input-con">
+                            <label for="username">Email</label>
+                            <input type="email" id="email" placeholder="" required />
+                        </div>
+                        <div class="input-con">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="" required />
+                        </div>
+                        <a href="#" class="w-right w-text-blue mb-3">Forgot Password?</a>
+                        <div class="input-con">
+                            <input type="submit" value="Log In" />
+                        </div>
+                    </form>
+    
+            </div>
+        </div>
+
+        
+    <script src="/static/js/login.js"></script>
+    <script>
+    </script>
+    </template>
+
+    <template id="register_page">
+        <div class="row">
+            <div class="carou col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-4">
+                
+                <div class="carou-con">
+                    <img class="logo-img" src="/static/logos/logo_trans_white.png" alt="" />
+                    <div class="p w-small w-text-white">Education Management System</div>
+                    <div class="carou-content h1">
+                        Hi! Welcome
+                    </div>
+
+                    <p class="w-text-white">Already a member? Login to your school portal</p>
+                    <a href="/login/">
+                        <button class="reg-btn">Login</button>
+                    </a>
+                    <p class="copyright w-text-white w-bold">Copyright &copy; Educa.</p>
+                </div>
+            </div>
+    
+            <div class="login-page col col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8">
+                
+                    <form id="setupForm" class="item">
+                        <h2 class="w-bold-x mt-3">Account Setup</h2>
+                        <p class="w-text-gray">Create A New Account.</p>
+
+                        <div class="steps">
+                            <span class="circle active">1</span>
+                            <span class="circle">2</span>
+                            <span class="circle">3</span>
+                            <span class="circle">4</span>
+                            <span class="circle">5</span>
+                            <span class="circle">6</span>
+                            <div class="progress-bar">
+                              <span class="indicator"></span>
+                            </div>
+                        </div>
+
+                        <section class="group-one" id="one">
+
+                            <h3>1. Basic School Information</h3><br>
+
+                            <div class="cus-form-control">
+                                <label for="name">
+                                    School Name
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <div class="form-upgrade">
+                                    <input type="text" id="school_name" aria-required="true">
+                                    <button class="upgrade-icon" id="verify-btn"><i class="fa fa-repeat"></i> Verify</button>
+                                    <span id="name-error" class="error-message" role="alert"></span>
+                                </div>
+                                <div id="verify-name" class="mt-2 w-bold"></div>
+                            </div>
+
+                            <div class="cus-form-control">
+                                <label for="idNum">
+                                        School Email
+                                        <span style="color: red;">*</span>
+                                </label>
+                                <input type="email" id="school_email" aria-required="true">
+                                <span id="email-error" class="error-message" role="alert"></span>
+                            </div>
+
+                            <div class="cus-form-control">
+                                <label for="email">
+                                    Year Established
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <input type="number" id="year" aria-required="true" min="1000" max="9999">
+                                <span id="year-error" class="error-message" role="alert"></span>
+                            </div>
+
+                            <div class="cus-form-control">
+                                <label for="name">
+                                    School Motto (Optional)
+                                </label>
+                                <input type="text" id="school_motto">
+                            </div>
+
+                        </section>
+
+                        <section class="group-two" id="two">
+
+                            <h3>2. Contact Information</h3><br>
+
+                            <div class="cus-form-control">
+                                <label for="name">
+                                    School Address
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <input type="text" id="school_address" aria-required="true">
+                                <span id="address-error" class="error-message" role="alert"></span>
+                            </div>
+
+                            <div class="cus-form-control">
+                                <label for="name">
+                                    Country
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <input type="text" id="country" aria-required="true" value="Nigeria" readonly>
+                                <span id="country-error" class="error-message" role="alert"></span>
+                            </div>
+
+                            <div class="cus-form-control">
+                                <label for="state">
+                                    State
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <select id="state" aria-required="true">
+                                    <option value="" selected>Select State</option>
+                                    
+                                </select>
+                                <span id="state-error" class="error-message" role="alert"></span>
+                            </div>
+
+                            <div class="cus-form-control">
+                                <label for="lga">
+                                    L.G.A
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <select id="lga" aria-required="true">
+                                    <option value="" selected>Select LGA</option>
+                                    
+                                </select>
+                                <span id="slga-error" class="error-message" role="alert"></span>
+                            </div>
+                        </section>
+
+                        <section class="group-three" id="three">
+
+                            <h3>3. Session & Term Settings</h3><br>
+
+                            <div class="cus-form-control">
+                                <label for="name">
+                                    Current Academic Session (Start Year - End Year)
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <input type="text" id="session" aria-required="true">
+                                <span id="session-error" placeholder="e.g 2025-2026" class="error-message" role="alert"></span>
+                            </div>
+
+                            <div class="cus-form-control">
+                                <label for="state">
+                                    Current Term
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <select id="term" aria-required="true">
+                                    <option value="" selected>Select Term</option>
+                                    <option value="1">First Term</option>
+                                    <option value="2">Second Term</option>
+                                    <option value="3">Third Term</option>
+                                    
+                                </select>
+                                <span id="term-error" class="error-message" role="alert"></span>
+                            </div>
+
+                            <div class="cus-form-control">
+                                <label for="name">
+                                    Term Start Date
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <input type="date" id="start_date" aria-required="true">
+                                <span id="start-error" class="error-message" role="alert"></span>
+                            </div>
+
+                            <div class="cus-form-control">
+                                <label for="name">
+                                    Term End Date
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <input type="date" id="end_date" aria-required="true">
+                                <span id="end-error" class="error-message" role="alert"></span>
+                            </div>
+
+                        </section>
+
+                        <section class="group-four" id="four">
+
+                            <h3>4. Administrator Information</h3><br>
+
+                            <div class="cus-form-control">
+                                <label for="name">
+                                    First Name
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <input type="text" id="fname" aria-required="true">
+                                <span id="fname-error" class="error-message" role="alert"></span>
+                            </div>
+
+                            <div class="cus-form-control">
+                                <label for="name">
+                                    Last Name
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <input type="text" id="lname" aria-required="true">
+                                <span id="lname-error" class="error-message" role="alert"></span>
+                            </div>
+
+                            <div class="cus-form-control">
+                                <label for="name">
+                                    Phone Number
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <input type="tel" id="phone" aria-required="true">
+                                <span id="phone-error" class="error-message" role="alert"></span>
+                            </div>
+
+                        </section>
+
+                        <section class="group-five" id="five">
+
+                            <h3>5. Login Details</h3><br>
+
+                            <div class="cus-form-control">
+                                <label for="name">
+                                    Email
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <div class="form-upgrade">
+                                    <input type="email" id="email" aria-required="true">
+                                    <button class="upgrade-icon" id="otp-btn"><i class="fa fa-repeat"></i> Get Code</button>
+                                    <span id="user-error" class="error-message" role="alert"></span>
+                                </div>
+                                <div id="verify-code" class="mt-2 w-bold"></div>
+                            </div>
+
+                            <div class="cus-form-control">
+                                <label for="name">
+                                    OTP Code
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <input type="text" id="code" aria-required="true">
+                                <span id="code-error" class="error-message" role="alert"></span>
+                            </div>
+
+                            <div class="cus-form-control">
+                                <label for="name">
+                                    Password
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <div class="form-upgrade">
+                                    <input type="password" id="password" aria-required="true" minlength="8">
+                                    <button class="upgrade-icon" id="pass-btn"><i class="fa fa-eye"></i></button>
+                                    <span id="pass-error" class="error-message" role="alert"></span>
+                                </div>
+                            </div>
+
+                            <div class="cus-form-control">
+                                <input type="checkbox" name="terms" id="terms" aria-required="true">
+                                <label for="terms">
+                                    &nbsp;&nbsp;I agree to the terms and conditions
+                                    <span style="color: red;">*</span>
+                                </label>
+                                <span id="terms-error" class="error-message" role="alert"></span>
+                            </div>
+                        </section>
+
+                        <section class="group-six" id="six" aria-label="Form Summary">
+                            
+                            <h3>6. Summary Details</h3><br>
+
+                            <fieldset>
+                                <legend>Basic School Information</legend>
+
+                                <div class="summary-section">
+                                    <p>School Name: </p>
+                                    <p id="name-val"></p>
+                                </div>
+                                <div class="summary-section">
+                                    <p>School Email: </p>
+                                    <p id="email-val"></p>
+                                </div>
+                                <div class="summary-section">
+                                    <p>Motto: </p>
+                                    <p id="motto-val"></p>
+                                </div>
+                                <div class="summary-section">
+                                    <p>Year Established: </p>
+                                    <p id="year-val"></p>
+                                </div>
+                            </fieldset>
+
+                            <fieldset>
+                                <legend>Contact Information</legend>
+
+                                <div class="summary-section">
+                                    <p>School Address: </p>
+                                    <p id="address-val"></p>
+                                </div>
+                                <div class="summary-section">
+                                    <p>Country: </p>
+                                    <p id="country-val"></p>
+                                </div>
+                                <div class="summary-section">
+                                    <p>State: </p>
+                                    <p id="state-val"></p>
+                                </div>
+                                <div class="summary-section">
+                                    <p>LGA: </p>
+                                    <p id="lga-val"></p>
+                                </div>
+                            </fieldset>
+
+                            <fieldset>
+                                <legend>Administrator Information</legend>
+
+                                <div class="summary-section">
+                                    <p>Full Name: </p>
+                                    <p id="fname-val"></p>
+                                </div>
+                                <div class="summary-section">
+                                    <p>Phone Number: </p>
+                                    <p id="phone-val"></p>
+                                </div>
+                                <div class="summary-section">
+                                    <p>Email: </p>
+                                    <p id="user-val"></p>
+                                </div>
+                                <div class="summary-section">
+                                    <p>Password: </p>
+                                    <p>***************</p>
+                                </div>
+                            </fieldset>
+
+                
+                            <button id="btn" type="submit">Confirm and Submit</button>
+                        </section>
+                        
+                        <div class="arrows">
+                            <button class="nav-group" id="navLeft" type="button" aria-label="Previous step">
+                                Previous
+                            </button>
+                            <span id="stepInfo" role="status" aria-live="polite"></span>
+                            <button class="nav-group" id="navRight" type="button" aria-label="Next step">
+                                Next
+                            </button>
+                        </div>
+                
+                    </form>
+    
+            </div>
+        </div>
+
+        
+    <script src="/static/js/signup.js"></script>
+    <script>
+        $("#verify-btn").click(function(e) {
+            e.preventDefault();
+            checkSchoolName()
+        })
+        $("#otp-btn").click(function(e) {
+            e.preventDefault();
+            getOTP()
+        })
+    </script>
+    </template>
+
+    <template route="/">
+        <?use-template: "login_page"?>
+      </template>
+      <template route="/signup">
+        <?use-template: "register_page"?>
+      </template>
+
+    <script>
+        var on = XJSX.event.on,
+        emit = XJSX.event.emit;
+        emit("hashchange");
+        </script>
+</head>
+<body>
+    <div class="page-load">
+        <div class="loader"></div>
+        <div class="w-block h6 mt-3 w-center" id="loader-text">
+          
+        </div>
+      </div>
+
+
+    <script src="/static/js/functions.js"></script>
+
+    <?on: "hashchange"?>
+
+<?eval:
+"var hash=location.hash
+hash=hash.replace(/^\/?#\/?|^/img,'/')
+var page=document.querySelector(`template[route='${hash}']`)||'404';"?>
+
+<?use-template: page?>
+<?end?>
+    
+
+
+    
+    
+</body>
+</html>

@@ -1,0 +1,30 @@
+<div class="ui inverted vertical masthead center aligned segment">
+
+    <div class="ui container">
+      <div class="ui large secondary inverted pointing menu">
+        <a class="toc item">
+          <i class="sidebar icon"></i>
+        </a>
+        <?use-template: "x-list"?>
+        <div class="right item">
+          <a href="#login" class="ui inverted button">Log in</a>
+          <a href="#signup" class="ui inverted button">Sign Up</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui text container">
+      <h1 class="ui inverted header">
+        Imagine-a-Company
+      </h1>
+      <h2>Do whatever you want when you want to.</h2>
+      <a href="#get_started" class="ui huge primary button">
+        Get Started <i class="right arrow icon"></i>
+      </a>
+    </div>
+
+  </div>
+  <?on: "load"?>
+  <script>   $('.ui.sidebar')
+    .sidebar('attach events', '.toc.item');</script>
+<?end?>
