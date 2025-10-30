@@ -7,6 +7,8 @@ const nameInput = document.getElementById("school_name");
 const idNumInput = document.getElementById("year");
 const emailInput = document.getElementById("school_email");
 const mottoInput = document.getElementById("school_motto");
+const typeInput = document.getElementById("idiot");
+let selected_types = [];
 // Section 2
 const addressInput = document.getElementById("school_address");
 const countryInput = document.getElementById("country");
@@ -55,6 +57,7 @@ const updateSummaryValues = () => {
                 school_email: emailInput.value,
                 year: idNumInput.value,
                 motto: mottoInput.value,
+                types: selected_types,
 
                 address: addressInput.value,
                 country: countryInput.value,
@@ -145,6 +148,10 @@ const validateStep = (currentStep) => {
                 }
                 if (emailInput.value.trim() === "" || !emailInput.validity.valid) {
                         showError(emailInput, "A valid email is required");
+                        isValid = false;
+                }
+                if(selected_types.length === 0) {
+                        showError(typeInput, "At least one item must be selected.");
                         isValid = false;
                 }
                 
@@ -317,7 +324,7 @@ const getStates = () => {
         })
 }
 
-const getLgas = (state = "Abia") => {
+const getLgas = (state) => {
         admin.misc.getLgas({
                 params: { state },
                 onSuccess: (data) => {
@@ -462,7 +469,12 @@ $("#setupForm").on("submit", (e) => {
         
 });
 
-
+$("input[name='type']").on('change', function() {
+        var selectedValues = $("input[name='type']:checked").map(function() {
+                return $(this).val();
+        }).get();
+        selected_types = selectedValues;
+})
 
 
 

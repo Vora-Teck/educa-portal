@@ -1007,6 +1007,123 @@ i.rotate {
   to {transform: rotate(359deg);}
 }
 
+.modal-con {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.7);
+  z-index: 900;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.modal-con.modal-top {
+  align-items: flex-start;
+}
+.modal-con.active {
+  display: flex;
+}
+.modal-body {
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  max-width: 700px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+}
+.modal-body > .fa {
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  font-size: 35px;
+  cursor: pointer;
+}
+.modal-body .modal-content {
+  border: none !important;
+}
+
+.input-con {
+  margin-bottom: 20px;
+}
+.input-con label {
+  display: block;
+  font-weight: 400;
+  margin-bottom: 5px
+}
+
+.input-con input:not([type="checkbox"]),
+.input-con select,
+.input-con textarea {
+  display: block;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  outline: none;
+  background: #eee;
+}
+.input-con input:not([type="submit"]):focus,
+.input-con textarea:focus,
+.input-con select:focus {
+  border: 1px solid var(--primary-color);
+  background: #fff;
+}
+.input-con input[type=submit] {
+  background: var(--primary-color);
+  color: #fff;
+  cursor: pointer;
+  padding: 10px 50px;
+  width: fit-content;
+}
+.input-con input[type=submit]:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.input-con input.error,
+.input-con input.error:focus,
+.input-con select.error,
+.input-con select.error:focus,
+.input-con textarea.error,
+.input-con textarea.error:focus {
+  border: 1px solid red;
+}
+.input-con .error-msg {
+  color: red;
+  margin: 5px;
+  display: none;
+}
+.input-con .error-msg.active {
+  display: inline-block;
+}
+.clear-btn {
+  background: transparent;
+  color: #50acf7;
+  cursor: pointer;
+  padding: 10px 50px;
+  width: fit-content;
+  border: 1px solid gray;
+  border-radius: 5px;
+  outline: none;
+}
+.staff-list th, .staff-list td {
+  padding: 20px 10px !important;
+}
+.staff-row {
+  cursor: pointer;
+}
+.staff-row:hover {
+  border: 1px solid var(--primary-color) !important;
+}
+.staff-row:hover td {
+  border-top: 1px solid var(--primary-color) !important;
+  border-bottom: 1px solid var(--primary-color) !important;
+}
+
 
 .n_error {background:red;color:#fff}
 .n_success {background:green;color:#fff}

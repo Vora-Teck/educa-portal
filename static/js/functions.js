@@ -1,9 +1,7 @@
 //const base_image_url = `https://kosmoshr.pythonanywhere.com`;
-const base_image_url = `http://127.0.0.1:8000`;
-const base_url = `${base_image_url}/api/v1/`;
-const base_url_2 = `${base_image_url}/api/v2/`;
 
-const admin = new educaSDK.Admin() 
+const admin = new educaSDK.Admin()
+const base_url = educaSDK.BASE_URL
 
 
 /* Navigation bar */
@@ -121,6 +119,8 @@ function checkStatus() {
     onSuccess: (data) => {
       if(data.status == 'success') {
         if(data.authenticated == false && location.pathname == "/") {
+          localStorage.removeItem("educa_school_info");
+          localStorage.removeItem("educa_user_info");
           location.href = '/login/'
         }
         else if(data.authenticated == true && location.pathname == "/login/") {
@@ -138,4 +138,53 @@ checkStatus()
 document.addEventListener('online', checkStatus)
 document.addEventListener('offline', checkStatus)
 
+function showSchoolInfo() {
+  let info = localStorage.getItem("educa_school_info");
+  if(info) {
+      info = JSON.parse(info);
+      //console.log(info)
+      $(".site-title").html(info.name)
+      $("#site-motto").html(info.motto)
+      if(info.logo) {
+        $("#site-logo").attr('src', info.logo)
+      }
+  }
+  else {
+      admin.school.schoolInfo({
+          onSuccess: (data) => {
+              let d = data.data;
+              if(d.logo !== null) {
+                  d['logo'] = base_url + d.logo
+              }
+              let obj = {name: d.name, logo: d.logo, motto: d.motto}
+              localStorage.setItem('educa_school_info', JSON.stringify(obj));
+              showSchoolInfo()
+          },
+          onError: (error) => {
+              console.error(error)
+          }
+        })
+  }
+}
 
+function showUserInfo() {
+  let info = localStorage.getItem("educa_user_info");
+  if(info) {
+      info = JSON.parse(info);
+      //console.log(info)
+      $(".admin-user").html(info.full_name)
+  }
+  else {
+    admin.account.getProfile({
+          onSuccess: (data) => {
+              let d = data.data;
+              let obj = {full_name: `${d.firstName} ${d.lastName}`}
+              localStorage.setItem('educa_user_info', JSON.stringify(obj));
+              showUserInfo()
+          },
+          onError: (error) => {
+              console.error(error)
+          }
+        })
+  }
+}

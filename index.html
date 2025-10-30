@@ -7,8 +7,11 @@
   <template id="sidenav">
     <div id="mySidenav" class="sidenav">
       <div class="logo">
-        <img src="/static/image/icon.png" class="site-logo" alt="">
-        <div class="h5 w-bold-x site-title">Tolyfun-Kay College</div>
+        <img src="/static/logos/logo.png" id="site-logo" class="site-logo" alt="">
+        <div>
+          <div class="h5 w-bold-x site-title"></div>
+          <small><i id="site-motto"></i></small>
+        </div>
       </div>
 
       <a href="javascript:void(0)" class="closebtn" onclick="openNav()">&times;</a>
@@ -129,7 +132,7 @@ for (i = 0; i < acc.length; i++) {
     } 
   });
 }
-getSite();  
+showSchoolInfo()
     </script>
   </template>
 
@@ -155,7 +158,7 @@ getSite();
         <div class="admin-pro w-margin-right">
           <img src="/static/image/avatar.png" alt="" class="admin-img" />
           <div class="admin-name">
-            <span class="w-bold-x admin-user">Lotus Bliss</span><br>
+            <span class="w-bold-x admin-user"></span><br>
             <small class="w-bold">Admin</small>
           </div>
           <div class="dropdown">
@@ -171,6 +174,10 @@ getSite();
         <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
       </div>
     </header>
+
+    <script>
+      showUserInfo()
+    </script>
     
   </template>
 
@@ -390,6 +397,143 @@ getSite();
 <template id="staff">
     
   <?use-template: "sidenav"?>
+
+  <div class="modal-con modal-top add-staff-con">
+    <div class="modal-body">
+      <div class="fa fa-times-circle close-modal"></div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Add New Teacher</div>
+      </div>
+      <form class="modal-content add-staff-form">
+        <div class="row mt-3">
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-fname">First Name</label>
+            <input type="text" class="req" id="st-fname" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              First name is required
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-lname">Last Name</label>
+            <input type="text" class="req" id="st-lname" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Last name is required
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname">Other Name (Optional)</label>
+            <input type="text" id="st-mname" />
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-lname">Gender</label>
+            <select id="st-gender" class="req2">
+              <option value="" selected></option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Please select a gender
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname">Phone Number</label>
+            <input type="tel" class="req" id="st-phone" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Kindly enter a valid phone number
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname">Email Address</label>
+            <input type="email" class="req" id="st-email" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Kindly enter a valid email address
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <label for="st-mname">Home Address</label>
+            <input type="text" class="req" id="st-address" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Home address is required
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-state">State</label>
+            <select id="st-state" class="req2">
+              <option value="" selected></option>
+            </select>
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Kindly select a state
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-lga">L.G.A</label>
+            <select id="st-lga" class="req2">
+              <option value="" selected></option>
+            </select>
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Kindly select an LGA
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-dob">Date of Birth</label>
+            <input type="date" class="req2" id="st-dob" max="2010-12-31" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Date of birth is required
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname">Qualification</label>
+            <input type="text" class="req" id="st-qua" placeholder="e.g BEd English" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Qualification is required
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname">Role</label>
+            <input type="text" class="req" id="st-role" placeholder="e.g Maths Teacher, etc" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Role is required
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname">Salary Amount (Optional)</label>
+            <input type="number" id="st-salary" value="0" />
+          </div>
+
+        </div>
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
   <main class="">
     <?use-template: "header"?>
@@ -402,7 +546,7 @@ getSite();
             <div class="h4 w-bold-x">Teacher Distribution</div>
             <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
               <button class="light-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
-              <button class="dark-btn">Add Teacher&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+              <button class="dark-btn add-staff-btn">Add Teacher&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
             </div>
           </div>
         </div>
@@ -493,7 +637,7 @@ getSite();
 
             <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
               <button class="light-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
-              <button class="dark-btn">Add Teacher&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+              <button class="dark-btn add-staff-btn">Add Teacher&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
             </div>
 
             <input type="hidden" id="emp_page" value="1" />
@@ -535,6 +679,333 @@ getSite();
   <script>
     $('.staff-act').addClass('active')
     $(".page-name").text("Staff Management");
+
+    $(".add-staff-btn").click(function(e) {
+      e.preventDefault();
+      $(".add-staff-con").addClass('active')
+    })
+
+    $(".close-modal").click(function() {
+            $(this).parent('.modal-body').parent('.modal-con').removeClass('active')
+          })
+    
+          $(".canc-btn").click(function(e) {
+            e.preventDefault();
+            $(".add-staff-con").removeClass('active')
+          })
+
+    $('#emp_search').on('input', function(e) {
+            $('#emp_page').val(1);
+            delayedSearch(e.target.value)
+          })
+  </script>
+</template>
+
+<template id="students">
+    
+  <?use-template: "sidenav"?>
+
+  <div class="modal-con modal-top add-staff-con">
+    <div class="modal-body">
+      <div class="fa fa-times-circle close-modal"></div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Add New Teacher</div>
+      </div>
+      <form class="modal-content add-staff-form">
+        <div class="row mt-3">
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-fname">First Name</label>
+            <input type="text" class="req" id="st-fname" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              First name is required
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-lname">Last Name</label>
+            <input type="text" class="req" id="st-lname" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Last name is required
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname">Other Name (Optional)</label>
+            <input type="text" id="st-mname" />
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-lname">Gender</label>
+            <select id="st-gender" class="req2">
+              <option value="" selected></option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Please select a gender
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname">Phone Number</label>
+            <input type="tel" class="req" id="st-phone" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Kindly enter a valid phone number
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname">Email Address</label>
+            <input type="email" class="req" id="st-email" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Kindly enter a valid email address
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <label for="st-mname">Home Address</label>
+            <input type="text" class="req" id="st-address" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Home address is required
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-state">State</label>
+            <select id="st-state" class="req2">
+              <option value="" selected></option>
+            </select>
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Kindly select a state
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-lga">L.G.A</label>
+            <select id="st-lga" class="req2">
+              <option value="" selected></option>
+            </select>
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Kindly select an LGA
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-dob">Date of Birth</label>
+            <input type="date" class="req2" id="st-dob" max="2010-12-31" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Date of birth is required
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname">Qualification</label>
+            <input type="text" class="req" id="st-qua" placeholder="e.g BEd English" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Qualification is required
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname">Role</label>
+            <input type="text" class="req" id="st-role" placeholder="e.g Maths Teacher, etc" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Role is required
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname">Salary Amount (Optional)</label>
+            <input type="number" id="st-salary" value="0" />
+          </div>
+
+        </div>
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+  <main class="">
+    <?use-template: "header"?>
+
+    <div class="w-padding">
+      <div class="row mt-2 w-white">
+
+        <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <div class="w-flex w-flex-between w-align-center w-flex-wrap">
+            <div class="h4 w-bold-x">
+              Student Distribution by Class
+            </div>
+            <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+              <button class="light-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
+              <button class="dark-btn add-student-btn">Add Student&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-7 col-lg-7 col-xl-7">
+          
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" style="width:fit-content !important">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#home">Tabular Distribution</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#menu2">Chart Display</a>
+            </li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+
+            <div class="tab-pane active container" id="home">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Class</th>
+                      <th colspan="2" class="w-center">No. of Students</th>
+                      <th class="w-center">Total</th>
+                    </tr>
+                    <tr>
+                      <th></th>
+                      <th class="w-center">F</th>
+                      <th class="w-center">M</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody class="std-data"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="tab-pane container" id="menu2">
+              <div id="bar"></div>
+            </div>
+
+          </div>
+
+          
+
+        </div>
+
+        <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+          <div class="insight-con" id="insight-list">
+            <div class="w-flex w-flex-between w-align-center">
+              <div class="h4 w-bold-x w-text-white">
+                <img src="/static/icons/_ui-stars-02.svg" alt="">&nbsp;&nbsp;AI Insights</div>
+              <button class="white-btn">View More</button>
+            </div>
+            <ul class="insight-list">
+              <li>
+                <i class="fa fa-circle w-text-orange"></i>
+                <span>Mr John Doe has recorded attendance inconsistently in 3 classes this month.</span>
+              </li>
+              <li>
+                <i class="fa fa-circle w-text-orange"></i>
+                <span>Ms Sarah's students scored 20% higher in English this term compared to last.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="w-padding">
+      <div class="row mt-2 w-white">
+        <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+
+          <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+            
+            <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+              <div class="h4 w-bold-x" style="color:orangered">Teacher List</div>
+
+              <div class="input-group" style="margin:0;max-width:200px;">
+                <input type="text" class="form-control" placeholder="Search by name, ID" id="emp_search" value="" />
+                <div class="input-group-append">
+                  <span class="input-group-text" style="background:none;"><i class="fa fa-search"></i></span>
+                </div>
+              </div>
+            </div>
+            
+
+            <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+              <button class="light-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
+              <button class="dark-btn add-student-btn">Add Student&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+            </div>
+
+            <input type="hidden" id="emp_page" value="1" />
+          </form>
+
+          <div class="table-responsive">
+            <table class="table staff-table">
+              <thead>
+                <tr>
+                  <th>Staff ID</th>
+                  <th>Full Name</th>
+                  <th>Gender</th>
+                  <th>Role</th>
+                  <th>Class Teacher</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="staff-list">
+              </tbody>
+            </table>
+          </div>
+
+          <div class="page_nos mt-3">
+            <a href="#" class="page_no"><i class="fa fa-angle-left"></i></a>
+
+            <a href="#" class="page_no"><i class="fa fa-angle-right"></i></a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    
+
+
+  
+  </main>
+  <script src="/static/js/student.js"></script>
+  <script>
+    $('.student-act').addClass('active')
+    $(".page-name").text("Student Management");
+
+    $(".add-staff-btn").click(function(e) {
+      e.preventDefault();
+      $(".add-staff-con").addClass('active')
+    })
+
+    $(".close-modal").click(function() {
+            $(this).parent('.modal-body').parent('.modal-con').removeClass('active')
+          })
+    
+          $(".canc-btn").click(function(e) {
+            e.preventDefault();
+            $(".add-staff-con").removeClass('active')
+          })
 
     $('#emp_search').on('input', function(e) {
             $('#emp_page').val(1);
@@ -1025,6 +1496,9 @@ getSite();
 <template route="/staff">
   <?use-template: "staff"?>
 </template>
+<template route="/students">
+  <?use-template: "students"?>
+</template>
 
 <!-- Standard Meta -->
 <meta charset="utf-8" />
@@ -1084,7 +1558,6 @@ var page=document.querySelector(`template[route='${hash}']`)||'404';"?>
 
 <?use-template: page?>
 <?end?>
-
 
 </body>
 </html>                                                                                                                                               

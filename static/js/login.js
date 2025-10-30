@@ -46,6 +46,8 @@ function logout() {
                 console.log(data);
                 if(data.status == 'success') {
                         pushNotification("n_success", data.message, 3000)
+                        localStorage.removeItem("educa_school_info");
+                        localStorage.removeItem("educa_user_info");
                         location.href = '/login/'
                 }
                 else {

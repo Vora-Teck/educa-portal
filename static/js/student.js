@@ -3,22 +3,26 @@ function getData() {
     showLoader("Loading Data...")
   
     admin.school.schoolData({
-        params: {page: "staff"},
+        params: {page: "student"},
         onSuccess: (data) => {
                 //console.log(data);
-                let d = data.data;
                 if(data.status == 'success') {
-                    $("#pry-f").text(digify(d.primary.female, false))
-                    $("#pry-m").text(digify(d.primary.male, false))
-                    $("#pry-t").text(digify((d.primary.female + d.primary.male), false))
+                    let d = data.data;
+                    let chart = d.chart;
+                    let tab = d.table;
+                    $(".std-data").empty();
+                    for(let i in tab) {
+                        var temp = `
+                        <tr>
+                            <td>${tab[i].title}</td>
+                            <td class="w-center">${digify(tab[i].females)}</td>
+                            <td class="w-center">${digify(tab[i].males)}</td>
+                            <td class="w-center">${digify(tab[i].total)}</td>
+                        </tr>`
+                        $(".std-data").append(temp)
+                    }
 
-                    $("#jun-f").text(digify(d.junior.female, false))
-                    $("#jun-m").text(digify(d.junior.male, false))
-                    $("#jun-t").text(digify((d.junior.female + d.junior.male), false))
-
-                    $("#sen-f").text(digify(d.senior.female, false))
-                    $("#sen-m").text(digify(d.senior.male, false))
-                    $("#sen-t").text(digify((d.senior.female + d.senior.male), false))
+                    drawTrendChart(chart)
                 }
                 else {
                         pushNotification("n_error", data.message, 3000)
@@ -215,11 +219,11 @@ $("#st-state").on('change', function() {
     if(state !== "") getLgas(state)
 })
 
-var addFormValid = true;
+var createFormValid = true;
 
 $(".add-staff-form").on('submit', function(e) {
     e.preventDefault();
-    addFormValid = true;
+    createFormValid = true;
     let first_name = validate($("#st-fname"));
     let last_name = validate($("#st-lname"));
     let middle_name = $("#st-mname").val();
@@ -272,7 +276,7 @@ function validate(elem) {
     if(!value || value == "") {
         elem.addClass('error');
         elem.siblings(".error-msg").addClass('active');
-        addFormValid = false;
+        createFormValid = false;
     }
     else {
         elem.removeClass('error');
@@ -284,6 +288,106 @@ function validate(elem) {
 $(".add-staff-form .req").on('input', function() {validate($(this))});
 $(".add-staff-form .req2").on('change', function() {validate($(this))})
 
+
+window.Apex = {
+    dataLabels: {
+      enabled: false
+    }
+  };
+
+function drawTrendChart(d) {
+    try {
+      var optionsBar = {
+        chart: {
+          type: 'bar',
+          height: 250,
+          width: '100%',
+          stacked: true,
+          foreColor: '#999',
+        },
+        plotOptions: {
+          bar: {
+            dataLabels: {
+              enabled: false
+            },
+            columnWidth: '60%',
+            endingShape: 'rounded'
+          }
+        },
+        colors: ["#4f4ff5", "#50acf7"],
+        series: [{
+          name: "Males",
+          data: d.males,
+        }, {
+          name: "Females",
+          data: d.females,
+        }],
+        labels: d.classes,
+        xaxis: {
+          axisBorder: {
+            show: true
+          },
+          axisTicks: {
+            show: false
+          },
+          crosshairs: {
+            show: false
+          },
+          labels: {
+            show: true,
+            style: {
+              fontSize: '12px'
+            }
+          },
+        },
+        grid: {
+          xaxis: {
+            lines: {
+              show: true
+            },
+          },
+          yaxis: {
+            lines: {
+              show: true
+            },
+          }
+        },
+        yaxis: {
+          axisBorder: {
+            show: false
+          },
+          labels: {
+            show: true
+          },
+        },
+        legend: {
+          floating: true,
+          position: 'top',
+          horizontalAlign: 'left',
+          offsetY: 5
+        },
+        title: {
+          text: '',
+          align: 'left',
+        },
+        subtitle: {
+          text: ''
+        },
+        tooltip: {
+          shared: true,
+          intersect: false
+        }
+      
+      }
+      var chartBar = new ApexCharts(document.querySelector('#bar'), optionsBar);
+      chartBar.render();
+    }
+    catch(err) {
+      document.querySelector('#bar').innerHTML = `<h5 class="w-text-grey">Error occurred.</h5>`
+    }
+    
+    
+  }
 
 
   

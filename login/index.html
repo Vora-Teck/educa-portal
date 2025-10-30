@@ -153,6 +153,34 @@
                                 <input type="text" id="school_motto">
                             </div>
 
+                            <div class="cus-form-control">
+                                <label for="type">
+                                    School Type
+                                    <span style="color: red;">*</span>
+                                    <i>(Select all that applies)</i>
+                                </label>
+                                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:20px">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" value="nursery" id="nursery" name="type">
+                                        <label class="custom-control-label" for="nursery">Nursery</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" value="primary" id="primary" name="type">
+                                        <label class="custom-control-label" for="primary">Primary</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" value="junior" id="junior" name="type">
+                                        <label class="custom-control-label" for="junior">Junior High</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" value="senior" id="senior" name="type">
+                                        <label class="custom-control-label" for="senior">Senior High</label>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="idiot">
+                                <span id="type-error" class="error-message" role="alert"></span>
+                            </div>
+
                         </section>
 
                         <section class="group-two" id="two">
@@ -211,8 +239,8 @@
                                     Current Academic Session (Start Year - End Year)
                                     <span style="color: red;">*</span>
                                 </label>
-                                <input type="text" id="session" aria-required="true">
-                                <span id="session-error" placeholder="e.g 2025-2026" class="error-message" role="alert"></span>
+                                <input type="text" id="session" aria-required="true" placeholder="e.g 2025-2026">
+                                <span id="session-error" class="error-message" role="alert"></span>
                             </div>
 
                             <div class="cus-form-control">
