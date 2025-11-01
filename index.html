@@ -118,20 +118,6 @@
         e.preventDefault();
         logout();
       })
-      var acc = document.getElementsByClassName("accordion");
-var i;
-
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var panel = this.nextElementSibling;
-    if (panel.style.maxHeight) {
-      panel.style.maxHeight = null;
-    } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    } 
-  });
-}
 showSchoolInfo()
     </script>
   </template>
@@ -164,9 +150,7 @@ showSchoolInfo()
           <div class="dropdown">
             <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Link 1</a>
-              <a class="dropdown-item" href="#">Link 2</a>
-              <a class="dropdown-item" href="#">Link 3</a>
+              <a class="dropdown-item" href="#"><i class="fa fa-user"></i>&nbsp;Profile</a>
             </div>
           </div>
         </div>
@@ -461,13 +445,20 @@ showSchoolInfo()
             </span>
           </div>
 
-          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
             <label for="st-mname">Home Address</label>
             <input type="text" class="req" id="st-address" />
             <span class="error-msg">
               <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
               Home address is required
             </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-class">Class Assigned</label>
+            <select id="st-class">
+              <option value="" selected>Select class</option>
+            </select>
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
@@ -651,7 +642,7 @@ showSchoolInfo()
                   <th>Full Name</th>
                   <th>Gender</th>
                   <th>Role</th>
-                  <th>Class Teacher</th>
+                  <th>Class Assigned</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -680,6 +671,10 @@ showSchoolInfo()
     $('.staff-act').addClass('active')
     $(".page-name").text("Staff Management");
 
+    $(".close-side").click(function() {
+      $(this).parent('div').parent('.side-con').removeClass('active')
+    })
+
     $(".add-staff-btn").click(function(e) {
       e.preventDefault();
       $(".add-staff-con").addClass('active')
@@ -705,13 +700,13 @@ showSchoolInfo()
     
   <?use-template: "sidenav"?>
 
-  <div class="modal-con modal-top add-staff-con">
+  <div class="modal-con modal-top add-student-con">
     <div class="modal-body">
       <div class="fa fa-times-circle close-modal"></div>
       <div class="modal-header">
-        <div class="h5 w-bold-x w-text-blue">Add New Teacher</div>
+        <div class="h5 w-bold-x w-text-blue">Add New Student</div>
       </div>
-      <form class="modal-content add-staff-form">
+      <form class="modal-content add-student-form">
         <div class="row mt-3">
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
@@ -740,7 +735,7 @@ showSchoolInfo()
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <label for="st-lname">Gender</label>
             <select id="st-gender" class="req2">
-              <option value="" selected></option>
+              <option value="" selected>Select gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
@@ -751,20 +746,22 @@ showSchoolInfo()
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-            <label for="st-mname">Phone Number</label>
-            <input type="tel" class="req" id="st-phone" />
+            <label for="st-dob">Date of Birth</label>
+            <input type="date" class="req2" id="st-dob" max="2010-12-31" />
             <span class="error-msg">
               <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Kindly enter a valid phone number
+              Date of birth is required
             </span>
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-            <label for="st-mname">Email Address</label>
-            <input type="email" class="req" id="st-email" />
+            <label for="st-class">Class</label>
+            <select id="st-class" class="req2">
+              <option value="" selected>Select class</option>
+            </select>
             <span class="error-msg">
               <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Kindly enter a valid email address
+              Kindly select a classroom
             </span>
           </div>
 
@@ -800,35 +797,31 @@ showSchoolInfo()
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-            <label for="st-dob">Date of Birth</label>
-            <input type="date" class="req2" id="st-dob" max="2010-12-31" />
+            <label for="st-mname">Parent/Guardian Name</label>
+            <input type="text" class="req" id="st-pa-name" />
             <span class="error-msg">
               <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Date of birth is required
+              Parent/Guardian Name is required
             </span>
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-            <label for="st-mname">Qualification</label>
-            <input type="text" class="req" id="st-qua" placeholder="e.g BEd English" />
+            <label for="st-mname">Parent/Guardian Email Address</label>
+            <input type="email" class="req" id="st-pa-email" />
             <span class="error-msg">
               <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Qualification is required
+              Kindly enter a valid email address
             </span>
           </div>
 
-          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-            <label for="st-mname">Role</label>
-            <input type="text" class="req" id="st-role" placeholder="e.g Maths Teacher, etc" />
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+            <label for="st-mname">Parent/Guardian Phone Number(s)</label>
+            <input type="tel" class="req" id="st-pa-phone" />
+            <i>(separate multiple phone numbers with comma (,))</i>
             <span class="error-msg">
               <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Role is required
+              Parent/Guardian Phone Number is required
             </span>
-          </div>
-
-          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-            <label for="st-mname">Salary Amount (Optional)</label>
-            <input type="number" id="st-salary" value="0" />
           </div>
 
         </div>
@@ -838,6 +831,225 @@ showSchoolInfo()
           <input type="submit" value="Save">
         </div>
       </form>
+    </div>
+  </div>
+
+  <div class="side-con std-side-con">
+    <div class="w-flex w-flex-between w-align-center">
+      <ul class="breadcrumb">
+        <li><a href="#students">Student Management</a></li>
+        <li id="std-name"></li>
+      </ul>
+      <button class="close-side btn btn-danger">X&nbsp;Close</button>
+    </div>
+    <div class="side-opt-con" style="gap:15px;">
+      <button class="side-btn">Edit Profile</button>
+      <button class="side-btn">Promote to next class</button>
+      <button class="side-btn">Generate ID Card</button>
+      <button class="side-btn">Deactivate Student</button>
+      <button class="side-btn">Delete Record</button>
+    </div>
+
+    <div class="row">
+      <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-7 col-lg-8 col-xl-8">
+        <div class="accor-con">
+          <button class="accordion">
+            <img src="/static/icons/_ui-user-square.svg" alt="">
+            &nbsp;Basic Info
+          </button>
+          <div class="panel">
+            <div class="dash-box">
+              <div>
+                <div class="table-responsive">
+                  <table class="table borderless-table" style="min-width:300px;">
+                    <tbody>
+                      <tr>
+                        <td class="w-text-gray">Name:</td>
+                        <td id="std-name2"></td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Student ID:</td>
+                        <td id="std-id"></td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Class:</td>
+                        <td id="std-class"></td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Gender:</td>
+                        <td id="std-gender"></td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Date of Birth:</td>
+                        <td id="std-dob"></td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Age:</td>
+                        <td id="std-age"></td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Admission Date:</td>
+                        <td id="std-date"></td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Address:</td>
+                        <td id="std-address"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div>
+                <img id="std-image" src="/static/image/avatar.png" alt="">
+                <button class="light-btn">Change Image</button>
+              </div>
+            </div>
+          </div>
+
+          <button class="accordion">
+            <img src="/static/icons/_ui-users-02.svg" alt="">
+            &nbsp;Parent Details
+          </button>
+          <div class="panel">
+            <div class="dash-box">
+              <div>
+                <div class="table-responsive">
+                  <table class="table borderless-table" style="min-width:300px;">
+                    <tbody>
+                      <tr>
+                        <td class="w-text-gray">Parent/Guardian Name:</td>
+                        <td id="std-pname"></td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Email Address:</td>
+                        <td id="std-email"></td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Phone Number(s):</td>
+                        <td id="std-phone"></td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Address:</td>
+                        <td id="std-address2"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="accordion">
+            <img src="/static/icons/_ui-users-02.svg" alt="">
+            &nbsp;Academic Info
+          </button>
+          <div class="panel">
+            <div class="dash-box">
+              <div>
+                <div class="table-responsive">
+                  <table class="table borderless-table" style="min-width:300px;">
+                    <tbody>
+                      <tr>
+                        <td class="w-text-gray">Current Class:</td>
+                        <td id="std-class2"></td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Class Teacher:</td>
+                        <td id="std-teacher"></td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Department:</td>
+                        <td id="std-dept">---</td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">School Section:</td>
+                        <td id="std-section"></td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Attendance Summary:</td>
+                        <td>
+                          <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px">
+                            <div>
+                              <div class="h6">No. of times present</div>
+                              <div class="h5">---</div>
+                            </div>
+                            <div>
+                              <div class="h6">No. of times absent</div>
+                              <div class="h5">---</div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="accordion">
+            <img src="/static/icons/_ui-users-02.svg" alt="">
+            &nbsp;Exam & Result
+          </button>
+          <div class="panel">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead style="background:#eee !important">
+                    <tr>
+                      <th>Class</th>
+                      <th>Term</th>
+                      <th>Results</th>
+                    </tr>
+                  </thead>
+                  <tbody class="std-res"></tbody>
+                </table>
+              </div>
+          </div>
+
+          <button class="accordion">
+            <img src="/static/icons/_ui-users-02.svg" alt="">
+            &nbsp;Fees History
+          </button>
+          <div class="panel">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead style="background:#eee !important">
+                    <tr>
+                      <th>Class</th>
+                      <th>Term</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Outstanding</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="std-pay"></tbody>
+                </table>
+              </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-5 col-lg-4 col-xl-4">
+        <div class="insight-con" id="insight-list">
+          <div class="w-flex w-flex-between w-align-center">
+            <div class="h4 w-bold-x w-text-white">
+              <img src="/static/icons/_ui-stars-02.svg" alt="">&nbsp;&nbsp;AI Insights</div>
+            <button class="white-btn">View More</button>
+          </div>
+          <ul class="insight-list">
+            <li>
+              <i class="fa fa-circle w-text-orange"></i>
+              <span>Mr John Doe has recorded attendance inconsistently in 3 classes this month.</span>
+            </li>
+            <li>
+              <i class="fa fa-circle w-text-orange"></i>
+              <span>Ms Sarah's students scored 20% higher in English this term compared to last.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -936,8 +1148,36 @@ showSchoolInfo()
 
           <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
             
+            <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:500px;max-width:100%;">
+
+              <label style="white-space: nowrap;">Select Class:</label>
+              <select class="form-control class-filter" style="margin:0;max-width:150px;">
+                <option value="">All Classes</option>
+                
+              </select>
+              
+              <label>Sort</label>
+              <select class="form-control sort-filter" style="margin:0;max-width:100px;">
+                <option value="firstName">A - Z</option>
+                <option value="-firstName">Z - A</option>
+              </select>
+
+            </div>
+            
+
+            <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+              <button class="transp-btn">Import CSV&nbsp;&nbsp;<i class="fa fa-download"></i></button>
+              <button class="dark-btn add-student-btn">Add Student&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+            </div>
+
+            <input type="hidden" id="emp_page" value="1" />
+          </form>
+
+
+          <form class="w-padding-top mt-3 w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+            
             <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
-              <div class="h4 w-bold-x" style="color:orangered">Teacher List</div>
+              <div class="h4 w-bold-x" style="color:orangered">Student List</div>
 
               <div class="input-group" style="margin:0;max-width:200px;">
                 <input type="text" class="form-control" placeholder="Search by name, ID" id="emp_search" value="" />
@@ -945,31 +1185,29 @@ showSchoolInfo()
                   <span class="input-group-text" style="background:none;"><i class="fa fa-search"></i></span>
                 </div>
               </div>
+
             </div>
             
 
             <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
-              <button class="light-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
-              <button class="dark-btn add-student-btn">Add Student&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+              <button class="light-btn">Export List&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
             </div>
 
-            <input type="hidden" id="emp_page" value="1" />
           </form>
 
           <div class="table-responsive">
             <table class="table staff-table">
               <thead>
                 <tr>
-                  <th>Staff ID</th>
+                  <th>Student ID</th>
                   <th>Full Name</th>
                   <th>Gender</th>
-                  <th>Role</th>
-                  <th>Class Teacher</th>
+                  <th>Class</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody class="staff-list">
+              <tbody class="student-list">
               </tbody>
             </table>
           </div>
@@ -988,14 +1226,18 @@ showSchoolInfo()
 
   
   </main>
+
   <script src="/static/js/student.js"></script>
   <script>
     $('.student-act').addClass('active')
     $(".page-name").text("Student Management");
 
-    $(".add-staff-btn").click(function(e) {
+    $(".close-side").click(function() {
+      $(this).parent('div').parent('.side-con').removeClass('active')
+    })
+    $(".add-student-btn").click(function(e) {
       e.preventDefault();
-      $(".add-staff-con").addClass('active')
+      $(".add-student-con").addClass('active')
     })
 
     $(".close-modal").click(function() {
@@ -1004,13 +1246,35 @@ showSchoolInfo()
     
           $(".canc-btn").click(function(e) {
             e.preventDefault();
-            $(".add-staff-con").removeClass('active')
+            $(".add-student-con").removeClass('active')
           })
 
     $('#emp_search').on('input', function(e) {
             $('#emp_page').val(1);
             delayedSearch(e.target.value)
           })
+    
+    $(".sort-filter").on('change', function() {
+      getStudents()
+    })
+    $(".class-filter").on('change', function() {
+      getStudents()
+    })
+
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
   </script>
 </template>
 

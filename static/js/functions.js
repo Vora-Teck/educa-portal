@@ -55,6 +55,21 @@ function datify(date, time=false) {
   }
 }
 
+function dateDiff(date) {
+  let givenDate = new Date(date);
+  let today = new Date();
+
+  let diff_years = today.getFullYear() - givenDate.getFullYear();
+
+  if(
+    today.getMonth() < givenDate.getMonth() ||
+    (today.getMonth() === givenDate.getMonth() && today.getDate() < givenDate.getDate())
+  ) {
+    diff_years--;
+  }
+  return diff_years;
+}
+
 function pushNotification(type, text, time, event=null) {
   var t = {
     n_error: "/static/logos/error.png",

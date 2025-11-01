@@ -36,6 +36,24 @@ function getData() {
   getData()
 
 
+  function getClassrooms() {
+    admin.classroom.getClassrooms({
+            onSuccess: (data) => {
+                //console.log(data)
+                let d = data.data
+                $(".class-filter").empty().append(`<option value="" selected>All Classes</option>`)
+                $("#st-class").empty().append(`<option value="" selected>Select class</option>`)
+                    for(let i in d) {
+                            let temp = `<option value="${d[i].id}">${d[i].level.title}</option>`;
+                            $(".class-filter").append(temp)
+                            $("#st-class").append(temp)
+                    }
+            },
+            onError: (error) => console.error(error)
+    })
+}
+getClassrooms()
+
 function getStaff() {
     let page = $('#emp_page').val();
     let pagesize = 20;
@@ -97,14 +115,23 @@ function getStaff() {
                             <td>${e[i].firstName} ${e[i].lastName}</td>
                             <td>${e[i].gender[0].toUpperCase()}</td>
                             <td>${e[i].role}</td>
-                            <td>-</td>
+                            <td>${e[i].classes_assigned.join(', ')}</td>
                             <td class="w-bold-x">${e[i].is_active ? `
                                 <span class="w-text-green">Active</span>` : `
                                 <span class="w-text-red">Inactive</span>`}</td>
-                            <td class="w-text-gray h5">
-                                <i class="fa fa-eye emp-det-link" data-id="${e[i].id}"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <i class="fa fa-credit-card"></i>
+                            <td class="w-text-gray h4">
+                                <a class="emp-det-link tooltipa" href="#" data-id="${e[i].id}">
+                                    <i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;
+                                    <span class="tooltiptext w-card">View</span>
+                                </a>
+                                <a class="emp-del-link tooltipa" href="#" data-id="${e[i].id}">
+                                    <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
+                                    <span class="tooltiptext w-card">Delete Record</span>
+                                </a>
+                                <a class="emp-rel-link tooltipa" href="#" data-id="${e[i].id}">
+                                    <i class="fa fa-credit-card"></i>
+                                    <span class="tooltiptext w-card">Print ID Card</span>
+                                </a>
                             </td>
                           </tr>`;
                           $('.staff-list').append(temp)
@@ -225,6 +252,7 @@ $(".add-staff-form").on('submit', function(e) {
     let middle_name = $("#st-mname").val();
     let gender = validate($("#st-gender"));
     let phone_number = validate($("#st-phone"));
+    let class_id = $("#st-class").val();
     let email = validate($("#st-email"));
     let address = validate($("#st-address"));
     let state = validate($("#st-state"));
@@ -236,7 +264,7 @@ $(".add-staff-form").on('submit', function(e) {
 
     let formData = {
         first_name, last_name, middle_name, gender, phone_number,
-        email, address, state, lga, dob, qualification, role, salary
+        email, address, state, class_id, lga, dob, qualification, role, salary
     }
 
     //console.log(formData)

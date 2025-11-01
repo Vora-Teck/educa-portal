@@ -13,7 +13,7 @@
   --ai-container: #548ABF;
 }
 /* custom scroll bar */
-::-webkit-scrollbar {width: 0px !important;}
+::-webkit-scrollbar {width: 0px !important;height:3px !important}
 ::-webkit-scrollbar-track {background: #242526;}
 ::-webkit-scrollbar-thumb {background: #3A3B3C;}
 a {color: grey}
@@ -34,6 +34,30 @@ a {color: grey}
   outline: none;
   border: none;
   cursor: pointer;
+}
+.transp-btn {
+  padding: 5px 10px;
+  color: #222;
+  background: #fff;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+.side-btn {
+  padding: 5px 10px;
+  color: var(--primary-color);
+  font-size: 18px;
+  background: #fff;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid var(--primary-color);
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.side-btn:hover {
+  background: var(--primary-color);
+  color: #fff;
 }
 .dark-btn {
   padding: 5px 10px;
@@ -134,21 +158,20 @@ body {
   }
   .side-con {
     position: fixed;
-    width: calc(100% - var(--sidenav-width));
-    height: 100%;
+    display: none;
     overflow-y: auto;
-    left: 110%;
-    top: 0;
+    right: 0;
+    bottom: 0;
+    padding: 15px;
+    padding-left: calc(var(--sidenav-width) + 15px);
+    height: calc(100vh - var(--header-height));
+    width: calc(100vw);
     z-index: 150;
-    padding: 20px;
-    background: #fff;
-    margin-bottom: 40px;
-    max-width: 100%;
-    overflow-x: hidden;
+    background: #eee;
     transition: all .5s ease;
   }
   .side-con.active {
-    left: var(--sidenav-width);  
+    display: block;  
   }
   .opennav {
     display: none;
@@ -174,10 +197,10 @@ body {
         padding: 20px;
         padding-top: calc(20px + var(--header-height));
     }
-    .side-con {width:100%}
-    .side-con.active {
-      left: 0; 
-      padding: 20px; 
+    .side-con {
+      transition: margin-left .5s;
+      margin-left: 0;
+      padding: 20px;
     }
     .opennav, .sidenav .closebtn {
         display: block;
@@ -246,7 +269,7 @@ header {
     position: fixed;
     top: 0;
     right: 0;
-    z-index: 100;
+    z-index: 170;
     background: #fff;
     height: var(--header-height);
     border-left: 1px solid #eee;
@@ -329,22 +352,7 @@ header {
   #search {min-width: 300px;}
 }
 
-.panel {
-  padding: 0 18px;
-  background-color: white;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-}
-.accordion:after {
-  content: '\2304';
-  float: right;
-  margin-left: 5px;
-}
 
-.accordion.active:after {
-  content: "\2303";
-}
 /* dashboard */
 .dash-menu {
   padding: 0 15px;
@@ -939,7 +947,7 @@ text-align: justify;
   .emp-table tr td:nth-child(4) {display:none}
   .emp-table tr th:nth-child(5) {display:none}
   .emp-table tr td:nth-child(5) {display:none}
-  .sort-filter {display:none;}
+  
   #emp_per_page {display:none;}
 }
 @media screen and (max-width:400px) {
@@ -1123,7 +1131,202 @@ i.rotate {
   border-top: 1px solid var(--primary-color) !important;
   border-bottom: 1px solid var(--primary-color) !important;
 }
+.tab-opt {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  border: none;
+}
+/* Tooltip container */
+.tooltipa {
+  position: relative;
+  display: inline-block;
+}
 
+/* Tooltip text */
+.tooltipa .tooltiptext {
+  visibility: hidden;
+  width: fit-content;
+  background-color: #fff;
+  color: gray;
+  font-size: 17px;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltipa .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltipa:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Style the list */
+ul.breadcrumb {
+  list-style: none;
+  background-color: #eee;
+}
+
+/* Display list items side by side */
+ul.breadcrumb li {
+  display: inline;
+  font-size: 18px;
+}
+
+/* Add a slash symbol (/) before/behind each list item */
+ul.breadcrumb li+li:before {
+  padding: 8px;
+  color: black;
+  font-weight: bold;
+  content: ">";
+}
+
+/* Add a color to all links inside the list */
+ul.breadcrumb li a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+.side-opt-con {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  overflow-x: auto;
+  background: #fff;
+  padding: 15px 10px;
+  border-radius: 5px;
+}
+.side-opt-con button {
+  white-space: nowrap;
+}
+
+/* Add a color on mouse-over */
+ul.breadcrumb li a:hover {
+  color: #01447e;
+}
+.accor-con {
+  padding: 15px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion {
+  background: rgba(135, 183, 223, 0.1);
+  color: #444;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none !important;
+  transition: 0.4s;
+  outline: none;
+  margin-bottom: 25px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.accordion:after {
+  content: '\276F'; /* Unicode character for "plus" sign (+) */
+  font-size: 13px;
+  color: #777;
+  float: right;
+  display: block;
+  margin-left: 5px;
+  transform: rotate(90deg);
+}
+
+.accordion.active:after {
+  content: "\276F"; /* Unicode character for "minus" sign (-) */
+  transform: rotate(-90deg)
+}
+
+.accor-con .panel .dash-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.accor-con .panel > .dash-box > div:nth-child(2) {
+  padding: 10px;
+  flex: 1 1 320px;
+  min-width: 320px;
+  box-sizing: border-box;
+}
+.accor-con .panel > .dash-box > div:nth-child(2) {
+  padding: 10px;
+  flex: 1 1 200px;
+  min-width: 200px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap:15px;
+}
+.accor-con .panel > .dash-box > div:nth-child(2) img {
+  width: 150px;
+  aspect-ratio: 1/1;
+  border: 1px solid var(--primary-color);
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+
+
+/* Style the accordion panel. Note: hidden by default */
+.accor-con .panel {
+  padding: 0 15px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.borderless-table,
+.borderless-table tr,
+.borderless-table td {border: none !important}
+
+
+.dropdown-item {
+  padding: 10px 15px !important;
+  font-size: 17px;
+}
+.dropdown-item:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.std-drop {
+  padding: 8px 15px;
+  background: #ddd;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 17px;
+}
 
 .n_error {background:red;color:#fff}
 .n_success {background:green;color:#fff}
