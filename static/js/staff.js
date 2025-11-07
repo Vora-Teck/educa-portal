@@ -6,8 +6,8 @@ function getData() {
         params: {page: "staff"},
         onSuccess: (data) => {
                 //console.log(data);
-                let d = data.data;
                 if(data.status == 'success') {
+                    let d = data.data;
                     $("#pry-f").text(digify(d.primary.female, false))
                     $("#pry-m").text(digify(d.primary.male, false))
                     $("#pry-t").text(digify((d.primary.female + d.primary.male), false))
@@ -141,13 +141,11 @@ function getStaff() {
                             let id = $(this).data('id');
                             getTeacher(id)
                         })
-                        $('.emp-com-link').click(function(e) {
+                        $('.emp-del-link').click(function(e) {
                             e.preventDefault();
                             let id = $(this).data('id');
-                            let or = $(this).data('name');
-                            $('.msg-go-btn').data('id', id);
-                            $('.message-content').html(`Are you sure you want to delete user '${or}'?<br>This action is permanent and cannot be reversed.`)
-                            $('.message-con').addClass('active');
+                            getTeacher(id);
+                            $(".delete-staff-con").addClass("active")
                         })
                     }
                     else {
@@ -177,19 +175,46 @@ getStaff()
 
 
 function getTeacher(id) {
+    showLoader("Getting staff data...")
     admin.staff.staffList({
         params: {staff_id: id},
         onSuccess: (data) => {
             console.log(data);
             if(data.status == 'success') {
+                if(data.status == 'success') {
+                    $(".sta-side-con").addClass("active")
+                    let d = data.data;
+                    $(".sta-id-use").val(d.id)
+
+                    $(".sta-name").html(`${d.firstName} ${d.lastName}`)
+                    if(d.is_active) {
+                        $(".sta-action").data('action', 'deactivate').html('Deactivate Staff')
+                      }
+                      else {
+                        $(".sta-action").data('action', 'activate').html('Activate Staff')
+                      }
+                    $("#sta-name").html(`${d.firstName} ${d.middleName} ${d.lastName}`)
+                    $("#sta-title").html(`${d.title}`)
+                    $("#sta-id").html(`${d.staffId}`)
+                    $("#sta-email").html(`${d.email}`)
+                    $("#sta-phone").html(`${d.phone_number}`)
                     
+                    if(d.image) {
+                        $("#sta-image").attr('src', `${base_url}${d.image}`)
+                    }
+                    else {
+                        $("#sta-image").attr('src', `/static/image/avatar.png`)
+                    }
+                }
             }
             else {
                 pushNotification("n_error", data.message, 3000);
             }
+            hideLoader()
         },
         onError: (error) => {
             console.error(error);
+            hideLoader()
             pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
         }
   })
@@ -281,6 +306,7 @@ $(".add-staff-form").on('submit', function(e) {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-staff-form")[0].reset();
                 getStaff();
+                getData()
             }
             else {
                 pushNotification("n_error", data.message, 3000)
@@ -294,6 +320,74 @@ $(".add-staff-form").on('submit', function(e) {
         }
       })
 })
+
+function deleteStaff() {
+
+    let staff_id = $("#delete-id").val();
+    let password = $("#delete-password").val();
+  
+    let formData = {staff_id, password}
+  
+    showLoader("Deleting Staff Records...")
+    
+    admin.staff.deleteStaff({
+      formData: formData,
+      onSuccess: (data) => {
+          //console.log(data)
+          if(data.status == "success") {
+              pushNotification("n_success", data.message, 5000);
+              $(".delete-staff-con").removeClass("active")
+              $(".sta-side-con").removeClass("active")
+              getStaff();
+              getData();
+          }
+          else {
+              pushNotification("n_error", data.message, 3000)
+          }
+          hideLoader()
+      },
+      onError: (error) => {
+          console.error(error);
+          pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+          hideLoader()
+      }
+    })
+  }
+
+function exportList() {
+    var columns = $("input[name='columns']:checked").map(function() {
+              return $(this).val();
+            }).get();
+    let format = $("#format").val();
+  
+    let formData = {columns,format}
+    //console.log(formData)
+  
+    showLoader("Exporting List...")
+  
+      admin.staff.exportStaff({
+          formData: formData,
+          onSuccess: (data) => {
+              //console.log(data)
+              if(data.status == "success") {
+                  d = data.data;
+                  pushNotification("n_success", data.message, 5000);
+                  downloadFile(`${base_url}${d.file_url}`,d.file_name)
+                  $(".export-staff-form")[0].reset();
+              }
+              else {
+                  pushNotification("n_error", data.message, 3000)
+              }
+              hideLoader()
+          },
+          onError: (error) => {
+              console.error(error);
+              pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+              hideLoader()
+          }
+        })
+  
+}
 
 function validate(elem) {
     let value = elem.val()?.trim();
@@ -309,10 +403,94 @@ function validate(elem) {
     return value;
 }
 
+var uploadBtn = document.querySelector("#image-upload");
+uploadBtn.addEventListener("change", function() {
+  var reader = new FileReader();
+  var file = this.files[0];
+
+  reader.onload = function(e) {
+    document.querySelector("#sta-image").src = e.target.result;
+  }
+
+  reader.readAsDataURL(file)
+  uploadImage()
+})
+
+function uploadImage() {
+  let id = $(".sta-id-use").val();
+  let image = $("#image-upload")[0].files[0];
+
+  let formData = new FormData();
+  formData.append("staff_id", id);
+  formData.append("image", image)
+
+
+  showLoader("Uploading image...")
+
+  admin.staff.uploadImage({
+    formData: formData,
+    onSuccess: (data) => {
+        //console.log(data)
+        if(data.status == "success") {
+          pushNotification("n_success", data.message, 3000)
+        }
+        else {
+          pushNotification("n_error", data.message, -1)
+          getTeacher(id)
+        }
+        hideLoader()
+    },
+    onError: (error) => {
+      //hideLoader()
+      getTeacher(id)
+      console.error(error)
+      pushNotification("n_network", "Error occurred. Kindly check your internet connection and try again", 3000)
+    }
+})
+}
+
+function updateStatus() {
+    let staff_id = $(".sta-id-use").val();
+    let action = $(".sta-action").data('action');
+  
+    let formData = {staff_id, action}
+  
+    var stat = {activate: "Activating", deactivate: "Deactivating"}
+    showLoader(`${stat[action]} staff...`)
+  
+    admin.staff.staffStatus({
+      formData: formData,
+      onSuccess: (data) => {
+          //console.log(data)
+          if(data.status == "success") {
+            pushNotification("n_success", data.message, 3000)
+          }
+          else {
+            pushNotification("n_error", data.message, -1)
+          }
+          getTeacher(staff_id)
+          getStaff()
+          hideLoader()
+      },
+      onError: (error) => {
+        hideLoader()
+        console.error(error)
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection and try again", 3000)
+      }
+    })
+  }
+
+
+// ========== Event Listeners ======================
+$(".delete-staff-form").on('submit', function(e) {e.preventDefault();deleteStaff()})
+$(".export-staff-form").on('submit', function(e) {e.preventDefault();exportList()})
+
 $(".add-staff-form .req").on('input', function() {validate($(this))});
 $(".add-staff-form .req2").on('change', function() {validate($(this))})
 
-
+$(".export-btn").click(function(e) {e.preventDefault(); $(".export-staff-con").addClass("active")})
+$(".sta-del-btn").on('click', function() {$(".delete-staff-con").addClass("active")})
+$(".sta-action").on('click', function() {updateStatus()})
 
   
   

@@ -104,6 +104,16 @@ function pushNotification(type, text, time, event=null) {
   }).showToast();
 }
 
+function downloadFile(url, filename="") {
+  let link = document.createElement('a');
+  link.href = url;
+  link.dowload = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  pushNotification("n_success", "File downloaded successfully", 4000);
+}
+
 
 function showLoader(text="") {
   $("#loader-text").html(text)
@@ -202,4 +212,54 @@ function showUserInfo() {
           }
         })
   }
+}
+
+function showPlanInfo() {
+
+  admin.subscription.getCurrentPlan({
+      onSuccess: (data) => {
+              //console.log(data);
+              $(".plan-alert2").empty()
+              if(data.status == 'success') {
+                let d = data.data;
+                let temp = ``
+                if(d.level == 0) {
+                  temp = `
+                  <div class="alert alert-info">
+                    <i class="fa fa-info-circle"></i>&nbsp;
+                    You are currently on a <strong>${d.title} Plan</strong> for <strong>${d.duration}</strong> and 
+                    ${d.expired ? `it expired` : `will expire`} on <strong>${datify(d.expiry_date, false)}</strong>. 
+                    <a href="#subscription" class="w-text-red">Click Here</a> to upgrade your plan.
+                  </div>`
+                }
+                else {
+                  let givenDate = new Date(d.expiry_date);
+                  let today = new Date();
+
+                  let diff = givenDate - today
+                  let diff_days = diff / (1000 * 60 * 60 * 24);
+                  //console.log(diff_days)
+                  if(diff_days <= 7) {
+                    temp = `
+                    <div class="alert alert-info">
+                    <i class="fa fa-info-circle"></i>&nbsp;
+                    You are currently on a <strong>${d.title} Plan</strong> for <strong>${d.duration}</strong> and 
+                    ${d.expired ? `it expired` : `will expire`} on <strong>${datify(d.expiry_date, false)}</strong>. 
+                    <a href="#subscription" class="w-text-red">Click Here</a> to extend or upgrade your plan.
+                  </div>`;
+                  }
+                  
+                }
+                
+                $(".plan-alert2").html(temp)
+              }
+              else {
+                //pushNotification("n_error", data.message, 3000)
+              }
+      },
+      onError: (error) => {
+              console.error(error);
+              //pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+      }
+})
 }

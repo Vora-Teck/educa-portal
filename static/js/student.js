@@ -37,7 +37,20 @@ function getData() {
   })
   }
 
-  getData()
+  function getStates() {
+    admin.misc.getStates({
+            onSuccess: (data) => {
+                    $("#st-state").empty().append(`<option value="" selected>Select State</option>`)
+                    $("#st-state2").empty().append(`<option value="" selected>Select State</option>`)
+                    for(let i=0; i < data.length; i++) {
+                            let temp = `<option value="${data[i]}">${data[i]}</option>`;
+                            $("#st-state").append(temp)
+                            $("#st-state2").append(temp)
+                    }
+            },
+            onError: (error) => console.error(error)
+    })
+}
 
 
   function getClassrooms() {
@@ -47,16 +60,22 @@ function getData() {
                 let d = data.data
                 $(".class-filter").empty().append(`<option value="" selected>All Classes</option>`)
                 $("#st-class").empty().append(`<option value="" selected>Select class</option>`)
-                    for(let i in d) {
-                            let temp = `<option value="${d[i].id}">${d[i].level.title}</option>`;
-                            $(".class-filter").append(temp)
-                            $("#st-class").append(temp)
-                    }
+                $(".class-list").empty();
+                for(let i in d) {
+                  let temp = `<option value="${d[i].id}">${d[i].level.title}</option>`;
+                  $(".class-filter").append(temp)
+                  $("#st-class").append(temp)
+                  let temp2 = `
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" value="${d[i].id}" id="class_${d[i].id}" name="class_ids">
+                    <label class="custom-control-label" for="class_${d[i].id}">${d[i].level.title}</label>
+                  </div>`;
+                  $(".class-list").append(temp2)
+                }
             },
             onError: (error) => console.error(error)
     })
 }
-getClassrooms()
 
 function getStudents() {
     let page = $('#emp_page').val();
@@ -146,14 +165,12 @@ function getStudents() {
                             let id = $(this).data('id');
                             getStudent(id)
                         })
-                        $('.emp-com-link').click(function(e) {
-                            e.preventDefault();
-                            let id = $(this).data('id');
-                            let or = $(this).data('name');
-                            $('.msg-go-btn').data('id', id);
-                            $('.message-content').html(`Are you sure you want to delete user '${or}'?<br>This action is permanent and cannot be reversed.`)
-                            $('.message-con').addClass('active');
-                        })
+                        $('.emp-del-link').click(function(e) {
+                          e.preventDefault();
+                          let id = $(this).data('id');
+                          getStudent(id);
+                          $(".delete-student-con").addClass("active")
+                      })
                     }
                     else {
                         let temp = `<tr>
@@ -177,7 +194,11 @@ function getStudents() {
         }
   })
 }
+
+getData()
+getClassrooms()
 getStudents()
+getStates()
 
 
 function getStudent(id) {
@@ -189,8 +210,23 @@ function getStudent(id) {
             if(data.status == 'success') {
                 $(".std-side-con").addClass("active")
                 let d = data.data;
-
-                $("#std-name").html(`${d.firstName} ${d.lastName}`)
+                // for hidden inputs
+                $(".std-id-use").val(d.id)
+                // for titles
+                $(".std-name").html(`${d.firstName} ${d.lastName}`)
+                // for edit form
+                getLgas(d.address.state, $("#st-lga2"))
+                $("#st-fname2").val(d.firstName);
+                $("#st-lname2").val(d.lastName);
+                $("#st-mname2").val(d.middleName);
+                $("#st-id2").val(d.studentId);
+                $("#st-address2").val(d.address.address);
+                $("#st-state2").val(d.address.state);
+                $("#st-lga2").val(d.address.lga);
+                $("#st-pa-name2").val(d.parentInfo.name);
+                $("#st-pa-email2").val(d.parentInfo.email);
+                $("#st-pa-phone2").val(d.parentInfo.phone_number.join(','));
+                // for display
                 $("#std-name2").html(`${d.firstName} ${d.middleName} ${d.lastName}`)
                 $("#std-id").html(`${d.studentId}`)
                 $("#std-class").html(`${d.classroom.level.title}`)
@@ -199,16 +235,22 @@ function getStudent(id) {
                 $("#std-dob").html(`${datify(d.dateOfBirth, false)}`)
                 $("#std-age").html(`${dateDiff(d.dateOfBirth)}`)
                 $("#std-date").html(`${datify(d.registration_date, false)}`)
-                $("#std-address").html(`${d.address.address}, ${d.address.lga}, ${d.address.state}`)
-                $("#std-address2").html(`${d.address.address}, ${d.address.lga}, ${d.address.state}`)
+                $("#std-address").html(`${d.address.address}, ${d.address.lga} LGA, ${d.address.state} State.`)
+                $("#std-address2").html(`${d.address.address}, ${d.address.lga} LGA, ${d.address.state} State.`)
                 $("#std-pname").html(`${d.parentInfo.name}`)
                 $("#std-email").html(`${d.parentInfo.email}`)
                 $("#std-section").html(`${d.classroom.level.category}`)
+                if(d.is_active) {
+                  $(".std-action").data('action', 'deactivate').html('Deactivate Student')
+                }
+                else {
+                  $(".std-action").data('action', 'activate').html('Activate Student')
+                }
                 if(d.image) {
                     $("#std-image").attr('src', `${base_url}${d.image}`)
                 }
                 else {
-                    $("#std-image").attr('src', `/static/image/avatar.png`)
+                    $("#std-image").attr('src', `/static/image/student.png`)
                 }
                 if(d.classroom.teacher) {
                     $("#std-teacher").html(`${d.classroom.teacher.firstName} ${d.classroom.teacher.lastName} (${d.classroom.teacher.qualification})`)
@@ -293,6 +335,7 @@ function getStudent(id) {
         }
   })
 }
+
 function debounce(func, delay) {
     let timeout;
     return(...args) => {
@@ -301,33 +344,21 @@ function debounce(func, delay) {
         func(...args);
       }, delay);
     }
-  }
+}
 
 var delayedSearch = debounce(getStudents, 500)
 
 
-function getStates() {
-    admin.misc.getStates({
-            onSuccess: (data) => {
-                    $("#st-state").empty().append(`<option value="" selected>Select State</option>`)
-                    for(let i=0; i < data.length; i++) {
-                            let temp = `<option value="${data[i]}">${data[i]}</option>`;
-                            $("#st-state").append(temp)
-                    }
-            },
-            onError: (error) => console.error(error)
-    })
-}
-getStates()
 
-function getLgas(state) {
+
+function getLgas(state, elem) {
     admin.misc.getLgas({
             params: { state },
             onSuccess: (data) => {
-                    $("#st-lga").empty().append(`<option value="" selected>Select LGA</option>`)
+                    elem.empty().append(`<option value="" selected>Select LGA</option>`)
                     for(let i=0; i < data.length; i++) {
                             let temp = `<option value="${data[i]}">${data[i]}</option>`;
-                            $("#st-lga").append(temp)
+                            elem.append(temp)
                     }
             },
             onError: (error) => console.error(error)
@@ -335,16 +366,11 @@ function getLgas(state) {
 }
 
 
-$("#st-state").on('change', function() {
-    let state = $(this).val();
-    if(state !== "") getLgas(state)
-})
-
 var createFormValid = true;
+var updateFormValid = true;
 
-$(".add-student-form").on('submit', function(e) {
-    e.preventDefault();
-    createFormValid = true;
+function addStudent() {
+  createFormValid = true;
     let first_name = validate($("#st-fname"));
     let last_name = validate($("#st-lname"));
     let middle_name = $("#st-mname").val();
@@ -369,6 +395,7 @@ $(".add-student-form").on('submit', function(e) {
 
     //console.log(formData)
     if(createFormValid === false) {
+      pushNotification("n_warning", "Kindly fill in the required fields", 5000)
         return
     }
     showLoader("Registering Student...")
@@ -381,6 +408,7 @@ $(".add-student-form").on('submit', function(e) {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-student-form")[0].reset();
                 getStudents();
+                getData();
             }
             else {
                 pushNotification("n_error", data.message, 3000)
@@ -393,7 +421,203 @@ $(".add-student-form").on('submit', function(e) {
             hideLoader()
         }
       })
+}
+
+function updateStudent() {
+    updateFormValid = true;
+
+    let student_id = $("#update-id").val();
+    let middle_name = $("#st-mname2").val();
+
+    let address = validate2($("#st-address2"));
+    let state = validate2($("#st-state2"));
+    let lga = validate2($("#st-lga2"));
+
+    let guardian_name = validate2($("#st-pa-name2"));
+    let phone_number = validate2($("#st-pa-phone2"));
+    let email = validate2($("#st-pa-email2"));
+    
+
+    let formData = {
+        student_id, middle_name, address, state, lga,
+        guardian_name, phone_number, email
+    }
+
+    //console.log(formData)
+    if(updateFormValid === false) {
+      pushNotification("n_warning", "Kindly fill in the required fields", 5000)
+        return
+    }
+    showLoader("Updating Student...")
+    
+    admin.student.updateStudent({
+      formData: formData,
+      onSuccess: (data) => {
+          //console.log(data)
+          if(data.status == "success") {
+              pushNotification("n_success", data.message, 5000);
+              getStudents();
+              getStudent(student_id)
+          }
+          else {
+              pushNotification("n_error", data.message, 3000)
+          }
+          hideLoader()
+      },
+      onError: (error) => {
+          console.error(error);
+          pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+          hideLoader()
+      }
+    })
+}
+
+function deleteStudent() {
+
+  let student_id = $("#delete-id").val();
+  let password = $("#delete-password").val();
+
+  let formData = {student_id, password}
+
+  showLoader("Deleting Student Records...")
+  
+  admin.student.deleteStudent({
+    formData: formData,
+    onSuccess: (data) => {
+        //console.log(data)
+        if(data.status == "success") {
+            pushNotification("n_success", data.message, 5000);
+            $(".delete-student-con").removeClass("active")
+            $(".std-side-con").removeClass("active")
+            getStudents();
+            getData();
+        }
+        else {
+            pushNotification("n_error", data.message, 3000)
+        }
+        hideLoader()
+    },
+    onError: (error) => {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+        hideLoader()
+    }
+  })
+}
+
+function exportList() {
+  let class_ids = $("input[name='class_ids']:checked").map(function() {
+            return $(this).val();
+          }).get();
+  var columns = $("input[name='columns']:checked").map(function() {
+            return $(this).val();
+          }).get();
+  let format = $("#format").val();
+
+  let formData = {class_ids, columns,format}
+  //console.log(formData)
+
+  showLoader("Exporting List...")
+
+    admin.student.exportStudents({
+        formData: formData,
+        onSuccess: (data) => {
+            //console.log(data)
+            if(data.status == "success") {
+                d = data.data;
+                pushNotification("n_success", data.message, 5000);
+                downloadFile(`${base_url}${d.file_url}`,d.file_name)
+                $(".export-student-form")[0].reset();
+            }
+            else {
+                pushNotification("n_error", data.message, 3000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+      })
+
+}
+
+var uploadBtn = document.querySelector("#image-upload");
+uploadBtn.addEventListener("change", function() {
+  var reader = new FileReader();
+  var file = this.files[0];
+
+  reader.onload = function(e) {
+    document.querySelector("#std-image").src = e.target.result;
+  }
+
+  reader.readAsDataURL(file)
+  uploadImage()
 })
+
+function uploadImage() {
+  let id = $(".std-id-use").val();
+  let image = $("#image-upload")[0].files[0];
+
+  let formData = new FormData();
+  formData.append("student_id", id);
+  formData.append("image", image)
+
+
+  showLoader("Uploading image...")
+
+  admin.student.updateStudentPhoto({
+    formData: formData,
+    onSuccess: (data) => {
+        //console.log(data)
+        if(data.status == "success") {
+          pushNotification("n_success", data.message, 3000)
+        }
+        else {
+          pushNotification("n_error", data.message, -1)
+          getStudent(id)
+        }
+        hideLoader()
+    },
+    onError: (error) => {
+      hideLoader()
+      console.error(error)
+      pushNotification("n_network", "Error occurred. Kindly check your internet connection and try again", 3000)
+    }
+})
+}
+
+function updateStatus() {
+  let student_id = $(".std-id-use").val();
+  let action = $(".std-action").data('action');
+
+  let formData = {student_id, action}
+
+  var stat = {activate: "Activating", deactivate: "Deactivating"}
+  showLoader(`${stat[action]} student...`)
+
+  admin.student.updateAccount({
+    formData: formData,
+    onSuccess: (data) => {
+        //console.log(data)
+        if(data.status == "success") {
+          pushNotification("n_success", data.message, 3000)
+        }
+        else {
+          pushNotification("n_error", data.message, -1)
+        }
+        getStudent(student_id)
+        getStudents()
+        hideLoader()
+    },
+    onError: (error) => {
+      hideLoader()
+      console.error(error)
+      pushNotification("n_network", "Error occurred. Kindly check your internet connection and try again", 3000)
+    }
+  })
+}
 
 function validate(elem) {
     let value = elem.val()?.trim();
@@ -409,9 +633,46 @@ function validate(elem) {
     return value;
 }
 
-$(".add-student-form .req").on('input', function() {validate($(this))});
-$(".add-student-form .req2").on('change', function() {validate($(this))})
+function validate2(elem) {
+  let value = elem.val()?.trim();
+  if(!value || value == "") {
+      elem.addClass('error');
+      elem.siblings(".error-msg").addClass('active');
+      updateFormValid = false;
+  }
+  else {
+      elem.removeClass('error');
+      elem.siblings(".error-msg").removeClass('active');
+  }
+  return value;
+}
 
+// ============== Event Listeners ================================
+$(".add-student-form").on('submit', function(e) {e.preventDefault();addStudent()})
+$(".update-student-form").on('submit', function(e) {e.preventDefault();updateStudent()})
+$(".export-student-form").on('submit', function(e) {e.preventDefault();exportList()})
+$(".delete-student-form").on('submit', function(e) {e.preventDefault();deleteStudent()})
+
+$(".export-btn").click(function(e) {e.preventDefault(); $(".export-student-con").addClass("active")})
+$(".std-action").on('click', function() {updateStatus()})
+$(".std-edit-btn").on('click', function() {$(".update-student-con").addClass("active")})
+$(".std-del-btn").on('click', function() {$(".delete-student-con").addClass("active")})
+
+$(".add-student-form .req").on('input', function() {validate($(this))});
+$(".add-student-form .req2").on('change', function() {validate($(this))});
+
+$(".update-student-form .req").on('input', function() {validate2($(this))});
+$(".update-student-form .req2").on('change', function() {validate2($(this))});
+
+$("#st-state").on('change', function() {
+  let state = $(this).val();
+  if(state !== "") getLgas(state, $("#st-lga"))
+})
+
+$("#st-state2").on('change', function() {
+  let state = $(this).val();
+  if(state !== "") getLgas(state, $("#st-lga2"))
+})
 
 window.Apex = {
     dataLabels: {

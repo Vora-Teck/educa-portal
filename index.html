@@ -159,8 +159,12 @@ showSchoolInfo()
       </div>
     </header>
 
+    <div class="plan-alert2">
+      
+    </div>
     <script>
       showUserInfo()
+      showPlanInfo()
     </script>
     
   </template>
@@ -384,7 +388,7 @@ showSchoolInfo()
 
   <div class="modal-con modal-top add-staff-con">
     <div class="modal-body">
-      <div class="fa fa-times-circle close-modal"></div>
+      <div class="close-modal">X</div>
       <div class="modal-header">
         <div class="h5 w-bold-x w-text-blue">Add New Teacher</div>
       </div>
@@ -525,6 +529,177 @@ showSchoolInfo()
     </div>
   </div>
 
+  <div class="side-con sta-side-con">
+    <div class="w-flex w-flex-between w-align-center">
+      <ul class="breadcrumb">
+        <li><a href="#staff">Staff Management</a></li>
+        <li class="sta-name"></li>
+      </ul>
+      <button class="close-side btn btn-danger">X&nbsp;Close</button>
+    </div>
+    
+    <div class="w-white">
+      <div class="side-pro-con">
+        <div>
+          <img src="" alt="" id="sta-image" src="/static/image/avatar.png">
+          <form>
+            <label for="image-upload" class="light-btn w-text-center">
+              Change Image
+            </label>
+            <input type="hidden" class="sta-id-use">
+            <input type="file" id="image-upload" class="hidden-input" accept="image/*" />
+          </form>
+        </div>
+        <div class="side-pro-names">
+          <div class="h5 w-bold-x">
+            <span id="sta-title"></span> 
+            <span id="sta-name"></span>
+          </div>
+          <div class="h6 w-bold" id="sta-id"></div>
+          <div class="h6" id="sta-email"></div>
+          <div class="h6" id="sta-phone"></div>
+        </div>
+      </div>
+      <div class="side-opt-con">
+        <button class="side-btn sta-edit-btn">Edit Profile</button>
+        <button class="side-btn">Generate ID Card</button>
+        <button class="side-btn sta-action" data-action=""></button>
+        <button class="side-btn sta-del-btn w-border-red w-hover-red w-text-red">Delete Record</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-con export-staff-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Export Staff List</div>
+      </div>
+      <form class="modal-content export-staff-form">
+
+        <div class="h5 mt-2 w-bold">Select columns to include:</div>
+
+        <div class="mb-2 mt-2 w-flex w-flex-start w-align-center w-flex-wrap" style="gap:20px">
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" checked value="firstName" id="col_fname" name="columns" disabled>
+            <label class="custom-control-label" for="col_fname">Full Name</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="staffId" id="col_id" name="columns">
+            <label class="custom-control-label" for="col_id">Staff ID</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="email" id="col_email" name="columns">
+            <label class="custom-control-label" for="col_email">Email</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="phone_number" id="col_phone" name="columns">
+            <label class="custom-control-label" for="col_phone">Phone Number</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="qualification" id="col_qua" name="columns">
+            <label class="custom-control-label" for="col_qua">Qualification</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="role" id="col_role" name="columns">
+            <label class="custom-control-label" for="col_role">Staff Role</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="salary" id="col_salary" name="columns">
+            <label class="custom-control-label" for="col_salary">Salary</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="gender" id="col_gender" name="columns">
+            <label class="custom-control-label" for="col_gender">Gender</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="date_of_birth" id="col_dob" name="columns">
+            <label class="custom-control-label" for="col_dob">Date Of Birth</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="created" id="col_date" name="columns">
+            <label class="custom-control-label" for="col_date">Date Of Registration</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="address" id="col_addr" name="columns">
+            <label class="custom-control-label" for="col_addr">Address</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="is_active" id="col_active" name="columns">
+            <label class="custom-control-label" for="col_active">Active Status</label>
+          </div>
+
+        </div>
+
+        <br>
+
+        <div class="input-con mb-2 mt-2 w-flex w-flex-start w-align-center" style="gap:20px">
+          <label for="st-state2">Select Export Format</label>
+            <select id="format" style="max-width:200px !important;">
+              <option value="csv" selected>Excel File (.xlsx)</option>
+              <option value="docx">Word Document (.docx)</option>
+              <option value="pdf" disabled>PDF File (.pdf)</option>
+            </select>
+        </div>
+          <br>
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn3">Cancel</button>
+          <input type="submit" value="Export">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con delete-staff-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-red w-bold-x">
+          <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
+          Delete Staff Record for <b class="sta-name"></b>
+        </div>
+      </div>
+      <form class="modal-content delete-staff-form">
+        
+        <h4>This is a destructive action and cannot be reversed. All records associated with the staff 
+          will be erased permanently. Kindly note that the following will 
+          be deleted from the database.
+        </h4>
+        <ul style="padding-left:20px;">
+          <li>Staff Information</li>
+          <li>Staff Bank Account Record</li>
+          <li>Staff Payroll Record/History</li>
+        </ul>
+        
+        <div class="input-con">
+          <label for="">Enter your Password to proceed:</label>
+          <input type="password" id="delete-password" required />
+        </div>
+
+        <input type="hidden" class="sta-id-use" id="delete-id">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn4">Cancel</button>
+          <input type="submit" class="w-red" value="Delete Record">
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
   <main class="">
     <?use-template: "header"?>
@@ -536,7 +711,6 @@ showSchoolInfo()
           <div class="w-flex w-flex-between w-align-center w-flex-wrap">
             <div class="h4 w-bold-x">Teacher Distribution</div>
             <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
-              <button class="light-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
               <button class="dark-btn add-staff-btn">Add Teacher&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
             </div>
           </div>
@@ -627,7 +801,7 @@ showSchoolInfo()
             
 
             <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
-              <button class="light-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
+              <button class="light-btn export-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
               <button class="dark-btn add-staff-btn">Add Teacher&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
             </div>
 
@@ -688,11 +862,34 @@ showSchoolInfo()
             e.preventDefault();
             $(".add-staff-con").removeClass('active')
           })
+          $(".canc-btn3").click(function(e) {
+            e.preventDefault();
+            $(".export-staff-con").removeClass('active')
+          })
+          $(".canc-btn4").click(function(e) {
+            e.preventDefault();
+            $(".delete-staff-con").removeClass('active')
+          })
 
     $('#emp_search').on('input', function(e) {
             $('#emp_page').val(1);
             delayedSearch(e.target.value)
           })
+
+          var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
   </script>
 </template>
 
@@ -702,7 +899,7 @@ showSchoolInfo()
 
   <div class="modal-con modal-top add-student-con">
     <div class="modal-body">
-      <div class="fa fa-times-circle close-modal"></div>
+      <div class="close-modal">X</div>
       <div class="modal-header">
         <div class="h5 w-bold-x w-text-blue">Add New Student</div>
       </div>
@@ -834,20 +1031,233 @@ showSchoolInfo()
     </div>
   </div>
 
+  <div class="modal-con modal-top update-student-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Update Student - <b class="std-name"></b></div>
+      </div>
+      <form class="modal-content update-student-form">
+        <div class="row mt-3">
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-fname">First Name: (not editable)</label>
+            <input type="text" id="st-fname2" disabled readonly />
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-lname">Last Name:  (not editable)</label>
+            <input type="text" id="st-lname2" disabled readonly />
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname">Other Name (Optional)</label>
+            <input type="text" id="st-mname2" />
+          </div>
+
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-id2">Student ID: (not editable)</label>
+            <input type="text" id="st-id2" readonly />
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+            <label for="st-mname">Home Address</label>
+            <input type="text" class="req" id="st-address2" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Home address is required
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-state2">State</label>
+            <select id="st-state2" class="req2">
+              <option value="" selected></option>
+            </select>
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Kindly select a state
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-lga">L.G.A</label>
+            <select id="st-lga2" class="req2">
+              <option value="" selected></option>
+            </select>
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Kindly select an LGA
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname2">Parent/Guardian Name</label>
+            <input type="text" class="req" id="st-pa-name2" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Parent/Guardian Name is required
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+            <label for="st-mname">Parent/Guardian Email Address</label>
+            <input type="email" class="req" id="st-pa-email2" />
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Kindly enter a valid email address
+            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+            <label for="st-mname">Parent/Guardian Phone Number(s)</label>
+            <input type="tel" class="req" id="st-pa-phone2" />
+            <i>(separate multiple phone numbers with comma (,))</i>
+            <span class="error-msg">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+              Parent/Guardian Phone Number is required
+            </span>
+          </div>
+
+        </div>
+
+        <input type="hidden" class="std-id-use" id="update-id">
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn2">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con export-student-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Export Student List</div>
+      </div>
+      <form class="modal-content export-student-form">
+        <div class="h5 mt-2 w-bold">Select class list to include:</div>
+
+        <div class="class-list mb-2 mt-2 w-flex w-flex-start w-align-center w-flex-wrap" style="gap:20px"></div>
+
+        <br>
+
+        <div class="h5 mt-2 w-bold">Select columns to include:</div>
+
+        <div class="mb-2 mt-2 w-flex w-flex-start w-align-center w-flex-wrap" style="gap:20px">
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" checked value="firstName" id="col_fname" name="columns" disabled>
+            <label class="custom-control-label" for="col_fname">Full Name</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="studentId" id="col_id" name="columns">
+            <label class="custom-control-label" for="col_id">Student ID</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="gender" id="col_gender" name="columns">
+            <label class="custom-control-label" for="col_gender">Gender</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="dateOfBirth" id="col_dob" name="columns">
+            <label class="custom-control-label" for="col_dob">Date Of Birth</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="registration_date" id="col_date" name="columns">
+            <label class="custom-control-label" for="col_date">Date Of Registration</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="address" id="col_addr" name="columns">
+            <label class="custom-control-label" for="col_addr">Address</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="is_active" id="col_active" name="columns">
+            <label class="custom-control-label" for="col_active">Active Status</label>
+          </div>
+
+        </div>
+
+        <br>
+
+        <div class="input-con mb-2 mt-2 w-flex w-flex-start w-align-center" style="gap:20px">
+          <label for="st-state2">Select Export Format</label>
+            <select id="format" style="max-width:200px !important;">
+              <option value="csv" selected>Excel File (.xlsx)</option>
+              <option value="docx">Word Document (.docx)</option>
+              <option value="pdf" disabled>PDF File (.pdf)</option>
+            </select>
+        </div>
+          <br>
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn3">Cancel</button>
+          <input type="submit" value="Export">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con delete-student-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-red w-bold-x">
+          <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
+          Delete Student Record for <b class="std-name"></b>
+        </div>
+      </div>
+      <form class="modal-content delete-student-form">
+        
+        <h4>This is a destructive action and cannot be reversed. All records associated with the student 
+          will be erased permanently. Kindly note that the following will 
+          be deleted from the database.
+        </h4>
+        <ul style="padding-left:20px;">
+          <li>Student Information</li>
+          <li>Student Results</li>
+          <li>Student Attendance Records</li>
+          <li>Student Payment History</li>
+          <li>Student Scores (Tests, Exams, etc)</li>
+        </ul>
+        
+        <div class="input-con">
+          <label for="">Enter your Password to proceed:</label>
+          <input type="password" id="delete-password" required />
+        </div>
+
+        <input type="hidden" class="std-id-use" id="delete-id">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn4">Cancel</button>
+          <input type="submit" class="w-red" value="Delete Record">
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div class="side-con std-side-con">
     <div class="w-flex w-flex-between w-align-center">
       <ul class="breadcrumb">
         <li><a href="#students">Student Management</a></li>
-        <li id="std-name"></li>
+        <li class="std-name"></li>
       </ul>
       <button class="close-side btn btn-danger">X&nbsp;Close</button>
     </div>
     <div class="side-opt-con" style="gap:15px;">
-      <button class="side-btn">Edit Profile</button>
+      <button class="side-btn std-edit-btn">Edit Profile</button>
       <button class="side-btn">Promote to next class</button>
       <button class="side-btn">Generate ID Card</button>
-      <button class="side-btn">Deactivate Student</button>
-      <button class="side-btn">Delete Record</button>
+      <button class="side-btn std-action" data-action=""></button>
+      <button class="side-btn std-del-btn w-border-red w-hover-red w-text-red">Delete Record</button>
     </div>
 
     <div class="row">
@@ -901,7 +1311,13 @@ showSchoolInfo()
               </div>
               <div>
                 <img id="std-image" src="/static/image/avatar.png" alt="">
-                <button class="light-btn">Change Image</button>
+                <form>
+                  <label for="image-upload" class="light-btn w-text-center">
+                    Change Image
+                  </label>
+                  <input type="hidden" class="std-id-use">
+                  <input type="file" id="image-upload" class="hidden-input" accept="image/*" />
+                </form>
               </div>
             </div>
           </div>
@@ -1066,7 +1482,6 @@ showSchoolInfo()
               Student Distribution by Class
             </div>
             <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
-              <button class="light-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
               <button class="dark-btn add-student-btn">Add Student&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
             </div>
           </div>
@@ -1077,17 +1492,17 @@ showSchoolInfo()
           <!-- Nav tabs -->
           <ul class="nav nav-tabs" style="width:fit-content !important">
             <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#home">Tabular Distribution</a>
+              <a class="nav-link active" data-toggle="tab" href="#home">Chart Display</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#menu2">Chart Display</a>
+              <a class="nav-link" data-toggle="tab" href="#menu2">Tabular Distribution</a>
             </li>
           </ul>
 
           <!-- Tab panes -->
           <div class="tab-content">
 
-            <div class="tab-pane active container" id="home">
+            <div class="tab-pane container" id="menu2">
               <div class="table-responsive">
                 <table class="table table-bordered">
                   <thead>
@@ -1108,7 +1523,7 @@ showSchoolInfo()
               </div>
             </div>
 
-            <div class="tab-pane container" id="menu2">
+            <div class="tab-pane active container" id="home">
               <div id="bar"></div>
             </div>
 
@@ -1190,7 +1605,7 @@ showSchoolInfo()
             
 
             <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
-              <button class="light-btn">Export List&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
+              <button class="light-btn export-btn">Export List&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
             </div>
 
           </form>
@@ -1248,6 +1663,18 @@ showSchoolInfo()
             e.preventDefault();
             $(".add-student-con").removeClass('active')
           })
+          $(".canc-btn2").click(function(e) {
+            e.preventDefault();
+            $(".update-student-con").removeClass('active')
+          })
+          $(".canc-btn3").click(function(e) {
+            e.preventDefault();
+            $(".export-student-con").removeClass('active')
+          })
+          $(".canc-btn4").click(function(e) {
+            e.preventDefault();
+            $(".delete-student-con").removeClass('active')
+          })
 
     $('#emp_search').on('input', function(e) {
             $('#emp_page').val(1);
@@ -1278,474 +1705,222 @@ showSchoolInfo()
   </script>
 </template>
 
-  <!-- for subscription -->
-  <template id="subscription">
-    <?use-template: "sidenav"?>
-        <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
-        <main class="">
-          <?use-template: "header"?>
-          <div class="alert-note alert alert-danger">
-            <i class="fa fa-warning"></i> Click <a class="w-text-blue" href="#company_profile">here</a> to add company details.
-          </div>
-          <h3>Subscription</h3>
-          <p class="w-text-gray">Choose a subscription plan that best suits your need.</p>
+<!-- for subscription -->
+<template id="subscription">
+  <?use-template: "sidenav"?>
 
-          <div class="sub-container">
-            <div class="sub-progress-bar">
-
-              <div class="step">
-                <div class="bullet">
-                  <span></span>
-                </div>
-                <div class="check fa fa-check"></div>
-                <p><i class="fa fa-dollar"></i></p>
-              </div>
-
-              <div class="step">
-                <div class="bullet">
-                  <span></span>
-                </div>
-                <div class="check fa fa-check"></div>
-                <p><i class="fa fa-credit-card"></i></p>
-              </div>
-              <div class="step">
-                <div class="bullet">
-                  <span></span>
-                </div>
-                <div class="check fa fa-check"></div>
-                <p><i class="fa fa-file-o"></i></p>
-              </div>
-              <div class="step">
-                <div class="bullet">
-                  <span></span>
-                </div>
-                <div class="check fa fa-check"></div>
-                <p><i class="fa fa-thumbs-up"></i></p>
-              </div>
-            </div>
-            <div class="form-outer">
-              <div class="sub-step">
-
-                <div class="page slide-page">
-
-                  <div class="wrapper">
-                    <input type="radio" name="slider" checked id="home">
-                    <input type="radio" name="slider" id="blog">
-                    <input type="radio" name="slider" id="code">
-                    <input type="radio" name="slider" id="help">
-                    <div class="tabs">
-                      <label for="home" class="home">Free</label>
-                      <label for="blog" class="blog">Standard</label>
-                      <label for="code" class="code">Corporate</label>
-                      <label for="help" class="help">Business</label>
-                      <div class="slider"></div>
-                    </div>
-                    <section>
-
-                      <div class="content content-1">
-                        <h5 class="h6">Freemium plan for beginner's</h5>
-                        <h6 class="h6 w-bold-xx">Features</h6>
-                        <ul class="feat-list">
-                          <li><i class="fa fa-check w-text-green"></i> 5 Staff</li>
-                          <li><i class="fa fa-check w-text-green"></i> Task delegation to staff</li>
-                          <li><i class="fa fa-check w-text-green"></i> Basic End-of-Day Reports</li>
-                          <li><i class="fa fa-check w-text-green"></i> In-Depth Analytics and Insights</li>
-                          <li><i class="fa fa-check w-text-green"></i> Query Handling</li>
-                          <li><i class="fa fa-check w-text-green"></i> HR Staff Communication Tools</li>
-                          <li><i class="fa fa-check w-text-green"></i> Email Support</li>
-                        </ul>
-                        <div class="field">
-                          <button class="next">Activate</button>
-                        </div>
-                      </div>
-
-                      <div class="content content-2">
-                        <h5 class="h6">Standard plan for small and medium enterprise</h5>
-                        <h6 class="h6 w-bold-xx">Features</h6>
-                        <ul class="feat-list">
-                          <li><i class="fa fa-check w-text-green"></i> 50 Staff</li>
-                          <li><i class="fa fa-check w-text-green"></i> Task delegation to staff</li>
-                          <li><i class="fa fa-check w-text-green"></i> Basic End-of-Day Reports</li>
-                          <li><i class="fa fa-check w-text-green"></i> In-Depth Analytics and Insights</li>
-                          <li><i class="fa fa-check w-text-green"></i> Query Handling</li>
-                          <li><i class="fa fa-check w-text-green"></i> HR Staff Communication Tools</li>
-                          <li><i class="fa fa-check w-text-green"></i> Email Support</li>
-                        </ul>
-                        <div class="field">
-                          <button class="firstNext prev">Pay Monthly</button>
-                          <button class="firstNext2 next">Pay Yearly</button>
-                        </div>
-                      </div>
-
-                      <div class="content content-3">
-                        
-                      </div>
-
-                      <div class="content content-4">
-                        
-                      </div>
-
-                    </section>
-                  </div>
-                
-                </div>
+  <main class="">
+    <?use-template: "header"?>
+    <div class="alert alert-info plan-alert">
       
-                <div class="page">
-                  <div class="field btns">
-                    <button class="prev-1 prev">Previous</button>
-                    <button class="next-1 next">Next</button>
-                  </div>
-                </div>
-      
-                <div class="page">
-                  <div class="field btns">
-                    <button class="prev-2 prev">Previous</button>
-                    <button class="next-2 next">Next</button>
-                  </div>
-                </div>
-      
-                <div class="page">
-                  <div class="field btns">
-                    <button class="prev-3 prev">Previous</button>
-                    <button class="submit">Submit</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </main>
-        <script src="./static/js/settings.js"></script>
-    <script>
-      $('.sub-act').addClass('active');
-      $('.set-act').addClass('active');
-      getPlans();
-    </script>
-  </template>
-
-  
-
-  <!-- Employees Page -->
-  <template id="employees">
-    <?use-template: "sidenav"?>
-    <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
-    <main class="">
-      <?use-template: "header"?>
-      <div class="alert-note alert alert-danger">
-        <i class="fa fa-warning"></i> Click <a class="w-text-blue" href="#company_profile">here</a> to add company details.
-      </div>
-      <div class="w-flex w-flex-wrap w-flex-between w-align-center">
-        <div class="mb-2">
-          <h3>Employees</h3>
-          <p class="w-text-gray">Get Insight into full list of employees registered with the company</p>
-        </div>
-
-        <button class="add_emp_btn add_btn">Add Employee&nbsp;&nbsp;<i class="fa fa-arrow-right"></i></button>
-      </div>
-      <!-- Tables -->
-      <div class="table-responsive">
-        <table class="emp-table table">
-          <thead style="background:#fff">
-            <tr>
-              <th colspan="6">
-                <form class="w-flex w-flex-between w-align-center">
-                  <input type="number" class="form-control" id="emp_per_page" value="10" min="5" placeholder="List per page" style="max-width: 80px" />
-                <div class="input-group" style="margin:0">
-                  <input type="text" class="form-control" placeholder="Search Employee" id="emp_search" value="" />
-                  <div class="input-group-append">
-                    <span class="input-group-text" style="background:none;"><i class="fa fa-search"></i></span>
-                  </div>
-                </div>
-                <select class="custom-select dept-filter">
-                  <option value="" selected>All Department</option>
-                </select>
-                <select class="custom-select sort-filter">
-                  <option value="first_name" selected>By Name (A-Z)</option>
-                  <option value="-first_name">By Name (Z-A)</option>
-                  <option value="id_no">By ID Number (0-9)</option>
-                </select>
-                <input type="hidden" id="emp_page" value="1" />
-                </form>
-              </th>
-            </tr>
-          </thead>
-          <thead>
-            <tr>
-              <th>Names</th>
-              <th>Staff ID</th>
-              <th>Department</th>
-              <th>Position</th>
-              <th>Phone Number</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody class="emp-list">
-            <tr>
-              <td colspan="6" class="w-center">
-              <div class="loader">
-                  <div class="ball w-black"></div>
-                  <div class="ball w-black"></div>
-                  <div class="ball w-black"></div>
-              </div>
-              </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="page_nos mt-3">
-        <a href="#" class="page_no"><i class="fa fa-angle-left"></i></a>
-
-        <a href="#" class="page_no"><i class="fa fa-angle-right"></i></a>
-      </div>
-    </main>
-
-    <div class="add_edit_emp_con side-con">
-      <div class="alert-note alert alert-danger">
-        <i class="fa fa-warning"></i> Click <a class="w-text-blue" href="#company_profile">here</a> to add company details.
-      </div>
-      <div class="mb-2">
-        <button class="add_emp_btn emp_back_btn"><i class="fa fa-arrow-left"></i></button>
-        <h3>New Employee</h3>
-        <p class="w-text-gray">Set up new employee profiles.</p>
-      </div>
-
-      <form class="row comp-form" id="add-emp-form">
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 w-padding">
-          <div class="form-group">
-            <label for="emp-fname"><span class="w-text-red w-bold">*</span> First Name:</label>
-            <input type="text" class="form-control" id="emp-fname" required>
-          </div>
-          <div class="form-group">
-            <label for="emp-lname"><span class="w-text-red w-bold">*</span> Last Name:</label>
-            <input type="text" class="form-control" id="emp-lname" required>
-          </div>
-          <div class="form-group">
-            <label for="emp-email"><span class="w-text-red w-bold">*</span> Email:</label>
-            <input type="email" class="form-control" id="emp-email" required>
-          </div>
-          <div class="form-group">
-            <label for="emp-number">Phone Number:</label>
-            <input type="text" class="form-control" id="emp-number" placeholder="e.g 07011223344">
-          </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 w-padding">
-          <div class="form-group">
-            <label for="emp-position"><span class="w-text-red w-bold">*</span> Select Position:</label>
-            <select class="form-control positions" style="height:50px;padding:10px !important;" id="emp-position">
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="emp-dept"><span class="w-text-red w-bold">*</span> Select Department:</label>
-            <select class="form-control depts" style="height:50px;padding:10px !important;" id="emp-dept">
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="emp-salary">Salary (in Naira):</label>
-            <input type="number" class="form-control" id="emp-salary" value="0" min="0">
-          </div>
-          <div class="form-group">
-            <label for="emp-appoint">Appointment Date:</label>
-            <input type="date" class="form-control" id="emp-appoint" required value="2024-01-01">
-          </div>
-        </div>
-        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 w-padding">
-          <button type="submit" class="btn btn-block form-btn emp-add-btn">Add Employee</button>
-        </div>
-      </form>
     </div>
-
-    <div class="emp_det_con side-con">
-      <div class="alert-note alert alert-danger">
-        <i class="fa fa-warning"></i> Click <a class="w-text-blue" href="#company_profile">here</a> to add company details.
+    <div class="steps-container">
+      <div class="buttons">
+        <button id="prev" disabled><i class="fa fa-chevron-left"></i>&nbsp;&nbsp;Previous</button>
       </div>
-      <div class="mb-2">
-        <button class="add_emp_btn emp_back_btn2"><i class="fa fa-arrow-left"></i></button>
-        <h3>Employee Profile</h3>
-      </div>
-
-      <form class="row comp-form" id="edit-emp-form">
-        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 w-padding">
-          <div class="company_image" style="margin-left: 20px;">
-            <img src="" class="emp_image" alt="" />
+      <div class="w-block">
+        <div class="steps mb-2">
+          <span class="circle active"><div class="fa fa-briefcase"></div></span>
+          <span class="circle"><i class="fa fa-calendar"></i></span>
+          <span class="circle"><i class="fa fa-credit-card"></i></span>
+          <span class="circle"><i class="fa fa-check"></i></span>
+          <div class="progress-bar">
+            <span class="indicator"></span>
           </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 w-padding">
-          <div class="form-group">
-            <label for="emp-fname2">First Name:</label>
-            <input type="text" class="form-control" id="emp-fname2">
-          </div>
-          <div class="form-group">
-            <label for="emp-mname2">Middle Name:</label>
-            <input type="text" class="form-control" id="emp-mname2">
-          </div>
-          <div class="form-group">
-            <label for="emp-lname2">Last Name:</label>
-            <input type="text" class="form-control" id="emp-lname2">
-          </div>
-          <div class="form-group">
-            <label for="emp-id2">Staff ID:</label>
-            <input type="text" class="form-control" id="emp-id2" readonly>
-          </div>
-          <div class="form-group">
-            <label for="emp-email2">Email:</label>
-            <input type="email" class="form-control" id="emp-email2">
-          </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 w-padding">
-          <div class="form-group">
-            <label for="emp-number2">Phone Number:</label>
-            <input type="text" class="form-control" id="emp-number2">
-          </div>
-          <div class="form-group">
-            <label for="emp-dob2">Date of Birth:</label>
-            <input type="date" class="form-control" id="emp-dob2">
-          </div>
-          <div class="form-group">
-            <label for="emp-position2">Position:</label>
-            <select class="form-control positions2" style="height:50px;padding:10px !important;" id="emp-position2">
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="emp-dept2">Department:</label>
-            <select class="form-control depts2" style="height:50px;padding:10px !important;" id="emp-dept2">
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="emp-salary2">Salary (in Naira):</label>
-            <input type="number" class="form-control" id="emp-salary2">
-          </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 w-padding">
-          
-          <div class="form-group">
-            <label for="emp-address2">Address:</label>
-            <input type="text" class="form-control" id="emp-address2">
-          </div>
-          <div class="form-group">
-            <label for="emp-city2">City:</label>
-            <input type="text" class="form-control" id="emp-city2">
-          </div>
-          <div class="form-group">
-            <label for="emp-state2">State:</label>
-            <input type="text" class="form-control" id="emp-state2">
-          </div>
-          <div class="form-group">
-            <label for="emp-nation">Nationality:</label>
-            <input type="text" class="form-control" id="emp-nation">
-          </div>
-          <div class="form-group">
-            <label for="emp-appoint2">Appointment Date:</label>
-            <input type="date" class="form-control" id="emp-appoint2">
-          </div>
-        </div>
-
-        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 w-padding">
-          <button class="btn btn-block form-btn emp-edit-btn"><i class="fa fa-check-circle"></i> Save Profile</button>
-        </div>
-      </form>
-    </div>
-
-    <div class="emp_rep_con side-con">
-      <div class="mb-2">
-        <button class="add_emp_btn emp_back_btn3"><i class="fa fa-arrow-left"></i></button>
-        <h3>Employee Report Analytics</h3>
-      </div>
-      <div class="w-flex w-flex-wrap w-flex-center w-align-center">
-        <img src="" class="emp_rep_dp w-margin" alt="" />
-        <div>
-          <div class="h4 w-bold-xx emp_names"></div>
-          <div class="h5 w-bold emp_pos"></div>
-          <div class="h6 w-bold emp_dep"></div>
-          <div class="h5 emp_stars">
-            <span class="fa fa-star w-text-yellow"></span>
-            <span class="fa fa-star w-text-yellow"></span>
-            <span class="fa fa-star w-text-yellow"></span>
-            <span class="fa fa-star-half w-text-yellow"></span>
-          </div>
+        <div class="steps">
+          <div class="p">Select Plan</div>
+          <div class="p">Duration</div>
+          <div class="p">Make Payment</div>
+          <div class="p">Finish</div>
         </div>
       </div>
 
-      <div id="dash-wrapper">
-        <div class="content-area">
+      <div class="steps-con">
 
-          <div class="row mt-4">
-            <div class="w-margin-bottom col-12 col-sm-12 col-md-12 col-lg-12 col-xl-5">
-              <div class="box shadow">
-                <div id="bar2"></div>
-              </div>
+        <div class="step-item">
+          <div class="sub-wrapper"></div>
+        </div>
+
+        <div class="step-item">
+          <div class="sub-prices">
+            <h3 class="w-block">
+              Select Subscription Duration - <b><span id="titley"></span></b> Plan
+            </h3>
+            <div class="sub-price monthly">
+              <div class="h2 w-bold-x"></div>
+              <div class="h6">For</div>
+              <div class="h5">1 month</div>
+              <button data-id="1" class="mt-3 dark-btn w-padding sub-price-btn">Select</button>
             </div>
-            <div class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-4">
-              <div class="box shadow">
-                <div id="donutTop2"></div>
-              </div>
+            <div class="sub-price quarterly">
+              <div class="h2 w-bold-x"></div>
+              <div class="h6">For</div>
+              <div class="h5">3 months</div>
+              <button data-id="3" class="mt-3 dark-btn w-padding sub-price-btn">Select</button>
             </div>
-            <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-3">
-              <div class="box shadow">
-                <div id="radialBar12"></div>
-              </div>
+            <div class="sub-price biannually">
+              <div class="h2 w-bold-x"></div>
+              <div class="h6">For</div>
+              <div class="h5">6 months</div>
+              <button data-id="6" class="mt-3 dark-btn w-padding sub-price-btn">Select</button>
+            </div>
+            <div class="sub-price annually">
+              <div class="h2 w-bold-x">&#8358;10,000</div>
+              <div class="h6">For</div>
+              <div class="h5">1 year</div>
+              <button data-id="12" class="mt-3 dark-btn w-padding sub-price-btn">Select</button>
             </div>
           </div>
+          <form class="choose-plan-form">
+            <input type="hidden" id="sub-plan-id" value="">
+          </form>
+        </div>
 
-          <div class="row mt-4">
-            <div class="w-margin-bottom col-12 col-sm-12 col-md-12 col-lg-12 col-xl-5">
-              <div class="box shadow">
-                <div id="bar5"></div>
+        <div class="step-item">
+          <div class="sub-payment">
+            <h3 class="w-block">
+              Make Payment
+            </h3>
+            <form class="sub-pay-form">
+              <div class="table-responsive">
+                <table class="table sub-pay-table">
+                  <tbody>
+                    <tr>
+                      <td>Subscription Plan</td>
+                      <td id="sp-plan"></td>
+                    </tr>
+                    <tr>
+                      <td>Duration</td>
+                      <td id="sp-duration"></td>
+                    </tr>
+                    <tr>
+                      <td>Start Date</td>
+                      <td id="sp-start"></td>
+                    </tr>
+                    <tr>
+                      <td>Expiry Date</td>
+                      <td id="sp-end"></td>
+                    </tr>
+                    <tr>
+                      <td>Email</td>
+                      <td id="sp-email"></td>
+                    </tr>
+                    <tr>
+                      <td>Amount</td>
+                      <td id="sp-amount"></td>
+                    </tr>
+                    <tr>
+                      <td>Bank Charges</td>
+                      <td id="sp-charges"></td>
+                    </tr>
+                    <tr>
+                      <td>Total Amount</td>
+                      <td id="sp-total"></td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <div class="input-con">
+                          <label for="">Select Payment Method</label>
+                          <select id="sp-method">
+                            <option value="paystack">Paystack Payment Gateway</option>
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-            </div>
+              <input type="hidden" id="sub-pay-ref">
+              <button type="submit" class="dark-btn">Make Payment</button>
+            </form>
             
           </div>
-
         </div>
-      </div>
-    </div>
 
-    <script src="./static/js/employees.js"></script>
-    <script src="./static/js/employee_report.js"></script>
+        <div class="step-item">
+          <div class="sub-status">
+
+            <div class="sub-status-icon w-animate-zoom">
+              <div class="sub-status-con">
+                
+              </div>
+            </div>
+
+            <div class="sub-status-text h3 w-bold-x">
+              
+            </div>
+
+            <a href="#">
+              <button class="dark-btn sub-status-btn">View Transaction</button>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+  
+  <script src="/static/js/subscription.js"></script>
+  <script>
+    $('.sub-act').addClass('active')
+    $(".page-name").text("Subscription");
+
+    $(".close-side").click(function() {
+      $(this).parent('div').parent('.side-con').removeClass('active')
+    })
+
+    $(".close-modal").click(function() {
+      $(this).parent('.modal-body').parent('.modal-con').removeClass('active')
+    })
+    
+    $(".canc-btn").click(function(e) {
+        e.preventDefault();
+    })
+
+    $('#emp_search').on('input', function(e) {
+      $('#emp_page').val(1);
+      delayedSearch(e.target.value)
+    })
+    
+  </script>
+</template>
+
+
+
+<!-- Sample Template -->
+<template id="">
+    <?use-template: "sidenav"?>
+
+    <main class="">
+      <?use-template: "header"?>
+    </main>
+    
+    <script src="/static/js/file.js"></script>
     <script>
-      $('.emp-act').addClass('active')
-      $('#emp_search').on('input', function() {
-        $('#emp_page').val(1);
-        getEmployees();
+      $('.sample-act').addClass('active')
+      $(".page-name").text("");
+
+      $(".close-side").click(function() {
+        $(this).parent('div').parent('.side-con').removeClass('active')
       })
-      $('#emp_per_page').on('input', function() {
-        $('#emp_page').val(1);
-        getEmployees();
+
+      $(".close-modal").click(function() {
+        $(this).parent('.modal-body').parent('.modal-con').removeClass('active')
       })
-      $('.dept-filter').on('change', function() {
-        $('#emp_page').val(1);
-        getEmployees();
+      
+      $(".canc-btn").click(function(e) {
+          e.preventDefault();
       })
-      $('.sort-filter').on('change', function() {
+
+      $('#emp_search').on('input', function(e) {
         $('#emp_page').val(1);
-        getEmployees();
+        delayedSearch(e.target.value)
       })
-      $('.add_btn').click(function() {
-        $('.add_edit_emp_con').addClass('active')
-        getDepartments();
-        getPositions();
-      });
-      $('.emp_back_btn').click(function() {
-        $('.add_edit_emp_con').removeClass('active')
-      });
-      $('.emp_back_btn2').click(function() {
-        $('.emp_det_con').removeClass('active')
-      });
-      $('.emp_back_btn3').click(function() {
-        $('.emp_rep_con').removeClass('active')
-      });
-      $('#add-emp-form').submit(function(e) {
-            e.preventDefault();
-            addEmployee();
-        })
-        $('#edit-emp-form').submit(function(e) {
-            e.preventDefault();
-            editEmployee();
-        })
+
     </script>
-  </template>
+</template>
 
   <!-- error 404 page -->
   <template id="404">
@@ -1763,6 +1938,9 @@ showSchoolInfo()
 <template route="/students">
   <?use-template: "students"?>
 </template>
+<template route="/subscription">
+  <?use-template: "subscription"?>
+</template>
 
 <!-- Standard Meta -->
 <meta charset="utf-8" />
@@ -1770,7 +1948,7 @@ showSchoolInfo()
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
 <!-- Site Properties -->
-<title>Educa Admin - Dashboard</title>
+<title>Eduka Admin - Dashboard</title>
 <link rel="shortcut icon" href="/static/logos/logo.png" />
     <link rel="shortcut" href="/static/logos/logo.png" />
 <link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">

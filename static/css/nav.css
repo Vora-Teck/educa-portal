@@ -1044,12 +1044,23 @@ i.rotate {
   padding: 20px;
   position: relative;
 }
-.modal-body > .fa {
+.modal-body > .close-modal {
   position: absolute;
-  top: 0px;
-  right: 5px;
+  top: -10px;
+  right: -10px;
+  z-index: 50;
   font-size: 35px;
   cursor: pointer;
+  font-weight: 100;
+  padding: 10px;
+  width: 70px;
+  height: 70px;
+  color: #fff;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
 }
 .modal-body .modal-content {
   border: none !important;
@@ -1223,6 +1234,27 @@ ul.breadcrumb li a {
 .side-opt-con button {
   white-space: nowrap;
 }
+.side-pro-con {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 30px;
+  background: #fff;
+  padding: 15px 10px;
+}
+.side-pro-con img {
+  width: 100px;
+  height: 100px;
+  border-radius: 15px;
+  margin-bottom: 5px;
+}
+.side-pro-names {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 5px;
+}
 
 /* Add a color on mouse-over */
 ul.breadcrumb li a:hover {
@@ -1327,6 +1359,460 @@ ul.breadcrumb li a:hover {
   border-radius: 5px;
   font-size: 17px;
 }
+
+.hidden-input {
+  position: fixed;
+  top: -1000000px;
+}
+
+.steps-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  width: 100%;
+  overflow-x: hidden;
+  margin: auto;
+  position: relative;
+}
+.steps-container .steps {
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+.steps-container .steps .circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 50px;
+  color: #999;
+  font-size: 22px;
+  font-weight: 500;
+  border-radius: 50%;
+  background: #fff;
+  border: 4px solid #e0e0e0;
+  transition: all 200ms ease;
+  transition-delay: 0s;
+  z-index: 1;
+}
+.steps-container .steps .circle.active {
+  transition-delay: 100ms;
+  border-color: #4070f4;
+  background: #4070f4;
+  color: #fff;
+}
+.steps .p {
+  text-align: center;
+  color: gray;
+}
+.steps-container .steps .progress-bar {
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  background: #e0e0e0;
+  z-index: 0;
+}
+.steps-container .progress-bar .indicator {
+  position: absolute;
+  height: 100%;
+  width: 0%;
+  background: #4070f4;
+  transition: all 300ms ease;
+}
+.steps-container .buttons {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  justify-content: center;
+}
+.steps-container .buttons button {
+  padding: 10px 25px;
+  background: #4070f4;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+  min-width: 150px;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+  transition: all 200ms linear;
+  outline: none;
+}
+.steps-container .buttons button:active {
+  transform: scale(0.97);
+}
+.steps-container .buttons button:disabled {
+  background: #87a5f8;
+  cursor: not-allowed;
+}
+
+.steps-con {
+  width: calc(100% * 4);
+  padding: 0px;
+  transition: all .3s ease;
+  position: relative;
+  display: flex;
+  gap: 15px;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+.steps-con .step-item {
+  text-align: center;
+  padding: 15px;
+  flex: 1 1 25%;
+  min-width: calc(25% - 18px);
+  box-sizing: border-box;
+}
+.sub-prices {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  background: #fff;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+.sub-payment, .sub-status {
+  width: 100%;
+  background: #fff;
+  max-width: 600px;
+  margin: auto;
+  padding: 20px 10px;
+}
+.sub-pay-table tr td {
+  padding: 15px;
+}
+.sub-pay-table tr td:nth-child(1) {
+  text-align: left;
+  font-weight: bold;
+}
+.sub-pay-table tr td:nth-child(2) {
+  text-align: right;
+}
+.sub-pay-form button {
+  padding: 10px;
+  width: 250px;
+}
+.sub-price {
+  flex: 1 1 150px;
+  min-width: 150px;
+  box-sizing: border-box;
+  padding: 15px;
+  border-radius: 15px;
+  line-height: 5;
+}
+.sub-price.monthly {
+  border: 1px solid rgb(255, 69, 0);
+  background: rgba(255, 69, 0, 0.1);
+}
+.sub-price.quarterly {
+  border: 1px solid orange;
+  background: rgba(255, 165, 0, 0.1);
+}
+.sub-price.biannually {
+  border: 1px solid rgb(0, 119, 255);
+  background: rgba(0, 119, 255, 0.1);
+}
+.sub-price.annually {
+  border: 1px solid rgb(43, 255, 0);
+  background: rgba(43, 255, 0, 0.1);
+}
+.sub-price .h5 {
+  font-weight: bold;
+}
+.sub-price button {
+  width: 110px;
+}
+
+.sub-wrapper{
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-between;
+}
+.sub-wrapper .sub-table{
+  background: #fff;
+  flex: 1 1 300px;
+  min-width: 300px;
+  box-sizing: border-box;
+  padding: 30px 20px;
+  position: relative;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+.sub-table .price-section{
+  display: flex;
+  justify-content: center;
+}
+.sub-table .price-area{
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  padding: 2px;
+}
+.price-area .inner-area{
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  line-height: 127px;
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+.price-area .inner-area .text{
+  font-size: 20px;
+  font-weight: 400;
+  position: absolute;
+  bottom: -30px;
+  left: 40px;
+}
+.price-area .inner-area .price{
+  font-size: 35px;
+  font-weight: 500;
+  margin-left: 0px;
+}
+.sub-table .package-name{
+  width: 100%;
+  height: 2px;
+  margin: 35px 0;
+  position: relative;
+}
+.sub-table .package-name::before{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 25px;
+  font-weight: 500;
+  background: #fff;
+  padding: 0 15px;
+  transform: translate(-50%, -50%);
+}
+.sub-table .features li{
+  margin-bottom: 15px;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+}
+.sub-status {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.sub-status-icon {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+.sub-status-icon .sub-status-con {
+  width: 100px;
+  height: 100px;
+  border: 2px solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 60px;
+}
+.sub-status-icon.success {
+  background: darkgreen;
+}
+.sub-status-icon.success .sub-status-con {
+  background: green;
+  color: #fff;
+}
+.sub-status-icon.failed {
+  background: darkred;
+}
+.sub-status-icon.failed .sub-status-con {
+  background: red;
+  color: #fff;
+}
+.sub-status-icon.pending {
+  background: rgb(184, 127, 21);
+}
+.sub-status-icon.pending .sub-status-con {
+  background: orange;
+  color: #fff;
+}
+.sub-status-text.success {color:green}
+.sub-status-text.pending {color:rgb(172, 119, 21)}
+.sub-status-text.failed {color: red}
+
+.sub-status-btn {
+  padding: 10px;
+  width: 200px;
+}
+
+.features li .list-name{
+  font-size: 17px;
+  font-weight: 400;
+}
+.features li .icon{
+  font-size: 15px;
+}
+.features li .icon.check{
+  color: #2db94d;
+}
+.features li .icon.cross{
+  color: #cd3241;
+}
+.sub-table .sub-btn{
+  width: 100%;
+  display: flex;
+  margin-top: 35px;
+  justify-content: center;
+}
+.sub-table .sub-btn button{
+  width: 80%;
+  height: 50px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  border: none;
+  outline: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.sub-table .sub-btn button:hover{
+  border-radius: 25px;
+}
+.basic .features li::selection{
+  background: #ffd861;
+}
+.basic ::selection,
+.basic .price-area,
+.basic .inner-area{
+  background: #ffd861;
+}
+.basic .sub-btn button{
+  border: 2px solid #ffd861;
+  background: #fff;
+  color: #ffd861;
+}
+.basic .sub-btn button:hover{
+  background: #ffd861;
+  color: #fff;
+}
+.premium ::selection,
+.premium .price-area,
+.premium .inner-area{
+  background: #a26bfa;
+}
+.premium .sub-btn button {
+  border: 2px solid #833af8;
+  background: #fff;
+  color: #833af8;
+}
+.premium .sub-btn button:hover{
+  background: #833af8;
+  color: #fff;
+}
+.ultimate ::selection,
+.ultimate .price-area,
+.ultimate .inner-area{
+  background: #43ef8b;
+}
+.ultimate .sub-btn button{
+  border: 2px solid #43ef8b;
+  color: #43ef8b;
+  background: #fff;
+}
+.ultimate .sub-btn button:hover{
+  background: #43ef8b;
+  color: #fff;
+}
+.basic .package-name{
+  background: #ffecb3;
+}
+.premium .package-name{
+  background: #d0b3ff;
+}
+.ultimate .package-name{
+  background: #baf8d4;
+}
+.basic .package-name::before{
+  content: "Standard";
+}
+.premium .package-name::before{
+  content: "Premium";
+  font-size: 24px;
+}
+.ultimate .package-name::before{
+  content: "Corporate";
+  font-size: 24px;
+}
+@media (max-width: 1020px) {
+  .sub-wrapper .sub-table{
+    width: calc(50% - 20px);
+    margin-bottom: 40px;
+  }
+}
+@media (max-width: 698px) {
+  .sub-wrapper .sub-table{
+    width: 100%;
+  }
+}
+::selection{
+  color: #fff;
+}
+.sub-table .ribbon{
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  overflow: hidden;
+}
+.sub-table .ribbon::before,
+.sub-table .ribbon::after{
+  position: absolute;
+  content: "";
+  z-index: -1;
+  display: block;
+  border: 7px solid #4606ac;
+  border-top-color: transparent;
+  border-left-color: transparent;
+}
+.sub-table .ribbon::before{
+  top: 0px;
+  right: 15px;
+}
+.sub-table .ribbon::after{
+  bottom: 15px;
+  left: 0px;
+}
+.sub-table .ribbon span{
+  position: absolute;
+  top: 30px;
+  right: 0;
+  transform: rotate(-45deg);
+  width: 200px;
+  background: #a26bfa;
+  padding: 10px 0;
+  color: #fff;
+  text-align: center;
+  font-size: 15px;
+  text-transform: uppercase;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.12);
+}
+
 
 .n_error {background:red;color:#fff}
 .n_success {background:green;color:#fff}
