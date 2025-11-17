@@ -366,6 +366,9 @@ header {
   justify-content: space-between;
   align-items: flex-start;
 }
+.dash-menu-con.cl {
+  align-items: center;
+}
 .dash-menu-con .dash-no {
   font-size: 40px;
   font-weight: 800;
@@ -373,12 +376,20 @@ header {
   margin-bottom: 15px;
   color: #000 !important;
 }
+.dash-menu-con.cl .dash-no {
+  margin: 0;
+}
 .dash-menu-con > img {
   width: 50px;
   height: 50px;
   background: #fff;
   border-radius: 50%;
   padding: 8px;
+}
+.dash-menu-con.cl > img {
+  width: 40px;
+  height: 40px;
+  padding: 0;
 }
 .dash-comm {
   font-weight: 600;
@@ -399,6 +410,9 @@ header {
 }
 .menu-con-2 {
   background: #EAE7F7;
+}
+.menu-con-7 {
+  background: #f5f1c0;
 }
 .menu-con-3 {
   background: #E7F7F0;
@@ -1065,6 +1079,10 @@ i.rotate {
 .modal-body .modal-content {
   border: none !important;
 }
+.small-con .modal-body {
+  max-width: 400px;
+}
+
 
 .input-con {
   margin-bottom: 20px;
@@ -1154,6 +1172,9 @@ i.rotate {
   position: relative;
   display: inline-block;
 }
+.tooltipa i {
+  font-size: 18px;
+}
 
 /* Tooltip text */
 .tooltipa .tooltiptext {
@@ -1238,14 +1259,15 @@ ul.breadcrumb li a {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  flex-wrap: wrap;
   gap: 30px;
   background: #fff;
   padding: 15px 10px;
 }
 .side-pro-con img {
-  width: 100px;
-  height: 100px;
-  border-radius: 15px;
+  width: 130px;
+  height: 130px;
+  border-radius: 10px;
   margin-bottom: 5px;
 }
 .side-pro-names {
@@ -1331,7 +1353,7 @@ ul.breadcrumb li a:hover {
 
 /* Style the accordion panel. Note: hidden by default */
 .accor-con .panel {
-  padding: 0 15px;
+  padding: 0px !important;
   background-color: white;
   max-height: 0;
   overflow: hidden;
@@ -1813,9 +1835,79 @@ ul.breadcrumb li a:hover {
   box-shadow: 0 5px 10px rgba(0,0,0,0.12);
 }
 
+.class-tabs {
+  background: #fff !important;
+  margin: 20px 10px 10px 10px;
+  border-radius: 5px;
+  padding: 10px;
+}
+.class-tabs .nav-link {
+  padding: 10px 15px !important;
+  border: none;
+  min-width: 120px;
+  text-align: center;
+  
+}
+.class-tabs .nav-link:hover,
+.class-tabs .nav-link.active {
+  box-shadow: none !important;
+  background: rgb(233, 152, 3);
+  border-radius: 5px;
+  color: #fff;
+}
+
+.autocomplete {
+  position: relative;
+  width: 100%;
+}
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  max-height: 300px;
+  overflow-y: auto;
+  border-radius: 0 0 6px 6px;
+  z-index: 20;
+  display: none;
+}
+.suggestions.active {
+  display: block;
+}
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.suggestion-item:hover,
+.suggestion-item.active {
+  background: #f0f0f0;
+}
+.subs-selected {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+.sub-selected {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  border-radius: 5px;
+  font-size: 13px;
+  margin-bottom: 10px;
+
+}
+
 
 .n_error {background:red;color:#fff}
 .n_success {background:green;color:#fff}
 .n_warning {background:rgb(189, 189, 2);color:#000}
-.n_info {background:blue;color:#fff}
+.n_info {background:rgb(43, 43, 216);color:#fff}
 .n_network {background:orange;color:#000}

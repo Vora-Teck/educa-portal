@@ -322,6 +322,7 @@ function getStudent(id) {
                     </tr>`;
                     $(".std-pay").append(temp)
                 }
+                $('.accordion').eq(0).click()
             }
             else {
                 pushNotification("n_error", data.message, 3000);
@@ -455,9 +456,10 @@ function updateStudent() {
       onSuccess: (data) => {
           //console.log(data)
           if(data.status == "success") {
+            $(".update-student-con").removeClass("active")
               pushNotification("n_success", data.message, 5000);
+              getStudent(student_id);
               getStudents();
-              getStudent(student_id)
           }
           else {
               pushNotification("n_error", data.message, 3000)

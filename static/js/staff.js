@@ -140,11 +140,13 @@ function getStaff() {
                             e.preventDefault();
                             let id = $(this).data('id');
                             getTeacher(id)
+                            getStaffPayroll(id);
                         })
                         $('.emp-del-link').click(function(e) {
                             e.preventDefault();
                             let id = $(this).data('id');
                             getTeacher(id);
+                            getStaffPayroll(id);
                             $(".delete-staff-con").addClass("active")
                         })
                     }
@@ -179,14 +181,32 @@ function getTeacher(id) {
     admin.staff.staffList({
         params: {staff_id: id},
         onSuccess: (data) => {
-            console.log(data);
+            //console.log(data);
             if(data.status == 'success') {
                 if(data.status == 'success') {
                     $(".sta-side-con").addClass("active")
                     let d = data.data;
+                    let b = data.bank_account;
+
                     $(".sta-id-use").val(d.id)
 
                     $(".sta-name").html(`${d.firstName} ${d.lastName}`)
+                    //For edit form
+                    getLgas(d.address.state, $("#st-lga2"))
+                    $("#st-fname2").val(d.firstName)
+                    $("#st-lname2").val(d.lastName)
+                    $("#st-mname2").val(d.middleName)
+                    $("#st-id2").val(d.staffId)
+                    $("#st-phone2").val(d.phone_number)
+                    $("#st-email2").val(d.email)
+                    $("#st-address2").val(d.address.address)
+                    $("#st-class2").val(d.classes_assigned.length > 0 ? d.classes_assigned[0] : '')
+                    $("#st-state2").val(d.address.state)
+                    $("#st-lga2").val(d.address.lga)
+                    $("#st-qua2").val(d.qualification)
+                    $("#st-role2").val(d.role)
+                    $("#st-salary2").val(parseInt(d.salary))
+                    // For content
                     if(d.is_active) {
                         $(".sta-action").data('action', 'deactivate').html('Deactivate Staff')
                       }
@@ -198,13 +218,42 @@ function getTeacher(id) {
                     $("#sta-id").html(`${d.staffId}`)
                     $("#sta-email").html(`${d.email}`)
                     $("#sta-phone").html(`${d.phone_number}`)
-                    
+                    $("#sta-phone2").html(`${d.phone_number}`)
+                    $("#sta-qua").html(`${d.qualification}`)
+                    $("#sta-address").html(`${d.address.address}, ${d.address.lga} LGA, ${d.address.state} State.`)
+                    $("#sta-salary").html(`&#8358;${digify(d.salary, false)}`)
+                    $("#sta-class").html(`${d.classes_assigned.join(', ')}`)
+                    $("#sta-role").html(`${d.role}`)
                     if(d.image) {
                         $("#sta-image").attr('src', `${base_url}${d.image}`)
                     }
                     else {
                         $("#sta-image").attr('src', `/static/image/avatar.png`)
                     }
+                    if(d.resume) {
+                        $("#sta-resume").html(`
+                            <a href="${base_url}${d.resume}" target="_blank">
+                                <button class="light-btn">
+                                    <i class="fa fa-eye"></i>&nbsp;&nbsp;View
+                                </button>
+                            </a>
+                        `)
+                    }
+                    else {
+                        $("#sta-resume").html('<span class="w-text-gray">No resume provided.</span>')
+                    }
+                    if(b) {
+                        $("#sta-acc-name").html(b.accountName)
+                        $("#sta-acc-num").html(b.accountNumber)
+                        $("#sta-bank").html(b.bank.bankName)
+                    }
+                    else {
+                        $("#sta-acc-name").html(`<span class="w-text-gray">Not provided.</span>`)
+                        $("#sta-acc-num").html(`<span class="w-text-gray">Not provided.</span>`)
+                        $("#sta-bank").html(`<span class="w-text-gray">Not provided.</span>`)
+                        $("#sta-status").html(`<span class="w-text-gray">-- --</span>`)
+                    }
+                    $('.accordion').eq(0).click()
                 }
             }
             else {
@@ -219,6 +268,52 @@ function getTeacher(id) {
         }
   })
 }
+
+function getStaffPayroll(id) {
+    $(".sta-pay").empty()
+    loader = `<tr>
+        <td colspan="5" class="">
+        <i class="fa fa-spinner rotate"></i>&nbsp;&nbsp;&nbsp;Processing...
+        </td>
+    </tr>`;
+    $(".sta-pay").append(loader)
+    admin.payroll.getStaffPayrollHistory({
+        params: {staff_id: id},
+        onSuccess: (data) => {
+            //console.log(data)
+            $(".sta-pay").empty()
+            if(data.status == "success") {
+                if(data.data) {
+                    let d = data.data
+                        
+                    for(let i in d) {
+                        let temp = `
+                        <td style="white-space: nowrap;">${monthify(d[i].date)}</td>
+                        <td style="white-space: nowrap;">&#8358;${digify(d[i].amount)}</td>
+                        <td style="white-space: nowrap;">${d[i].transaction ? `${datify(d[i].transaction.date, false)}` : `<span class="w-text-gray">No transaction</span>`}</td>
+                        <td style="white-space: nowrap;">${d[i].is_paid ? `<i class="fa fa-check-circle w-text-green"></i>&nbsp;&nbsp;Paid` : `
+                            <i class="fa fa-times-circle w-text-red"></i>&nbsp;&nbsp;Not Paid`}</td>
+                        <td>${d[i].transaction?.receipt ? `
+                            <a href="${base_url}${d[i].transaction.receipt}" target="_blank"><i class="fa fa-file-o w-text-gray"></i>&nbsp;&nbsp;View` : `
+                            <span class="w-text-gray">No receipt generated.</span>`}</td>`;
+
+                        $(".sta-pay").append(temp)
+                    }
+                }
+                else {
+                    let temp = `<td colspan="5">${data.message}</td>`;
+                    $(".sta-pay").append(temp)
+                }
+            }
+                
+        },
+        onError: (error) => {
+            console.error(error)
+        }
+    })
+}
+
+//console.log(buildQueryParams({post_id:5, tag: "sci-fi"}))
 
 function debounce(func, delay) {
     let timeout;
@@ -237,9 +332,11 @@ function getStates() {
     admin.misc.getStates({
             onSuccess: (data) => {
                     $("#st-state").empty().append(`<option value="" selected>Select State</option>`)
+                    $("#st-state2").empty().append(`<option value="" selected>Select State</option>`)
                     for(let i=0; i < data.length; i++) {
                             let temp = `<option value="${data[i]}">${data[i]}</option>`;
                             $("#st-state").append(temp)
+                            $("#st-state2").append(temp)
                     }
             },
             onError: (error) => console.error(error)
@@ -247,14 +344,15 @@ function getStates() {
 }
 getStates()
 
-function getLgas(state) {
+
+function getLgas(state, elem) {
     admin.misc.getLgas({
             params: { state },
             onSuccess: (data) => {
-                    $("#st-lga").empty().append(`<option value="" selected>Select LGA</option>`)
+                    elem.empty().append(`<option value="" selected>Select LGA</option>`)
                     for(let i=0; i < data.length; i++) {
                             let temp = `<option value="${data[i]}">${data[i]}</option>`;
-                            $("#st-lga").append(temp)
+                            elem.append(temp)
                     }
             },
             onError: (error) => console.error(error)
@@ -264,10 +362,16 @@ function getLgas(state) {
 
 $("#st-state").on('change', function() {
     let state = $(this).val();
-    if(state !== "") getLgas(state)
-})
+    if(state !== "") getLgas(state, $("#st-lga"))
+  })
+  
+  $("#st-state2").on('change', function() {
+    let state = $(this).val();
+    if(state !== "") getLgas(state, $("#st-lga2"))
+  })
 
 var addFormValid = true;
+var updateFormValid = true;
 
 $(".add-staff-form").on('submit', function(e) {
     e.preventDefault();
@@ -320,6 +424,61 @@ $(".add-staff-form").on('submit', function(e) {
         }
       })
 })
+
+function updateStaff() {
+    updateFormValid = true;
+
+    let staff_id = $("#update-id").val();
+    let middle_name = $("#st-mname2").val();
+
+    let address = validate2($("#st-address2"));
+    let state = validate2($("#st-state2"));
+    let lga = validate2($("#st-lga2"));
+
+    let phone_number = validate2($("#st-phone2"));
+    let email = validate2($("#st-email2"));
+
+    let qualification = validate2($("#st-qua2"));
+    let role = validate2($("#st-role2"));
+    let salary = $("#st-salary2").val();
+
+    let addr = {address, state, lga}
+    
+
+    let formData = {
+        staff_id, middle_name, address:addr, salary,
+        phone_number, email, qualification, role,
+    }
+
+    //console.log(formData)
+    if(updateFormValid === false) {
+      pushNotification("n_warning", "Kindly fill in the required fields", 5000)
+        return
+    }
+    showLoader("Updating Staff...")
+    
+    admin.staff.updateStaff({
+      formData: formData,
+      onSuccess: (data) => {
+          //console.log(data)
+          if(data.status == "success") {
+            $(".update-staff-con").removeClass("active")
+              pushNotification("n_success", data.message, 5000);
+              getTeacher(staff_id);
+              getStaff();
+          }
+          else {
+              pushNotification("n_error", data.message, 3000)
+          }
+          hideLoader()
+      },
+      onError: (error) => {
+          console.error(error);
+          pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+          hideLoader()
+      }
+    })
+}
 
 function deleteStaff() {
 
@@ -403,6 +562,20 @@ function validate(elem) {
     return value;
 }
 
+function validate2(elem) {
+    let value = elem.val()?.trim();
+    if(!value || value == "") {
+        elem.addClass('error');
+        elem.siblings(".error-msg").addClass('active');
+        updateFormValid = false;
+    }
+    else {
+        elem.removeClass('error');
+        elem.siblings(".error-msg").removeClass('active');
+    }
+    return value;
+  }
+
 var uploadBtn = document.querySelector("#image-upload");
 uploadBtn.addEventListener("change", function() {
   var reader = new FileReader();
@@ -480,16 +653,60 @@ function updateStatus() {
     })
   }
 
+function resetPassword() {
+    let staff_id = $("#reset-id").val();
+    let password = $("#reset-password").val();
+    let cpassword = $("#c-reset-password").val();
+
+    if(cpassword !== password) {
+        pushNotification("n_warning", "Passwords do not match!", 3000);
+        return;
+    }
+  
+    let formData = {staff_id, password}
+
+    showLoader(`Resetting Password...`)
+  
+    admin.staff.resetStaffPassword({
+      formData: formData,
+      onSuccess: (data) => {
+          //console.log(data)
+          if(data.status == "success") {
+            $("#reset-password").val('')
+            $("#c-reset-password").val('')
+            $(".reset-staff-con").removeClass("active")
+            pushNotification("n_success", data.message, 3000)
+          }
+          else {
+            pushNotification("n_error", data.message, -1)
+          }
+          hideLoader()
+      },
+      onError: (error) => {
+        hideLoader()
+        console.error(error)
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection and try again", 3000)
+      }
+    })
+  }
+
 
 // ========== Event Listeners ======================
 $(".delete-staff-form").on('submit', function(e) {e.preventDefault();deleteStaff()})
 $(".export-staff-form").on('submit', function(e) {e.preventDefault();exportList()})
+$(".update-staff-form").on('submit', function(e) {e.preventDefault();updateStaff()})
+$(".reset-staff-form").on('submit', function(e) {e.preventDefault();resetPassword()})
 
 $(".add-staff-form .req").on('input', function() {validate($(this))});
 $(".add-staff-form .req2").on('change', function() {validate($(this))})
 
+$(".update-staff-form .req").on('input', function() {validate2($(this))});
+$(".update-staff-form .req2").on('change', function() {validate2($(this))});
+
+$(".sta-edit-btn").on('click', function() {$(".update-staff-con").addClass("active")})
 $(".export-btn").click(function(e) {e.preventDefault(); $(".export-staff-con").addClass("active")})
 $(".sta-del-btn").on('click', function() {$(".delete-staff-con").addClass("active")})
+$(".sta-reset-btn").on('click', function() {$(".reset-staff-con").addClass("active")})
 $(".sta-action").on('click', function() {updateStatus()})
 
   

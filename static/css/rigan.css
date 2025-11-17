@@ -55,7 +55,7 @@ abbr[title] {
     text-decoration:underline;
     text-decoration:underline dotted
 }
-dfn {
+dfn, .w-italic {
     font-style:italic
 }
 mark {

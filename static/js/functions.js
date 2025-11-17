@@ -55,6 +55,15 @@ function datify(date, time=false) {
   }
 }
 
+function monthify(date) {
+  let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+    'August', 'September', 'October', 'November', 'December'
+  ]
+  
+  let dt = new Date(date);
+  return `${months[dt.getMonth()]} ${dt.getFullYear()}`
+}
+
 function dateDiff(date) {
   let givenDate = new Date(date);
   let today = new Date();
@@ -114,6 +123,19 @@ function downloadFile(url, filename="") {
   pushNotification("n_success", "File downloaded successfully", 4000);
 }
 
+function getQueryParams() {
+  let params = new URLSearchParams(window.location.search);
+  let query = Object.fromEntries(params.entries());
+  return query
+}
+
+function buildQueryParams(obj, hash=null) {
+  if(hash == null) hash = window.location.hash;
+  let params = new URLSearchParams(obj);
+  let url = `${window.location.protocol}//${window.location.host}/?${params.toString()}${hash}`;
+  return url
+}
+
 
 function showLoader(text="") {
   $("#loader-text").html(text)
@@ -144,6 +166,7 @@ function checkStatus() {
     onSuccess: (data) => {
       if(data.status == 'success') {
         if(data.authenticated == false && location.pathname == "/") {
+          
           localStorage.removeItem("educa_school_info");
           localStorage.removeItem("educa_user_info");
           location.href = '/login/'
@@ -158,10 +181,10 @@ function checkStatus() {
     }
   })
 }
-checkStatus()
+//checkStatus()
 
-document.addEventListener('online', checkStatus)
-document.addEventListener('offline', checkStatus)
+//document.addEventListener('online', checkStatus)
+//document.addEventListener('offline', checkStatus)
 
 function showSchoolInfo() {
   let info = localStorage.getItem("educa_school_info");
