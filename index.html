@@ -31,13 +31,13 @@
         <i class="fa fa-caret-right"></i>
       </a>
 
-      <a href="/#classes" class="class-act">
-        <span><img src="/static/icons/_ui-stand.svg" alt="">&nbsp;&nbsp;&nbsp;Class & Subject</span>
+      <a href="/#school" class="school-act">
+        <span><i class="fa fa-building"></i>&nbsp;&nbsp;&nbsp;School Management</span>
         <i class="fa fa-caret-right"></i>
       </a>
 
-      <a href="/#attendance" class="attend-act">
-        <span><img src="/static/icons/_ui-file-check-02.svg" alt="">&nbsp;&nbsp;&nbsp;Attendance</span>
+      <a href="/#classes" class="class-act">
+        <span><img src="/static/icons/_ui-stand.svg" alt="">&nbsp;&nbsp;&nbsp;Class & Subject</span>
         <i class="fa fa-caret-right"></i>
       </a>
 
@@ -46,8 +46,18 @@
         <i class="fa fa-caret-right"></i>
       </a>
 
+      <a href="/#attendance" class="attend-act">
+        <span><img src="/static/icons/_ui-file-check-02.svg" alt="">&nbsp;&nbsp;&nbsp;Attendance</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
       <a href="/#fees" class="fees-act">
         <span><img src="/static/icons/_ui-bank-note-01c.svg" alt="">&nbsp;&nbsp;&nbsp;Fees & Payments</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      <a href="/#transactions" class="trans-act">
+        <span><i class="fa fa-bank"></i>&nbsp;&nbsp;&nbsp;Transactions</span>
         <i class="fa fa-caret-right"></i>
       </a>
 
@@ -153,7 +163,8 @@ showSchoolInfo()
           <div class="dropdown">
             <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="/#"><i class="fa fa-user"></i>&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#profile"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#wallet"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
             </div>
           </div>
         </div>
@@ -186,7 +197,7 @@ showSchoolInfo()
       <div class="dash-menu">
         <div class="dash-box w-white w-round">
           <div>
-            <a href="/#students" class="menu-con-6 dash-menu-con">
+            <a href="/#wallet" class="menu-con-6 dash-menu-con">
               <div>
                 <div class="h6 w-bold-x w-text-black">Wallet Balance</div>
                 <div class="dash-no bal-item">&#8358;0</div>
@@ -797,11 +808,11 @@ showSchoolInfo()
                       </tr>
                       <tr>
                         <td class="w-text-gray">Assigned Subjects:</td>
-                        <td id="std-teacher"></td>
+                        <td id="sta-ass-sub"></td>
                       </tr>
                       <tr>
                         <td class="w-text-gray">Assigned Classes:</td>
-                        <td id="std-dept"></td>
+                        <td id="sta-ass-cl"></td>
                       </tr>
                     </tbody>
                   </table>
@@ -1727,7 +1738,7 @@ showSchoolInfo()
                       </tr>
                       <tr>
                         <td class="w-text-gray">Department:</td>
-                        <td id="std-dept">---</td>
+                        <td id="std-dept"></td>
                       </tr>
                       <tr>
                         <td class="w-text-gray">School Section:</td>
@@ -2224,9 +2235,9 @@ showSchoolInfo()
         </h4>
         <ul style="padding-left:20px;">
           <li>All syllabus/curriculum/topics/materials associated with the subject will be permanently erased.</li>
-          <li>All attendance records associated with the classroom will be erased.</li>
+          <li>All attendance records associated with the subject will be erased.</li>
           <li>All generated exam questions associated with the classroom will be be preserved (without being assigned to any class)</li>
-          <li>All student report associated with the classroom will be be preserved (without being assigned to any class)</li>
+          <li>All student report associated with the subject will be be erased</li>
         </ul>
         
         <div class="input-con">
@@ -2245,6 +2256,187 @@ showSchoolInfo()
   </div>
 
   <!-- Curriculum Modals -->
+
+  <div class="side-con cur-side-con">
+    <div class="w-flex w-flex-between w-align-center">
+      <ul class="breadcrumb">
+        <li><a href="/#classes">Curriculum</a></li>
+        <li class="cur-name" data-id=""></li>
+      </ul>
+      <button class="close-side btn btn-danger">X&nbsp;Close</button>
+    </div>
+
+    <div class="side-opt-con" style="gap:15px;">
+      <button class="side-btn">Generate Topics with EdukaAI</button>
+    </div>
+
+    <div class="w-padding">
+      <div class="row mt-2 w-white">
+        <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+  
+          <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+            
+            <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+              <div class="h4 w-bold-x" style="color:orangered">Topic List</div>
+            </div>
+            
+  
+            <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+              <button class="dark-btn add-top-btn">Add Topic&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+              <button class="light-btn top-export-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
+            </div>
+  
+          </form>
+  
+          <div class="table-responsive">
+            <table class="table staff-table">
+              <thead>
+                <tr>
+                  <th>Week</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="top-list">
+              </tbody>
+            </table>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="modal-con modal-top add-top-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Add New Topic</div>
+      </div>
+      <form class="modal-content mt-3 add-top-form">
+
+        <div class="row">
+
+          <div class="input-con col-12 col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
+            <label for="st-fname">Week</label>
+            <input type="number" id="to-week" required />
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-8 col-md-9 col-lg-9 col-xl-10">
+            <label for="st-lname">Title</label>
+            <input type="text" id="to-title" required />
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <label for="st-lname">Summary/Description/Objectives</label>
+            <textarea id="to-des" rows="3" required></textarea>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <label for="st-lname">Upload Note Document (pdf, word document, image, etc)</label>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="to-file">
+              <label class="custom-file-label" for="to-file">Choose file</label>
+            </div>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <label for="st-lname">Content/Notes</label>
+            <textarea class="html-text to-content" name="to-content" id="to-content"></textarea>
+          </div>
+
+        </div>
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn10">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top update-top-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Update Week <span class="top-name"></span> Topic</div>
+      </div>
+      <form class="modal-content mt-3 update-top-form">
+
+        <div class="row">
+
+          <div class="input-con col-12 col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-2">
+            <label for="st-fname">Week</label>
+            <input type="number" id="to-week2" required />
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-8 col-md-9 col-lg-9 col-xl-10">
+            <label for="st-lname">Title</label>
+            <input type="text" id="to-title2" required />
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <label for="st-lname">Summary/Description/Objectives</label>
+            <textarea id="to-des2" rows="3" required></textarea>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <label for="st-lname">Upload Note Document (pdf, word document, image, etc) <small id="to-file3" class="w-text-blue"></small></label>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="to-file2">
+              <label class="custom-file-label" for="to-file2">Choose file</label>
+            </div>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <label for="st-lname">Content/Notes</label>
+            <textarea class="html-text to-content2" name="to-content2" id="to-content2"></textarea>
+          </div>
+
+        </div>
+
+        <input type="hidden" class="top-id">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn11">Cancel</button>
+          <input type="submit" value="Update">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con delete-top-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-red w-bold-x">
+          <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
+          Deletete Week <span class="top-name"></span> Topic
+        </div>
+      </div>
+      <form class="modal-content delete-top-form">
+        
+        <h4>This is a destructive action and cannot be reversed. Kindly note that the following will 
+          be affected:
+        </h4>
+        <ul style="padding-left:20px;">
+          <li>All contents/materials associated with the topic will be permanently erased.</li>
+        </ul>
+        
+
+        <input type="hidden" class="top-id">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn12">Cancel</button>
+          <input type="submit" class="w-red" value="Delete Topic">
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div class="modal-con modal-top small-con add-cur-con">
     <div class="modal-body">
       <div class="close-modal">X</div>
@@ -2287,6 +2479,65 @@ showSchoolInfo()
         <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
           <button class="clear-btn canc-btn7">Cancel</button>
           <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top small-con update-cur-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Update Curriculum: <span class="cur-name"></span></div>
+      </div>
+      <form class="modal-content mt-3 update-cur-form">
+
+          <div class="input-con">
+            <label for="st-lname">Subject Teacher</label>
+            <select id="cur-staff">
+              <option value="" selected></option>
+            </select>
+          </div>
+
+          <input type="hidden" class="cur-id">
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn8">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con delete-cur-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-red w-bold-x">
+          <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
+          Delete Curriculum: <b class="cur-name"></b>
+        </div>
+      </div>
+      <form class="modal-content delete-cur-form">
+        
+        <h4>This is a destructive action and cannot be reversed. All records associated with the curriculum 
+          will be erased permanently. Kindly note that the following will 
+          be affected:
+        </h4>
+        <ul style="padding-left:20px;">
+          <li>All topics/materials associated with the curriculum will be permanently erased.</li>
+        </ul>
+        
+        <div class="input-con">
+          <label for="">Enter your Password to proceed:</label>
+          <input type="password" id="cur-delete-password" required />
+        </div>
+
+        <input type="hidden" class="cur-id">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn9">Cancel</button>
+          <input type="submit" class="w-red" value="Delete Curriculum">
         </div>
       </form>
     </div>
@@ -2540,6 +2791,25 @@ showSchoolInfo()
     $('.class-act').addClass('active')
     $(".page-name").text("Class & Subject");
 
+    $(".close-side").click(function() {
+      $(this).parent('div').parent('.side-con').removeClass('active')
+    })
+
+    $(".custom-file-input").on("change", function() {
+      var file = $(this)[0].files[0];
+      var fileName = file.name;
+      var fileSize = file.size;
+      if(fileSize > (1024 * 1024)) {
+        fileSize = `${(fileSize / (1024 * 1024)).toFixed(2)}MB`
+      }
+      else if(fileSize > 1024) {
+        fileSize = `${(fileSize / 1024).toFixed(2)}KB`
+      } else {
+        fileSize = `${fileSize}B`
+      }
+      $(this).siblings(".custom-file-label").addClass("selected").html(`${fileName} (${fileSize})`);
+    });
+
     $("#emp_search").on('input', function() {
       let search = $("#emp_search").val().toLowerCase().trim()
       //console.log(search)
@@ -2599,6 +2869,18 @@ showSchoolInfo()
     $(".canc-btn9").click(function(e) {
         e.preventDefault();
         $(".delete-cur-con").removeClass('active')
+    })
+    $(".canc-btn10").click(function(e) {
+        e.preventDefault();
+        $(".add-top-con").removeClass('active')
+    })
+    $(".canc-btn11").click(function(e) {
+        e.preventDefault();
+        $(".update-top-con").removeClass('active')
+    })
+    $(".canc-btn12").click(function(e) {
+        e.preventDefault();
+        $(".delete-top-con").removeClass('active')
     })
 
     $('#emp_search2').on('input', function(e) {
@@ -2892,7 +3174,8 @@ showSchoolInfo()
     <script src="/static/js/owl.carousel.min.js"></script>
     <script src="/static/js/toastify.min.js"></script>
     <script src="/static/js/sweetalert.min.js"></script>
-    <script src="/dist/semantic.min.js"></script> 
+    <script src="/dist/semantic.min.js"></script>
+    <script src="/static/tinymce/tinymce.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>                                                                                         
 

@@ -224,6 +224,8 @@ function getTeacher(id) {
                     $("#sta-salary").html(`&#8358;${digify(d.salary, false)}`)
                     $("#sta-class").html(`${d.classes_assigned.join(', ')}`)
                     $("#sta-role").html(`${d.role}`)
+                    $("#sta-ass-sub").html(`${data.roles.subjects.join(', ')}`)
+                    $("#sta-ass-cl").html(`${data.roles.classes.join(', ')}`)
                     if(d.image) {
                         $("#sta-image").attr('src', `${base_url}${d.image}`)
                     }

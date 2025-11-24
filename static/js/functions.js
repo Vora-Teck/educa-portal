@@ -116,6 +116,7 @@ function pushNotification(type, text, time, event=null) {
 function downloadFile(url, filename="") {
   let link = document.createElement('a');
   link.href = url;
+  link.target = "_blank";
   link.dowload = filename;
   document.body.appendChild(link);
   link.click();
@@ -165,13 +166,13 @@ function checkStatus() {
   admin.account.loginStatus({
     onSuccess: (data) => {
       if(data.status == 'success') {
-        if(data.authenticated == false && location.pathname == "/") {
+        // if(data.authenticated == false && location.pathname == "/") {
           
-          localStorage.removeItem("educa_school_info");
-          localStorage.removeItem("educa_user_info");
-          location.href = '/login/'
-        }
-        else if(data.authenticated == true && location.pathname == "/login/") {
+        //   localStorage.removeItem("educa_school_info");
+        //   localStorage.removeItem("educa_user_info");
+        //   location.href = '/login/'
+        // }
+        if(data.authenticated == true && location.pathname == "/login/") {
           location.href = '/'
         }
       }
@@ -181,7 +182,15 @@ function checkStatus() {
     }
   })
 }
-//checkStatus()
+checkStatus()
+
+
+function checkResponse(data) {
+  if(data.statusCode && data.statusText) {
+    pushNotification("n_error", `Error ${data.statusCode}: ${data.statusText}`)
+  }
+  
+}
 
 //document.addEventListener('online', checkStatus)
 //document.addEventListener('offline', checkStatus)
@@ -286,3 +295,24 @@ function showPlanInfo() {
       }
 })
 }
+
+function initiateTiny(elem='.html-text', content="") {
+  tinymce.init({
+      selector: elem,
+      setup: function(editor) {
+          editor.on('init', function(e) {
+            editor.setContent(content)
+          })
+      },
+      plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | tinycomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Admin',
+      mergetags_list: [
+          {value: 'First.Name', title: 'First Name'},
+          {value: 'Email', title: 'Email'},
+      ],
+      ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+  });
+}
+//initiateTiny();

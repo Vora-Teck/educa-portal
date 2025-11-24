@@ -25,6 +25,7 @@ a {color: grey}
   outline: none;
   border: none;
   cursor: pointer;
+  
 }
 .white-btn {
   padding: 5px 10px;
@@ -1904,6 +1905,7 @@ ul.breadcrumb li a:hover {
   margin-bottom: 10px;
 
 }
+
 
 
 .n_error {background:red;color:#fff}

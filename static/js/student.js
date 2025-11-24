@@ -230,6 +230,7 @@ function getStudent(id) {
                 $("#std-name2").html(`${d.firstName} ${d.middleName} ${d.lastName}`)
                 $("#std-id").html(`${d.studentId}`)
                 $("#std-class").html(`${d.classroom.level.title}`)
+                $("#std-dept").html(`${d.classroom.level.department || '-- --'}`)
                 $("#std-class2").html(`${d.classroom.level.title}`)
                 $("#std-gender").html(`${d.gender}`)
                 $("#std-dob").html(`${datify(d.dateOfBirth, false)}`)
