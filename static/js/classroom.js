@@ -691,8 +691,8 @@ function getSyllabi() {
                             <td>
                             <div class="w-bold-x">${e[i].subject.title}</div>
                             </td>
-                            <td>${e[i].classroom.level.title}</td>
-                            <td>${terms[e[i].term - 1]} Term</td>
+                            <td>${e[i].curriculum.classroom.title}</td>
+                            <td>${terms[e[i].curriculum.term - 1]} Term</td>
                             <td class="w-center">${digify(e[i].no_of_topics)}</td>
                             <td>${e[i].teacher?.firstName || '<i class="w-small w-text-gray">No teacher assigned</i>'} ${e[i].teacher?.lastName || ``}</td>
                             <td class="w-text-gray h4">
