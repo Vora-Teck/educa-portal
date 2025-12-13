@@ -32,6 +32,14 @@ function digify(n, decimal=false) {
   
 }
 
+function truncateWord(str, n) {
+  trunc_str = str.substring(0, n);
+  if(str.length > n) {
+    trunc_str += "...";
+  }
+  return trunc_str
+}
+
 function shortify(n, decimal=false) {
   let a = Number(n);
   if(a >= 1000000) {

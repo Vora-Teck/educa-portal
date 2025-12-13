@@ -197,7 +197,7 @@ showSchoolInfo()
       <div class="dash-menu">
         <div class="dash-box w-white w-round">
           <div>
-            <a href="/#wallet" class="menu-con-6 dash-menu-con">
+            <a href="/#school" class="menu-con-6 dash-menu-con">
               <div>
                 <div class="h6 w-bold-x w-text-black">Wallet Balance</div>
                 <div class="dash-no bal-item">&#8358;0</div>
@@ -2068,6 +2068,742 @@ showSchoolInfo()
   </script>
 </template>
 
+<template id="school">
+  <?use-template: "sidenav"?>
+
+  <div class="modal-con delete-card-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-red w-bold-x">
+          <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
+          Delete Card
+        </div>
+      </div>
+      <form class="modal-content delete-card-form">
+        
+        <h4>This is a destructive action and cannot be reversed.
+        </h4>
+        
+        <div class="input-con">
+          <label for="">Enter your Password to proceed:</label>
+          <input type="password" id="card-delete-password" required />
+        </div>
+
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn3">Cancel</button>
+          <input type="submit" class="w-red" value="Delete Card">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top small-con add-bank-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Add Bank Account</div>
+      </div>
+      <form class="modal-content mt-3 add-bank-form">
+
+          <div class="input-con">
+            <label for="st-lname">Account Number</label>
+            <input type="text" id="account-number" maxlength="10">
+          </div>
+
+          <div class="input-con">
+            <label for="st-lname">Select Bank</label>
+            <select id="bank-name">
+              
+            </select>
+          </div>
+
+          <div class="input-con">
+            <div id="verify-name"></div>
+          </div>
+          <input type="hidden" id="verified" value="" />
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn1">Cancel</button>
+          <input type="submit" class="add-bank-submit" value="Continue" disabled>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con log-con modal-top">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x">
+          <i class="fa fa-ul-list"></i>&nbsp;&nbsp;
+          Account Logs
+        </div>
+      </div>
+      <div class="modal-content">
+        
+        <ul class="nav nav-tabs class-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#wall_log">Wallet Logs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#rev_log">Revenue</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#exp_log">Expenses</a>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+
+          <div class="tab-pane active container" id="wall_log">
+            <div class="table-responsive l-table">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th style="white-space:nowrap">Initial Balance</th>
+                    <th>Amount</th>
+                    <th style="white-space:nowrap">Final Balance</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody class="log-table">
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="tab-pane container" id="rev_log"></div>
+          <div class="tab-pane container" id="exp_log"></div>
+        
+        </div>
+        
+
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn2">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Curriculum Modals -->
+
+  <div class="side-con cur-side-con">
+    <div class="w-flex w-flex-between w-align-center">
+      <ul class="breadcrumb">
+        <li><a href="/#classes">Curriculum</a></li>
+        <li class="cur-name" data-id=""></li>
+      </ul>
+      <button class="close-side btn btn-danger">X&nbsp;Close</button>
+    </div>
+
+    <div class="side-opt-con" style="gap:15px;">
+      <button class="side-btn">Generate Topics with EdukaAI</button>
+    </div>
+
+    <div class="w-padding">
+      <div class="row mt-2 w-white">
+        <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+  
+          <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+            
+            <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+              <div class="h4 w-bold-x" style="color:orangered">Topic List</div>
+            </div>
+            
+  
+            <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+              <button class="dark-btn add-top-btn">Add Topic&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+              <button class="light-btn top-export-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
+            </div>
+  
+          </form>
+  
+          <div class="table-responsive">
+            <table class="table staff-table">
+              <thead>
+                <tr>
+                  <th>Week</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="top-list">
+              </tbody>
+            </table>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="modal-con modal-top small-con fund-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Fund Wallet</div>
+      </div>
+      <form class="modal-content mt-3 fund-form">
+
+        <div class="input-con">
+          <label for="st-fname">Enter amount to fund: (1.5% service charge apply)</label>
+          <input type="number" id="fund-amount" placeholder="Min: &#8358;100" required />
+          <p class="mt-2"><b>Total Amount: </b>&#8358;<span id="tot_amount">0</span></p>
+        </div>
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn">Cancel</button>
+          <input id="fund-submit-btn" type="submit" value="Continue" disabled>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top small-con withdraw-con">
+    <div class="modal-body">
+      <!--
+      <div class="close-modal">X</div>
+      -->
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Withdraw Fund</div>
+      </div>
+      <form class="modal-content mt-3 withdraw-form">
+
+        <div class="withdraw-form-content">
+
+        </div>
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn1">Cancel</button>
+          <input id="withdraw-submit-btn" type="submit" value="Continue">
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <main class="">
+    <?use-template: "header"?>
+
+    <div class="dash-menu">
+      <div class="dash-box w-white w-round">
+
+        <div>
+          <a class="menu-con-6 dash-menu-con">
+            <div>
+              <div class="h6 w-bold-x w-text-black">Wallet Balance</div>
+              <div class="dash-no bal-item">&#8358;0</div>
+              <div class="w-flex w-flex-start w-align-center" style="gap:10px;">
+                <button class="dark-btn withdraw-btn">Withdraw</button>
+              <button class="light-btn fund-btn"><i class="fa fa-plus"></i> Add</button>
+              </div>
+            </div>
+            <img src="/static/icons/_ui-bank-note-01.svg" alt="">
+            
+          </a>
+        </div>
+        
+        <div>
+          <a class="menu-con-4 dash-menu-con">
+            <div>
+              <div class="h6 w-bold-x w-text-black">Total Income</div>
+              <div class="dash-no fee-item">&#8358;0</div>
+              <button class="dark-btn inc-btn"><i class="fa fa-eye"></i> View Logs</button>
+            </div>
+            <img src="/static/icons/_ui-bank-note-01.svg" alt="">
+          </a>
+        </div>
+
+        <div>
+          <a class="menu-con-5 dash-menu-con">
+            <div>
+              <div class="h6 w-bold-x w-text-black">Total Expenses</div>
+              <div class="dash-no">&#8358;0</div>
+              <button class="light-btn exp-btn"><i class="fa fa-eye"></i> View Logs</button>
+            </div>
+            <img src="/static/icons/_ui-bank-note-01.svg" alt="">
+          </a>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs class-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#home">School Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu1">KYC Verification</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu2">Website</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu3">Bank Account/Card</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu4">Configurations</a>
+      </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+      <div class="tab-pane active container" id="home">
+        
+        <form class="w-padding w-white update-school-form">
+          <div class="row mt-2">
+            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col lg-12 col-xl-12">
+              <h3 class="mb-3">Basic Information <span class="w-text-red">*</span><small><i>(editable)</i></small></h3>
+            </div>
+
+            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col lg-12 col-xl-12 w-flex w-flex-center w-align-center" style="gap:15px;flex-direction:column;">
+              <img id="s-logo" src="" alt="" style="width:150px;height:auto;">
+              <form class="mt-2">
+                <label for="logo-upload" class="light-btn w-text-center">
+                  Change Logo
+                </label>
+                <input type="file" id="logo-upload" class="hidden-input" accept="image/*" />
+              </form>
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-fname">School Name</label>
+              <input type="text" id="s-name" disabled readonly />
+            </div>
+  
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname"><span class="w-text-red">*</span> Motto</label>
+              <input type="text" id="s-motto" />
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname">Year Established</label>
+              <input type="number" id="s-year" disabled readonly />
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col lg-12 col-xl-12">
+              <h3 class="mb-3">Contact Information</h3>
+            </div>
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-fname">Email</label>
+              <input type="email" id="s-email" readonly disabled />
+            </div>
+  
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname"><span class="w-text-red">*</span> Phone Number</label>
+              <input type="tel" id="s-phone" />
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname">Address</label>
+              <input type="text" id="s-address" disabled readonly />
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname">L.G.A</label>
+              <input type="text" id="s-lga" disabled readonly />
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname">State</label>
+              <input type="text" id="s-state" disabled readonly />
+            </div>
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname">Country</label>
+              <input type="text" id="s-country" disabled readonly />
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col lg-12 col-xl-12">
+              <h3 class="mb-3">Subscription Information</h3>
+            </div>
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-fname">Subscription Plan</label>
+              <input type="text" id="s-plan" readonly disabled />
+            </div>
+  
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname">Duration</label>
+              <input type="text" id="s-duration" readonly disabled />
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname">Expiry Date</label>
+              <input type="text" id="s-expiry" disabled readonly />
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <input type="submit" value="Save Changes">
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+
+      <div class="tab-pane container" id="menu1">
+        
+        <form class="w-padding w-white school-verify-form">
+          <div class="veri-alert">
+          
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col lg-12 col-xl-12">
+              <h3 class="mb-3">CAC Registration</h3>
+              <ul style="padding-left:20px;" class="mb-3">
+                <li><b>Registration Type: </b>THis is the type of CAC registration for your school.</li>
+                <li><b>CAC Registration Number: </b>YOur school CAC Number (with or without the prefix; e.g BN, RC, IT)</li>
+                <li><b>CAC Document: </b>Provide a clear CAC document for your school. Document can be in any of the following format: <b>.pdf, .jpg, .jpeg, .png</b></li>
+                <li>ALl Information on CAC document must match existing information such as name of school, address, etc</li>
+                <li>CAC document must not exceed <b>5MB</b></li>
+              </ul>
+            </div>
+
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-fname"><span class="w-text-red">*</span> Business Type</label>
+              <select id="veri-type">
+                <option value="" selected>-- Select Registration Type --</option>
+                <option value="BN">Business Name Registration</option>
+                <option value="RC">Registered Company</option>
+                <option value="IT">Incorporated Trustees</option>
+              </select>
+            </div>
+  
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname"><span class="w-text-red">*</span> CAC Registration Number</label>
+              <input type="text" id="veri-num" required />
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname"><span class="w-text-red">*</span> CAC Document</label>
+              <div class="veri-ex-doc"></div>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="veri-doc">
+                <label class="custom-file-label" for="veri-doc">Choose file</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col lg-12 col-xl-12">
+              <h3 class="mb-3">School Verification</h3>
+              <ul style="padding-left:20px;">
+                <li><b>School Image 1: </b>Provide a clear image of your school showing the school name/sign post.</li>
+                <li><b>School Image 2: </b>Provide a clear image of your school showing the school environment/classrooms.</li>
+                <li><b>School Image 3: </b>Provide a clear image of your school showing the students.</li>
+                <li>Images must be in any of the following formats: <b>.jpg, .jpeg, .png</b></li>
+                <li>Images must not exceed <b>5MB</b></li>
+              </ul>
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname"><span class="w-text-red">*</span> School Image 1</label>
+              
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="veri-img1">
+                <label class="custom-file-label" for="veri-img1">Choose file</label>
+              </div>
+              <div class="veri-img veri-img1"></div>
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname"><span class="w-text-red">*</span> School Image 2</label>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="veri-img2">
+                <label class="custom-file-label" for="veri-img2">Choose file</label>
+              </div>
+              <div class="veri-img veri-img2"></div>
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname"><span class="w-text-red">*</span> School Image 3</label>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="veri-img3">
+                <label class="custom-file-label" for="veri-img3">Choose file</label>
+              </div>
+              <div class="veri-img veri-img3"></div>
+            </div>
+
+          </div>
+
+          <div class="row mt-2">
+            <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <input type="submit" value="Save Changes">
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="tab-pane container" id="menu2">
+        <form class="w-white w-padding portal-form">
+          <div class="domain-alert"></div>
+
+
+          <div class="row mt-2">
+
+            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col lg-12 col-xl-12">
+              <h3 class="mb-3">Request School Portal</h3>
+              <ul style="padding-left:20px;" class="new-port mb-3">
+                <li>A school portal is a website dedicated for your school which can be used for the following:
+                  <ol style="padding-left:20px;" class="mb-3 mt-3">
+                    <li>Staff can login to manage students, classes, subjects, exams, attendance, etc</li>
+                    <li>Parents can login to track their children's/ward performance</li>
+                    <li>The website contain school information which enable visitors know more about the school and what they offer.</li>
+                    <li>Prospective students can also register for admission on the school website.</li>
+                  </ol>
+                </li>
+                <li>To be eligible for a school portal, kindly ensure to complete your school KYC verification and ensure your school is verified.</li>
+                <li>To request a school portal, kindly enter your desired domain in the form below.</li>
+                <li>Kindly take note of the following before proceeding:
+                  <ol style="padding-left:20px;" class="mb-3 mt-3">
+                    <li>The domain you choose is to ensure your school portal is accessible at <b><q>https://yourdomain.eduka.ng</q></b></li>
+                    <li>Your domain can only contain <b>lowercase (a-z)</b> characters</li>
+                  </ol>
+                </li>
+              </ul>
+            </div>
+
+            <div class="new-port input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-fname"><span class="w-text-red">*</span> Domain Name</label>
+              <input type="text" id="domain-name" required />
+            </div>
+          </div>
+
+          <div class="new-port row mt-2">
+            <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <input type="submit" value="Submit">
+            </div>
+          </div>
+
+          <div class="old-port row mt-2">
+
+            <div class="w-padding col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <h5>Requested Domain</h5>
+              <p id="dom-name"></p>
+            </div>
+
+            <div class="w-padding col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <h5>Submission Date</h5>
+              <p id="dom-date"></p>
+            </div>
+
+            <div class="w-padding col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <h5>Request Status</h5>
+              <p id="dom-stat"></p>
+            </div>
+
+            <div class="w-padding col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <h5>Approval Date</h5>
+              <p id="dom-app"></p>
+            </div>
+
+            <div class="w-padding col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <h5>School Portal</h5>
+              <p id="dom-url"></p>
+            </div>
+
+          </div>
+
+        </form>
+
+        <form class="old-port w-white w-padding website-form">
+          
+          <div class="row mt-2">
+            <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <label for=""><b><span class="w-text-red">*</span> About Page</b> <i>(This section will be on the about section of the school website)</i></label>
+              <textarea rows="10" name="web-about" id="web-about" class="html-text web-about">
+
+              </textarea>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <input type="submit" value="Save Changes">
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="tab-pane container" id="menu3">
+        <div class="row w-white w-padding">
+          <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="card-alert"></div>
+
+            <div class="new-card">
+              <h3 class="mb-3">Link A Debit/Credit Card</h3>
+                <ul style="padding-left:20px;" class="mb-3">
+                  <li>To ensure that the provided card is valid, your card will be charged <span class="text-title-bg">&#8358;100.</span></li>
+                  <li>This amount will be deposited in your wallet balance after successful verification.</li>
+                  <li><span class="w-text-red w-bold">DO NOT</span> add the same bank card twice to avoid duplicate charges</li>
+                  <li><span class="w-text-red w-bold">WE DO NOT</span> store your card information such as PIN and CVV to ensure privacy and security of our users.</li>
+                  <li>All payments are automated and <span class="w-text-red w-bold">WE DO NOT</span> call our users to provide their card details either via phone calls or text messages, so <span class="w-text-red w-bold">BEWARE</span> of fraudulent activities.</li>
+                  <li>In case of insufficient balance, This card may be used to automate your payments such as expired subscriptions.</li>
+                </ul>
+
+                <form class="add-card-form">
+                  <div class="input-con">
+                    <input type="submit" value="Add Bank Card">
+                  </div>
+                </form>
+            </div>
+
+            <div class="old-card">
+              <h3 class="mb-3">Linked Debit/Credit Card <span class="card-exp"></span></h3>
+              <div class="card-container">
+                <div class="card-head">
+                  <span class="card-logo">
+                    <img src="" alt="" />
+                    
+                  </span>
+                  <img src="/static/logos/chip.png" alt="" class="chip" />
+                </div>
+          
+                <div class="card-details">
+                  <div class="name-number">
+                    <h6>Card Number</h6>
+                    <h5 class="card-number"></h5>
+                    <h5 class="card-name"></h5>
+                  </div>
+                  <div class="valid-date">
+                    <h6>Valid Thru</h6>
+                    <h5 class="card-expiry"></h5>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-danger mt-3 delete-card-btn">Delete Card</button>
+            </div>
+          </div>
+
+          <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="mt-3 bank-alert"></div>
+
+          <div class="new-bank">
+            <h3 class="mb-3">Link A Bank Account</h3>
+              <ul style="padding-left:20px;" class="mb-3">
+                <li>To link a bank account, kindly ensure the bank account is valid and carries the name of the school.</li>
+                <li><span class="w-text-red w-bold">ONLY</span> Nigerian bank accounts are currently acceptable.</li>
+                <li>Personal bank accounts <span class="w-text-red w-bold">WILL NOT</span> be accepted/verified</li>
+                <li>Your linked bank account will be used <span class="w-text-red w-bold">SOLELY</span> for withdrawal of your funds from your wallet</li>
+              </ul>
+
+              <form id="add-bank-form">
+                <div class="input-con">
+                  <input type="submit" value="Add Bank Account">
+                </div>
+              </form>
+            </div>
+
+            <div class="old-bank">
+              <h3 class="mb-3">Linked Bank Account</h3>
+
+              <div class="bank-con w-card">
+                <img src="" alt="" class="bank-logo">
+                <div class="bank-det w-block">
+                  <div class="w-flex w-flex-between w-align-center" style="gap:10px">
+                    <div class="h5 w-bold-x bank-name"></div>
+                    <div class="h6 bank-status"></div>
+                  </div>
+                  <div class="mt-2 h6 bank-user w-text-gray"></div>
+                </div>
+              </div>
+              
+              <button class="btn btn-primary mt-3 update-bank-btn">Update Bank Account</button>
+            </div>
+          </div>
+          
+
+        </div>
+      </div>
+
+      <div class="tab-pane container" id="menu4">
+        
+      </div>
+
+    </div>
+
+  </main>
+  
+  <script src="/static/js/school.js"></script>
+  <script>
+    $('.school-act').addClass('active')
+    $(".page-name").text("My School");
+
+    $(".close-side").click(function() {
+      $(this).parent('div').parent('.side-con').removeClass('active')
+    })
+
+    $(".custom-file-input").on("change", function() {
+      var file = $(this)[0].files[0];
+      var fileName = file.name;
+      var fileSize = file.size;
+      if(fileSize > (1024 * 1024)) {
+        fileSize = `${(fileSize / (1024 * 1024)).toFixed(2)}MB`
+      }
+      else if(fileSize > 1024) {
+        fileSize = `${(fileSize / 1024).toFixed(2)}KB`
+      } else {
+        fileSize = `${fileSize}B`
+      }
+      $(this).siblings(".custom-file-label").addClass("selected").html(`${fileName} (${fileSize})`);
+    });
+
+    $("#account-number").on('input', function() {
+      verifyAccount()
+    })
+    $("#bank-name").on('change', function() {
+      verifyAccount()
+    })
+
+
+    $(".close-side").click(function() {
+      $(this).parent('div').parent('.side-con').removeClass('active')
+    })
+
+    $(".close-modal").click(function() {
+      $(this).parent('.modal-body').parent('.modal-con').removeClass('active')
+    })
+    
+    $(".canc-btn").click(function(e) {
+        e.preventDefault();
+        $(".fund-con").removeClass('active')
+    })
+    $(".canc-btn1").click(function(e) {
+        e.preventDefault();
+        $(".add-bank-con").removeClass('active')
+    })
+    $(".canc-btn2").click(function(e) {
+        e.preventDefault();
+        $(".log-con").removeClass('active')
+    })
+    $(".canc-btn3").click(function(e) {
+        e.preventDefault();
+        $(".delete-card-con").removeClass('active')
+    })
+    
+
+  </script>
+</template>
+
 <template id="classes">
   <?use-template: "sidenav"?>
   <!-- Classroom Modals -->
@@ -3141,6 +3877,9 @@ showSchoolInfo()
 </template>
 <template route="/students">
   <?use-template: "students"?>
+</template>
+<template route="/school">
+  <?use-template: "school"?>
 </template>
 <template route="/classes">
   <?use-template: "classes"?>

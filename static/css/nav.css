@@ -27,6 +27,40 @@ a {color: grey}
   cursor: pointer;
   
 }
+.danger-btn {
+  color: rgb(253, 54, 54) !important;
+  background: rgba(253, 54, 54, 0.1) !important;
+  width: fit-content;
+  padding: 3px 10px;
+  border-radius: 10px;
+}
+.success-btn {
+  color: rgb(20, 99, 0) !important;
+  background: rgba(20, 99, 0, 0.1) !important;
+  width: fit-content;
+  padding: 3px 10px;
+  border-radius: 10px;
+}
+.info-btn {
+  color: rgb(54, 207, 253) !important;
+  background: rgba(54, 207, 253, 0.1) !important;
+  width: fit-content;
+  padding: 3px 10px;
+  border-radius: 10px;
+}
+.warning-btn {
+  color: rgb(255, 153, 0) !important;
+  background: rgba(255, 166, 0, 0.1) !important;
+  width: fit-content;
+  padding: 3px 10px;
+  border-radius: 10px;
+}
+.with-table tr td:nth-child(1) {
+  font-weight: 900 !important;
+}
+.with-table tr td:nth-child(2) {
+  text-align: right;
+}
 .white-btn {
   padding: 5px 10px;
   color: var(--primary-color);
@@ -1053,7 +1087,7 @@ i.rotate {
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
-  max-width: 700px;
+  max-width: 900px;
   background: #fff;
   border-radius: 20px;
   padding: 20px;
@@ -1175,6 +1209,15 @@ i.rotate {
 }
 .tooltipa i {
   font-size: 18px;
+}
+
+
+.veri-img img {
+  width: 120px;
+  display: block;
+  margin: auto;
+  height: auto;
+  margin-top: 10px;
 }
 
 /* Tooltip text */
@@ -1906,6 +1949,96 @@ ul.breadcrumb li a:hover {
 
 }
 
+
+.card-container {
+  position: relative;
+  background-image: url("/static/logos/bg.png");
+  background-size: cover;
+  padding: 25px;
+  border-radius: 28px;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+.card-head,
+.card-head .card-logo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-head .card-logo img {
+  width: 70px;
+  margin-right: 10px;
+}
+.card-container h5 {
+  font-size: 16px;
+  font-weight: 400;
+  color: #fff;
+}
+.card-head .chip {
+  width: 60px;
+}
+.card-container h6 {
+  color: #fff;
+  font-size: 10px;
+  font-weight: 400;
+}
+.card-container h5.card-number {
+  margin-top: 4px;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+.card-container h5.card-name {
+  margin-top: 20px;
+}
+.card-container .card-details {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.transfer-loader {
+  height: 4px;
+  width: 130px;
+  --c:no-repeat linear-gradient(orange 0 0);
+  background: var(--c),var(--c),#d7b8fc;
+  background-size: 60% 100%;
+  animation: l16 3s infinite;
+}
+@keyframes l16 {
+  0%   {background-position:-150% 0,-150% 0}
+  66%  {background-position: 250% 0,-150% 0}
+  100% {background-position: 250% 0, 250% 0}
+}
+
+#verify-name, #verify-name i {
+  font-size: 13px !important;
+}
+
+.bank-con {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  border-radius: 10px;
+  padding: 10px;
+  border-right: 3px solid var(--ai-container);
+  border-left: 3px solid var(--ai-container);
+}
+.bank-con img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  padding: 5px;
+  border: 1px solid var(--primary-color);
+}
+
+.l-table {
+  max-height: calc(90vh - 300px) !important;
+  overflow-y: auto;
+}
 
 
 .n_error {background:red;color:#fff}
