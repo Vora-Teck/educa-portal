@@ -54,12 +54,16 @@ function shortify(n, decimal=false) {
 }
 
 
-function datify(date, time=false) {
+function datify(date=null, time=false) {
+  if(!date) {date = new Date()}
+  let is_date = date instanceof Date
+
+  let date_obj = is_date ? date : new Date(date)
   if(time) {
-    return `${new Date(date).toDateString()} ${new Date(date).toLocaleTimeString()}`
+    return `${date_obj.toDateString()} ${date_obj.toLocaleTimeString()}`
   }
   else {
-    return `${new Date(date).toDateString()}`;
+    return `${date_obj.toDateString()}`;
   }
 }
 

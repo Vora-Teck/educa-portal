@@ -3,14 +3,14 @@ showLoader("Loading Data...")
 function getData() {
 
     admin.school.schoolData({
-        params: {page: "class"},
+        params: {page: "exam"},
         onSuccess: (data) => {
                 //console.log(data);
                 if(data.status == 'success') {
                     let d = data.data;
-                    $(".class-no").html(digify(d.total_classes));
-                    $(".sub-no").html(digify(d.total_subjects));
-                    $(".mat-no").html(digify(d.total_curriculum))
+                    $(".class-no").html(digify(d.total_exams));
+                    $(".sub-no").html(digify(d.active_exams));
+                    $(".mat-no").html(digify(d.upcoming_exams))
                 }
                 else {
                         pushNotification("n_error", data.message, 3000)
@@ -27,6 +27,311 @@ function getData() {
 
 getData()
 
+/* =========== Exam Section =============== */
+function getTerms() {
+    admin.calendar.termList({
+            onSuccess: (data) => {
+                //console.log(data)
+                let d = data.data
+                $("#term-filter").empty();
+                $("#term-filter2").empty();
+                for(let i in d) {
+                    let temp = `<option value="${d[i].id}">${d[i].title} - ${d[i].session.title}</option>`;
+                    $("#term-filter").append(temp)
+                    $("#term-filter2").append(temp)
+                }
+                getExams()
+            },
+            onError: (error) => console.error(error)
+    })
+}
+
+function getAllSubjects() {
+    let pagesize = 300;
+    
+    admin.subject.getSubjects({
+        params: {pagesize},
+        onSuccess: (data) => {
+                //console.log(data);
+                $('#sub-filter').empty().append(`<option value="" selected>All Subjects</option>`)
+                $('#sub-filter2').empty().append(`<option value="" selected>Select Subject</option>`)
+                if(data.status == 'success') {
+                    if(data.data) {
+                        let e = data.data;
+                        for(var i in e) {
+                            $('#sub-filter').append(`<option value="${e[i].id}">${e[i].title}</option>`)
+                            $('#sub-filter2').append(`<option value="${e[i].id}">${e[i].title}</option>`)
+                        }
+                    }
+                }
+        },
+        onError: (error) => {
+                console.error(error);
+                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+        }
+  })
+}
+
+function getClassrooms() {
+    $(".class-list2").empty()
+    admin.classroom.getClassrooms({
+        onSuccess: (data) => {
+                //console.log(data);
+                $('#class-filter').empty().append(`<option value="" selected>All Classes</option>`)
+                if(data.status == 'success') {
+                    if(data.data) {
+                        let e = data.data;
+                        for(var i in e) {
+                            $('#class-filter').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
+
+                            let temp2 = `
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" value="${e[i].id}" id="class_${e[i].id}" name="class_ids">
+                                <label class="custom-control-label" for="class_${e[i].id}">${e[i].level.title}</label>
+                            </div>`;
+                            $(".class-list2").append(temp2)
+                        }
+                    }
+                }
+        },
+        onError: (error) => {
+                console.error(error);
+                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+        }
+  })
+}
+getTerms()
+getAllSubjects()
+getClassrooms()
+
+
+
+function getExams() {
+    let page = $('#emp_page').val();
+    let pagesize = 20;
+    let class_id = $("#class-filter").val();
+    let subject_id = $("#sub-filter").val()
+    let term_id = $("#term-filter").val()
+    //let search = $('#emp_search3').val();
+
+    $('.exam-list').empty()
+    loader = `<tr>
+        <td colspan="6" class="">
+        <i class="fa fa-spinner rotate"></i>&nbsp;&nbsp;&nbsp;Processing...
+        </td>
+    </tr>`;
+    $('.exam-list').append(loader)
+
+    let params = {page, pagesize, class_id, term_id, subject_id}
+
+    //console.log(params)
+
+    admin.exam.getExams({
+        params: params,
+        onSuccess: (data) => {
+                //console.log(data);
+                $('.exam-list').empty()
+                if(data.status == 'success') {
+                    let pages = data.total_pages
+                    //let count = data.total_count;
+                    //$(".total_count").html(digify(count))
+                    //$('.emp-no').html(data['total_items'])
+                    $('#page_nos').empty();
+                    for(var i=0; i<pages; i++) {
+                        let classN = "";
+                        if((i+1) == data.page_number) {
+                            classN = "active"
+                        }
+                        if((i+1) > (data.page_number + 1) || (i+1) < (data.page_number - 1)) {
+                            continue
+                        }
+                        var temp = `<a href="#" class="page_no ${classN}" data-id="${i+1}">${i+1}</a>`;
+                        $('#page_nos').append(temp);
+                    }
+                    let current_p = $('#page_nos .page_no.active').data('id')
+                    //console.log(current_p + ":" + typeof(current_p))
+                    if((current_p - 1) > 0) {
+                        let prev = `<a href="#" class="page_no" data-id="${current_p - 1}"><i class="fa fa-angle-left"></i></a>`
+                        $('#page_nos').prepend(prev);
+                    }
+                    if((current_p + 1) <= data.total_pages) {
+                        let next = `<a href="#" class="page_no" data-id="${current_p + 1}"><i class="fa fa-angle-right"></i></a>`
+                        $('#page_nos').append(next);
+                    }
+                    $('#page_nos .page_no').click(function(e) {
+                        e.preventDefault();
+                        let page = $(this).data('id');
+                        $('#emp_page').val(page);
+                        getExams();
+                    })
+                    if(data.data) {
+                        let e = data.data;
+                        
+                        for(var i in e) {
+                            let classes = e[i].classrooms;
+                            let clas = ``
+                            for(let j in classes) {
+                                clas += `<li>${classes[j].level.title}</li>`
+                            }
+                            let temp = `<tr class="staff-row">
+                            <td>
+                            <div class="w-bold-x">${e[i].examId}</div>
+                            </td>
+                            <td>${e[i].course.title}</td>
+                            <td><ul style="padding-left:20px;">${clas}</ul></td>
+                            <td>${e[i].term.title}</td>
+                            <td class="w-center">${datify(e[i].date)}</td>
+                            <td>${e[i].duration} minutes</td>
+                            <td>
+                                ${e[i].active ? `
+                                <span class="success-btn">Active</span>` : `
+                                ${new Date(e[i].date) < new Date() ? `
+                                <span class="info-btn">Completed</span>` : `
+                                <span class="danger-btn">Upcoming</span>`}
+                                `}
+                            </td>
+                            <td class="w-text-gray h4">
+                                <a class="emp-que-link tooltipa" href="#" data-id="${e[i].id}">
+                                    <i class="fa fa-file-text"></i>&nbsp;&nbsp;&nbsp;
+                                    <span class="tooltiptext w-card">View Questions</span>
+                                </a>
+                                <a class="emp-act-link tooltipa" href="#" data-action="${e[i].active ? 'deactivate' : 'activate'}" data-id="${e[i].id}">
+                                    <i class="fa fa-${e[i].active ? 'times-circle' : 'check-circle'}"></i>&nbsp;&nbsp;&nbsp;
+                                    <span class="tooltiptext w-card">${e[i].active ? 'Deactivate' : 'Activate'}</span>
+                                </a>
+                                <a class="emp-score-link tooltipa" href="#" data-id="${e[i].id}">
+                                    <i class="fa fa-list-alt"></i>&nbsp;&nbsp;&nbsp;
+                                    <span class="tooltiptext w-card">Scores</span>
+                                </a>
+                                <a class="emp-det-link tooltipa" href="#" data-id="${e[i].id}">
+                                    <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
+                                    <span class="tooltiptext w-card">Edit Exam</span>
+                                </a>
+                                <a class="emp-del-link tooltipa" href="#" data-id="${e[i].id}">
+                                    <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
+                                    <span class="tooltiptext w-card">Delete Exam</span>
+                                </a>
+                            </td>
+                          </tr>`;
+                          $('.exam-list').append(temp)
+                        }
+                        $('.emp-det-link3').click(function(e) {
+                            e.preventDefault();
+                            let id = $(this).data('id');
+                            getSyllabus(id, "update")
+                        })
+                        $('.emp-del-link3').click(function(e) {
+                            e.preventDefault();
+                            let id = $(this).data('id');
+                            getSyllabus(id, "delete");
+                        })
+                        $('.emp-act-link').click(function(e) {
+                            e.preventDefault();
+                            let id = $(this).data('id');
+                            let action = $(this).data('action')
+                            examStatus(id, action)
+                        })
+                    }
+                    else {
+                        let temp = `<tr>
+                        <td colspan="8" class="w-text-gray w-italic">${data.message}</td>
+                        </tr>`;
+                        $('.exam-list').append(temp)
+                    }
+                }
+                else {
+                    pushNotification("n_error", data.message, 3000);
+                    let temp = `<tr>
+                        <td colspan="8" class="w-text-gray w-italic">${data['message']}</td>
+                        </tr>`;
+                        $('.exam-list').append(temp)
+                }
+        },
+        onError: (error) => {
+                console.error(error);
+                $('.exam-list').empty()
+                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+        }
+  })
+}
+
+function addExam() {
+    let class_ids = $("input[name='class_ids']:checked").map(function() {
+        return $(this).val();
+      }).get();
+    var term_id = $("#term-filter2").val();
+    let subject_id = $("#sub-filter2").val();
+    let date = $("#exam-date").val();
+    let duration = $("#exam-duration").val();
+
+    if(!subject_id) {
+        pushNotification("n_warning", "Kindly select a subject to continue", 3000);
+        return;
+    }
+    if(class_ids.length === 0) {
+        pushNotification("n_warning", "Kindly select at least one class to continue", 3000);
+        return;
+    }
+    if(!term_id) {
+        pushNotification("n_warning", "Kindly select a term to continue", 3000);
+        return;
+    }
+
+    let formData = {class_ids, term_id, subject_id, date, duration}
+
+    //console.log(formData)
+
+    showLoader("Adding Exam...")
+
+    admin.exam.addExam({
+        formData: formData,
+        onSuccess: (data) => {
+            //console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                $(".add-exam-form")[0].reset();
+                //$(".add-cur-con").removeClass('active')
+                getData();
+                getExams();
+            }
+            else {
+                pushNotification("n_error", data.message, 5000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+      })
+}
+
+function examStatus(exam_id, action) {
+    showLoader("Updating exam status...")
+    admin.exam.updateExamStatus({
+        formData: {exam_id, action},
+            onSuccess: (data) => {
+                if(data.status == 'success') {
+                    pushNotification('n_success', data.message, 3000)
+                }
+                else {
+                    pushNotification('n_error', data.message, 3000)
+                }
+                getExams()
+                getData()
+                hideLoader()
+            },
+            onError: (error) => {
+                console.error(error)
+                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+                hideLoader()
+            }
+    })
+}
+
+
+
 /* =========== Classroom Section =============== */
 function getLevels() {
     admin.classroom.getClassLevels({
@@ -40,7 +345,11 @@ function getLevels() {
                     $("#cl-level").append(temp)
                 }
             },
-            onError: (error) => console.error(error)
+            onError: (error) => {
+                console.error(error)
+                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+                hideLoader()
+            }
     })
 }
 function getStaff() {
@@ -62,95 +371,9 @@ function getStaff() {
             onError: (error) => console.error(error)
     })
 }
-getLevels()
-getStaff()
+//getLevels()
+//getStaff()
 
-function getClassrooms() {
-    $(".class-list").empty()
-    $(".class-list2").empty()
-    $("#class-filter").empty()
-    $("#class-filter").append(`<option selected value="">All Classes</option>`)
-    let loader = `<tr>
-        <td colspan="5" class="">
-        <i class="fa fa-spinner rotate"></i>&nbsp;&nbsp;&nbsp;Processing...
-        </td>
-    </tr>`;
-    $('.class-list').append(loader)
-    admin.classroom.getClassrooms({
-            onSuccess: (data) => {
-                $(".class-list").empty()
-                //console.log(data)
-                if(data.status == "success") {
-                    let d = data.data;
-                    for(let i in d) {
-                        $("#class-filter").append(`<option value="${d[i].id}">${d[i].level.title}</option>`)
-                        let temp = `
-                        <tr class="class-rows" data-id="${d[i].level.title}">
-                            <td>
-                            ${d[i].level.title}
-                            </td>
-                            <td>
-                            ${d[i].teacher?.firstName || '<i class="w-small w-text-gray">No staff assigned</i>'} ${d[i].teacher?.lastName || ''}
-                            </td>
-                            <td>
-                            ${d[i].level.category}
-                            </td>
-                            <td>
-                            ${d[i].data?.total_students || '0'} (${d[i].data?.female || '0'}F, ${d[i].data?.male || '0'}M)
-                            </td>
-                            <td class="w-text-gray h4">
-                                <a class="emp-det-link tooltipa" href="#" data-id="${d[i].id}">
-                                    <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Edit ${d[i].level.title} Class</span>
-                                </a>
-                                <a class="emp-del-link tooltipa" href="#" data-id="${d[i].id}">
-                                    <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Delete ${d[i].level.title} Class</span>
-                                </a>
-                            </td>
-                        </tr>`;
-                        $('.class-list').append(temp)
-
-                        let temp2 = `
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" value="${d[i].id}" id="class_${d[i].id}" name="class_ids">
-                            <label class="custom-control-label" for="class_${d[i].id}">${d[i].level.title}</label>
-                        </div>`;
-                        $(".class-list2").append(temp2)
-                    }
-                    $('.emp-det-link').click(function(e) {
-                        e.preventDefault();
-                        let id = $(this).data('id');
-                        getClassroom(id, "update")
-                    })
-                    $('.emp-del-link').click(function(e) {
-                        e.preventDefault();
-                        let id = $(this).data('id');
-                        getClassroom(id, "delete")
-                    })
-
-                }
-                else {
-                    let temp = `<tr>
-                        <td colspan="5">
-                        ${data.message}. <span class="w-text-red" onclick="getClassrooms()">click here </span>to try again
-                        </td>
-                    </tr>`;
-                    $('.class-list').html(temp)
-                }
-            },
-            onError: (error) => {
-                console.error(error)
-                let temp = `<tr>
-                        <td colspan="5">
-                        Error occurred.  Kindly check your internet connection and <span class="w-text-red" onclick="getClassrooms()">click here </span>to try again
-                        </td>
-                    </tr>`;
-                    $('.class-list').html(temp)
-            }
-    })
-}
-getClassrooms()
 
 
 function addClassroom() {
@@ -324,130 +547,12 @@ function getCourses() {
             onError: (error) => console.error(error)
     })
 }
-getCourses();
+//getCourses();
 
-function getSubjects() {
-    let page = $('#emp_page2').val();
-    let pagesize = 20;
-    let search = $('#emp_search2').val();
 
-    $('.subject-list').empty()
-    loader = `<tr>
-        <td colspan="4" class="">
-        <i class="fa fa-spinner rotate"></i>&nbsp;&nbsp;&nbsp;Processing...
-        </td>
-    </tr>`;
-    $('.subject-list').append(loader)
 
-    admin.subject.getSubjects({
-        params: {page, pagesize, search},
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.subject-list').empty()
-                selected_courses.length = 0;
-                if(data.status == 'success') {
-                    let pages = data.total_pages
-                    let count = data.total_count;
-                    //$(".total_count").html(digify(count))
-                    //$('.emp-no').html(data['total_items'])
-                    $('#page_nos1').empty();
-                    for(var i=0; i<pages; i++) {
-                        let classN = "";
-                        if((i+1) == data.page_number) {
-                            classN = "active"
-                        }
-                        if((i+1) > (data.page_number + 1) || (i+1) < (data.page_number - 1)) {
-                            continue
-                        }
-                        var temp = `<a href="#" class="page_no ${classN}" data-id="${i+1}">${i+1}</a>`;
-                        $('#page_nos1').append(temp);
-                    }
-                    let current_p = $('#page_nos1 .page_no.active').data('id')
-                    //console.log(current_p + ":" + typeof(current_p))
-                    if((current_p - 1) > 0) {
-                        let prev = `<a href="#" class="page_no" data-id="${current_p - 1}"><i class="fa fa-angle-left"></i></a>`
-                        $('#page_nos1').prepend(prev);
-                    }
-                    if((current_p + 1) <= data.total_pages) {
-                        let next = `<a href="#" class="page_no" data-id="${current_p + 1}"><i class="fa fa-angle-right"></i></a>`
-                        $('#page_nos1').append(next);
-                    }
-                    $('#page_nos1 .page_no').click(function(e) {
-                        e.preventDefault();
-                        let page = $(this).data('id');
-                        $('#emp_page2').val(page);
-                        getSubjects();
-                    })
-                    if(data.data) {
-                        let e = data.data;
-                        for(var i in e) {
-                            selected_courses.push(e[i].id)
-                            let temp = `<tr class="staff-row">
-                            <td>
-                            <div class="w-bold-x">${e[i].title}</div>
-                            </td>
-                            <td style="white-space:wrap; max-width:250px !important;">${e[i].metadata.teachers?.join(', ') || '<i class="w-small w-text-gray">No teacher assigned</i>'}</td>
-                            <td style="white-space:wrap; max-width:250px !important;">${e[i].metadata.classes?.join(', ') || '<i class="w-small w-text-gray">No classes added</i>'}</td>
-                            <td class="w-text-gray h4">
-                                <a class="emp-det-link2 tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Edit ${e[i].title}</span>
-                                </a>
-                                <a class="emp-del-link2 tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Delete ${e[i].title}</span>
-                                </a>
-                            </td>
-                          </tr>`;
-                          $('.subject-list').append(temp)
-                        }
-                        $('.emp-det-link2').click(function(e) {
-                            e.preventDefault();
-                            let id = $(this).data('id');
-                            getSubject(id, "update")
-                        })
-                        $('.emp-del-link2').click(function(e) {
-                            e.preventDefault();
-                            let id = $(this).data('id');
-                            getSubject(id, "delete");
-                        })
-                    }
-                    else {
-                        let temp = `<tr>
-                        <td colspan="4" class="w-text-gray w-italic">${data.message}</td>
-                        </tr>`;
-                        $('.subject-list').append(temp)
-                    }
-                }
-                else {
-                    pushNotification("n_error", data.message, 3000);
-                    let temp = `<tr>
-                        <td colspan="4" class="w-text-gray w-italic">${data['message']}</td>
-                        </tr>`;
-                        $('.subject-list').append(temp)
-                }
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.subject-list').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
-}
+//getSubjects()
 
-getSubjects()
-
-function debounce(func, delay) {
-    let timeout;
-    return(...args) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        func(...args);
-      }, delay);
-    }
-  }
-
-var delayedSearch = debounce(getSubjects, 500)
 
 function filterCourses() {
     let value = $("#sub-course").val().toLowerCase();
@@ -601,32 +706,8 @@ function deleteSubject() {
 }
 
 /* ============= Curriculum Section ================= */
-function getAllSubjects() {
-    let pagesize = 300;
-    $('#sub-filter').empty().append(`<option value="" selected>All Subjects</option>`)
-    $('#sub-filter2').empty().append(`<option value="" selected>Select Subject</option>`)
-    
-    admin.subject.getSubjects({
-        params: {pagesize},
-        onSuccess: (data) => {
-                //console.log(data);
-                if(data.status == 'success') {
-                    if(data.data) {
-                        let e = data.data;
-                        for(var i in e) {
-                            $('#sub-filter').append(`<option value="${e[i].id}">${e[i].title}</option>`)
-                            $('#sub-filter2').append(`<option value="${e[i].id}">${e[i].title}</option>`)
-                        }
-                    }
-                }
-        },
-        onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
-}
-getAllSubjects()
+
+//getAllSubjects()
 
 function getSyllabi() {
     let page = $('#emp_page3').val();
@@ -761,79 +842,9 @@ function getSyllabi() {
   })
 }
 
-getSyllabi()
+//getSyllabi()
 
-function addSyllabus() {
-    let class_ids = $("input[name='class_ids']:checked").map(function() {
-        return $(this).val();
-      }).get();
-    var term_ids = $("input[name='term_ids']:checked").map(function() {
-            return $(this).val();
-        }).get();
-    let subject_id = $("#sub-filter2").val();
 
-    if(!subject_id) {
-        pushNotification("n_warning", "Kindly select a subject to continue", 3000);
-        return;
-    }
-    if(class_ids.length === 0) {
-        pushNotification("n_warning", "Kindly select at least one class to continue", 3000);
-        return;
-    }
-    if(term_ids.length === 0) {
-        pushNotification("n_warning", "Kindly select at least one term to continue", 3000);
-        return;
-    }
-
-    let formData = {class_ids, term_ids, subject_id}
-
-    showLoader("Adding Curriculum...")
-
-    admin.subject.addSyllabus({
-        formData: formData,
-        onSuccess: (data) => {
-            //console.log(data)
-            if(data.status == "success") {
-                pushNotification("n_success", data.message, 5000);
-                $(".add-cur-form")[0].reset();
-                $(".add-cur-con").removeClass('active')
-                let ex = data.existing;
-                let er = data.errors;
-                if(ex.length > 0) {
-                    let temp =  `
-                    The following curriculum already exists for your school:
-                    <ul class="mt-3" style="padding-left: 20px;">
-                    ${ex.map((item, index) => {
-                        return `<li>Term ${item.curriculum.term} ${item.subject.title} for ${item.curriculum.classroom.title}</li>`
-                    })}
-                    </ul>`;
-                    pushNotification("n_info", temp, -1)
-                }
-                if(er.length > 0) {
-                    let temp2 =  `
-                    The following errors occurred while creating curriculum:
-                    <ul class="mt-3" style="padding-left: 20px;">
-                    ${er.map((item, index) => {
-                        return `<li>${item}</li>`
-                    })}
-                    </ul>`;
-                    pushNotification("n_error", temp2, -1)
-                }
-                getData();
-                getSyllabi();
-            }
-            else {
-                pushNotification("n_error", data.message, 3000)
-            }
-            hideLoader()
-        },
-        onError: (error) => {
-            console.error(error);
-            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-            hideLoader()
-        }
-      })
-}
 
 function getSyllabus(syllabus_id, action) {
     showLoader("Processing...")
@@ -1183,26 +1194,8 @@ initiateTiny()
 
 
 // ========== Event Listeners ======================
-$(".add-class-btn").click(function(e) {e.preventDefault();$(".add-class-con").addClass('active')})
-$(".add-sub-btn").click(function(e) {e.preventDefault();$(".add-sub-con").addClass('active')})
-$(".add-cur-btn").click(function(e) {e.preventDefault();$(".add-cur-con").addClass('active')})
-$(".add-top-btn").click(function(e) {e.preventDefault();$(".add-top-con").addClass('active')})
-$(".class-export-btn").click(function(e) {e.preventDefault();})
-$(".sub-export-btn").click(function(e) {e.preventDefault();})
-$(".cur-export-btn").click(function(e) {e.preventDefault();})
-
-$("#sub-course").on('input', function() {filterCourses()})
+$(".add-exam-btn").click(function(e) {e.preventDefault();$(".add-exam-con").addClass('active')})
+$(".exam-export-btn").click(function(e) {e.preventDefault();})
 
 
-$(".add-class-form").on('submit', function(e) {e.preventDefault();addClassroom()})
-$(".update-class-form").on('submit', function(e) {e.preventDefault();updateClassroom()})
-$(".delete-class-form").on('submit', function(e) {e.preventDefault();deleteClassroom()})
-$(".add-sub-form").on('submit', function(e) {e.preventDefault();addSubject()})
-$(".update-sub-form").on('submit', function(e) {e.preventDefault();updateSubject()})
-$(".delete-sub-form").on('submit', function(e) {e.preventDefault();deleteSubject()})
-$(".add-cur-form").on('submit', function(e) {e.preventDefault();addSyllabus()})
-$(".update-cur-form").on('submit', function(e) {e.preventDefault();updateSyllabus()})
-$(".delete-cur-form").on('submit', function(e) {e.preventDefault();deleteSyllabus()})
-$(".add-top-form").on('submit', function(e) {e.preventDefault();addTopic()})
-$(".update-top-form").on('submit', function(e) {e.preventDefault();updateTopic()})
-$(".delete-top-form").on('submit', function(e) {e.preventDefault();deleteTopic()})
+$(".add-exam-form").on('submit', function(e) {e.preventDefault();addExam()})

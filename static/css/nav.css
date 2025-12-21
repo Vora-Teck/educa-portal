@@ -5,6 +5,7 @@
 }
 :root {
   --primary-color: #0051A0;
+  --background-color: #f3f3f3;
   --secondary-color: #858034;
   --color-green: green;
   --form-max-width: 600px;
@@ -42,7 +43,7 @@ a {color: grey}
   border-radius: 10px;
 }
 .info-btn {
-  color: rgb(54, 207, 253) !important;
+  color: rgb(10, 146, 187) !important;
   background: rgba(54, 207, 253, 0.1) !important;
   width: fit-content;
   padding: 3px 10px;
@@ -82,11 +83,22 @@ a {color: grey}
 .side-btn {
   padding: 5px 10px;
   color: var(--primary-color);
-  font-size: 18px;
+  font-size: 15px;
   background: #fff;
   border-radius: 5px;
   outline: none;
   border: 1px solid var(--primary-color);
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.insight-btn {
+  padding: 5px 10px;
+  color: #fff;
+  font-size: 15px;
+  background: #d38219;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid #d38219;
   cursor: pointer;
   transition: all .2s ease;
 }
@@ -186,7 +198,7 @@ body {
    /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
    main {
     margin-left: var(--sidenav-width);
-    background: #eee;
+    background: var(--background-color);
     margin-bottom: 40px;
     padding: 15px;
     padding-top: calc(15px + var(--header-height));
@@ -208,6 +220,7 @@ body {
   .side-con.active {
     display: block;  
   }
+
   .opennav {
     display: none;
     font-size: 25px;
@@ -461,6 +474,10 @@ header {
 .menu-con-6 {
   background: #f7f0e7;
 }
+.menu-con-8 {background: #e7f7e8}
+.menu-con-9 {background: #f7e7e7}
+.menu-con-10 {background: #f7f4e7}
+.menu-con-11 {background: #e7eef7}
 
 .insight-con, .analysis-con {
   padding: 20px;
@@ -1118,6 +1135,16 @@ i.rotate {
   max-width: 400px;
 }
 
+.nav-con {
+  justify-content: flex-end;
+  padding: 0px;
+}
+.nav-con .modal-body {
+  max-height: 100vh;
+  height: 100vh;
+  border-radius: 0px;
+}
+
 
 .input-con {
   margin-bottom: 20px;
@@ -1201,6 +1228,14 @@ i.rotate {
   align-items: center;
   gap: 15px;
   border: none;
+}
+.tab-content {
+  position: relative !important;
+  padding: 0 !important;
+}
+.tab-pane {
+  max-width: 100% !important;
+  margin: 0 auto !important;
 }
 /* Tooltip container */
 .tooltipa {
@@ -2038,6 +2073,112 @@ ul.breadcrumb li a:hover {
 .l-table {
   max-height: calc(90vh - 300px) !important;
   overflow-y: auto;
+}
+
+.gallery-con {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1rem;
+}
+.gallery-con .gallery-item {
+  padding: 15px 20px;
+  flex: 1 1 220px;
+  max-width: 270px;
+  box-sizing: border-box;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 15px;
+  position: relative;
+  top: 0;
+  transition: all .3s ease-in-out;
+}
+
+.gallery-con .gallery-item:hover {
+  top: -10px;
+}
+
+.edit-gallery-btn {
+  position: absolute;;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+  margin: 10px 0;
+}
+.delete-gallery-btn {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  width: 40px;
+  height: 40px;
+  font-size: 25px;
+}
+
+.gallery-item img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  padding: 5px;
+  border: 1px solid #eee;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.switch-box:checked + .switch-slider {
+  background-color: #2196F3;
+}
+
+.switch-box:focus + .switch-slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+.switch-box:checked + .switch-slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }
 
 

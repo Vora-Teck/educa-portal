@@ -2177,8 +2177,39 @@ showSchoolInfo()
             </div>
           </div>
 
-          <div class="tab-pane container" id="rev_log"></div>
-          <div class="tab-pane container" id="exp_log"></div>
+          <div class="tab-pane container" id="rev_log">
+            <div class="table-responsive l-table">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Transaction</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody class="rev-table">
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="tab-pane container" id="exp_log">
+            <div class="table-responsive l-table">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Transaction</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody class="exp-table">
+
+                </tbody>
+              </table>
+            </div>
+          </div>
         
         </div>
         
@@ -2188,6 +2219,44 @@ showSchoolInfo()
           <button class="clear-btn canc-btn2">Cancel</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top small-con add-gallery-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Add Gallery</div>
+      </div>
+      <form class="modal-content mt-3 add-gallery-form">
+
+          <div class="input-con">
+            <label for="st-lname"><span class="w-text-red">*</span> Title</label>
+            <input type="text" id="gall-title">
+          </div>
+
+          <div class="input-con">
+            <label for="st-lname"><span class="w-text-red">*</span> Image</label>
+            
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="gall-img" accept="image/*">
+              <label class="custom-file-label" for="gall-img">Choose Image</label>
+            </div>
+            <div class="veri-img gall-img"></div>
+          </div>
+
+          <div class="input-con">
+            <label for="st-lname">Description</label>
+            <textarea id="gall-des" rows="6"></textarea>
+          </div>
+
+      
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn4">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
     </div>
   </div>
 
@@ -2316,7 +2385,7 @@ showSchoolInfo()
           <a class="menu-con-4 dash-menu-con">
             <div>
               <div class="h6 w-bold-x w-text-black">Total Income</div>
-              <div class="dash-no fee-item">&#8358;0</div>
+              <div class="dash-no rev-item">&#8358;0</div>
               <button class="dark-btn inc-btn"><i class="fa fa-eye"></i> View Logs</button>
             </div>
             <img src="/static/icons/_ui-bank-note-01.svg" alt="">
@@ -2327,7 +2396,7 @@ showSchoolInfo()
           <a class="menu-con-5 dash-menu-con">
             <div>
               <div class="h6 w-bold-x w-text-black">Total Expenses</div>
-              <div class="dash-no">&#8358;0</div>
+              <div class="dash-no exp-item">&#8358;0</div>
               <button class="light-btn exp-btn"><i class="fa fa-eye"></i> View Logs</button>
             </div>
             <img src="/static/icons/_ui-bank-note-01.svg" alt="">
@@ -2353,6 +2422,9 @@ showSchoolInfo()
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#menu4">Configurations</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu5">Gallery</a>
       </li>
     </ul>
     <!-- Tab panes -->
@@ -2737,6 +2809,93 @@ showSchoolInfo()
 
       <div class="tab-pane container" id="menu4">
         
+        <form class="w-padding w-white update-config-form">
+
+          <div class="row mt-2">
+            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col lg-12 col-xl-12">
+              <h3 class="mb-3">School Configurations</h3>
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-fname"><span class="w-text-red">*</span> Subscription Auto Renewal</label>
+              <div class="w-small w-text-gray"><i>
+                When enabled, your subscription plan is auto renewed and the amount is deducted from your wallet balance. In case of insufficient balance, the amount is 
+                deducted using your linked debit card. <br>
+                When disabled, you will be notified via email when your current subscription plan is about to expire.
+              </i></div>
+              <select id="config-renew">
+                <option value="true">Enabled</option>
+                <option value="false">Disabled</option>
+              </select>
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-fname"><span class="w-text-red">*</span> Auto Payroll</label>
+              <div class="w-small w-text-gray"><i>
+                When enabled, the <b>UNPAID</b> salary of <b>ACTIVE</b> staff for <b>THAT MONTH</b> will be paid automatically on the specified date (payroll date). The amount will be deducted from your wallet balance. In case of 
+                insufficient balance, the payments will not be made. <br>
+                When disabled, you will be notified via email on the specified date (payroll date) as a reminder to pay your staff salaries.
+              </i></div>
+              <select id="config-payroll">
+                <option value="true">Enabled</option>
+                <option value="false">Disabled</option>
+              </select>
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname"><span class="w-text-red">*</span> Payroll Date</label>
+              <div class="w-small w-text-gray"><i>
+                This is the specified payroll date for automatic payment (when enabled)/reminder (when disabled).
+                <b>Minimum value is <b>1</b> and maximum value is <b>28</b></b>
+              </i></div>
+              <input type="number" id="config-date" min="1" max="28" />
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname"><span class="w-text-red">*</span> No of Terms per Session</label>
+              <div class="w-small w-text-gray"><i>
+                This specifies the number of terms your school has in a session (default is <b>3</b> terms).<br>
+                This is to enable accurate personalization of students' results and report analysis.
+              </i></div>
+              <input type="number" id="config-term" min="1" max="4" />
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-lname"><span class="w-text-red">*</span> No of Weeks per Term</label>
+              <div class="w-small w-text-gray"><i>
+                This specifies the average number of academic weeks your school has in a term (default is <b>13</b> weeks). <br>
+                This is to enable accurate structure of students' and staffs' attendance.
+              </i></div>
+              <input type="number" id="config-week" min="1" max="20" />
+            </div>
+
+          </div>
+
+
+          <div class="row mt-2">
+            <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <input type="submit" value="Save Changes">
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+
+      <div class="tab-pane container" id="menu5">
+        
+        <div class="w-padding w-white">
+
+          
+
+          <div class="w-flex w-flex-between w-align-center" style="gap:15px;">
+            <h3 class="w-padding">Featured Images</h3>
+            <button class="dark-btn add-gallery-btn">Add Gallery&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+          </div>
+
+          <div class="mt-3 gallery-con w-round"></div>
+        </div>
+
       </div>
 
     </div>
@@ -2798,6 +2957,10 @@ showSchoolInfo()
     $(".canc-btn3").click(function(e) {
         e.preventDefault();
         $(".delete-card-con").removeClass('active')
+    })
+    $(".canc-btn4").click(function(e) {
+        e.preventDefault();
+        $(".add-gallery-con").removeClass('active')
     })
     
 
@@ -3627,6 +3790,694 @@ showSchoolInfo()
   </script>
 </template>
 
+<template id="exams">
+  <?use-template: "sidenav"?>
+
+  <!-- Curriculum Modals -->
+
+  <div class="side-con cur-side-con">
+    <div class="w-flex w-flex-between w-align-center">
+      <ul class="breadcrumb">
+        <li><a href="/#classes">Curriculum</a></li>
+        <li class="cur-name" data-id=""></li>
+      </ul>
+      <button class="close-side btn btn-danger">X&nbsp;Close</button>
+    </div>
+
+    <div class="side-opt-con" style="gap:15px;">
+      <button class="side-btn">Generate Topics with EdukaAI</button>
+    </div>
+
+    <div class="w-padding">
+      <div class="row mt-2 w-white">
+        <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+  
+          <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+            
+            <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+              <div class="h4 w-bold-x" style="color:orangered">Topic List</div>
+            </div>
+            
+  
+            <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+              <button class="dark-btn add-top-btn">Add Topic&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+              <button class="light-btn top-export-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
+            </div>
+  
+          </form>
+  
+          <div class="table-responsive">
+            <table class="table staff-table">
+              <thead>
+                <tr>
+                  <th>Week</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="top-list">
+              </tbody>
+            </table>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  
+  <div class="modal-con modal-top small-con add-exam-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Add New Exam</div>
+      </div>
+      <form class="modal-content mt-3 add-exam-form">
+
+        <div class="input-con">
+          <label for="st-lname">Select Term</label>
+          <select id="term-filter2">
+          </select>
+        </div>
+
+          <div class="input-con">
+            <label for="st-lname">Subject</label>
+            <select id="sub-filter2">
+            </select>
+          </div>
+
+          <div class="input-con">
+            <label class="w-bold-x" for="st-lname">Select Classes</label>
+            <div class="class-list2 mb-2 mt-2 w-flex w-flex-start w-align-center w-flex-wrap" style="gap:20px"></div>
+          </div>
+
+          <div class="input-con">
+            <label for="st-lname">Exam Date</label>
+            <input type="date" id="exam-date" />
+          </div>
+
+          <div class="input-con">
+            <label for="st-lname">Exam Duration (in minutes)</label>
+            <input type="number" id="exam-duration" />
+          </div>
+        
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top small-con update-exam-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Update Exam: <span class="cur-name"></span></div>
+      </div>
+      <form class="modal-content mt-3 update-exam-form">
+
+          <div class="input-con">
+            <label for="st-lname">Subject Teacher</label>
+            <select id="cur-staff">
+              <option value="" selected></option>
+            </select>
+          </div>
+
+          <input type="hidden" class="cur-id">
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn2">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con delete-exam-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-red w-bold-x">
+          <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
+          Delete Exam: <b class="cur-name"></b>
+        </div>
+      </div>
+      <form class="modal-content delete-cur-form">
+        
+        <h4>This is a destructive action and cannot be reversed. All records associated with the curriculum 
+          will be erased permanently. Kindly note that the following will 
+          be affected:
+        </h4>
+        <ul style="padding-left:20px;">
+          <li>All topics/materials associated with the curriculum will be permanently erased.</li>
+        </ul>
+        
+        <div class="input-con">
+          <label for="">Enter your Password to proceed:</label>
+          <input type="password" id="cur-delete-password" required />
+        </div>
+
+        <input type="hidden" class="cur-id">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn3">Cancel</button>
+          <input type="submit" class="w-red" value="Delete Curriculum">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <main class="">
+    <?use-template: "header"?>
+
+    <div class="dash-menu">
+      <div class="dash-box w-white w-round">
+        
+        <div>
+          <div class="menu-con-7 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/Frame 17.svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Total Exams</div>
+            </div>
+            <div class="dash-no class-no">0</div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="menu-con-2 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/Frame 17 (1).svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Active Exams</div>
+            </div>
+            <div class="dash-no sub-no">0</div>
+          </div>
+          
+        </div>
+        
+        <div>
+          <div class="menu-con-4 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/Frame 17 (2).svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Upcoming Exams</div>
+            </div>
+            <div class="dash-no mat-no">0</div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs class-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#home">Exams</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu1">Results</a>
+      </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+      <div class="tab-pane active container" id="home">
+        
+        <div class="w-padding">
+          <div class="row mt-2 w-white">
+            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    
+              <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+                
+                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+                  <div class="h4 w-bold-x" style="color:orangered">Exam List</div>
+                 
+                </div>
+                
+    
+                <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+                  <button class="dark-btn add-exam-btn">Add Exam&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+                  
+                </div>
+    
+                <input type="hidden" id="emp_page" value="1" />
+              </form>
+
+              <div class="mb-2 mt-3 w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;">
+                <div><i class="fa fa-filter"></i> Filters:</div>
+
+                <select id="term-filter" class="sub-filter form-control mb-2" style="max-width:250px;">
+                  
+                </select>
+                
+                <select id="sub-filter" class="sub-filter form-control mb-2" style="max-width:180px;">
+                  <option value="">All Subjects</option>
+                </select>
+
+                <select id="class-filter" class="sub-filter form-control mb-2" style="max-width:120px;">
+                  <option value="">All Classes</option>
+                </select>
+
+              </div>
+    
+              <div class="table-responsive">
+                <table class="table staff-table">
+                  <thead>
+                    <tr>
+                      <th>Exam ID</th>
+                      <th>Subject</th>
+                      <th>Class(es)</th>
+                      <th>Term</th>
+                      <th>Date</th>
+                      <th>Duration</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="exam-list">
+                  </tbody>
+                </table>
+              </div>
+    
+              <div class="page_nos mt-3" id="page_nos">
+                <a href="#" class="page_no"><i class="fa fa-angle-left"></i></a>
+    
+                <a href="#" class="page_no"><i class="fa fa-angle-right"></i></a>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tab-pane container" id="menu1">
+        <div class="w-padding">
+          
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+  
+  <script src="/static/js/exam.js"></script>
+  <script>
+    $('.exam-act').addClass('active')
+    $(".page-name").text("Exams & Results");
+
+    $(".close-side").click(function() {
+      $(this).parent('div').parent('.side-con').removeClass('active')
+    })
+
+    $(".custom-file-input").on("change", function() {
+      var file = $(this)[0].files[0];
+      var fileName = file.name;
+      var fileSize = file.size;
+      if(fileSize > (1024 * 1024)) {
+        fileSize = `${(fileSize / (1024 * 1024)).toFixed(2)}MB`
+      }
+      else if(fileSize > 1024) {
+        fileSize = `${(fileSize / 1024).toFixed(2)}KB`
+      } else {
+        fileSize = `${fileSize}B`
+      }
+      $(this).siblings(".custom-file-label").addClass("selected").html(`${fileName} (${fileSize})`);
+    });
+
+
+    $(".sub-filter").on('change', function() {
+      $('#emp_page').val(1);
+      getExams()
+    })
+    $(".term-filter").on('change', function() {
+      $('#emp_page').val(1);
+      getExams()
+    })
+    $(".class-filter").on('change', function() {
+      $('#emp_page').val(1);
+      getExams()
+    })
+
+    $(".close-side").click(function() {
+      $(this).parent('div').parent('.side-con').removeClass('active')
+    })
+
+    $(".close-modal").click(function() {
+      $(this).parent('.modal-body').parent('.modal-con').removeClass('active')
+    })
+    
+    $(".canc-btn").click(function(e) {
+        e.preventDefault();
+        $(".add-exam-con").removeClass('active')
+    })
+    $(".canc-btn2").click(function(e) {
+        e.preventDefault();
+        $(".update-exam-con").removeClass('active')
+    })
+    $(".canc-btn3").click(function(e) {
+        e.preventDefault();
+        $(".delete-exam-con").removeClass('active')
+    })
+    
+
+    $('#emp_search2').on('input', function(e) {
+      $('#emp_page2').val(1);
+      delayedSearch(e.target.value)
+    })
+
+  </script>
+</template>
+
+<template id="attendance">
+  <?use-template: "sidenav"?>
+
+  <!-- Curriculum Modals -->
+
+  <div class="modal-con nav-con insight-side-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h4 w-bold-xx">
+          <span class="cla-name">JSS 1</span>  AI Insights
+        </div>
+      </div>
+
+      <div class="insight-con" id="insight-list">
+        <div class="w-flex w-flex-between w-align-center">
+          <div class="h4 w-bold-x w-text-white">
+            <img src="/static/icons/_ui-stars-02.svg" alt="">&nbsp;&nbsp;AI Insights</div>
+          
+        </div>
+
+        <div class="mt-3 w-flex w-flex-start w-align-center w-text-white w-flex-wrap" style="gap:15px;">
+          <div>
+            <i class="fa fa-circle w-text-green w-border w-circle"></i>&nbsp;&nbsp;Improvement
+          </div>
+          <div>
+            <i class="fa fa-circle w-text-blue w-border w-circle"></i>&nbsp;&nbsp;Satisfactory
+          </div>
+          <div>
+            <i class="fa fa-circle w-text-orange w-border w-circle"></i>&nbsp;&nbsp;Need Attention
+          </div>
+          <div>
+            <i class="fa fa-circle w-text-red w-border w-circle"></i>&nbsp;&nbsp;Critical
+          </div>
+        </div>
+
+        <ul class="insight-list">
+          <li>
+            <i class="fa fa-circle w-text-orange"></i>
+            <span>Mr John Doe has recorded attendance inconsistently in 3 classes this month.</span>
+          </li>
+          <li>
+            <i class="fa fa-circle w-text-blue"></i>
+            <span>Ms Sarah's students scored 20% higher in English this term compared to last.</span>
+          </li>
+          <li>
+            <i class="fa fa-circle w-text-green"></i>
+            <span>Ms Sarah's students scored 20% higher in English this term compared to last.</span>
+          </li>
+          <li>
+            <i class="fa fa-circle w-text-red"></i>
+            <span>Ms Sarah's students scored 20% higher in English this term compared to last.</span>
+          </li>
+          <li>
+            <i class="fa fa-circle w-text-red"></i>
+            <span>Ms Sarah's students scored 20% higher in English this term compared to last.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="modal-con modal-top mark-att-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Attendance For <span class="curr-date"></span></div>
+      </div>
+      <form class="modal-content mt-3 mark-att-form">
+
+        <div class="table-responsive">
+          <table class="table staff-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Full Name</th>
+                <th>Student ID</th>
+                <th>Morning</th>
+                <th>Afternoon</th>
+              </tr>
+            </thead>
+            <tbody class="curr-att-list">
+            </tbody>
+          </table>
+        </div>
+        
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn">Cancel</button>
+          <input type="submit" value="Save Attendance">
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <main class="">
+    <?use-template: "header"?>
+
+    <div class="dash-menu">
+      <div class="dash-box w-white w-round">
+        
+        <div>
+          <div class="menu-con-8 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/att_1.svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Present</div>
+            </div>
+            <div>
+              <div class="dash-no mb-3">0</div>
+              <div class="h5 w-text-green w-bold-x mt-3">78%</div>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="menu-con-9 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/att_2.svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Absent</div>
+            </div>
+            <div>
+              <div class="dash-no mb-3">0</div>
+              <div class="h5 w-text-red w-bold-x mt-3">12%</div>
+            </div>
+          </div>
+          
+        </div>
+        
+        <div>
+          <div class="menu-con-10 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/att_3.svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Late</div>
+            </div>
+            <div>
+              <div class="dash-no mb-3">0</div>
+              <div class="h5 w-text-green w-bold-x mt-3">12%</div>
+            </div>
+            
+          </div>
+        </div>
+
+        <div>
+          <div class="menu-con-11 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/att_4.svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Overall Attendance Rate</div>
+            </div>
+            <div class="dash-no">0%</div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Nav tabs -->
+    <div class="class-tabs w-flex w-flex-between w-align-center w-flex-wrap">
+      <div class="h5 w-bold-x" style="white-space: nowrap;">Class Register</div>
+
+      <div class="w-flex w-flex-end w-align-center w-flex-wrap" style="gap:15px;">
+        
+        <label for="">Class</label>
+        <select id="class-filter" class="sub-filter form-control w-indigo" style="max-width:120px;">
+          
+        </select>
+
+        <label for="">Session</label>
+        <select id="session-filter" class="side-btn form-control" style="max-width:180px;font-size:15px;">
+          
+        </select>
+        
+        <button class="side-btn" style="font-size:15px">Attendance Report <i class="fa fa-file-pdf-o"></i></button>
+
+        <button class="insight-btn">AI Insights <i class="fa fa-star"></i></button>
+        
+
+      </div>
+    </div>
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+      <div class="tab-pane active container" id="home">
+        
+        <div class="w-padding">
+          <div class="row mt-2 w-white">
+            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    
+              <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+                
+                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:auto;">
+                  <div class="h4 w-bold-x curr-class" style="color:orangered"></div>
+                  <div class="input-group" style="margin:0;max-width:200px;">
+                    <input type="text" class="form-control" placeholder="Search by name, ID" id="emp_search" value="" />
+                    <div class="input-group-append">
+                      <span class="input-group-text" style="background:none;"><i class="fa fa-search"></i></span>
+                    </div>
+                  </div>
+                </div>
+                
+    
+                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:auto;">
+                  <div>Term</div>
+
+                  <select id="term-filter" class="form-control" style="width:120px;">
+                    
+                  </select>
+                  
+                  <div>Week</div>
+
+                  <select id="week-filter" class="form-control" style="width:100px;">
+                    
+                  </select>
+                  <button class="dark-btn mark-att-btn" style="white-space: nowrap;">Mark Attendance&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+                  
+                </div>
+    
+                <input type="hidden" id="emp_page" value="1" />
+              </form>
+
+              <div class="mb-2 mt-3 w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;">
+                
+
+                <div class="h5 w-block w-bold-x att-dates" style="text-align:right"></div>
+                
+
+              </div>
+    
+              <div class="table-responsive">
+                <table class="table staff-table">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Full Name</th>
+                      <th>Student ID</th>
+                      <th>Monday</th>
+                      <th>Tuesday</th>
+                      <th>Wednesday</th>
+                      <th>Thursday</th>
+                      <th>Friday</th>
+                    </tr>
+                  </thead>
+                  <tbody class="att-list">
+                  </tbody>
+                </table>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+  
+  <script src="/static/js/attendance.js"></script>
+  <script>
+    $('.attend-act').addClass('active')
+    $(".page-name").text("Attendance Management");
+
+    $(".close-side").click(function() {
+      $(this).parent('div').parent('.side-con').removeClass('active')
+    })
+
+    $(".custom-file-input").on("change", function() {
+      var file = $(this)[0].files[0];
+      var fileName = file.name;
+      var fileSize = file.size;
+      if(fileSize > (1024 * 1024)) {
+        fileSize = `${(fileSize / (1024 * 1024)).toFixed(2)}MB`
+      }
+      else if(fileSize > 1024) {
+        fileSize = `${(fileSize / 1024).toFixed(2)}KB`
+      } else {
+        fileSize = `${fileSize}B`
+      }
+      $(this).siblings(".custom-file-label").addClass("selected").html(`${fileName} (${fileSize})`);
+    });
+
+
+    $("#week-filter").on('change', function() {
+      getAttendance()
+    })
+    $("#session-filter").on('change', function() {
+      getAttendance()
+    })
+    $("#term-filter").on('change', function() {
+      getAttendance()
+    })
+    $("#class-filter").on('change', function() {
+      getAttendance()
+    })
+
+    $(".close-side").click(function() {
+      $(this).parent('div').parent('.side-con').removeClass('active')
+    })
+
+    $(".close-modal").click(function() {
+      $(this).parent('.modal-body').parent('.modal-con').removeClass('active')
+    })
+    
+    $(".canc-btn").click(function(e) {
+        e.preventDefault();
+        $(".mark-att-con").removeClass('active')
+    })
+    
+
+    $('#emp_search').on('input', function(e) {
+      let val = $(this).val().toLowerCase();
+      $(".att-row").each((index, elem) => {
+        let std_n = $(elem).data('name');
+        if(std_n.includes(val)) {
+          $(elem).show();
+        }
+        else {
+          $(elem).hide()
+        }
+      })
+    })
+
+  </script>
+</template>
+
 <!-- for subscription -->
 <template id="subscription">
   <?use-template: "sidenav"?>
@@ -3884,6 +4735,12 @@ showSchoolInfo()
 <template route="/classes">
   <?use-template: "classes"?>
 </template>
+<template route="/exams">
+  <?use-template: "exams"?>
+</template>
+<template route="/attendance">
+  <?use-template: "attendance"?>
+</template>
 <template route="/subscription">
   <?use-template: "subscription"?>
 </template>
@@ -3908,7 +4765,7 @@ showSchoolInfo()
 <script src="/static/js/jquery.min.js"></script>
 <script src="/static/js/popper.min.js"></script>
     <script src="/static/module/swif.js"></script>
-    <script src="/static/module/educa-sdk.js"></script>
+    <script src="/static/module/educa-admin-sdk.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/owl.carousel.min.js"></script>
     <script src="/static/js/toastify.min.js"></script>

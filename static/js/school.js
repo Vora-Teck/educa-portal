@@ -1,5 +1,3 @@
-//showLoader("Loading Data...")
-
 
 async function getSchoolInfo() {
     admin.school.schoolInfo({
@@ -34,8 +32,13 @@ async function schoolConfig() {
     admin.school.config({
             onSuccess: (data) => {
                 //console.log(data)
-                //let d = data.data
+                let d = data.data
                 
+                $("#config-renew").val(d.auto_renewal.toString());
+                $("#config-payroll").val(d.auto_payroll.toString());
+                $("#config-date").val(d.payroll_date);
+                $("#config-term").val(d.term_per_session);
+                $("#config-week").val(d.weeks_per_term);
             },
             onError: (error) => {
                 console.error(error);
@@ -51,6 +54,8 @@ async function schoolAccount() {
                 //console.log(data)
                 let d = data.data
                 $(".bal-item").html(`&#8358;${shortify(d.walletBalance, true)}`)
+                $(".rev-item").html(`&#8358;${shortify(d.total_revenue, true)}`)
+                $(".exp-item").html(`&#8358;${shortify(d.total_expenses, true)}`)
                 
             },
             onError: (error) => {
@@ -59,20 +64,23 @@ async function schoolAccount() {
                 //hideLoader()
             }
     })
+
 }
 
 async function walletLog() {
     showLoader("Fetching logs...")
     admin.wallet.log({
             onSuccess: (data) => {
-                console.log(data)
+                //console.log(data)
                 if(data.status == "success") {
                     let d = data.data;
                     let logs = d.log.reverse();
-                    let revenue = d.revenue;
-                    let expense = d.expense;
+                    let revs = d.revenue;
+                    let exps = d.expense;
 
                     $(".log-table").empty();
+                    $(".rev-table").empty();
+                    $(".exptable").empty();
                     for(let i in logs) {
                         let log_types = {
                             incoming: "success-btn", outgoing: "danger-btn"
@@ -88,6 +96,27 @@ async function walletLog() {
                         </tr>`;
                         $(".log-table").append(temp)
                     }
+
+                    for(let j in revs) {
+                        let temp = `
+                        <tr>
+                        <td>${revs[j].transaction.reference}</td>
+                        <td>&#8358;${digify(revs[j].amount)}</td>
+                        <td style="white-space:nowrap">${datify(revs[j].date, true)}</td>
+                        </tr>`;
+                        $(".rev-table").append(temp)
+                    }
+
+                    for(let k in exps) {
+                        let temp = `
+                        <tr>
+                        <td>${exps[k].transaction.reference}</td>
+                        <td>&#8358;${digify(exps[k].amount)}</td>
+                        <td style="white-space:nowrap">${datify(exps[k].date, true)}</td>
+                        </tr>`;
+                        $(".exp-table").append(temp)
+                    }
+
                     $(".log-con").addClass("active")
                 }
                 else {
@@ -221,6 +250,47 @@ async function getDomain() {
     })
 }
 
+async function getGallery() {
+    let loader_process = `<div class="loader mb-3" style="margin:auto;"></div>`;
+    $(".gallery-con").empty().html(loader_process)
+    admin.school.gallery({
+            onSuccess: (data) => {
+                $(".gallery-con").empty()
+                //console.log(data)
+                if(data.status == "success") {
+                    let d = data.data;
+                    if(d.length > 0) {
+                        for(let i in d) {
+                            var temp = `
+                            <div class="gallery-item w-card">
+                            <button class="danger-btn delete-gallery-btn">x</button>
+                                <img src="${base_url}${d[i].image}" alt="">
+                                <div>
+                                    <h4>${d[i].title}</h4>
+                                    <p class="w-text-gray" style="padding-bottom:30px;">${d[i].description}</p>
+                                </div>
+                                <button class="light-btn edit-gallery-btn">Update&nbsp;&nbsp;<i class="fa fa-edit"></i></button>
+                            </div>`;
+                            $(".gallery-con").append(temp)
+                        }
+                    }
+                    else {
+                        $(".gallery-con").empty().html(`<p class="w-text-gray">No gallery created yet.</p>`)
+                    }
+                }
+                else {
+                    $(".gallery-con").empty().html(`<p class="w-text-gray">${data.message}</p>`)
+                    pushNotification("n_error", data.message, 3000)
+                }
+            },
+            onError: (error) => {
+                console.error(error);
+                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+                //hideLoader()
+            }
+    })
+}
+
 async function getCard() {
     admin.card.get({
             onSuccess: (data) => {
@@ -325,13 +395,14 @@ async function getAccount() {
 }
 
 async function setup() {
+    showLoader("Loading data...")
     try {
-        showLoader("Loading data...")
         await getSchoolInfo()
         await schoolConfig()
         await schoolAccount()
         await schoolDocument()
         await getDomain()
+        await getGallery()
         await getCard()
         await getAccount()
     }
@@ -604,6 +675,40 @@ function updateSchoolInfo(stat) {
             }
             hideLoader()
             getSchoolInfo()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
+
+}
+
+function updateConfig() {
+    let auto_payroll = $("#config-payroll").val();
+    auto_payroll = (auto_payroll == "true");
+    let auto_renew = $("#config-renew").val();
+    auto_renew = (auto_renew == "true");
+    let payroll_date = $("#config-date").val();
+    let term_per_session = $("#config-term").val();
+    let weeks_per_term = $("#config-week").val()
+
+    formData = {auto_payroll, auto_renew, payroll_date, term_per_session, weeks_per_term};
+    
+    showLoader("Updating configurations...")
+
+    admin.school.updateConfig({
+        formData: formData,
+        onSuccess: (data) => {
+            if(data.status == 'success') {
+                pushNotification("n_success", data.message, 5000)
+            }
+            else {
+                pushNotification("n_error", data.message, 5000)
+            }
+            hideLoader()
+            schoolConfig()
         },
         onError: (error) => {
             console.error(error);
@@ -909,6 +1014,49 @@ function addAccount() {
     })
 }
 
+function addGallery() {
+    let title = $('#gall-title').val()
+    let description = $('#gall-des').val()
+    let image = $('#gall-img')[0].files[0];
+
+    if(!title) {
+        pushNotification("n_warning", "Kindly enter a title for the gallery", 5000);
+        return;
+    }
+
+    if(!image) {
+        pushNotification("n_warning", "Kindly select an image to continue", 5000);
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('image', image)
+
+    showLoader("Adding gallery...")
+    admin.school.addGallery({
+        formData: formData,
+            onSuccess: (data) => {
+                console.log(data)
+                if(data.status == 'success') {
+                    $(".add-gallery-form")[0].reset();
+                    pushNotification("n_success", data.message, 5000)
+                }
+                else {
+                    pushNotification("n_error", data.message, 5000)
+                }
+                hideLoader();
+                getGallery();
+            },
+            onError: (error) => {
+                console.error(error);
+                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+                hideLoader()
+            }
+    })
+}
+
 
 
 
@@ -923,15 +1071,18 @@ $(".fund-btn").click(() => {$(".fund-con").addClass("active")})
 $(".delete-card-btn").click(() => {$(".delete-card-con").addClass("active")})
 $(".withdraw-btn").click(() => {$(".withdraw-con").addClass("active");initiateWithdrawalForm()})
 $(".update-bank-btn").click(function() {getBanks();$(".add-bank-con").addClass('active')})
+$(".add-gallery-btn").click(function() {$(".add-gallery-con").addClass('active')})
 
 
 $("#fund-amount").on('input', function() {calculate_charges()})
 
 
 $(".fund-form").on('submit', async (e) => {e.preventDefault();await fundWallet()})
+$(".update-config-form").submit(function(e) {e.preventDefault();updateConfig()})
 $(".update-school-form").submit(function(e) {e.preventDefault();updateSchoolInfo("info")})
 $(".website-form").submit(function(e) {e.preventDefault();updateSchoolInfo("web")})
 $(".add-card-form").submit(function(e) {e.preventDefault();addCard()})
 $(".delete-card-form").submit(function(e) {e.preventDefault();deleteCard()})
 $("#add-bank-form").submit(function(e) {e.preventDefault(); getBanks();$(".add-bank-con").addClass('active')})
 $(".add-bank-form").submit(function(e) {e.preventDefault();addAccount()})
+$(".add-gallery-form").submit(function(e) {e.preventDefault();addGallery()})
