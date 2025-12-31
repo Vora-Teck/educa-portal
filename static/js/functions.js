@@ -67,6 +67,18 @@ function datify(date=null, time=false) {
   }
 }
 
+function timify(time) {
+  if(time) {
+    let [hours, mins] = time.split(':')
+    hours = Number(hours);
+    let position = (hours >= 12) ? 'PM' : 'AM';
+    hours = (hours > 12) ? hours - 12 : hours;
+    hours = hours.toString().padStart(2, '0')
+    mins = mins.padStart(2, '0')
+    return `${hours}:${mins}${position}`
+  }
+}
+
 function monthify(date) {
   let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
     'August', 'September', 'October', 'November', 'December'

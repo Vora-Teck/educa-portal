@@ -1,5 +1,8 @@
 showLoader("Loading Data...")
 
+var subjects_list = []
+var subjects_map = {'': 'Break'}
+
 function getData() {
 
     admin.school.schoolData({
@@ -68,8 +71,8 @@ getStaff()
 function getClassrooms() {
     $(".class-list").empty()
     $(".class-list2").empty()
-    $("#class-filter").empty()
-    $("#class-filter").append(`<option selected value="">All Classes</option>`)
+    $("#class-filter").empty().append(`<option selected value="">All Classes</option>`)
+    $("#class-filter2").empty().append(`<option selected value="">Select Class</option>`)
     let loader = `<tr>
         <td colspan="5" class="">
         <i class="fa fa-spinner rotate"></i>&nbsp;&nbsp;&nbsp;Processing...
@@ -84,6 +87,7 @@ function getClassrooms() {
                     let d = data.data;
                     for(let i in d) {
                         $("#class-filter").append(`<option value="${d[i].id}">${d[i].level.title}</option>`)
+                        $("#class-filter2").append(`<option value="${d[i].id}">${d[i].level.title}</option>`)
                         let temp = `
                         <tr class="class-rows" data-id="${d[i].level.title}">
                             <td>
@@ -128,7 +132,7 @@ function getClassrooms() {
                         let id = $(this).data('id');
                         getClassroom(id, "delete")
                     })
-
+                    //getTimetable()
                 }
                 else {
                     let temp = `<tr>
@@ -613,7 +617,9 @@ function getAllSubjects() {
                 if(data.status == 'success') {
                     if(data.data) {
                         let e = data.data;
+                        subjects_list = e;
                         for(var i in e) {
+                            subjects_map[`${e[i].id}`] = e[i].title
                             $('#sub-filter').append(`<option value="${e[i].id}">${e[i].title}</option>`)
                             $('#sub-filter2').append(`<option value="${e[i].id}">${e[i].title}</option>`)
                         }
@@ -735,7 +741,9 @@ function getSyllabi() {
                         $('.emp-down-link3').click(function(e) {
                             e.preventDefault();
                             let id = $(this).data('id');
-                            downloadSyllabus(id);
+                            $(".cur-side-con").addClass("active")
+                            getTopics(id)
+                            $(".export-top-con").addClass("active")
                         })
                     }
                     else {
@@ -1176,6 +1184,361 @@ function deleteTopic() {
     })
 }
 
+function exportTopics() {
+    let syllabus_id = $(".cur-name").data('id')
+    var columns = $("input[name='top-columns']:checked").map(function() {
+              return $(this).val();
+            }).get();
+    let format = $("#format").val();
+  
+    let formData = {syllabus_id, columns,format}
+    //console.log(formData)
+  
+    showLoader(`Exporting Curriculum to ${format}...`)
+  
+      admin.subject.downloadSyllabus({
+          formData: formData,
+          onSuccess: (data) => {
+              //console.log(data)
+              if(data.status == "success") {
+                  d = data.data;
+                  pushNotification("n_success", data.message, 5000);
+                  downloadFile(`${base_url}${d.file_url}`,d.file_name)
+                  $(".export-top-form")[0].reset();
+                  $(".export-top-con").removeClass('active')
+              }
+              else {
+                  pushNotification("n_error", data.message, 3000)
+              }
+              hideLoader()
+          },
+          onError: (error) => {
+              console.error(error);
+              pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+              hideLoader()
+          }
+        })
+  
+}
+
+/* =========== Timetable =============== */
+function setup() {
+    let info = localStorage.getItem("educa_school_info");
+                    if(info) {
+                        info = JSON.parse(info)
+                        //console.log(info)
+                        let logo = info['logo']
+                        let tit = info['name']
+                        $(".time-title").html(tit);
+                        $(".time-logo").attr('src', logo)
+                    }
+}
+setup()
+
+function getTimetable() {
+    let class_id = $("#class-filter2").val()
+
+    let loader_process = `<div class="loader mb-3" style="margin:auto;"></div>`;
+
+    $(".time-table-body").empty().html(loader_process)
+    $(".time-table-head").empty()
+    $(".time-name").html(``)
+
+    $(".time-btns").addClass("w-hide")
+
+    if(!class_id) {
+        $(".time-table-body").empty();
+        pushNotification("n_info", "Kindly select a class", 5000);
+        return;
+    }
+
+    //showLoader("Fetching timetable...")
+
+    admin.timetable.getTimetable({
+        params: {class_id},
+            onSuccess: (data) => {
+                $(".time-table-body").empty()
+                //console.log(data)
+                if(data.status == "success") {
+                    let d = data.data;
+                    $(".time-name").html(`${d.classroom.level.title} Timetable`)
+
+                    let periods = d.period;
+                    let mon = d.monday;
+                    let tue = d.tuesday;
+                    let wed = d.wednesday;
+                    let thu = d.thursday;
+                    let fri = d.friday;
+
+                    $(".time-table-head").append(`<th></th>`)
+                    for(let i in periods) {
+                        var temp = `<th style="text-align:center;">${timify(periods[i].start)}<br>-<br>${timify(periods[i].end)}</th>`;
+                        $(".time-table-head").append(temp)
+                    }
+
+                    let mon_row = `<td>Mon</td>`;
+                    let tue_row = `<td>Tue</td>`;
+                    let wed_row = `<td>Wed</td>`;
+                    let thu_row = `<td>Thur</td>`;
+                    let fri_row = `<td>Fri</td>`;
+
+                    for(let a in mon) {
+                        mon_row += `<td>${mon[a].subject}</td>`
+                    }
+                    $(".time-table-body").append(`<tr>${mon_row}</tr>`)
+
+                    for(let a in tue) {
+                        tue_row += `<td>${tue[a].subject}</td>`
+                    }
+                    $(".time-table-body").append(`<tr>${tue_row}</tr>`)
+
+                    for(let a in wed) {
+                        wed_row += `<td>${wed[a].subject}</td>`
+                    }
+                    $(".time-table-body").append(`<tr>${wed_row}</tr>`)
+
+                    for(let a in thu) {
+                        thu_row += `<td>${thu[a].subject}</td>`
+                    }
+                    $(".time-table-body").append(`<tr>${thu_row}</tr>`)
+
+                    for(let a in fri) {
+                        fri_row += `<td>${fri[a].subject}</td>`
+                    }
+                    $(".time-table-body").append(`<tr>${fri_row}</tr>`)
+                    $(".time-btns").removeClass("w-hide")
+                }
+                else {
+                    pushNotification("n_error", data.message, 3000)
+                }
+            },
+            onError: (error) => {
+                console.error(error)
+                $(".time-table-body").empty()
+                pushNotification("n_error", "Internet connection error!", 3000)
+            }
+    })
+}
+
+function getTimetab() {
+    $(".update-time-con").addClass('active')
+
+    let class_id = $("#class-filter2").val()
+
+    $(".time-form-head").empty()
+    $(".time-form-body").empty()
+
+    if(!class_id) {
+        $(".time-table-body").empty();
+        pushNotification("n_info", "Kindly select a class", 5000);
+        return;
+    }
+
+    showLoader("Fetching data...")
+
+    admin.timetable.getTimetable({
+        params: {class_id},
+            onSuccess: (data) => {
+                //console.log(data)
+                if(data.status == "success") {
+                    let d = data.data;
+
+                    let periods = d.period;
+                    let mon = d.monday;
+                    let tue = d.tuesday;
+                    let wed = d.wednesday;
+                    let thu = d.thursday;
+                    let fri = d.friday;
+
+                    $(".time-form-head").append(`<th></th>`)
+                    for(let i in periods) {
+                        var temp = `
+                        <th style="text-align:center;" class="period-input">
+                            <h4 class="w-center">Period ${parseInt(i) + 1}</h4>
+                            <div class="input-con" style="margin-bottom:10px;">
+                                <input type="time" class="period-start" value="${periods[i].start}" />
+                            </div>
+                            <div class="input-con" style="margin-bottom:0px;">
+                                <input type="time" class="period-end" value="${periods[i].end}" />
+                            </div>
+                        </th>`;
+                        $(".time-form-head").append(temp)
+                    }
+
+                    let mon_row = `<td>Mon</td>`;
+                    let tue_row = `<td>Tue</td>`;
+                    let wed_row = `<td>Wed</td>`;
+                    let thu_row = `<td>Thur</td>`;
+                    let fri_row = `<td>Fri</td>`;
+
+                    for(let a in mon) {
+                        mon_row += `
+                        <td>
+                            <div class="input-con mon_row" style="margin-bottom:0px;">
+                                <select class="time-select">
+                                    <option value="" ${mon[a].id == '' ? 'selected' : ''}>Break</option>
+                                    ${subjects_list.map(p => `
+                                        <option value="${p.id}" ${mon[a].id == p.id ? 'selected' : ''}>${p.title}</option>
+                                        `).join('')}
+                                </select>
+                                <input class="time-hidden" type="hidden" value="${mon[a].subject}" />
+                            </div>
+                        </td>
+                        `
+                    }
+                    $(".time-form-body").append(`<tr>${mon_row}</tr>`)
+
+                    for(let a in tue) {
+                        tue_row += `
+                        <td>
+                            <div class="input-con tue_row" style="margin-bottom:0px;">
+                                <select class="time-select">
+                                    <option value="" ${tue[a].id == '' ? 'selected' : ''}>Break</option>
+                                    ${subjects_list.map(p => `
+                                        <option value="${p.id}" ${tue[a].id == p.id ? 'selected' : ''}>${p.title}</option>
+                                        `).join('')}
+                                </select>
+                                <input class="time-hidden" type="hidden" value="${tue[a].subject}" />
+                            </div>
+                        </td>
+                        `
+                    }
+                    $(".time-form-body").append(`<tr>${tue_row}</tr>`)
+
+                    for(let a in wed) {
+                        wed_row += `
+                        <td>
+                            <div class="input-con wed_row" style="margin-bottom:0px;">
+                                <select class="time-select">
+                                    <option value="" ${wed[a].id == '' ? 'selected' : ''}>Break</option>
+                                    ${subjects_list.map(p => `
+                                        <option value="${p.id}" ${wed[a].id == p.id ? 'selected' : ''}>${p.title}</option>
+                                        `).join('')}
+                                </select>
+                                <input class="time-hidden" type="hidden" value="${wed[a].subject}" />
+                            </div>
+                        </td>`
+                    }
+                    $(".time-form-body").append(`<tr>${wed_row}</tr>`)
+
+                    for(let a in thu) {
+                        thu_row += `
+                        <td>
+                            <div class="input-con thu_row" style="margin-bottom:0px;">
+                                <select class="time-select">
+                                    <option value="" ${thu[a].id == '' ? 'selected' : ''}>Break</option>
+                                    ${subjects_list.map(p => `
+                                        <option value="${p.id}" ${thu[a].id == p.id ? 'selected' : ''}>${p.title}</option>
+                                        `).join('')}
+                                </select>
+                                <input class="time-hidden" type="hidden" value="${thu[a].subject}" />
+                            </div>
+                        </td>`
+                    }
+                    $(".time-form-body").append(`<tr>${thu_row}</tr>`)
+
+                    for(let a in fri) {
+                        fri_row += `
+                        <td>
+                            <div class="input-con fri_row" style="margin-bottom:0px;">
+                                <select class="time-select">
+                                    <option value="" ${fri[a].id == '' ? 'selected' : ''}>Break</option>
+                                    ${subjects_list.map(p => `
+                                        <option value="${p.id}" ${fri[a].id == p.id ? 'selected' : ''}>${p.title}</option>
+                                        `).join('')}
+                                </select>
+                                <input class="time-hidden" type="hidden" value="${fri[a].subject}" />
+                            </div>
+                        </td>`
+                    }
+                    $(".time-form-body").append(`<tr>${fri_row}</tr>`)
+
+                    $(".time-select").on('change', function() {
+                        let val = $(this).val();
+                        let tit = subjects_map[`${val}`]
+                        $(this).siblings('.time-hidden').val(tit)
+                    })
+                }
+                else {
+                    pushNotification("n_error", data.message, 3000)
+                }
+                hideLoader()
+            },
+            onError: (error) => {
+                console.error(error)
+                hideLoader()
+                pushNotification("n_error", "Internet connection error!", 3000)
+            }
+    })
+}
+
+function updateTimetable() {
+    let class_id = $("#class-filter2").val();
+
+    let periods = [];
+    let mondays = [];
+    let tuesdays = [];
+    let wednesdays = [];
+    let thursdays = [];
+    let fridays = [];
+
+    $(".period-input").each(function() {
+        let start = $(this).find('.period-start').val();
+        let end = $(this).find('.period-end').val();
+        periods.push({start, end})
+    });
+    $(".mon_row").each(function() {
+        let id = $(this).find('select').val();
+        let subject = $(this).find('input').val();
+        mondays.push({id: id == "" ? id: parseInt(id), subject})
+    });
+    $(".tue_row").each(function() {
+        let id = $(this).find('select').val();
+        let subject = $(this).find('input').val();
+        tuesdays.push({id: id == "" ? id: parseInt(id), subject})
+    });
+    $(".wed_row").each(function() {
+        let id = $(this).find('select').val();
+        let subject = $(this).find('input').val();
+        wednesdays.push({id: id == "" ? id: parseInt(id), subject})
+    });
+    $(".thu_row").each(function() {
+        let id = $(this).find('select').val();
+        let subject = $(this).find('input').val();
+        thursdays.push({id: id == "" ? id: parseInt(id), subject})
+    });
+    $(".fri_row").each(function() {
+        let id = $(this).find('select').val();
+        let subject = $(this).find('input').val();
+        fridays.push({id: id == "" ? id: parseInt(id), subject})
+    });
+
+    let formData = {class_id, periods, mondays, tuesdays, wednesdays, thursdays, fridays};
+
+    //console.log(formData)
+    showLoader("Updating timetable")
+
+    admin.timetable.updateTimetable({
+        formData: formData,
+        onSuccess: (data) => {
+            //console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                getTimetable()
+            }
+            else {
+                pushNotification("n_error", data.message, 3000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
+}
+
 
 initiateTiny()
 // tinymce.get('blog-post').getContent({format: 'html'})
@@ -1186,10 +1549,11 @@ initiateTiny()
 $(".add-class-btn").click(function(e) {e.preventDefault();$(".add-class-con").addClass('active')})
 $(".add-sub-btn").click(function(e) {e.preventDefault();$(".add-sub-con").addClass('active')})
 $(".add-cur-btn").click(function(e) {e.preventDefault();$(".add-cur-con").addClass('active')})
-$(".add-top-btn").click(function(e) {e.preventDefault();$(".add-top-con").addClass('active')})
+$(".add-top-btn").click(function(e) {e.preventDefault();$(".add-top-con").addClass('active')});
+$(".top-export-btn").click(function(e) {e.preventDefault();$(".export-top-con").addClass("active")})
 $(".class-export-btn").click(function(e) {e.preventDefault();})
 $(".sub-export-btn").click(function(e) {e.preventDefault();})
-$(".cur-export-btn").click(function(e) {e.preventDefault();})
+$(".edit-time-btn").click(function(e) {e.preventDefault();getTimetab()})
 
 $("#sub-course").on('input', function() {filterCourses()})
 
@@ -1206,3 +1570,5 @@ $(".delete-cur-form").on('submit', function(e) {e.preventDefault();deleteSyllabu
 $(".add-top-form").on('submit', function(e) {e.preventDefault();addTopic()})
 $(".update-top-form").on('submit', function(e) {e.preventDefault();updateTopic()})
 $(".delete-top-form").on('submit', function(e) {e.preventDefault();deleteTopic()})
+$(".export-top-form").on('submit', function(e) {e.preventDefault();exportTopics()})
+$(".update-time-form").on('submit', function(e) {e.preventDefault();updateTimetable()})

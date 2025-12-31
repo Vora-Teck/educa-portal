@@ -112,12 +112,19 @@ a {color: grey}
   color: #fff;
   border-radius: 5px;
   outline: none;
-  border: none;
+  border: 1px solid var(--primary-color);
   cursor: pointer;
 }
 body {
     max-width:100%;
     overflow-x: hidden;
+}
+.time-table thead th {
+  background: #fff !important;
+}
+.time-table tr th, .time-table tr td {
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
 }
 .page-load {
   position: fixed;
@@ -2179,6 +2186,11 @@ ul.breadcrumb li a:hover {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
+}
+
+.time-table-body td {
+  max-width: 100px;
+  white-space: wrap;
 }
 
 

@@ -675,6 +675,13 @@ function updateSchoolInfo(stat) {
             }
             hideLoader()
             getSchoolInfo()
+            if(stat == "info") {
+                let info = JSON.parse(localStorage.getItem("educa_school_info"))
+                info['motto'] = formData['motto']
+                localStorage.setItem('educa_school_info', JSON.stringify(info));
+                showSchoolInfo()
+            }
+            
         },
         onError: (error) => {
             console.error(error);
@@ -783,6 +790,8 @@ function uploadLogo() {
         }
         hideLoader()
         getSchoolInfo()
+        localStorage.removeItem("educa_school_info");
+        showSchoolInfo()
     },
     onError: (error) => {
       hideLoader()

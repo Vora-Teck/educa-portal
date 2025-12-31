@@ -3249,7 +3249,7 @@ showSchoolInfo()
 
         </div>
 
-        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;position:sticky;bottom:0;padding-top:10px;">
           <button class="clear-btn canc-btn10">Cancel</button>
           <input type="submit" value="Save">
         </div>
@@ -3299,7 +3299,7 @@ showSchoolInfo()
 
         <input type="hidden" class="top-id">
 
-        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;position:sticky;bottom:0;padding-top:10px;">
           <button class="clear-btn canc-btn11">Cancel</button>
           <input type="submit" value="Update">
         </div>
@@ -3331,6 +3331,60 @@ showSchoolInfo()
         <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
           <button class="clear-btn canc-btn12">Cancel</button>
           <input type="submit" class="w-red" value="Delete Topic">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con small-con export-top-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Export Curriculum: <span class="cur-name"></span></div>
+      </div>
+      <form class="modal-content export-top-form">
+
+        <div class="h5 mt-2 w-bold">Select columns to include:</div>
+
+        <div class="mb-2 mt-2 w-flex w-flex-start w-align-center w-flex-wrap" style="gap:20px">
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" checked value="week" id="col_week" name="top-columns" disabled>
+            <label class="custom-control-label" for="col_week">Week</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" checked value="title" id="col_title" name="top-columns" disabled>
+            <label class="custom-control-label" for="col_title">Title</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="description" id="col_des" name="top-columns">
+            <label class="custom-control-label" for="col_des">Description</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="lesson_plan" id="col_plan" name="top-columns">
+            <label class="custom-control-label" for="col_plan">Lesson Plan</label>
+          </div>
+
+        </div>
+
+        <br>
+
+        <div class="input-con mb-2 mt-2 w-flex w-flex-start w-align-center" style="gap:20px">
+          <label for="st-state2">Select Export Format</label>
+            <select id="format" style="max-width:200px !important;">
+              <option value="csv" selected>Excel File (.xlsx)</option>
+              <option value="docx">Word Document (.docx)</option>
+              <option value="pdf">PDF File (.pdf)</option>
+            </select>
+        </div>
+          <br>
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn14">Cancel</button>
+          <input type="submit" value="Export">
         </div>
       </form>
     </div>
@@ -3437,6 +3491,34 @@ showSchoolInfo()
         <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
           <button class="clear-btn canc-btn9">Cancel</button>
           <input type="submit" class="w-red" value="Delete Curriculum">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Timetable modals -->
+  <div class="modal-con modal-top update-time-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Update <span class="time-name"></span></div>
+      </div>
+      <form class="modal-content mt-3 update-time-form">
+        
+        <div class="table-responsive">
+          <table class="table staff-table time-table table-bordered">
+            <thead>
+              <tr class="time-form-head">
+              </tr>
+            </thead>
+            <tbody class="time-form-body">
+            </tbody>
+          </table>
+        </div>
+
+        <div class="w-white w-padding-top input-con w-flex w-flex-end w-align-center" style="gap:20px;position:sticky;bottom:0;">
+          <button class="clear-btn canc-btn13">Cancel</button>
+          <input type="submit" value="Save">
         </div>
       </form>
     </div>
@@ -3617,7 +3699,6 @@ showSchoolInfo()
     
                 <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
                   <button class="dark-btn add-cur-btn">Add Curriculum&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
-                  <button class="light-btn cur-export-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
                 </div>
     
                 <input type="hidden" id="emp_page3" value="1" />
@@ -3679,7 +3760,60 @@ showSchoolInfo()
         </div>
       </div>
 
-      <div class="tab-pane container" id="menu3"></div>
+      <div class="tab-pane container" id="menu3">
+
+        <div class="w-padding">
+          <div class="row mt-2 w-white">
+            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    
+              <form class="mb-3 w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+                
+                <div class="h4 w-bold-x" style="color:orangered">Timetable (AI-Assisted)</div>
+    
+                <div class="w-flex w-flex-center w-align-center" style="gap:10px;width:fit-content;">
+                    <label for="">Class</label>
+                    <select id="class-filter2" class="form-control" style="max-width:170px;"></select>
+                </div>
+                
+                <div class="w-flex w-flex-end w-align-center" style="gap:10px;width:fit-content;">
+                  <button class="insight-btn generate-time-btn">Generate Timetable with AI <i class="fa fa-plus"></i></button>
+                </div>
+                
+              </form>
+
+              <div class="w-padding-top mt-3 w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+                <div class="h5 w-bold-x">Class Time Table</div>
+
+                <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+                  <button class="side-btn time-btns w-hide class-export-btn">Download&nbsp;&nbsp;<i class="fa fa-download"></i></button>
+                  <button class="dark-btn time-btns w-hide edit-time-btn">Edit&nbsp;&nbsp;<i class="fa fa-edit"></i></button>
+                </div>
+              </div>
+
+              <div class="w-padding-top mt-3 w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+                <div class="w-flex w-align-center" style="gap:10px;width:fit-content">
+                  <img src="" class="time-logo" alt="" style="height:50px;">
+                  <div class="h4 w-bold-x w-padding-top time-title"></div>
+                </div>
+                <div class="h4 w-bold-x time-name"></div>
+              </div>
+    
+              <div class="table-responsive">
+                <table class="table staff-table time-table table-bordered">
+                  <thead>
+                    <tr class="time-table-head">
+                    </tr>
+                  </thead>
+                  <tbody class="time-table-body">
+                  </tbody>
+                </table>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+
+      </div>
 
     </div>
 
@@ -3723,6 +3857,10 @@ showSchoolInfo()
     $(".sub-filter").on('change', function() {
       $('#emp_page3').val(1);
       getSyllabi()
+    })
+
+    $("#class-filter2").on('change', function() {
+      getTimetable()
     })
 
     $(".close-side").click(function() {
@@ -3780,6 +3918,14 @@ showSchoolInfo()
     $(".canc-btn12").click(function(e) {
         e.preventDefault();
         $(".delete-top-con").removeClass('active')
+    })
+    $(".canc-btn13").click(function(e) {
+        e.preventDefault();
+        $(".update-time-con").removeClass('active')
+    })
+    $(".canc-btn14").click(function(e) {
+        e.preventDefault();
+        $(".export-top-con").removeClass('active')
     })
 
     $('#emp_search2').on('input', function(e) {
