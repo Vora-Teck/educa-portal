@@ -1972,7 +1972,8 @@ ul.breadcrumb li a:hover {
 .suggestion-item.active {
   background: #f0f0f0;
 }
-.subs-selected {
+.subs-selected, .opts-selected,
+.opts-selected2 {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -1980,7 +1981,8 @@ ul.breadcrumb li a:hover {
   flex-wrap: wrap;
   padding: 10px;
 }
-.sub-selected {
+.sub-selected, .opt-selected,
+.opt-selected2 {
   display: flex;
   justify-content: flex-start;
   align-items: center;

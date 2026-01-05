@@ -854,7 +854,7 @@ function getSyllabus(syllabus_id, action) {
             if(data.status == "success") {
                 let d = data.data;
                 $(".cur-id").val(d.id)
-                $(".cur-name").html(`Term ${d.term} ${d.subject.title} for ${d.classroom.level.title}`)
+                $(".cur-name").html(`Term ${d.term} ${d.subject.title} for ${d.curriculum.classroom.title}`)
                 $("#cur-staff").val(d.teacher?.id || '')
                 
                 $(`.${action}-cur-con`).addClass("active")
@@ -968,7 +968,7 @@ function getTopics(syllabus_id) {
                                         <span class="tooltiptext w-card">Edit week ${d[i].week} Topic</span>
                                     </a>
                                     ${d[i].file ? `
-                                    <a class="top-file-link tooltipa" href="#"  data-id="${base_url}${d[i].file}">
+                                    <a class="top-file-link tooltipa" href="#"  data-id="${base_url}${d[i].file}" target="_blank" download>
                                         <i class="fa fa-download"></i>&nbsp;&nbsp;&nbsp;
                                         <span class="tooltiptext w-card">Download week ${d[i].week} Document</span>
                                     </a>` : ``}
@@ -1019,7 +1019,7 @@ function getTopics(syllabus_id) {
                 console.error(error)
                 let temp = `<tr>
                         <td colspan="4">
-                        Error occurred.  Kindly check your internet connection and <span class="w-text-red" onclick="getClassrooms()">click here </span>to try again
+                        Error occurred.  Kindly check your internet connection and <span class="w-text-red" onclick="getTopics(${syllabus_id})">click here </span>to try again
                         </td>
                     </tr>`;
                     $('.top-list').html(temp)

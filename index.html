@@ -3941,60 +3941,103 @@ showSchoolInfo()
 
   <!-- Curriculum Modals -->
 
-  <div class="side-con cur-side-con">
+  <div class="side-con que-side-con">
     <div class="w-flex w-flex-between w-align-center">
       <ul class="breadcrumb">
-        <li><a href="/#classes">Curriculum</a></li>
-        <li class="cur-name" data-id=""></li>
+        <li><a href="/#exams">Exam</a></li>
+        <li class="exam-name" data-id=""></li>
       </ul>
       <button class="close-side btn btn-danger">X&nbsp;Close</button>
     </div>
 
     <div class="side-opt-con" style="gap:15px;">
-      <button class="side-btn">Generate Topics with EdukaAI</button>
+      <button class="side-btn">Generate questions with EdukaAI</button>
+      <button class="light-btn que-export-btn"><i class="fa fa-file-pdf-o"></i> Export to PDF</button>
     </div>
 
-    <div class="w-padding">
-      <div class="row mt-2 w-white">
-        <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-  
-          <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
-            
-            <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
-              <div class="h4 w-bold-x" style="color:orangered">Topic List</div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs class-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#mcq_que">MCQ Questions</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#essay_que">Essay / Theory</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+
+      <div class="tab-pane active container" id="mcq_que">
+
+        
+        <div class="row mt-2 w-white">
+            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+      
+              <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+                
+                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+                  <div class="h4 w-bold-x" style="color:orangered">Exam Questions</div>
+                </div>
+                
+      
+                <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+                  <button class="dark-btn add-que-btn">Add Question&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+                  
+                </div>
+      
+              </form>
+      
+              <div class="table-responsive">
+                <table class="table staff-table">
+                  <thead>
+                    <tr>
+                      <th>S/N</th>
+                      <th>Question</th>
+                      <th>Options</th>
+                      <th>Answer</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="que-list">
+                  </tbody>
+                </table>
+              </div>
+      
             </div>
-            
-  
-            <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
-              <button class="dark-btn add-top-btn">Add Topic&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
-              <button class="light-btn top-export-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
-            </div>
-  
-          </form>
-  
-          <div class="table-responsive">
-            <table class="table staff-table">
-              <thead>
-                <tr>
-                  <th>Week</th>
-                  <th>Title</th>
-                  <th>Description</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody class="top-list">
-              </tbody>
-            </table>
+        </div>
+        
+
+      </div>
+
+      <div class="tab-pane container" id="essay_que">
+        <div class="w-white">
+
+          <div class="w-padding w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+            <div class="h4 w-bold-x" style="color:orangered">Essay Question</div>
           </div>
-  
+
+          <form class="w-padding mt-3 update-essay-form">
+
+            <div class="input-con">
+              <textarea id="que-essay" name="que-essay" class="html-text" rows="20"></textarea>
+            </div>
+    
+    
+            <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+              <input type="submit" value="Save">
+            </div>
+          </form>
         </div>
       </div>
-    </div>
+    
+      </div>
+    
 
 
   </div>
 
-  
+
+  <!-- Exam modals -->
   <div class="modal-con modal-top small-con add-exam-con">
     <div class="modal-body">
       <div class="close-modal">X</div>
@@ -4043,18 +4086,34 @@ showSchoolInfo()
     <div class="modal-body">
       <div class="close-modal">X</div>
       <div class="modal-header">
-        <div class="h5 w-bold-x w-text-blue">Update Exam: <span class="cur-name"></span></div>
+        <div class="h5 w-bold-x w-text-blue">Update <span class="exam-name"></span></div>
       </div>
       <form class="modal-content mt-3 update-exam-form">
 
+        <div class="input-con">
+          <label for="st-lname">Select Term</label>
+          <select id="term-filter3">
+          </select>
+        </div>
+
           <div class="input-con">
-            <label for="st-lname">Subject Teacher</label>
-            <select id="cur-staff">
-              <option value="" selected></option>
+            <label for="st-lname">Subject</label>
+            <select id="sub-filter3">
             </select>
           </div>
 
-          <input type="hidden" class="cur-id">
+
+          <div class="input-con">
+            <label for="st-lname">Exam Date</label>
+            <input type="date" id="exam-date2" />
+          </div>
+
+          <div class="input-con">
+            <label for="st-lname">Exam Duration (in minutes)</label>
+            <input type="number" id="exam-duration2" />
+          </div>
+
+          <input type="hidden" class="exam-id">
         
         <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
           <button class="clear-btn canc-btn2">Cancel</button>
@@ -4070,31 +4129,242 @@ showSchoolInfo()
       <div class="modal-header">
         <div class="h5 w-text-red w-bold-x">
           <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
-          Delete Exam: <b class="cur-name"></b>
+          Delete <b class="exam-name"></b>
         </div>
       </div>
-      <form class="modal-content delete-cur-form">
+      <form class="modal-content delete-exam-form">
         
-        <h4>This is a destructive action and cannot be reversed. All records associated with the curriculum 
+        <h4>This is a destructive action and cannot be reversed. All records associated with the examination 
           will be erased permanently. Kindly note that the following will 
           be affected:
         </h4>
         <ul style="padding-left:20px;">
-          <li>All topics/materials associated with the curriculum will be permanently erased.</li>
+          <li>All exam questions associated with the exam will be erased.</li>
+          <li>All student scores associated with the exam will be erased.</li>
         </ul>
         
         <div class="input-con">
           <label for="">Enter your Password to proceed:</label>
-          <input type="password" id="cur-delete-password" required />
+          <input type="password" id="exam-delete-password" required />
         </div>
 
-        <input type="hidden" class="cur-id">
+        <input type="hidden" class="exam-id">
 
         <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
           <button class="clear-btn canc-btn3">Cancel</button>
-          <input type="submit" class="w-red" value="Delete Curriculum">
+          <input type="submit" class="w-red" value="Delete Exam">
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Question modals -->
+  <div class="modal-con modal-top small-con add-que-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Add New Question</div>
+      </div>
+      <form class="modal-content mt-3 add-que-form">
+
+        <div class="input-con">
+          <label for="">Question</label>
+          <textarea id="que-que" rows="5"></textarea>
+        </div>
+
+          <div class="input-con">
+            <label for="st-lname">Add Options</label>
+            <div class="input-group mb-3" style="flex-wrap:nowrap;gap:5px;">
+              <input type="text" id="que-opt" class="form-control" placeholder="Enter an option">
+              <div class="input-group-append add-opt-btn">
+                <span class="input-group-text"><i class="fa fa-plus"></i> Add</span>
+              </div>
+            </div>
+
+            <div class="opts-selected"></div>
+
+            
+          </div>
+
+          <div class="input-con">
+            <label for="">Select Answer</label>
+            <select id="que-ans"></select>
+          </div>
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn4">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top small-con update-que-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Update Question <span class="q_nos"></span></div>
+      </div>
+      <form class="modal-content mt-3 update-que-form">
+
+        <div class="input-con">
+          <label for="">Question</label>
+          <textarea id="que-que2" rows="5"></textarea>
+        </div>
+
+          <div class="input-con">
+            <label for="st-lname">Add Options</label>
+            <div class="input-group mb-3" style="flex-wrap:nowrap;gap:5px;">
+              <input type="text" id="que-opt2" class="form-control" placeholder="Enter an option">
+              <div class="input-group-append add-opt-btn2">
+                <span class="input-group-text"><i class="fa fa-plus"></i> Add</span>
+              </div>
+            </div>
+
+            <div class="opts-selected2"></div>
+          </div>
+
+          <div class="input-con">
+            <label for="">Select Answer</label>
+            <select id="que-ans2"></select>
+          </div>
+
+          <input type="hidden" class="q_no">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn5">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con small-con delete-que-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-red w-bold-x">
+          <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
+          Delete Question <b class="q_nos"></b>
+        </div>
+      </div>
+      <form class="modal-content delete-que-form">
+        
+        <h4>
+          Are you sure you want to delete question <span class="q_nos"></span>?<br>
+          This action is irreversible.
+        </h4>
+        
+        
+
+        <input type="hidden" class="q_no">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn6">Cancel</button>
+          <input type="submit" class="w-red" value="Delete Question">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scores modals -->
+  <div class="modal-con update-score-con">
+    <div class="modal-body" style="">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-blue w-bold-x">
+          <b class="exam-name2"></b> Scores
+        </div>
+      </div>
+      <form class="modal-content update-score-form">
+        
+        <div class="table-responsive">
+          <table class="table staff-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Student Name</th>
+                <th>Class</th>
+                <th>Score</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="score-list">
+            </tbody>
+          </table>
+        </div>
+  
+
+        <input type="hidden" class="exam-id2">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn7">Cancel</button>
+          <input type="submit" value="Update Scores">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con small-con score-report-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-blue w-bold-x">
+          <b class="rep_std"></b> Test Report
+        </div>
+      </div>
+      <div class="modal-content">
+        
+        <div>
+          <div id="accordion" class="report-con">
+
+            <div class="card">
+              <div class="card-header">
+                <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                  Collapsible Group Item #1
+                </a>
+              </div>
+              <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                <div class="card-body">
+                  Lorem ipsum..
+                </div>
+              </div>
+            </div>
+          
+            <div class="card">
+              <div class="card-header">
+                <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                  Collapsible Group Item #2
+                </a>
+              </div>
+              <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                  Lorem ipsum..
+                </div>
+              </div>
+            </div>
+          
+            <div class="card">
+              <div class="card-header">
+                <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                  Collapsible Group Item #3
+                </a>
+              </div>
+              <div id="collapseThree" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                  Lorem ipsum..
+                </div>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+        
+
+        <div class="mt-3 input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn8">Cancel</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -4287,6 +4557,26 @@ showSchoolInfo()
     $(".canc-btn3").click(function(e) {
         e.preventDefault();
         $(".delete-exam-con").removeClass('active')
+    })
+    $(".canc-btn4").click(function(e) {
+        e.preventDefault();
+        $(".add-que-con").removeClass('active')
+    })
+    $(".canc-btn5").click(function(e) {
+        e.preventDefault();
+        $(".update-que-con").removeClass('active')
+    })
+    $(".canc-btn6").click(function(e) {
+        e.preventDefault();
+        $(".delete-que-con").removeClass('active')
+    })
+    $(".canc-btn7").click(function(e) {
+        e.preventDefault();
+        $(".update-score-con").removeClass('active')
+    })
+    $(".canc-btn8").click(function(e) {
+        e.preventDefault();
+        $(".score-report-con").removeClass('active')
     })
     
 

@@ -209,6 +209,11 @@ function checkStatus() {
 checkStatus()
 
 
+function escapeHtml(text) {
+  var escapedText = text.replace("'", "\'");
+  return escapedText.replace(/\n/g, '&lt;br&gt;')
+}
+
 function checkResponse(data) {
   if(data.statusCode && data.statusText) {
     pushNotification("n_error", `Error ${data.statusCode}: ${data.statusText}`)
