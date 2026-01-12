@@ -27,26 +27,44 @@ function getData() {
 
 getData()
 
-/* =========== Exam Section =============== */
+
 function getTerms() {
     admin.calendar.termList({
             onSuccess: (data) => {
                 //console.log(data)
                 let d = data.data
                 $("#term-filter").empty();
+                $("#term-filter1").empty();
                 $("#term-filter2").empty();
                 $("#term-filter3").empty();
                 for(let i in d) {
                     let temp = `<option value="${d[i].id}">${d[i].title} - ${d[i].session.title}</option>`;
                     $("#term-filter").append(temp)
+                    $("#term-filter1").append(temp)
                     $("#term-filter2").append(temp)
                     $("#term-filter3").append(temp)
                 }
                 getExams()
+                getResults()
             },
             onError: (error) => console.error(error)
     })
 }
+function getSessions() {
+    admin.calendar.sessionList({
+            onSuccess: (data) => {
+                //console.log(data)
+                let d = data.data
+                $("#session-filter").empty();
+                for(let i in d) {
+                    let temp = `<option value="${d[i].id}">${d[i].title}</option>`;
+                    $("#session-filter").append(temp)
+                }
+            },
+            onError: (error) => console.error(error)
+    })
+}
+getSessions()
 
 function getAllSubjects() {
     let pagesize = 300;
@@ -82,11 +100,13 @@ function getClassrooms() {
         onSuccess: (data) => {
                 //console.log(data);
                 $('#class-filter').empty().append(`<option value="" selected>All Classes</option>`)
+                $('#class-filter1').empty().append(`<option value="" selected>All Classes</option>`)
                 if(data.status == 'success') {
                     if(data.data) {
                         let e = data.data;
                         for(var i in e) {
                             $('#class-filter').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
+                            $('#class-filter1').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
 
                             let temp2 = `
                             <div class="custom-control custom-checkbox">
@@ -109,7 +129,7 @@ getAllSubjects()
 getClassrooms()
 
 
-
+/* =========== Exam Section =============== */
 function getExams() {
     let page = $('#emp_page').val();
     let pagesize = 20;
@@ -539,7 +559,6 @@ function getQuestions(exam_id) {
     })
 }
 
-
 $(".add-opt-btn").on('click', function() {
     addOption('', updateOptions)
 })
@@ -836,7 +855,7 @@ function getScores(exam_id) {
                         let temp = `
                             <tr class="">
                                 <td> 
-                                    <img class="w-circle" style="width:40px;"
+                                    <img class="w-circle" style="width:40px;height:40px;"
                                     src="${d[i].student.image ? `${base_url}${d[i].student.image}` : `/static/image/avatar.png`}" alt="" />
                                 </td>
                                 <td>${d[i].student.firstName} ${d[i].student.middleName} ${d[i].student.lastName}</td>
@@ -955,6 +974,273 @@ function showReport(report, user) {
     $(".score-report-con").addClass("active")
 }
 
+/* =========== Result Section =============== */
+function getResults() {
+    let page = $('#emp_page2').val();
+    let pagesize = 20;
+    let class_id = $("#class-filter1").val();
+    let term_id = $("#term-filter1").val()
+    //let search = $('#emp_search3').val();
+
+    $('.result-list').empty()
+    loader = `<tr>
+        <td colspan="6" class="">
+        <i class="fa fa-spinner rotate"></i>&nbsp;&nbsp;&nbsp;Processing...
+        </td>
+    </tr>`;
+    $('.result-list').append(loader)
+
+    let params = {page, pagesize, class_id, term_id}
+
+    //console.log(params)
+
+    admin.result.getResults({
+        params: params,
+        onSuccess: (data) => {
+                //console.log(data);
+                $('.result-list').empty()
+                if(data.status == 'success') {
+                    let pages = data.total_pages
+                    //let count = data.total_count;
+                    //$(".total_count").html(digify(count))
+                    //$('.emp-no').html(data['total_items'])
+                    $('#page_nos2').empty();
+                    for(var i=0; i<pages; i++) {
+                        let classN = "";
+                        if((i+1) == data.page_number) {
+                            classN = "active"
+                        }
+                        if((i+1) > (data.page_number + 1) || (i+1) < (data.page_number - 1)) {
+                            continue
+                        }
+                        var temp = `<a href="#" class="page_no ${classN}" data-id="${i+1}">${i+1}</a>`;
+                        $('#page_nos2').append(temp);
+                    }
+                    let current_p = $('#page_nos2 .page_no.active').data('id')
+                    //console.log(current_p + ":" + typeof(current_p))
+                    if((current_p - 1) > 0) {
+                        let prev = `<a href="#" class="page_no" data-id="${current_p - 1}"><i class="fa fa-angle-left"></i></a>`
+                        $('#page_nos2').prepend(prev);
+                    }
+                    if((current_p + 1) <= data.total_pages) {
+                        let next = `<a href="#" class="page_no" data-id="${current_p + 1}"><i class="fa fa-angle-right"></i></a>`
+                        $('#page_nos2').append(next);
+                    }
+                    $('#page_nos2 .page_no').click(function(e) {
+                        e.preventDefault();
+                        let page = $(this).data('id');
+                        $('#emp_page2').val(page);
+                        getResults();
+                    })
+                    if(data.data) {
+                        let d = data.data;
+                        
+                        for(var i in d) {
+                            let temp = `<tr class="staff-row">
+                            <td> 
+                                <img class="w-circle" style="width:40px;height:40px;"
+                                src="${d[i].student.image ? `${base_url}${d[i].student.image}` : `/static/image/avatar.png`}" alt="" />
+                            </td>
+                            <td>${d[i].student.firstName} ${d[i].student.middleName} ${d[i].student.lastName}</td>
+                            <td>${d[i].classroom.level.title}</td>
+                            <td class="w-center">${digify(d[i].average_score)}</td>
+                            <td class="w-center">${d[i].grade}</td>
+                            <td class="w-center">${d[i].position || 'N/A'}</td>
+
+                            <td class="w-text-gray h4">
+                                <a class="emp-view-link tooltipa" href="#" data-id="${d[i].id}">
+                                    <i class="fa fa-file-text"></i>&nbsp;&nbsp;&nbsp;
+                                    <span class="tooltiptext w-card">View Result</span>
+                                </a>
+                                ${d[i].file ? `
+                                    <a class="emp-download-link tooltipa" href="#" data-id="${d[i].file}">
+                                    <i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;&nbsp;
+                                    <span class="tooltiptext w-card">Download Result</span>
+                                </a>` : ``}
+                                
+                            </td>
+                          </tr>`;
+                          $('.result-list').append(temp)
+                        }
+                        $('.emp-view-link').click(function(e) {
+                            e.preventDefault();
+                            let id = $(this).data('id');
+                            viewResult({type: "single", doc_id: id})
+                        })
+                        $('.emp-download-link').click(function(e) {
+                            e.preventDefault();
+                            let id = $(this).data('id');
+                            let url = `${base_url}${id}`
+                            downloadFile(url)
+                        })
+                    }
+                    else {
+                        let temp = `<tr>
+                        <td colspan="6" class="w-text-gray w-italic">${data.message}</td>
+                        </tr>`;
+                        $('.result-list').append(temp)
+                    }
+                }
+                else {
+                    pushNotification("n_error", data.message, 3000);
+                    let temp = `<tr>
+                        <td colspan="6" class="w-text-gray w-italic">${data['message']}</td>
+                        </tr>`;
+                        $('.result-list').append(temp)
+                }
+        },
+        onError: (error) => {
+                console.error(error);
+                $('.exam-list').empty()
+                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+        }
+  })
+}
+
+function viewResult(obj) {
+    let url = buildQueryParams(obj, '/results', '')
+    window.open(url, '_blank')
+}
+
+function downloadClassResult(class_id, term_id) {
+    let obj = {type: "bulk", class_id, term_id}
+    let url = buildQueryParams(obj, '/results', '')
+
+    let formData = {class_id, term_id, url}
+
+    //console.log(formData)
+    showLoader(`Generating PDF...`)
+
+    admin.result.classResultPDF({
+        formData: formData,
+        onSuccess: (data) => {
+            console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                downloadFile(data.data)
+            }
+            else {
+                pushNotification("n_error", data.message, 3000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
+}
+
+function generateClassResult(class_id, term_id) {
+    let obj = {type: "single"}
+    let url = buildQueryParams(obj, '/results', '')
+
+    let formData = {class_id, term_id, url}
+
+    //console.log(formData)
+    showLoader(`Generating Results PDF...`)
+
+    admin.result.studentResultPDF({
+        formData: formData,
+        onSuccess: (data) => {
+            console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+            }
+            else {
+                pushNotification("n_error", data.message, 3000)
+            }
+            getResults()
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
+}
+
+function resultActions() {
+    let action = $("#result-action").val();
+    if(!action) {
+        pushNotification('n_warning', 'Kindly select an action to proceed', 3000);
+        return
+    }
+    let class_id = $("#class-filter1").val();
+    let term_id = $("#term-filter1").val();
+    if(!class_id) {
+        pushNotification('n_warning', 'Kindly select a class from the menu to proceed', 3000);
+        return
+    }
+    if(!term_id) {
+        pushNotification('n_warning', 'Kindly select an academic term from the menu to proceed', 3000);
+        return
+    }
+    switch(action) {
+        case "view":
+            var isconfirm = confirm("This will display the report sheet of each student in the selected classroom for the selected term. Do you want to proceed?")
+            if(isconfirm === false) {
+                return;
+            }
+            viewResult({type: "bulk", class_id, term_id})
+            break;
+        case "single":
+            var isconfirm = confirm("This will generate a downloadable report sheet PDF for each student in the selected classroom for the selected term. Do you want to proceed?")
+            if(isconfirm === false) {
+                return;
+            }
+            generateClassResult(class_id, term_id)
+            break;
+        case "bulk":
+            var isconfirm = confirm("This will generate a single downloadable PDF file containing the report sheet for each student in the selected classroom for the selected term. Do you want to proceed?")
+            if(isconfirm === false) {
+                return;
+            }
+            downloadClassResult(class_id, term_id)
+            break
+    }
+    
+}
+
+function spreadsheetActions() {
+    let session_id = $("#session-filter").val();
+    let action = $(".spread-act").data('action');
+
+    if(action === "view") {
+        let obj = {session_id};
+        let url = buildQueryParams(obj, '/spreadsheet', '')
+        window.open(url, '_blank')
+    }
+    else if(action === "generate") {
+        let formData = {session_id}
+
+        showLoader(`Generating Spreadsheet...`)
+
+        admin.result.generateSpreadsheet({
+            formData: formData,
+            onSuccess: (data) => {
+                //console.log(data)
+                if(data.status == "success") {
+                    pushNotification("n_success", data.message, 5000);
+                    downloadFile(data.data)
+                }
+                else {
+                    pushNotification("n_error", data.message, 3000)
+                }
+                getResults()
+                hideLoader()
+            },
+            onError: (error) => {
+                //console.error(error);
+                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+                hideLoader()
+            }
+        })
+    }
+}
+
 
 initiateTiny()
 // tinymce.get('blog-post').getContent({format: 'html'})
@@ -966,6 +1252,12 @@ $(".add-exam-btn").click(function(e) {e.preventDefault();$(".add-exam-con").addC
 $(".exam-export-btn").click(function(e) {e.preventDefault();})
 $(".add-que-btn").click(function(e) {e.preventDefault();$(".add-que-con").addClass('active')})
 $(".que-export-btn").click(function(e) {e.preventDefault();downloadExam()})
+$(".spread-btn").click(function(e) {
+    e.preventDefault();
+    let act = $(this).data('action')
+    $(".spread-act").html(act).data('action', act);
+    $(".spread-con").addClass("active")
+})
 
 
 $(".add-exam-form").on('submit', function(e) {e.preventDefault();addExam()})
@@ -976,3 +1268,6 @@ $(".update-essay-form").on('submit', function(e) {e.preventDefault();updateEssay
 $(".update-que-form").on('submit', function(e) {e.preventDefault();updateQuestion()})
 $(".delete-que-form").on('submit', function(e) {e.preventDefault();deleteQuestion()})
 $(".update-score-form").on('submit', function(e) {e.preventDefault();updateScores()})
+$(".result-act-form").on('submit', function(e) {e.preventDefault();resultActions()})
+$(".spread-form").on('submit', function(e) {e.preventDefault();spreadsheetActions()})
+

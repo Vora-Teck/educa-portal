@@ -154,10 +154,12 @@ function getQueryParams() {
   return query
 }
 
-function buildQueryParams(obj, hash=null) {
+function buildQueryParams(obj, link=null, hash=null) {
   if(hash == null) hash = window.location.hash;
+  if(link == null) {link = window.location.host}
+  else {link = window.location.host + link};
   let params = new URLSearchParams(obj);
-  let url = `${window.location.protocol}//${window.location.host}/?${params.toString()}${hash}`;
+  let url = `${window.location.protocol}//${link}/?${params.toString()}${hash}`;
   return url
 }
 

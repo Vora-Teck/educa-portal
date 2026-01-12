@@ -86,7 +86,7 @@ function getStudents() {
 
     $('.student-list').empty()
     loader = `<tr>
-        <td colspan="6" class="">
+        <td colspan="7" class="">
         <i class="fa fa-spinner rotate"></i>&nbsp;&nbsp;&nbsp;Processing...
         </td>
     </tr>`;
@@ -134,11 +134,16 @@ function getStudents() {
                         let e = data.data;
                         for(var i in e) {
                             let temp = `<tr class="staff-row">
+                            <td> 
+                                    <img class="w-circle" style="width:40px;height:40px;"
+                                    src="${e[i].image ? `${base_url}${e[i].image}` : `/static/image/avatar.png`}" 
+                                    alt="" />
+                                </td>
+                            <td class="w-bold-x">${e[i].firstName} ${e[i].middleName} ${e[i].lastName}</td>
                             <td>
-                            <div class="w-bold-x">${e[i].studentId}</div>
+                            <div>${e[i].studentId}</div>
                             </td>
-                            <td>${e[i].firstName} ${e[i].middleName} ${e[i].lastName}</td>
-                            <td>${e[i].gender[0].toUpperCase()}</td>
+                            <td class="w-center">${e[i].gender[0].toUpperCase()}</td>
                             <td>${e[i].classroom.level.title}</td>
                             <td class="w-bold-x">${e[i].is_active ? `
                                 <span class="w-text-green">Active</span>` : `
@@ -174,7 +179,7 @@ function getStudents() {
                     }
                     else {
                         let temp = `<tr>
-                        <td colspan="6">${data.message}</td>
+                        <td colspan="7">${data.message}</td>
                         </tr>`;
                         $('.student-list').append(temp)
                     }
@@ -182,7 +187,7 @@ function getStudents() {
                 else {
                     pushNotification("n_error", data.message, 3000);
                     let temp = `<tr>
-                        <td colspan="6">${data['message']}</td>
+                        <td colspan="7">${data['message']}</td>
                         </tr>`;
                         $('.student-list').append(temp)
                 }

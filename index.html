@@ -51,6 +51,11 @@
         <i class="fa fa-caret-right"></i>
       </a>
 
+      <a href="/#calendar" class="event-act">
+        <span><img src="/static/icons/_ui-calendar-heart-01.svg" alt="">&nbsp;&nbsp;&nbsp;Calendar & Events</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
       <a href="/#fees" class="fees-act">
         <span><img src="/static/icons/_ui-bank-note-01c.svg" alt="">&nbsp;&nbsp;&nbsp;Fees & Payments</span>
         <i class="fa fa-caret-right"></i>
@@ -73,11 +78,6 @@
 
       <a href="/#payroll" class="payroll-act">
         <span><img src="/static/icons/_ui-file-03.svg" alt="">&nbsp;&nbsp;&nbsp;Payroll</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      <a href="/#calendar" class="event-act">
-        <span><img src="/static/icons/_ui-calendar-heart-01.svg" alt="">&nbsp;&nbsp;&nbsp;Calendar & Events</span>
         <i class="fa fa-caret-right"></i>
       </a>
 
@@ -1977,9 +1977,10 @@ showSchoolInfo()
             <table class="table staff-table">
               <thead>
                 <tr>
-                  <th>Student ID</th>
+                  <th>Image</th>
                   <th>Full Name</th>
-                  <th>Gender</th>
+                  <th>Student ID</th>
+                  <th class="w-center">Gender</th>
                   <th>Class</th>
                   <th>Status</th>
                   <th>Actions</th>
@@ -3939,7 +3940,7 @@ showSchoolInfo()
 <template id="exams">
   <?use-template: "sidenav"?>
 
-  <!-- Curriculum Modals -->
+  <!-- Question -->
 
   <div class="side-con que-side-con">
     <div class="w-flex w-flex-between w-align-center">
@@ -4368,6 +4369,31 @@ showSchoolInfo()
     </div>
   </div>
 
+  <div class="modal-con small-con spread-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-blue w-bold-x">
+          <b class="spread-act" data-action=""></b> Spreadsheet
+        </div>
+      </div>
+      <form class="modal-content spread-form">
+        
+        <div class="input-con">
+          <label for="st-lname">Select Session</label>
+          <select id="session-filter">
+          </select>
+        </div>
+        
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn9">Cancel</button>
+          <input type="submit" value="Continue">
+        </div>
+      </form>
+    </div>
+  </div>
+
   <main class="">
     <?use-template: "header"?>
 
@@ -4492,7 +4518,87 @@ showSchoolInfo()
 
       <div class="tab-pane container" id="menu1">
         <div class="w-padding">
-          
+          <div class="row mt-2 w-white">
+            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    
+              <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+                
+                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+                  <div class="h4 w-bold-x" style="color:orangered">Result List</div>
+                 
+                </div>
+                
+    
+                <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+                  <button class="dark-btn spread-btn" data-action="generate">Generate Spreadsheet&nbsp;&nbsp;<i class="fa fa-file-excel-o"></i></button>
+                  <button class="light-btn spread-btn" data-action="view">View Spreadsheet&nbsp;&nbsp;<i class="fa fa-file-excel-o"></i></button>
+                  
+                </div>
+    
+                <input type="hidden" id="emp_page2" value="1" />
+              </form>
+
+              <div class="mb-2 mt-3 w-flex w-flex-between w-flex-wrap w-align-center">
+                
+                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;">
+                  <div><i class="fa fa-filter"></i> Filters:</div>
+  
+                  <select id="term-filter1" class="sub-filter form-control mb-2" style="max-width:250px;">
+                    
+                  </select>
+  
+                  <select id="class-filter1" class="sub-filter form-control mb-2" style="max-width:150px;">
+                    <option value="">All Classes</option>
+                  </select>
+  
+                </div>
+
+                <form class="result-act-form w-flex w-flex-end w-align-center" style="gap:5px;">
+                  <div>Actions:</div>
+  
+                  <select id="result-action" class="sub-filter form-control" style="max-width:250px;">
+                    <option value="">--- ---</option>
+                    <option value="view">View Class Students' Results -- per class / term</option>
+                    <option value="single">Generate Class Students' Results PDF -- per class / term</option>
+                    
+                    <option value="bulk">Download Bulk Results -- per class / term</option>
+                    
+                  </select>
+                  
+                  <button type="submit" class="btn btn-secondary">Go</button>
+  
+                </form>
+
+              </div>
+
+              
+    
+              <div class="table-responsive">
+                <table class="table staff-table">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Student</th>
+                      <th>Classroom</th>
+                      <th class="w-center">Average Score</th>
+                      <th class="w-center">Grade</th>
+                      <th class="w-center">Position</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="result-list">
+                  </tbody>
+                </table>
+              </div>
+    
+              <div class="page_nos mt-3" id="page_nos2">
+                <a href="#" class="page_no"><i class="fa fa-angle-left"></i></a>
+    
+                <a href="#" class="page_no"><i class="fa fa-angle-right"></i></a>
+              </div>
+    
+            </div>
+          </div>
         </div>
       </div>
 
@@ -4533,9 +4639,17 @@ showSchoolInfo()
       $('#emp_page').val(1);
       getExams()
     })
+    $(".term-filter1").on('change', function() {
+      $('#emp_page2').val(1);
+      getResults()
+    })
     $(".class-filter").on('change', function() {
       $('#emp_page').val(1);
       getExams()
+    })
+    $("#class-filter1").on('change', function() {
+      $('#emp_page2').val(1);
+      getResults()
     })
 
     $(".close-side").click(function() {
@@ -4577,6 +4691,10 @@ showSchoolInfo()
     $(".canc-btn8").click(function(e) {
         e.preventDefault();
         $(".score-report-con").removeClass('active')
+    })
+    $(".canc-btn9").click(function(e) {
+        e.preventDefault();
+        $(".spread-con").removeClass('active')
     })
     
 
@@ -4914,6 +5032,578 @@ showSchoolInfo()
   </script>
 </template>
 
+<template id="calendar">
+  <?use-template: "sidenav"?>
+
+  <!-- Event Modals -->
+  <div class="modal-con modal-top small-con add-event-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Add New Event</div>
+      </div>
+      <form class="modal-content mt-3 add-event-form">
+
+        <div class="input-con">
+          <label for="st-lname">Event Title</label>
+          <input type="text" id="event-title" required />
+        </div>
+
+        <div class="input-con">
+          <label for="st-lname">Event Date</label>
+          <input type="datetime-local" id="event-date" />
+        </div>
+
+        <div class="input-con">
+          <label for="st-lname">Venue <i>(Optional)</i></label>
+          <input type="text" id="event-venue" />
+        </div>
+
+        <div class="input-con">
+          <label for="st-lname">Description <i>(Optional)</i></label>
+          <textarea id="event-des" rows="5"></textarea>
+        </div>
+        
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top small-con update-event-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Update <span class="event-name"></span></div>
+      </div>
+      <form class="modal-content mt-3 update-event-form">
+
+        <div class="input-con">
+          <label for="st-lname">Event Title</label>
+          <input type="text" id="event-title2" required />
+        </div>
+
+        <div class="input-con">
+          <label for="st-lname">Event Date</label>
+          <input type="datetime-local" id="event-date2" />
+        </div>
+
+        <div class="input-con">
+          <label for="st-lname">Venue <i>(Optional)</i></label>
+          <input type="text" id="event-venue2" />
+        </div>
+
+        <div class="input-con">
+          <label for="st-lname">Description <i>(Optional)</i></label>
+          <textarea id="event-des2" rows="5"></textarea>
+        </div>
+
+          <input type="hidden" class="event-id">
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn2">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con delete-event-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-red w-bold-x">
+          <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
+          Delete <b class="event-name"></b>
+        </div>
+      </div>
+      <form class="modal-content delete-event-form">
+        
+        <h4>
+          This is a destructive action and cannot be reversed. Are you sure you want to proceed?
+        </h4>
+
+        <input type="hidden" class="event-id">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn3">Cancel</button>
+          <input type="submit" class="w-red" value="Delete Event">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con broadcast-event-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-blue w-bold-x">
+          <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
+          Broadcast <b class="event-name"></b>
+        </div>
+      </div>
+      <form class="modal-content broadcast-event-form">
+        
+        <h4>
+          Broadcast this event to your target audience via the available means below:
+        </h4>
+
+        <div class="input-con">
+          <label for="">Select Target Audience:</label>
+
+          <div class="w-padding w-flex w-flex-wrap w-flex-start w-align-center" style="gap:20px">
+            
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" value="staff" id="e-staff" name="event-audience">
+              <label class="custom-control-label" for="e-staff">School Staff</label>
+            </div>
+
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" value="parent" id="e-parent" name="event-audience">
+              <label class="custom-control-label" for="e-parent">Parents</label>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="input-con">
+          <label for="">Select Broadcast Media:</label>
+
+          <div class="w-padding w-flex w-flex-wrap w-flex-start w-align-center" style="gap:20px">
+            
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" value="email" id="e-email" name="event-media">
+              <label class="custom-control-label" for="e-email">Email</label>
+            </div>
+
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" value="sms" id="e-sms" name="event-media" disabled>
+              <label class="custom-control-label" for="e-sms">SMS (&#8358;5 per SMS) <i>(Not available)</i></label>
+            </div>
+
+          </div>
+        </div>
+
+        <input type="hidden" class="event-id">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn8">Cancel</button>
+          <input type="submit" value="Broadcast Event">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Calendar modals -->
+  <div class="modal-con modal-top small-con add-sess-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Create New Session</div>
+      </div>
+      <form class="modal-content mt-3 add-sess-form">
+
+        <div class="input-con">
+          <label for="">Start Year</label>
+          <input type="number" id="sess-start" placeholder="e.g 2026" required />
+        </div>
+
+        <div class="input-con">
+          <label for="">End Year</label>
+          <input type="number" id="sess-end" placeholder="e.g 2028" required />
+        </div>
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn4">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top small-con update-sess-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Update <span id="sess-title"></span> <span class="q_nos"></span></div>
+      </div>
+      <form class="modal-content mt-3 update-sess-form">
+
+        <div class="input-con">
+          <label for="">Start Year</label>
+          <input type="number" id="sess-start2" placeholder="e.g 2026" required />
+        </div>
+
+        <div class="input-con">
+          <label for="">End Year</label>
+          <input type="number" id="sess-end2" placeholder="e.g 2028" required />
+        </div>
+
+        <input type="hidden" id="sess-id">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn5">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top small-con add-term-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Create New Term</div>
+      </div>
+      <form class="modal-content mt-3 add-term-form">
+
+        <div class="input-con">
+          <label for="">Select Academic Session</label>
+          <select class="session-filter" id="term-sess"  required>
+
+          </select>
+        </div>
+
+        <div class="input-con">
+          <label for="">Select Term</label>
+          <select class="term-filter" id="term-term"  required>
+
+          </select>
+        </div>
+
+        <div class="input-con">
+          <label for="">Term Commencement Date</label>
+          <input type="date" id="term-start" required />
+        </div>
+
+        <div class="input-con">
+          <label for="">Number of Weeks</label>
+          <input type="number" id="term-weeks" placeholder="e.g 13" required />
+        </div>
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn6">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top small-con update-term-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Update <span class="term-title"></span></div>
+      </div>
+      <form class="modal-content mt-3 update-term-form">
+
+        <div class="input-con">
+          <label for="">Select Term</label>
+          <select class="term-filter" id="term-term2"  required>
+
+          </select>
+        </div>
+
+        <div class="input-con">
+          <label for="">Number of Weeks</label>
+          <input type="number" id="term-weeks2" placeholder="e.g 13" required />
+        </div>
+
+        <input type="hidden" id="term-id">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn7">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+  <main class="">
+    <?use-template: "header"?>
+
+    <div class="dash-menu">
+      <div class="dash-box w-white w-round">
+        
+        <div>
+          <div class="menu-con-7 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/Frame 17.svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Total Events</div>
+            </div>
+            <div class="dash-no class-no">0</div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="menu-con-2 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/Frame 17 (1).svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Past Events</div>
+            </div>
+            <div class="dash-no sub-no">0</div>
+          </div>
+          
+        </div>
+        
+        <div>
+          <div class="menu-con-4 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/Frame 17 (2).svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Upcoming Events</div>
+            </div>
+            <div class="dash-no mat-no">0</div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs class-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#home">Sessions</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu2">Terms</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu1">Events</a>
+      </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+      <div class="tab-pane active container" id="home">
+        <div class="w-padding">
+          <div class="row mt-2 w-white">
+            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    
+              <div class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+                
+                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+                  <div class="h4 w-bold-x" style="color:orangered">Academic Sesions</div>
+                 
+                </div>
+    
+                <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+                  <button class="dark-btn add-sess-btn">Create Session&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+                  
+                </div>
+        
+              </div>
+              
+    
+              <div class="table-responsive">
+                <table class="table staff-table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Start Year</th>
+                      <th>End Year</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="session-list">
+                  </tbody>
+                </table>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane container" id="menu2">
+        
+        <div class="w-padding">
+          <div class="row mt-2 w-white">
+            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    
+              <div class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+                
+                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+                  <div class="h4 w-bold-x" style="color:orangered">Academic Terms</div>
+                 
+                </div>
+                
+    
+                <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+                  <button class="dark-btn add-term-btn">Add Term&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+                  
+                </div>
+    
+              </div>
+
+    
+              <div class="table-responsive">
+                <table class="table staff-table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Session</th>
+                      <th class="w-center">No of Weeks</th>
+                      <th class="w-center">Start Date</th>
+                      <th class="w-center">End Date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="term-list">
+                  </tbody>
+                </table>
+              </div>
+    
+              
+    
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tab-pane container" id="menu1">
+        <div class="w-padding">
+          <div class="row mt-2 w-white">
+            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    
+              <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+                
+                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+                  <div class="h4 w-bold-x" style="color:orangered">Events List</div>
+                 
+                </div>
+                
+    
+                <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+                  <button class="dark-btn add-event-btn">Create Event&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+                  
+                </div>
+    
+                <input type="hidden" id="emp_page" value="1" />
+              </form>
+
+              <div class="mb-2 mt-3 w-flex w-flex-between w-flex-wrap w-align-center">
+
+                <div class="input-group" style="margin:0;max-width:300px;">
+                  <input type="text" class="form-control" placeholder="Search by title, description" id="emp_search" value="" />
+                  <div class="input-group-append">
+                    <span class="input-group-text" style="background:none;"><i class="fa fa-search"></i></span>
+                  </div>
+                </div>
+                
+                <select id="status-filter" class="sub-filter form-control mb-2" style="max-width:200px;">
+                  <option value="">All Events</option>
+                  <option value="upcoming">Upcoming Events</option>
+                  <option value="ongoing">Ongoing Events</option>
+                  <option value="past">Past Events</option>
+                </select>
+
+              </div>
+
+              
+    
+              <div class="table-responsive">
+                <table class="table staff-table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th class="w-center">Status</th>
+                      <th>Venue</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="event-list">
+                  </tbody>
+                </table>
+              </div>
+    
+              <div class="page_nos mt-3" id="page_nos">
+                <a href="#" class="page_no"><i class="fa fa-angle-left"></i></a>
+    
+                <a href="#" class="page_no"><i class="fa fa-angle-right"></i></a>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+  
+  <script src="/static/js/calendar.js"></script>
+  <script>
+    $('.event-act').addClass('active')
+    $(".page-name").text("Calendar & Events");
+
+    $(".close-side").click(function() {
+      $(this).parent('div').parent('.side-con').removeClass('active')
+    })
+
+    $("#status-filter").on('change', function() {
+      $("#emp_page").val(1);
+      getEvents()
+    })
+
+    $('#emp_search').on('input', function(e) {
+            $('#emp_page').val(1);
+            delayedSearch(e.target.value)
+          })
+
+    $(".close-modal").click(function() {
+      $(this).parent('.modal-body').parent('.modal-con').removeClass('active')
+    })
+    
+    $(".canc-btn").click(function(e) {
+        e.preventDefault();
+        $(".add-event-con").removeClass('active')
+    })
+    $(".canc-btn2").click(function(e) {
+        e.preventDefault();
+        $(".update-event-con").removeClass('active')
+    })
+    $(".canc-btn3").click(function(e) {
+        e.preventDefault();
+        $(".delete-event-con").removeClass('active')
+    })
+    $(".canc-btn4").click(function(e) {
+        e.preventDefault();
+        $(".add-sess-con").removeClass('active')
+    })
+    $(".canc-btn5").click(function(e) {
+        e.preventDefault();
+        $(".update-sess-con").removeClass('active')
+    })
+    $(".canc-btn6").click(function(e) {
+        e.preventDefault();
+        $(".add-term-con").removeClass('active')
+    })
+    $(".canc-btn7").click(function(e) {
+        e.preventDefault();
+        $(".update-term-con").removeClass('active')
+    })
+    $(".canc-btn8").click(function(e) {
+        e.preventDefault();
+        $(".broadcast-event-con").removeClass('active')
+    })
+    
+
+    $('#emp_search2').on('input', function(e) {
+      $('#emp_page2').val(1);
+      delayedSearch(e.target.value)
+    })
+
+  </script>
+</template>
+
 <!-- for subscription -->
 <template id="subscription">
   <?use-template: "sidenav"?>
@@ -5176,6 +5866,9 @@ showSchoolInfo()
 </template>
 <template route="/attendance">
   <?use-template: "attendance"?>
+</template>
+<template route="/calendar">
+  <?use-template: "calendar"?>
 </template>
 <template route="/subscription">
   <?use-template: "subscription"?>
