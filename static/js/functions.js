@@ -148,6 +148,12 @@ function downloadFile(url, filename="") {
   pushNotification("n_success", "File downloaded successfully", 4000);
 }
 
+function deslugify(str) {
+  var splitted_str = str.split('_');
+  var joined_str = splitted_str.join(' ')
+  return joined_str
+}
+
 function getQueryParams() {
   let params = new URLSearchParams(window.location.search);
   let query = Object.fromEntries(params.entries());
@@ -188,7 +194,7 @@ function checkStatus() {
   if(!navigator.onLine && location.hostname != '127.0.0.1') {
     pushNotification("n_network", "You are currently offline!", 3000)
   }
-  
+  /*
   admin.account.loginStatus({
     onSuccess: (data) => {
       if(data.status == 'success') {
@@ -207,6 +213,7 @@ function checkStatus() {
       console.error(error)
     }
   })
+    */
 }
 checkStatus()
 

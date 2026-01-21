@@ -398,7 +398,6 @@ async function setup() {
     showLoader("Loading data...")
     try {
         await getSchoolInfo()
-        await schoolConfig()
         await schoolAccount()
         await schoolDocument()
         await getDomain()
@@ -682,40 +681,6 @@ function updateSchoolInfo(stat) {
                 showSchoolInfo()
             }
             
-        },
-        onError: (error) => {
-            console.error(error);
-            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-            hideLoader()
-        }
-    })
-
-}
-
-function updateConfig() {
-    let auto_payroll = $("#config-payroll").val();
-    auto_payroll = (auto_payroll == "true");
-    let auto_renew = $("#config-renew").val();
-    auto_renew = (auto_renew == "true");
-    let payroll_date = $("#config-date").val();
-    let term_per_session = $("#config-term").val();
-    let weeks_per_term = $("#config-week").val()
-
-    formData = {auto_payroll, auto_renew, payroll_date, term_per_session, weeks_per_term};
-    
-    showLoader("Updating configurations...")
-
-    admin.school.updateConfig({
-        formData: formData,
-        onSuccess: (data) => {
-            if(data.status == 'success') {
-                pushNotification("n_success", data.message, 5000)
-            }
-            else {
-                pushNotification("n_error", data.message, 5000)
-            }
-            hideLoader()
-            schoolConfig()
         },
         onError: (error) => {
             console.error(error);
@@ -1087,7 +1052,6 @@ $("#fund-amount").on('input', function() {calculate_charges()})
 
 
 $(".fund-form").on('submit', async (e) => {e.preventDefault();await fundWallet()})
-$(".update-config-form").submit(function(e) {e.preventDefault();updateConfig()})
 $(".update-school-form").submit(function(e) {e.preventDefault();updateSchoolInfo("info")})
 $(".website-form").submit(function(e) {e.preventDefault();updateSchoolInfo("web")})
 $(".add-card-form").submit(function(e) {e.preventDefault();addCard()})

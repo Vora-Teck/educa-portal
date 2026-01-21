@@ -290,16 +290,21 @@ function getStudent(id) {
 
                 let fees = data.fees;
                 $(".std-pay").empty();
+                console.log(fees)
                 for(let i in fees) {
+                  let t = fees[i].tuition;
                     let temp = `
                     <tr>
-                        <td>${fees[i].tuition.classroom.level.title}</td>
-                        <td style="white-space:nowrap">${fees[i].tuition.term.title}</td>
-                        <td>&#8358;${digify(fees[i].tuition.amount)}</td>
-                        <td class="h3 w-text-center">${fees[i].is_paid ? `
-                          <i class="fa fa-check-circle w-text-green"></i>` : `
-                          <i class="fa fa-times-circle w-text-red"></i>`}</td>
+                        <td>
+                        ${t.term.session.title}
+                        </td>
+                        <td style="white-space:nowrap">${t.term.title}</td>
+                        <td>&#8358;${digify(t.amount)}</td>
+                        <td class=" w-text-center">${fees[i].is_paid ? `
+                          <span class="success-btn">Paid</span>` : `
+                          <span class="danger-btn">Unpaid</span>`}</td>
                         <td>&#8358;${digify(fees[i].outstanding)}</td>
+                        <!--
                         <td>
                           <div class="dropdown">
                             <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
@@ -325,6 +330,7 @@ function getStudent(id) {
                             </div>
                           </div>
                         </td>
+                        -->
                     </tr>`;
                     $(".std-pay").append(temp)
                 }

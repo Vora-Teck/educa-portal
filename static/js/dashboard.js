@@ -34,10 +34,76 @@ function getData() {
               pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
               hideLoader()
       }
-})
+  })
 }
 
 getData()
+
+function getEvents() {
+  let page = 1;
+  let pagesize = 3;
+  let search = '';
+  let status = 'Upcoming';
+
+  $('.event-list').empty()
+  loader = `<li>
+      <i class="fa fa-spinner rotate"></i>&nbsp;&nbsp;&nbsp;Loading...
+      </li>
+  </tr>`;
+  $('.event-list').append(loader)
+
+  let params = {page, pagesize, status, search}
+
+  //console.log(params)
+
+  admin.calendar.eventList({
+    params: params,
+    onSuccess: (data) => {
+      //console.log(data);
+      $('.event-list').empty()
+      if(data.status == 'success') {
+        if(data.data) {
+          let e = data.data;
+          for(var i in e) {
+            let temp = `
+              <li>
+                <div class="w-flex w-flex-between w-align-center mb-3">
+                  <div class="w-bold-x h5">
+                    <i class="fa fa-circle w-text-blue"></i>
+                    &nbsp;&nbsp;${e[i].title}
+                  </div>
+                  <div class="w-text-gray">${datify(e[i].date)}</div>
+                </div>
+                <p>${e[i].description || e[i].venue}</p>
+              </li>`;
+            $('.event-list').append(temp)
+          }
+        }
+        else {
+          let temp = `
+            <li class="w-text-gray w-italic">
+              ${data.message}
+            </li>`;
+          $('.event-list').append(temp)
+        }
+      }
+      else {
+        pushNotification("n_error", data.message, 3000);
+        let temp = `
+          <li class="w-text-gray w-italic">
+            ${data['message']}
+          </li>`;
+        $('.event-list').append(temp)
+      }
+      },
+      onError: (error) => {
+              console.error(error);
+              $('.event-list').empty()
+              pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+      }
+})
+}
+getEvents()
 
 // For Admin
 function drawDistroChart(d) {
@@ -315,7 +381,7 @@ $(function () {
   }
   function d() {
   var t;
-  var n = $("#calendar").css("width", e + "px");
+  var n = $("#dash_calendar").css("width", e + "px");
   n.find((t = "#calendar_weekdays, #calendar_content"))
   .css("width", e + "px")
   .find("div")
@@ -387,7 +453,7 @@ $(function () {
   "#d35400",
   "#2c3e50",
   ];
-  var u = $("#calendar");
+  var u = $("#dash_calendar");
   var a = u.find("#calendar_header");
   var f = u.find("#calendar_weekdays");
   var l = u.find("#calendar_content");
@@ -412,5 +478,5 @@ $(function () {
   r("next");
   }
   });
-  });
+});
   

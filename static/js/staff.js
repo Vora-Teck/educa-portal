@@ -1,3 +1,6 @@
+var months = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
+
+
 function getData() {
 
     showLoader("Loading Data...")
@@ -290,14 +293,16 @@ function getStaffPayroll(id) {
                         
                     for(let i in d) {
                         let temp = `
-                        <td style="white-space: nowrap;">${monthify(d[i].date)}</td>
+                        <tr>
+                        <td style="white-space: nowrap;">${months[d[i].month]} ${d[i].year}</td>
                         <td style="white-space: nowrap;">&#8358;${digify(d[i].amount)}</td>
-                        <td style="white-space: nowrap;">${d[i].transaction ? `${datify(d[i].transaction.date, false)}` : `<span class="w-text-gray">No transaction</span>`}</td>
-                        <td style="white-space: nowrap;">${d[i].is_paid ? `<i class="fa fa-check-circle w-text-green"></i>&nbsp;&nbsp;Paid` : `
-                            <i class="fa fa-times-circle w-text-red"></i>&nbsp;&nbsp;Not Paid`}</td>
-                        <td>${d[i].transaction?.receipt ? `
-                            <a href="${base_url}${d[i].transaction.receipt}" target="_blank"><i class="fa fa-file-o w-text-gray"></i>&nbsp;&nbsp;View` : `
-                            <span class="w-text-gray">No receipt generated.</span>`}</td>`;
+                        <td style="white-space: nowrap;">
+                            ${d[i].is_paid ? `
+                                <span class="success-btn">Paid</span>` : `
+                                <span class="danger-btn">Unpaid</span>`
+                            }
+                        </td>
+                        </tr>`;
 
                         $(".sta-pay").append(temp)
                     }

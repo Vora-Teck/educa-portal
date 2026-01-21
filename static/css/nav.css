@@ -543,7 +543,7 @@ header {
 }
 
 
-#calendar{
+#dash_calendar{
   margin-left: auto;
   margin-right: auto;
   width: 100%;
@@ -612,7 +612,7 @@ header {
   float:left;
   width:70%;
   }
-  #calendar i[class^=fa]{
+  #dash_calendar i[class^=fa]{
   color: #ccc;
   float: left;
   width:15%;
@@ -2193,6 +2193,29 @@ ul.breadcrumb li a:hover {
 .time-table-body td {
   max-width: 100px;
   white-space: wrap;
+}
+
+.trans-det-table tr td:nth-child(1),
+.pay-det-table tr td:nth-child(1) {
+  font-weight: bolder;
+}
+.trans-det-table tr td:nth-child(2),
+.pay-det-table tr td:nth-child(2) {
+  text-align: right;
+}
+
+.transfer-loader {
+  height: 4px;
+  width: 130px;
+  --c:no-repeat linear-gradient(orange 0 0);
+  background: var(--c),var(--c),#d7b8fc;
+  background-size: 60% 100%;
+  animation: l16 3s infinite;
+}
+@keyframes l16 {
+  0%   {background-position:-150% 0,-150% 0}
+  66%  {background-position: 250% 0,-150% 0}
+  100% {background-position: 250% 0, 250% 0}
 }
 
 
