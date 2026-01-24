@@ -1644,15 +1644,15 @@ ul.breadcrumb li a:hover {
 .sub-wrapper{
   width: 100%;
   margin: auto;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 15px;
-  justify-content: space-between;
 }
+
 .sub-wrapper .sub-table{
   background: #fff;
-  flex: 1 1 300px;
-  min-width: 300px;
+  width: 100%;
+  max-width:400px;
   box-sizing: border-box;
   padding: 30px 20px;
   position: relative;
@@ -1770,6 +1770,11 @@ ul.breadcrumb li a:hover {
 .features li .list-name{
   font-size: 17px;
   font-weight: 400;
+  text-align: left;
+  display:flex;
+  justify-content: flex-start;
+  gap: 12px;
+  align-items: center;
 }
 .features li .icon{
   font-size: 15px;
@@ -1856,14 +1861,14 @@ ul.breadcrumb li a:hover {
   background: #baf8d4;
 }
 .basic .package-name::before{
-  content: "Standard";
+  content: "Eduka Core";
 }
 .premium .package-name::before{
-  content: "Premium";
+  content: "Advanced";
   font-size: 24px;
 }
 .ultimate .package-name::before{
-  content: "Corporate";
+  content: "Eduka Apex";
   font-size: 24px;
 }
 @media (max-width: 1020px) {
@@ -2216,6 +2221,161 @@ ul.breadcrumb li a:hover {
   0%   {background-position:-150% 0,-150% 0}
   66%  {background-position: 250% 0,-150% 0}
   100% {background-position: 250% 0, 250% 0}
+}
+
+
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.product-card {
+  position: relative;
+  width: 100%;
+  max-width:400px;
+  border-radius: 25px;
+  padding: 20px 30px 30px 30px;
+  background: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  z-index: 3;
+  overflow: hidden;
+}
+.product-card .logo-cart{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.product-card .logo-cart img{
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+}
+.product-card .logo-cart i{
+  font-size: 27px;
+  color: #707070;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.product-card .logo-cart i:hover{
+  color: #333;
+}
+.product-card .main-images{
+  position: relative;
+  max-height: 300px;
+  width: auto;
+}
+.product-card .main-images img{
+  width: 100%;
+  height: auto;
+  padding: 8px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+}
+.product-card .main-images img.active{
+  opacity: 1;
+}
+.shoe-details {
+  margin-top: 30px;
+}
+.product-card .shoe-details .shoe_name{
+  font-size: 24px;
+  font-weight: 600;
+  color: #161616;
+}
+.product-card .shoe-details p{
+  font-size: 12px;
+  font-weight: 400;
+  color: #333;
+  text-align: justify;
+}
+.product-card .shoe-details .stars i{
+  margin: 0 -1px;
+  color: #333;
+}
+.product-card .color-price .color-option{
+  display: flex;
+  align-items: center;
+}
+.color-price{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+.color-price .color-option .color{
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+  margin-right: 8px;
+}
+.color-option  .circles{
+  display: flex;
+}
+
+.color-price .price{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.color-price .price .price_num{
+  font-size: 25px;
+  font-weight: 600;
+  color: #707070;
+}
+.color-price .price .price_letter{
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: -4px;
+  color: #707070;
+}
+.product-card .button{
+  position: relative;
+  height: 50px;
+  width: 100%;
+  border-radius: 25px;
+  margin-top: 30px;
+  overflow: hidden;
+}
+.product-card .button .button-layer{
+  position: absolute;
+  height: 100%;
+  width: 300%;
+  left: -100%;
+  background-image: linear-gradient(135deg,#9708CC, #43CBFF,#9708CC, #43CBFF );
+  transition: all 0.4s ease;
+  border-radius: 25PX;
+}
+.product-card .button:hover .button-layer{
+  left: 0;
+}
+.product-card .button button{
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background: none;
+  outline: none;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #fff;
+}
+.column {
+  float: left;
+  width: 25%;
+  padding: 10px;
+}
+
+/* Style the images inside the grid */
+.column img {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.column img:hover {
+  opacity: 1;
 }
 
 

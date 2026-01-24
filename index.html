@@ -2398,9 +2398,6 @@ showSchoolInfo()
         <a class="nav-link" data-toggle="tab" href="#menu3">Bank Account/Card</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#menu4">Configurations</a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#menu5">Gallery</a>
       </li>
     </ul>
@@ -2782,81 +2779,6 @@ showSchoolInfo()
           
 
         </div>
-      </div>
-
-      <div class="tab-pane container" id="menu4">
-        
-        <form class="w-padding w-white update-config-form">
-
-          <div class="row mt-2">
-            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col lg-12 col-xl-12">
-              <h3 class="mb-3">School Configurations</h3>
-            </div>
-
-            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-              <label for="st-fname"><span class="w-text-red">*</span> Subscription Auto Renewal</label>
-              <div class="w-small w-text-gray"><i>
-                When enabled, your subscription plan is auto renewed and the amount is deducted from your wallet balance. In case of insufficient balance, the amount is 
-                deducted using your linked debit card. <br>
-                When disabled, you will be notified via email when your current subscription plan is about to expire.
-              </i></div>
-              <select id="config-renew">
-                <option value="true">Enabled</option>
-                <option value="false">Disabled</option>
-              </select>
-            </div>
-
-            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-              <label for="st-fname"><span class="w-text-red">*</span> Auto Payroll</label>
-              <div class="w-small w-text-gray"><i>
-                When enabled, the <b>UNPAID</b> salary of <b>ACTIVE</b> staff for <b>THAT MONTH</b> will be paid automatically on the specified date (payroll date). The amount will be deducted from your wallet balance. In case of 
-                insufficient balance, the payments will not be made. <br>
-                When disabled, you will be notified via email on the specified date (payroll date) as a reminder to pay your staff salaries.
-              </i></div>
-              <select id="config-payroll">
-                <option value="true">Enabled</option>
-                <option value="false">Disabled</option>
-              </select>
-            </div>
-
-            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-              <label for="st-lname"><span class="w-text-red">*</span> Payroll Date</label>
-              <div class="w-small w-text-gray"><i>
-                This is the specified payroll date for automatic payment (when enabled)/reminder (when disabled).
-                <b>Minimum value is <b>1</b> and maximum value is <b>28</b></b>
-              </i></div>
-              <input type="number" id="config-date" min="1" max="28" />
-            </div>
-
-            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-              <label for="st-lname"><span class="w-text-red">*</span> No of Terms per Session</label>
-              <div class="w-small w-text-gray"><i>
-                This specifies the number of terms your school has in a session (default is <b>3</b> terms).<br>
-                This is to enable accurate personalization of students' results and report analysis.
-              </i></div>
-              <input type="number" id="config-term" min="1" max="4" />
-            </div>
-
-            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-              <label for="st-lname"><span class="w-text-red">*</span> No of Weeks per Term</label>
-              <div class="w-small w-text-gray"><i>
-                This specifies the average number of academic weeks your school has in a term (default is <b>13</b> weeks). <br>
-                This is to enable accurate structure of students' and staffs' attendance.
-              </i></div>
-              <input type="number" id="config-week" min="1" max="20" />
-            </div>
-
-          </div>
-
-
-          <div class="row mt-2">
-            <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-              <input type="submit" value="Save Changes">
-            </div>
-          </div>
-
-        </form>
-
       </div>
 
       <div class="tab-pane container" id="menu5">
@@ -3581,7 +3503,6 @@ showSchoolInfo()
     
                 <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
                   <button class="dark-btn add-class-btn">Add Class&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
-                  <button class="light-btn class-export-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
                 </div>
 
               </form>
@@ -3629,7 +3550,6 @@ showSchoolInfo()
     
                 <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
                   <button class="dark-btn add-sub-btn">Add Subjects&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
-                  <button class="light-btn sub-export-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
                 </div>
     
                 <input type="hidden" id="emp_page2" value="1" />
@@ -7267,7 +7187,7 @@ showSchoolInfo()
               
             </div>
 
-            <a href="/#">
+            <a href="/#transactions">
               <button class="dark-btn sub-status-btn">View Transaction</button>
             </a>
           </div>
@@ -7816,6 +7736,55 @@ showSchoolInfo()
   </script>
 </template>
 
+<template id="marketplace">
+  <?use-template: "sidenav"?>
+
+  <main class="">
+    <?use-template: "header"?>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs class-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#home">My Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#home2">Marketplace</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+
+      <div class="tab-pane active container" id="home">
+
+      </div>
+
+      <div class="tab-pane container" id="home2">
+        <div class="product-list"></div>
+      </div>
+
+    
+  </main>
+  
+  <script src="/static/js/product.js"></script>
+  <script>
+    $('.mark-act').addClass('active')
+    $(".page-name").text("Marketplace");
+
+    $(".close-side").click(function() {
+      $(this).parent('div').parent('.side-con').removeClass('active')
+    })
+
+    $(".close-modal").click(function() {
+      $(this).parent('.modal-body').parent('.modal-con').removeClass('active')
+    })
+    
+    $(".canc-btn").click(function(e) {
+        e.preventDefault();
+    })
+    
+  </script>
+</template>
+
 
 
 <!-- Sample Template -->
@@ -7917,6 +7886,9 @@ showSchoolInfo()
 </template>
 <template route="/settings">
   <?use-template: "settings"?>
+</template>
+<template route="/marketplace">
+  <?use-template: "marketplace"?>
 </template>
 
 <!-- Standard Meta -->

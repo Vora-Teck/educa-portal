@@ -91,37 +91,89 @@ function getSubscriptions() {
                         </div>
                         <div class="package-name"></div>
                         <ul class="features">
+
                             <li>
                             <span class="list-name">
-                            <i class="fa fa-circle w-small w-text-blue"></i>&nbsp;&nbsp;
-                            ${d[i].features.join(`</span>
-                            <span class="icon check"><i class="fa fa-check"></i></span>
-                            </li>
-                            <li>
-                            <span class="list-name">
-                            <i class="fa fa-circle w-small w-text-blue"></i>&nbsp;&nbsp;`)}
-                            </span>
-                            <span class="icon check"><i class="fa fa-check"></i></span>
-                            </li>
-                            
-                            <li>
-                            <span class="list-name">
-                            <i class="fa fa-circle w-small w-text-blue"></i>&nbsp;&nbsp;
+                            <i class="fa fa-circle w-small w-text-blue"></i>
                             ${d[i].max_staff == 0 ? `Unlimited` : `${digify(d[i].max_staff, false)}`} Staff Accounts</span>
                             <span class="icon check"><i class="fa fa-check"></i></span>
                             </li>
+
                             <li>
                             <span class="list-name">
-                            <i class="fa fa-circle w-small w-text-blue"></i>&nbsp;&nbsp;
+                            <i class="fa fa-circle w-small w-text-blue"></i>
                             ${d[i].max_students == 0 ? `Unlimited` : `${digify(d[i].max_students, false)}`} Students Accounts</span>
                             <span class="icon check"><i class="fa fa-check"></i></span>
                             </li>
+
                             <li>
                             <span class="list-name">
-                            <i class="fa fa-circle w-small w-text-blue"></i>&nbsp;&nbsp;
-                            Credit Remove Permission</span>
-                            <span class="icon cross"><i class="fa fa-times"></i></span>
+                            <i class="fa fa-circle w-small w-text-blue"></i>
+                            ${digify(d[i].max_lesson_note_generated)} AI-Generated Lesson Notes / month</span>
+                            <span class="icon check"><i class="fa fa-check"></i></span>
                             </li>
+
+                            <li>
+                              <span class="list-name">
+                              <i class="fa fa-circle w-small w-text-blue"></i>
+                                AI Analysis & Reports
+                              </span>
+                              <span class="icon check"><i class="fa fa-check"></i></span>
+                            </li>
+
+                            <li>
+                              <span class="list-name">
+                              <i class="fa fa-circle w-small w-text-blue"></i>
+                                Unlimited AI-Generated Exam Questions
+                              </span>
+                              <span class="icon check"><i class="fa fa-check"></i></span>
+                            </li>
+
+                            ${d[i].timetable_generation ? `
+                              <li>
+                              <span class="list-name">
+                              <i class="fa fa-circle w-small w-text-blue"></i>
+                                Free AI-Generated Timetables
+                              </span>
+                              <span class="icon check"><i class="fa fa-check"></i></span>
+                            </li>` : ``}
+
+                            <li>
+                              <span class="list-name">
+                              <i class="fa fa-circle w-small w-text-blue"></i>
+                                Dedicated School Email Account
+                              </span>
+                              <span class="icon check"><i class="fa fa-check"></i></span>
+                            </li>
+
+                            ${d[i].student_ai_assistant ? `
+                              <li>
+                              <span class="list-name">
+                              <i class="fa fa-circle w-small w-text-blue"></i>
+                                Personalized AI Assistant for Students
+                              </span>
+                              <span class="icon check"><i class="fa fa-check"></i></span>
+                            </li>` : ``}
+
+                            ${d[i].sms_broadcast ? `
+                              <li>
+                              <span class="list-name">
+                              <i class="fa fa-circle w-small w-text-blue"></i>
+                                Free SMS Boradcast Messaging
+                              </span>
+                              <span class="icon check"><i class="fa fa-check"></i></span>
+                            </li>` : ``}
+
+                            ${d[i].features.map(function(item, index) {
+                              return `
+                              <li>
+                                <span class="list-name">
+                                <i class="fa fa-circle w-small w-text-blue"></i>
+                                  ${item}
+                                </span>
+                                <span class="icon check"><i class="fa fa-check"></i></span>
+                              </li>`
+                            }).join('')}
                         </ul>
                         <div class="sub-btn" data-id="${d[i].id}">
                         <button>${d[i].level == cp ? `Renew Plan` : `Choose Plan`}</button>
