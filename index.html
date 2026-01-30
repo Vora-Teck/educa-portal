@@ -3134,21 +3134,13 @@ showSchoolInfo()
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <label for="st-lname">Upload Note Document (pdf, word document, image, etc)</label>
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="to-file">
-              <label class="custom-file-label" for="to-file">Choose file</label>
-            </div>
-          </div>
-
-          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <label for="st-lname">Content/Notes</label>
             <textarea class="html-text to-content" name="to-content" id="to-content"></textarea>
           </div>
 
         </div>
 
-        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;position:sticky;bottom:0;padding-top:10px;">
+        <div class="w-white input-con w-flex w-flex-end w-align-center" style="gap:20px;position:sticky;bottom:0;padding-top:10px;">
           <button class="clear-btn canc-btn10">Cancel</button>
           <input type="submit" value="Save">
         </div>
@@ -3182,15 +3174,10 @@ showSchoolInfo()
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <label for="st-lname">Upload Note Document (pdf, word document, image, etc) <small id="to-file3" class="w-text-blue"></small></label>
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="to-file2">
-              <label class="custom-file-label" for="to-file2">Choose file</label>
+            <div class="w-flex w-flex-between w-align-center" style="gap:10px;">
+              <label for="st-lname">Content/Notes</label>
+              <button class="btn dark-btn gen-content-btn"><i class="fa fa-star"></i> Generate with AI</button>
             </div>
-          </div>
-
-          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <label for="st-lname">Content/Notes</label>
             <textarea class="html-text to-content2" name="to-content2" id="to-content2"></textarea>
           </div>
 
@@ -3198,7 +3185,7 @@ showSchoolInfo()
 
         <input type="hidden" class="top-id">
 
-        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;position:sticky;bottom:0;padding-top:10px;">
+        <div class="w-white input-con w-flex w-flex-end w-align-center" style="gap:20px;position:sticky;bottom:0;padding-top:10px;">
           <button class="clear-btn canc-btn11">Cancel</button>
           <input type="submit" value="Update">
         </div>
@@ -7159,7 +7146,7 @@ showSchoolInfo()
                         <div class="input-con">
                           <label for="">Select Payment Method</label>
                           <select id="sp-method">
-                            <option value="paystack">Paystack Payment Gateway</option>
+                            
                           </select>
                         </div>
                       </td>
@@ -7898,8 +7885,8 @@ showSchoolInfo()
 
 <!-- Site Properties -->
 <title>Eduka Admin - Dashboard</title>
-<link rel="shortcut icon" href="/static/logos/logo.png" />
-    <link rel="shortcut" href="/static/logos/logo.png" />
+<link rel="shortcut icon" href="/static/logos/icon.png" />
+    <link rel="shortcut" href="/static/logos/icon.png" />
 <link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="./static/css/fontawesome.css">
 <link rel="stylesheet" type="text/css" href="./static/css/rigan.css">
@@ -7910,6 +7897,7 @@ showSchoolInfo()
 <link rel="stylesheet" type="text/css" href="./static/css/nav.css">
 <script src="/static/js/jquery.min.js"></script>
 <script src="/static/js/popper.min.js"></script>
+<script src="/static/js/marked.min.js"></script>
     <script src="/static/module/swif.js"></script>
     <script src="/static/module/educa-admin-sdk.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>

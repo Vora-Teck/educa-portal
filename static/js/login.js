@@ -4,7 +4,7 @@ function authenticate() {
     let password = $('#password').val();
 
     if(!email || !password) {
-        pushNotification("n_error", "Username or password cannot be empty", 3000);
+        pushNotification("n_error", "Email or password cannot be empty", 3000);
         return
     }
     const formData = {email, password}
@@ -31,11 +31,47 @@ function authenticate() {
   })
 }
 
+function resetPassword() {
+        let email = $('#forg-email').val();
+    
+        if(!email) {
+            pushNotification("n_error", "Email cannot be empty", 3000);
+            return
+        }
+        const formData = {email}
+        showLoader("Processing...")
+    
+        admin.account.forgotPassword({
+            formData: formData,
+            onSuccess: (data) => {
+                    console.log(data);
+                    if(data.status == 'success') {
+                            pushNotification("n_success", data.message, -1)
+                            location.href = '#'
+                    }
+                    else {
+                            pushNotification("n_error", data.message, 5000)
+                    }
+                    hideLoader()
+            },
+            onError: (error) => {
+                    console.error(error);
+                    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+                    hideLoader()
+            }
+      })
+    }
 
-$('.login-form').submit(function(e) {
+
+$('#login-form').submit(function(e) {
     e.preventDefault();
     authenticate();
 })
+
+$('#forgot-form').submit(function(e) {
+        e.preventDefault();
+        resetPassword();
+    })
 
 
 function logout() {

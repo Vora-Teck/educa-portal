@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="/static/logos/logo.png" />
-    <link rel="shortcut" href="/static/logos/logo.png" />
+    <link rel="shortcut icon" href="/static/logos/icon.png" />
+    <link rel="shortcut" href="/static/logos/icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/fontawesome.css">
@@ -30,8 +30,7 @@
             <div class="carou col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-4">
                 
                 <div class="carou-con">
-                    <img class="logo-img" src="/static/logos/logo_trans_white.png" alt="" />
-                    <div class="p w-small w-text-white">Education Management System</div>
+                    <img class="logo-img" src="/static/logos/logo_white_sss_trans.png" alt="" />
                     <div class="carou-content h1">
                         Hi! Welcome
                     </div>
@@ -46,7 +45,7 @@
     
             <div class="login-page col col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8">
                 
-                    <form class="item login-form">
+                    <form class="item login-form" id="login-form">
                         
                         <h2 class="w-bold-x mt-3">Login</h2>
                         <p class="w-text-gray">Log in to your account.</p>
@@ -59,9 +58,52 @@
                             <label for="password">Password</label>
                             <input type="password" id="password" placeholder="" required />
                         </div>
-                        <a href="#" class="w-right w-text-blue mb-3">Forgot Password?</a>
+                        <a href="#forgot-password" class="w-right w-text-blue mb-3">Forgot Password?</a>
                         <div class="input-con">
                             <input type="submit" value="Log In" />
+                        </div>
+                    </form>
+    
+            </div>
+        </div>
+
+        
+    <script src="/static/js/login.js"></script>
+    <script>
+    </script>
+    </template>
+
+    <template id="forgot_page">
+        <div class="row">
+            <div class="carou col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-4">
+                
+                <div class="carou-con">
+                    <img class="logo-img" src="/static/logos/logo_white_sss_trans.png" alt="" />
+                    <div class="carou-content h1">
+                        Hi! Welcome
+                    </div>
+
+                    <p class="w-text-white">Remebered your password?</p>
+                    <a href="/login/">
+                        <button class="reg-btn">Login</button>
+                    </a>
+                    <p class="copyright w-text-white w-bold">Copyright &copy; Educa.</p>
+                </div>
+            </div>
+    
+            <div class="login-page col col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8">
+                
+                    <form class="item login-form" id="forgot-form">
+                        
+                        <h2 class="w-bold-x mt-3">Forgot Password</h2>
+                        <p class="w-text-gray">Log in to your account.</p>
+    
+                        <div class="input-con">
+                            <label for="username">Enter your Registered Email</label>
+                            <input type="email" id="forg-email" placeholder="" required />
+                        </div>
+                        <div class="input-con">
+                            <input type="submit" value="Reset Password" />
                         </div>
                     </form>
     
@@ -79,8 +121,7 @@
             <div class="carou col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-4">
                 
                 <div class="carou-con">
-                    <img class="logo-img" src="/static/logos/logo_trans_white.png" alt="" />
-                    <div class="p w-small w-text-white">Education Management System</div>
+                    <img class="logo-img" src="/static/logos/logo_white_sss_trans.png" alt="" />
                     <div class="carou-content h1">
                         Hi! Welcome
                     </div>
@@ -461,6 +502,9 @@
 
     <template route="/">
         <?use-template: "login_page"?>
+      </template>
+      <template route="/forgot-password">
+        <?use-template: "forgot_page"?>
       </template>
       <template route="/signup">
         <?use-template: "register_page"?>

@@ -240,7 +240,7 @@ function getTransaction(payroll_id) {
     admin.payroll.getPayroll({
         params: {payroll_id},
         onSuccess: (data) => {
-            console.log(data)
+            //console.log(data)
             if(data.status == "success") {
                 let d = data.data;
 

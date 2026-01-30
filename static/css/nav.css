@@ -1109,7 +1109,7 @@ i.rotate {
 }
 .modal-body {
   width: 90%;
-  max-height: 90vh;
+  max-height: 95vh;
   overflow-y: auto;
   max-width: 900px;
   background: #fff;

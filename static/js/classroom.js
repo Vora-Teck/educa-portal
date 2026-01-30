@@ -968,10 +968,14 @@ function getTopics(syllabus_id) {
                                         <span class="tooltiptext w-card">Edit week ${d[i].week} Topic</span>
                                     </a>
                                     ${d[i].file ? `
-                                    <a class="top-file-link tooltipa" href="#"  data-id="${base_url}${d[i].file}" target="_blank" download>
+                                    <a class="top-file-link tooltipa" href="#"  data-id="${base_url}${d[i].file}">
                                         <i class="fa fa-download"></i>&nbsp;&nbsp;&nbsp;
                                         <span class="tooltiptext w-card">Download week ${d[i].week} Document</span>
-                                    </a>` : ``}
+                                    </a>` : `
+                                    <a class="top-file-gen tooltipa" href="#"  data-id="${d[i].id}">
+                                        <i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;&nbsp;
+                                        <span class="tooltiptext w-card">Generate week ${d[i].week} PDF</span>
+                                    </a>`}
                                     <a class="top-del-link tooltipa" href="#" data-id="${d[i].id}">
                                         <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
                                         <span class="tooltiptext w-card">Delete week ${d[i].week} Topic</span>
@@ -1004,6 +1008,11 @@ function getTopics(syllabus_id) {
                         let id = $(this).data('id');
                         downloadFile(id)
                     })
+                    $('.top-file-gen').click(function(e) {
+                        e.preventDefault();
+                        let id = $(this).data('id');
+                        generateFile(id)
+                    })
 
                 }
                 else {
@@ -1032,15 +1041,10 @@ function addTopic() {
     let week = $("#to-week").val();
     let title = $("#to-title").val();
     let description = $("#to-des").val();
-    let file = $("#to-file")[0].files[0];
     let content = tinymce.get('to-content').getContent({format: 'html'})
-    let formData = new FormData();
-    formData.append("syllabus_id", syllabus_id);
-    formData.append("week", week);
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("file", file);
-    formData.append("content", content);
+    
+    let formData = {syllabus_id, week, title, description, content}
+    
 
     //console.log(formData)
     showLoader("Adding Topic...")
@@ -1115,23 +1119,17 @@ function updateTopic() {
     let week = $("#to-week2").val();
     let title = $("#to-title2").val();
     let description = $("#to-des2").val();
-    let file = $("#to-file2")[0].files[0];
     let content = tinymce.get('to-content2').getContent({format: 'html'})
     //console.log(content)
-    let formData = new FormData();
-    formData.append("topic_id", topic_id);
-    formData.append("week", week);
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("file", file);
-    formData.append("content", content);
+    
+    let formData = {topic_id, week, title, description, content}
 
     showLoader("Updating Topic...")
 
     admin.subject.updateTopic({
         formData: formData,
         onSuccess: (data) => {
-            console.log(data)
+            //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".update-top-form")[0].reset();
@@ -1219,6 +1217,83 @@ function exportTopics() {
           }
         })
   
+}
+
+function generateContent() {
+    let topic_id = $(".top-id").val()
+    let title = $("#to-title2").val();
+    let description = $("#to-des2").val();
+
+    let formData = {topic_id, title, description};
+
+    showLoader("Generating content...")
+
+    admin.subject.generateContent({
+        formData: formData,
+        onSuccess: (data) => {
+            //console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                let d = data.data;
+                let temp = `
+                ${renderMarkdown(d.content)}
+                <br></br>
+                <h4>Resources Used</h4>
+                <ul>
+                ${d.references.map((item, index) => {
+                    return `<li>${item}</li>`
+                }).join('')}
+                </ul>
+                <h4>Practice Questions</h4>
+                <ol type="1">
+                ${d.questions.map((item, index) => {
+                    return `<li>${item}</li>`
+                }).join('')}
+                </ol>
+                `;
+                tinymce.get('to-content2').setContent(temp)
+            }
+            else {
+                pushNotification("n_error", data.message, 3000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
+}
+
+function generateFile(topic_id) {
+    let syllabus_id = $(".cur-name").data('id')
+
+    let formData = {topic_id};
+
+    showLoader("Generating PDF...")
+
+    admin.subject.generateNotePDF({
+        formData: formData,
+        onSuccess: (data) => {
+            //console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                let d = data.data;
+                downloadFile(d)
+                getTopics(syllabus_id)
+            }
+            else {
+                pushNotification("n_error", data.message, 3000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
 }
 
 /* =========== Timetable =============== */
@@ -1554,6 +1629,7 @@ $(".top-export-btn").click(function(e) {e.preventDefault();$(".export-top-con").
 $(".class-export-btn").click(function(e) {e.preventDefault();})
 $(".sub-export-btn").click(function(e) {e.preventDefault();})
 $(".edit-time-btn").click(function(e) {e.preventDefault();getTimetab()})
+$(".gen-content-btn").click(function(e) {e.preventDefault();generateContent()})
 
 $("#sub-course").on('input', function() {filterCourses()})
 

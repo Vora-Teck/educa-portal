@@ -334,6 +334,12 @@ function showPlanInfo() {
 })
 }
 
+function renderMarkdown(markdownText) {
+  const rawHtml = marked.parse(markdownText);
+  //return DOMPurify.sanitize(rawHtml);
+  return rawHtml
+}
+
 function initiateTiny(elem='.html-text', content="") {
   tinymce.init({
       selector: elem,

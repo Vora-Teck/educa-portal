@@ -261,6 +261,11 @@ $(".sub-price-btn").on('click', function() {
             $("#sp-end").html(`${datify(t.expiry_date)}`)
             $("#sp-email").html(`${d.email}`)
             $("#sub-pay-ref").val(JSON.stringify(d))
+
+            $("#sp-method").empty().append(`<option value="paystack">Paystack Payment Gateway</option>`);
+            if(data.card) {
+              $("#sp-method").append(`<option value="card" selected>${data.card}</option>`);
+            }
             
             updateSteps(null, 3)
           }
@@ -277,8 +282,7 @@ $(".sub-price-btn").on('click', function() {
   })
 })
 
-$(".sub-pay-form").on('submit', function(e) {
-  e.preventDefault();
+function makePayment() {
   let data = $("#sub-pay-ref").val();
   data = JSON.parse(data);
   //console.log(data)
@@ -293,6 +297,50 @@ $(".sub-pay-form").on('submit', function(e) {
       pushNotification("n_network", `Error occurred. ${error.message}`, 3000)
     }
   })
+}
+
+function payWithCard() {
+  let data = $("#sub-pay-ref").val();
+  let obj = JSON.parse(data);
+  let reference = obj.reference;
+
+  let formData = {reference}
+
+  showLoader("Making payment...");
+
+  admin.subscription.payWithCard({
+    formData: formData,
+    onSuccess: (data) => {
+      //console.log(data);
+      if(data.status == "success") {
+        verifyPayment(data.reference)
+      }
+      else {
+        pushNotification("n_error", data.message, -1)
+      }
+      hideLoader()
+    },
+    onError: (error) => {
+      console.error(error);
+      hideLoader()
+      pushNotification("n_network", `Error occurred. Kindly check your internet connection`, 3000)
+    }
+  })
+}
+
+$(".sub-pay-form").on('submit', function(e) {
+  e.preventDefault();
+  let method = $("#sp-method").val();
+  if(method == "paystack") {
+    makePayment()
+  }
+  else if(method == "card") {
+    payWithCard()
+  }
+  else {
+    pushNotification("n_error", "Kindly select a valid method of payment", 4000)
+  }
+  
 })
 
 function verifyPayment(reference) {
