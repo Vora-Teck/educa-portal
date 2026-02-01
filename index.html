@@ -3835,7 +3835,7 @@ showSchoolInfo()
     </div>
 
     <div class="side-opt-con" style="gap:15px;">
-      <button class="side-btn">Generate questions with EdukaAI</button>
+      <button class="side-btn gen-que-btn">Generate questions with EdukaAI</button>
       <button class="light-btn que-export-btn"><i class="fa fa-file-pdf-o"></i> Export to PDF</button>
     </div>
 
@@ -3876,7 +3876,7 @@ showSchoolInfo()
                   <thead>
                     <tr>
                       <th>S/N</th>
-                      <th>Question</th>
+                      <th style="min-width:200px">Question</th>
                       <th>Options</th>
                       <th>Answer</th>
                       <th>Actions</th>
@@ -4078,6 +4078,45 @@ showSchoolInfo()
         <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
           <button class="clear-btn canc-btn4">Cancel</button>
           <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top small-con gen-que-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Generate Questions with Eduka AI</div>
+      </div>
+      <form class="modal-content mt-3 gen-que-form">
+
+        <p class="w-text-gray"><i>
+          IMPORTANT NOTICE:
+          <ul class="w-text-gray" style="padding-left:20px;">
+            <li>The A.I generated questions are based on the school's syllabus on the exam subject.</li>
+            <li>The questions are generated based on the topics for the current term and the term(s) before (except for first term which has no previous term).</li>
+            <li>If you have any exceptions you'd like to make such as specific topics or specific instructions, kindly enter it into the "Additional instructions field"</li>
+          </ul>
+          
+        </i></p>
+
+        <div class="input-con">
+          <label for="">Number of Questions</label>
+          <input type="number" id="que-count" min="1" required>
+        </div>
+        <div class="input-con">
+          <label for="">Number of options per questions</label>
+          <input type="number" id="opt-count" required>
+        </div>
+        <div class="input-con">
+          <label for="">Additional Instructions</label>
+          <textarea rows="5" id="que-prompt" value=""></textarea>
+        </div>
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn10">Cancel</button>
+          <input type="submit" value="Generate">
         </div>
       </form>
     </div>
@@ -4578,6 +4617,10 @@ showSchoolInfo()
     $(".canc-btn9").click(function(e) {
         e.preventDefault();
         $(".spread-con").removeClass('active')
+    })
+    $(".canc-btn10").click(function(e) {
+        e.preventDefault();
+        $(".gen-que-con").removeClass('active')
     })
     
 

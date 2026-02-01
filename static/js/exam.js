@@ -502,7 +502,7 @@ function getQuestions(exam_id) {
                                         }).join('')}
                                     </ol>
                                 </td>
-                                <td>${d[i].answer}</td>
+                                <td style="max-width:250px;white-space:wrap;">${d[i].answer}</td>
                                 <td class="w-text-gray h4">
                                     <a class="que-det-link tooltipa" href="#" data-id="${d[i].number}">
                                         <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
@@ -597,6 +597,40 @@ function addQuestion() {
                 updateOptions()
                 getQuestions(exam_id)
                 //$(".add-sub-con").removeClass('active')
+            }
+            else {
+                pushNotification("n_error", data.message, 3000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
+}
+
+function generateQuestion() {
+    let exam_id = $(".exam-name").data('id')
+    let question_count = $("#que-count").val();
+    let option_count = $("#opt-count").val();
+    let prompt = $("#que-prompt").val();
+
+    let formData = {exam_id, question_count, option_count, prompt}
+
+    //console.log(formData)
+    showLoader("Generating Questions...")
+
+    admin.exam.generateExamQuestion({
+        formData: formData,
+        onSuccess: (data) => {
+            //console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                getQuestions(exam_id)
+                $(".gen-que-form")[0].reset()
+                $(".gen-que-con").removeClass('active')
             }
             else {
                 pushNotification("n_error", data.message, 3000)
@@ -1258,12 +1292,15 @@ $(".spread-btn").click(function(e) {
     $(".spread-act").html(act).data('action', act);
     $(".spread-con").addClass("active")
 })
+$(".gen-que-btn").click(function(e) {e.preventDefault();$(".gen-que-con").addClass('active')})
+
 
 
 $(".add-exam-form").on('submit', function(e) {e.preventDefault();addExam()})
 $(".update-exam-form").on('submit', function(e) {e.preventDefault();updateExam()})
 $(".delete-exam-form").on('submit', function(e) {e.preventDefault();deleteExam()})
 $(".add-que-form").on('submit', function(e) {e.preventDefault();addQuestion()})
+$(".gen-que-form").on('submit', function(e) {e.preventDefault();generateQuestion()})
 $(".update-essay-form").on('submit', function(e) {e.preventDefault();updateEssay()})
 $(".update-que-form").on('submit', function(e) {e.preventDefault();updateQuestion()})
 $(".delete-que-form").on('submit', function(e) {e.preventDefault();deleteQuestion()})
