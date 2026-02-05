@@ -232,17 +232,6 @@ showSchoolInfo()
           </div>
           
           <div>
-            <a href="/#attendance" class="menu-con-3 dash-menu-con">
-              <div>
-                <div class="h6 w-bold-x w-text-black">Attendance Rate</div>
-                <div class="dash-no">80%</div>
-                <div class="dash-comm w-text-green">0.2% <i class="fa fa-line-chart"></i></div>
-              </div>
-              <img src="/static/icons/_ui-file-check-02c.svg" alt="">
-            </a>
-          </div>
-          
-          <div>
             <a href="/#fees" class="menu-con-4 dash-menu-con">
               <div>
                 <div class="h6 w-bold-x w-text-black">Fees Collected</div>
@@ -250,17 +239,6 @@ showSchoolInfo()
                 <div class="dash-comm w-text-green"><span class="fee-item2">&#8358;0</span> This term</div>
               </div>
               <img src="/static/icons/_ui-bank-note-01.svg" alt="">
-            </a>
-          </div>
-
-          <div>
-            <a href="/#reports" class="menu-con-5 dash-menu-con">
-              <div>
-                <div class="h6 w-bold-x w-text-black">Pending Issues</div>
-                <div class="dash-no">0</div>
-                <div class="dash-comm w-text-red">Today</div>
-              </div>
-              <img src="/static/icons/_ui-info-octagon.svg" alt="">
             </a>
           </div>
           
@@ -3065,7 +3043,7 @@ showSchoolInfo()
     </div>
 
     <div class="side-opt-con" style="gap:15px;">
-      <button class="side-btn">Generate Topics with EdukaAI</button>
+      <button class="side-btn">Generate Class Note with EdukaAI</button>
     </div>
 
     <div class="w-padding">
@@ -3075,12 +3053,12 @@ showSchoolInfo()
           <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
             
             <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
-              <div class="h4 w-bold-x" style="color:orangered">Topic List</div>
+              <div class="h4 w-bold-x" style="color:orangered">Class Notes</div>
             </div>
             
   
             <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
-              <button class="dark-btn add-top-btn">Add Topic&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+              <button class="dark-btn add-top-btn">Add Class Note&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
               <button class="light-btn top-export-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
             </div>
   
@@ -3091,7 +3069,7 @@ showSchoolInfo()
               <thead>
                 <tr>
                   <th>Week</th>
-                  <th>Title</th>
+                  <th>Topic</th>
                   <th>Description</th>
                   <th>Actions</th>
                 </tr>
@@ -3112,7 +3090,7 @@ showSchoolInfo()
     <div class="modal-body">
       <div class="close-modal">X</div>
       <div class="modal-header">
-        <div class="h5 w-bold-x w-text-blue">Add New Topic</div>
+        <div class="h5 w-bold-x w-text-blue">Add New Note</div>
       </div>
       <form class="modal-content mt-3 add-top-form">
 
@@ -3124,7 +3102,7 @@ showSchoolInfo()
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-8 col-md-9 col-lg-9 col-xl-10">
-            <label for="st-lname">Title</label>
+            <label for="st-lname">Topic</label>
             <input type="text" id="to-title" required />
           </div>
 
@@ -3152,7 +3130,7 @@ showSchoolInfo()
     <div class="modal-body">
       <div class="close-modal">X</div>
       <div class="modal-header">
-        <div class="h5 w-bold-x w-text-blue">Update Week <span class="top-name"></span> Topic</div>
+        <div class="h5 w-bold-x w-text-blue">Update Week <span class="top-name"></span> Note</div>
       </div>
       <form class="modal-content mt-3 update-top-form">
 
@@ -3199,7 +3177,7 @@ showSchoolInfo()
       <div class="modal-header">
         <div class="h5 w-text-red w-bold-x">
           <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
-          Deletete Week <span class="top-name"></span> Topic
+          Deletete Week <span class="top-name"></span> Note
         </div>
       </div>
       <form class="modal-content delete-top-form">
@@ -3456,10 +3434,10 @@ showSchoolInfo()
         <a class="nav-link active" data-toggle="tab" href="#home">Classes</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#menu1">Subjects</a>
+        <a class="nav-link" data-toggle="tab" href="#menu2">Curriculum</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#menu2">Curriculum</a>
+        <a class="nav-link" data-toggle="tab" href="#menu1">Subjects</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#menu3">Timetable</a>
@@ -3621,7 +3599,7 @@ showSchoolInfo()
                   <thead>
                     <tr>
                       <th>Subject</th>
-                      <th>Class</th>
+                      <th>Class(es)</th>
                       <th>Term</th>
                       <th class="w-center">No. of Topics</th>
                       <th>Assigned Teacher</th>

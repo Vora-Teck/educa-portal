@@ -697,7 +697,11 @@ function getSyllabi() {
                             <td>
                             <div class="w-bold-x">${e[i].subject.title}</div>
                             </td>
-                            <td>${e[i].curriculum.classroom.title}</td>
+                            <td>
+                            ${e[i].curriculum.classrooms.map((item, index) => {
+                                return `${item.title}`
+                            }).join(', ')}
+                            </td>
                             <td>${terms[e[i].curriculum.term - 1]} Term</td>
                             <td class="w-center">${digify(e[i].no_of_topics)}</td>
                             <td>${e[i].teacher?.firstName || '<i class="w-small w-text-gray">No teacher assigned</i>'} ${e[i].teacher?.lastName || ``}</td>
@@ -850,11 +854,15 @@ function getSyllabus(syllabus_id, action) {
     admin.subject.getSyllabus({
         params: {syllabus_id},
         onSuccess: (data) => {
-            //console.log(data)
+            console.log(data)
             if(data.status == "success") {
                 let d = data.data;
                 $(".cur-id").val(d.id)
-                $(".cur-name").html(`Term ${d.term} ${d.subject.title} for ${d.curriculum.classroom.title}`)
+                $(".cur-name").html(`
+                    Term ${d.curriculum.term} ${d.subject.title} for ${d.curriculum.classrooms.map((item, index) => {
+                        return `${item.title}`
+                    }).join(', ')}
+                    `)
                 $("#cur-staff").val(d.teacher?.id || '')
                 
                 $(`.${action}-cur-con`).addClass("active")
