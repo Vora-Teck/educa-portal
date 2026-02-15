@@ -228,9 +228,15 @@ function getStudent(id) {
                 $("#st-address2").val(d.address.address);
                 $("#st-state2").val(d.address.state);
                 $("#st-lga2").val(d.address.lga);
-                $("#st-pa-name2").val(d.parentInfo.name);
-                $("#st-pa-email2").val(d.parentInfo.email);
-                $("#st-pa-phone2").val(d.parentInfo.phone_number.join(','));
+                let parent = d.parentInfo;
+                for(let i in parent) {
+                  let par = parent[i];
+                  $(`#st-pa-name${3 + Number(i)}`).val(par.name)
+                  $(`#st-pa-rel${3 + Number(i)}`).val(par.relationship)
+                  $(`#st-pa-email${3 + Number(i)}`).val(par.email)
+                  $(`#st-pa-phone${3 + Number(i)}`).val(par.phone_number)
+                  $(`#st-pa-address${3 + Number(i)}`).val(par.address)
+                }
                 // for display
                 $("#std-name2").html(`${d.firstName} ${d.middleName} ${d.lastName}`)
                 $("#std-id").html(`${d.studentId}`)
@@ -243,8 +249,35 @@ function getStudent(id) {
                 $("#std-date").html(`${datify(d.registration_date, false)}`)
                 $("#std-address").html(`${d.address.address}, ${d.address.lga} LGA, ${d.address.state} State.`)
                 $("#std-address2").html(`${d.address.address}, ${d.address.lga} LGA, ${d.address.state} State.`)
-                $("#std-pname").html(`${d.parentInfo.name}`)
-                $("#std-email").html(`${d.parentInfo.email}`)
+                $(".par-info").html(`
+                  ${d.parentInfo.map((item, index) => {
+                    return `
+                      <tr>
+                        <td colspan="2">Parent/Guardian ${Number(index + 1)}</td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Parent/Guardian Name:</td>
+                        <td>${item.name}</td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Relationship:</td>
+                        <td>${item.relationship}</td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Email Address:</td>
+                        <td>${item.email}</td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Phone Number:</td>
+                        <td>${item.phone_number}</td>
+                      </tr>
+                      <tr>
+                        <td class="w-text-gray">Address:</td>
+                        <td>${item.address}</td>
+                      </tr>
+                    `
+                  }).join('')}
+                `)
                 $("#std-section").html(`${d.classroom.level.category}`)
                 if(d.is_active) {
                   $(".std-action").data('action', 'deactivate').html('Deactivate Student')
@@ -262,8 +295,7 @@ function getStudent(id) {
                     $("#std-teacher").html(`${d.classroom.teacher.firstName} ${d.classroom.teacher.lastName} (${d.classroom.teacher.qualification})`)
                 }
                 else {$("#std-teacher").html(`---`)}
-                $("#std-phone").html(`${d.parentInfo.phone_number.join(', ')}`);
-
+                
                 let r = data.results;
                 $(".std-res").empty();
                 for(let i in r) {
@@ -395,15 +427,27 @@ function addStudent() {
     let state = validate($("#st-state"));
     let lga = validate($("#st-lga"));
 
-    let guardian_name = validate($("#st-pa-name"));
-    let phone_number = validate($("#st-pa-phone"));
-    let email = validate($("#st-pa-email"));
+    let parent_name1 = validate($("#st-pa-name1"));
+    let parent_rel1 = validate($("#st-pa-rel1"));
+    let parent_email1 = validate($("#st-pa-email1"));
+    let parent_phone1 = validate($("#st-pa-phone1"));
+    let parent_address1 = validate($("#st-pa-address1"));
+
+    let parent_name2 = $("#st-pa-name2").val();
+    let parent_rel2 = $("#st-pa-rel2").val();
+    let parent_email2 = $("#st-pa-email2").val();
+    let parent_phone2 = $("#st-pa-phone2").val();
+    let parent_address2 = $("#st-pa-address2").val();
+
+    let parent_info = [
+      {name:parent_name1, relationship:parent_rel1, phone_number:parent_phone1, email:parent_email1, address:parent_address1},
+      {name:parent_name2, relationship:parent_rel2, phone_number:parent_phone2, email:parent_email2, address:parent_address2}
+    ]
     
 
     let formData = {
         first_name, last_name, middle_name, gender, dob,
-        class_id, address, state, lga, guardian_name,
-        phone_number, email
+        class_id, address, state, lga, parent_info
     }
 
     //console.log(formData)
@@ -446,14 +490,26 @@ function updateStudent() {
     let state = validate2($("#st-state2"));
     let lga = validate2($("#st-lga2"));
 
-    let guardian_name = validate2($("#st-pa-name2"));
-    let phone_number = validate2($("#st-pa-phone2"));
-    let email = validate2($("#st-pa-email2"));
-    
+    let parent_name1 = validate2($("#st-pa-name3"));
+    let parent_rel1 = validate2($("#st-pa-rel3"));
+    let parent_email1 = validate2($("#st-pa-email3"));
+    let parent_phone1 = validate2($("#st-pa-phone3"));
+    let parent_address1 = validate2($("#st-pa-address3"));
+
+    let parent_name2 = $("#st-pa-name4").val();
+    let parent_rel2 = $("#st-pa-rel4").val();
+    let parent_email2 = $("#st-pa-email4").val();
+    let parent_phone2 = $("#st-pa-phone4").val();
+    let parent_address2 = $("#st-pa-address4").val();
+
+    let parent_info = [
+      {name:parent_name1, relationship:parent_rel1, phone_number:parent_phone1, email:parent_email1, address:parent_address1},
+      {name:parent_name2, relationship:parent_rel2, phone_number:parent_phone2, email:parent_email2, address:parent_address2}
+    ]
 
     let formData = {
         student_id, middle_name, address, state, lga,
-        guardian_name, phone_number, email
+        parent_info
     }
 
     //console.log(formData)

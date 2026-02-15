@@ -154,6 +154,15 @@ function deslugify(str) {
   return joined_str
 }
 
+function capitalize(str) {
+  return str.replace(/\b\w/g, char => char.toUpperCase());
+  // return str
+  // .toLowerCase()
+  // .split(" ")
+  // .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+  // .join(" ");
+}
+
 function getQueryParams() {
   let params = new URLSearchParams(window.location.search);
   let query = Object.fromEntries(params.entries());

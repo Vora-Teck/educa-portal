@@ -36,14 +36,15 @@ function getTerms() {
                 $("#term-filter").empty();
                 $("#term-filter1").empty();
                 $("#term-filter2").empty();
-                $("#term-filter3").empty();
+                $("#term-filter4").empty();
                 for(let i in d) {
                     let temp = `<option value="${d[i].id}">${d[i].title} - ${d[i].session.title}</option>`;
                     $("#term-filter").append(temp)
                     $("#term-filter1").append(temp)
                     $("#term-filter2").append(temp)
-                    $("#term-filter3").append(temp)
+                    $("#term-filter4").append(temp)
                 }
+                getTests()
                 getExams()
                 getResults()
             },
@@ -75,14 +76,14 @@ function getAllSubjects() {
                 //console.log(data);
                 $('#sub-filter').empty().append(`<option value="" selected>All Subjects</option>`)
                 $('#sub-filter2').empty().append(`<option value="" selected>Select Subject</option>`)
-                $('#sub-filter3').empty().append(`<option value="" selected>Select Subject</option>`)
+                $('#sub-filter4').empty().append(`<option value="" selected>Select Subject</option>`)
                 if(data.status == 'success') {
                     if(data.data) {
                         let e = data.data;
                         for(var i in e) {
                             $('#sub-filter').append(`<option value="${e[i].id}">${e[i].title}</option>`)
                             $('#sub-filter2').append(`<option value="${e[i].id}">${e[i].title}</option>`)
-                            $('#sub-filter3').append(`<option value="${e[i].id}">${e[i].title}</option>`)
+                            $('#sub-filter4').append(`<option value="${e[i].id}">${e[i].title}</option>`)
                         }
                     }
                 }
@@ -100,12 +101,14 @@ function getClassrooms() {
         onSuccess: (data) => {
                 //console.log(data);
                 $('#class-filter').empty().append(`<option value="" selected>All Classes</option>`)
+                $('#class-filter2').empty().append(`<option value="" selected>All Classes</option>`)
                 $('#class-filter1').empty().append(`<option value="" selected>All Classes</option>`)
                 if(data.status == 'success') {
                     if(data.data) {
                         let e = data.data;
                         for(var i in e) {
                             $('#class-filter').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
+                            $('#class-filter2').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
                             $('#class-filter1').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
 
                             let temp2 = `
@@ -128,6 +131,169 @@ getTerms()
 getAllSubjects()
 getClassrooms()
 
+/* =========== Test Section =============== */
+
+function getTests() {
+    let page = $('#emp_page3').val();
+    let pagesize = 20;
+    let class_id = $("#class-filter2").val();
+    let subject_id = $("#sub-filter4").val()
+    let term_id = $("#term-filter4").val()
+    let exam_type = "test";
+
+    $('.test-list').empty()
+    loader = `<tr>
+        <td colspan="6" class="">
+        <i class="fa fa-spinner rotate"></i>&nbsp;&nbsp;&nbsp;Processing...
+        </td>
+    </tr>`;
+    $('.test-list').append(loader)
+
+    let params = {page, pagesize, class_id, term_id, subject_id, exam_type}
+
+    //console.log(params)
+
+    admin.exam.getExams({
+        params: params,
+        onSuccess: (data) => {
+                //console.log(data);
+                $('.test-list').empty()
+                if(data.status == 'success') {
+                    let pages = data.total_pages
+                    //let count = data.total_count;
+                    //$(".total_count").html(digify(count))
+                    //$('.emp-no').html(data['total_items'])
+                    $('#page_nos3').empty();
+                    for(var i=0; i<pages; i++) {
+                        let classN = "";
+                        if((i+1) == data.page_number) {
+                            classN = "active"
+                        }
+                        if((i+1) > (data.page_number + 1) || (i+1) < (data.page_number - 1)) {
+                            continue
+                        }
+                        var temp = `<a href="#" class="page_no ${classN}" data-id="${i+1}">${i+1}</a>`;
+                        $('#page_nos3').append(temp);
+                    }
+                    let current_p = $('#page_nos3 .page_no.active').data('id')
+                    //console.log(current_p + ":" + typeof(current_p))
+                    if((current_p - 1) > 0) {
+                        let prev = `<a href="#" class="page_no" data-id="${current_p - 1}"><i class="fa fa-angle-left"></i></a>`
+                        $('#page_nos3').prepend(prev);
+                    }
+                    if((current_p + 1) <= data.total_pages) {
+                        let next = `<a href="#" class="page_no" data-id="${current_p + 1}"><i class="fa fa-angle-right"></i></a>`
+                        $('#page_nos3').append(next);
+                    }
+                    $('#page_nos3 .page_no').click(function(e) {
+                        e.preventDefault();
+                        let page = $(this).data('id');
+                        $('#emp_page3').val(page);
+                        getTests();
+                    })
+                    if(data.data) {
+                        let e = data.data;
+                        
+                        for(var i in e) {
+                            let classes = e[i].classrooms;
+                            let clas = ``
+                            for(let j in classes) {
+                                clas += `<li>${classes[j].level.title}</li>`
+                            }
+                            let temp = `<tr class="staff-row">
+                            <td>
+                            <div class="w-bold-x">${e[i].examId}</div>
+                            </td>
+                            <td>${e[i].course.title}</td>
+                            <td><ul style="padding-left:20px;">${clas}</ul></td>
+                            <td>${e[i].term.title}</td>
+                            <td class="w-center">${datify(e[i].date)}</td>
+                            <td>${e[i].duration} minutes</td>
+                            <td>
+                                ${e[i].active ? `
+                                <span class="success-btn">Active</span>` : `
+                                ${new Date(e[i].date) < new Date() ? `
+                                <span class="info-btn">Completed</span>` : `
+                                <span class="danger-btn">Upcoming</span>`}
+                                `}
+                            </td>
+                            <td class="w-text-gray h4">
+                                <a class="emp-que-link tooltipa" href="#" data-id="${e[i].id}">
+                                    <i class="fa fa-file-text"></i>&nbsp;&nbsp;&nbsp;
+                                    <span class="tooltiptext w-card">View Questions</span>
+                                </a>
+                                <a class="emp-act-link tooltipa" href="#" data-action="${e[i].active ? 'deactivate' : 'activate'}" data-id="${e[i].id}">
+                                    <i class="fa fa-${e[i].active ? 'times-circle' : 'check-circle'}"></i>&nbsp;&nbsp;&nbsp;
+                                    <span class="tooltiptext w-card">${e[i].active ? 'Deactivate' : 'Activate'}</span>
+                                </a>
+                                <a class="emp-score-link tooltipa" href="#" data-id="${e[i].id}">
+                                    <i class="fa fa-list-alt"></i>&nbsp;&nbsp;&nbsp;
+                                    <span class="tooltiptext w-card">Scores</span>
+                                </a>
+                                <a class="emp-det-link tooltipa" href="#" data-id="${e[i].id}">
+                                    <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
+                                    <span class="tooltiptext w-card">Edit Test</span>
+                                </a>
+                                <a class="emp-del-link tooltipa" href="#" data-id="${e[i].id}">
+                                    <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
+                                    <span class="tooltiptext w-card">Delete Test</span>
+                                </a>
+                            </td>
+                          </tr>`;
+                          $('.test-list').append(temp)
+                        }
+                        $('.emp-que-link').click(function(e) {
+                            e.preventDefault();
+                            let id = $(this).data('id');
+                            $(".que-side-con").addClass("active")
+                            getQuestions(id)
+                        })
+                        $('.emp-score-link').click(function(e) {
+                            e.preventDefault();
+                            let id = $(this).data('id');
+                            $(".score-side-con").addClass("active")
+                            getScores(id)
+                        })
+                        $('.emp-det-link').click(function(e) {
+                            e.preventDefault();
+                            let id = $(this).data('id');
+                            getExam(id, "update")
+                        })
+                        $('.emp-del-link').click(function(e) {
+                            e.preventDefault();
+                            let id = $(this).data('id');
+                            getExam(id, "delete");
+                        })
+                        $('.emp-act-link').click(function(e) {
+                            e.preventDefault();
+                            let id = $(this).data('id');
+                            let action = $(this).data('action')
+                            examStatus(id, action)
+                        })
+                    }
+                    else {
+                        let temp = `<tr>
+                        <td colspan="8" class="w-text-gray w-italic">${data.message}</td>
+                        </tr>`;
+                        $('.test-list').append(temp)
+                    }
+                }
+                else {
+                    pushNotification("n_error", data.message, 3000);
+                    let temp = `<tr>
+                        <td colspan="8" class="w-text-gray w-italic">${data['message']}</td>
+                        </tr>`;
+                        $('.test-list').append(temp)
+                }
+        },
+        onError: (error) => {
+                console.error(error);
+                $('.test-list').empty()
+                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+        }
+  })
+}
+
 
 /* =========== Exam Section =============== */
 function getExams() {
@@ -136,7 +302,7 @@ function getExams() {
     let class_id = $("#class-filter").val();
     let subject_id = $("#sub-filter").val()
     let term_id = $("#term-filter").val()
-    //let search = $('#emp_search3').val();
+    let exam_type = "exam";
 
     $('.exam-list').empty()
     loader = `<tr>
@@ -146,7 +312,7 @@ function getExams() {
     </tr>`;
     $('.exam-list').append(loader)
 
-    let params = {page, pagesize, class_id, term_id, subject_id}
+    let params = {page, pagesize, class_id, term_id, subject_id, exam_type}
 
     //console.log(params)
 
@@ -299,6 +465,7 @@ function addExam() {
     let subject_id = $("#sub-filter2").val();
     let date = $("#exam-date").val();
     let duration = $("#exam-duration").val();
+    let exam_type = $("#exam-type").val();
 
     if(!subject_id) {
         pushNotification("n_warning", "Kindly select a subject to continue", 3000);
@@ -313,11 +480,11 @@ function addExam() {
         return;
     }
 
-    let formData = {class_ids, term_id, subject_id, date, duration}
+    let formData = {class_ids, term_id, subject_id, date, duration, exam_type}
 
     //console.log(formData)
 
-    showLoader("Adding Exam...")
+    showLoader(`Adding ${capitalize(exam_type)}...`)
 
     admin.exam.addExam({
         formData: formData,
@@ -328,7 +495,9 @@ function addExam() {
                 $(".add-exam-form")[0].reset();
                 //$(".add-cur-con").removeClass('active')
                 getData();
+                getTests();
                 getExams();
+                getResults();
             }
             else {
                 pushNotification("n_error", data.message, 5000)
@@ -355,6 +524,7 @@ function examStatus(exam_id, action) {
                     pushNotification('n_error', data.message, 3000)
                 }
                 getExams()
+                getTests()
                 getData()
                 hideLoader()
             },
@@ -377,13 +547,13 @@ function getExam(exam_id, action) {
             if(data.status == "success") {
                 let d = data.data;
                 $(".exam-id").val(d.id)
-                $(".exam-name").html(`${d.term.title} ${d.course.title} Exam for ${d.classrooms.map(function(item) {
+                $(".exam-name").html(`${d.term.title} ${d.course.title} ${capitalize(d.examType)} for ${d.classrooms.map(function(item) {
                     return item.level.title;
                   }).join(', ')}`)
-                $("#term-filter3").val(d.term.id)
-                $("#sub-filter3").val(d.course.id)
+                  $(".ex-type").html(capitalize(d.examType))
                 $("#exam-date2").val(d.date)
                 $("#exam-duration2").val(d.duration)
+                $(".exam-type2").val(d.examType);
                 
                 $(`.${action}-exam-con`).addClass("active")
             }
@@ -402,14 +572,13 @@ function getExam(exam_id, action) {
 
 function updateExam() {
     let exam_id = $(".exam-id").val();
-    let term_id = $("#term-filter3").val();
-    let subject_id = $("#sub-filter3").val();
     let date = $("#exam-date2").val();
     let duration = $("#exam-duration2").val();
+    let exam_type = $(".exam-type2").val();
 
-    let formData = {exam_id, term_id, subject_id, date, duration};
+    let formData = {exam_id, date, duration};
 
-    showLoader("Updating Exam...")
+    showLoader(`Updating ${capitalize(exam_type)}...`)
 
     admin.exam.updateExam({
         formData: formData,
@@ -420,6 +589,7 @@ function updateExam() {
                 $(".update-exam-form")[0].reset();
                 $(".update-exam-con").removeClass("active");
                 getExams();
+                getTests()
             }
             else {
                 pushNotification("n_error", data.message, 3000)
@@ -437,10 +607,11 @@ function updateExam() {
 function deleteExam() {
     let exam_id = $(".exam-id").val();
     let password = $("#exam-delete-password").val();
+    let exam_type = $(".exam-type2").val();
 
     let formData = {exam_id, password};
 
-    showLoader("Deleting Exam...")
+    showLoader(`Deleting ${capitalize(exam_type)}...`)
 
     admin.exam.deleteExam({
         formData: formData,
@@ -452,6 +623,7 @@ function deleteExam() {
                 $(".delete-exam-con").removeClass("active");
                 getData();
                 getExams();
+                getTests()
             }
             else {
                 //checkResponse(data)
@@ -487,6 +659,7 @@ function getQuestions(exam_id) {
                     let p = data.data;
                     global_mcq_questions = p.mcq_questions;
                     $(".exam-name").html(p.exam_title).data('id', p.exam_id)
+                    $(".exam-typ").html(capitalize(p.exam_type))
                     if(p.mcq_questions.length > 0) {
                         let d = p.mcq_questions;
                         for(let i in d) {
@@ -1282,7 +1455,13 @@ initiateTiny()
 
 
 // ========== Event Listeners ======================
-$(".add-exam-btn").click(function(e) {e.preventDefault();$(".add-exam-con").addClass('active')})
+$(".add-exam-btn").click(function(e) {
+    e.preventDefault();
+    let typ = $(this).data('action');
+    $(".ex-type").html(typ == "exam" ? "Exam" : "Test")
+    $("#exam-type").val(typ)
+    $(".add-exam-con").addClass('active')
+})
 $(".exam-export-btn").click(function(e) {e.preventDefault();})
 $(".add-que-btn").click(function(e) {e.preventDefault();$(".add-que-con").addClass('active')})
 $(".que-export-btn").click(function(e) {e.preventDefault();downloadExam()})

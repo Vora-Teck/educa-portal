@@ -70,7 +70,7 @@ getStaff()
 
 function getClassrooms() {
     $(".class-list").empty()
-    $(".class-list2").empty()
+    //$(".class-list2").empty()
     $("#class-filter").empty().append(`<option selected value="">All Classes</option>`)
     $("#class-filter2").empty().append(`<option selected value="">Select Class</option>`)
     let loader = `<tr>
@@ -115,12 +115,12 @@ function getClassrooms() {
                         </tr>`;
                         $('.class-list').append(temp)
 
-                        let temp2 = `
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" value="${d[i].id}" id="class_${d[i].id}" name="class_ids">
-                            <label class="custom-control-label" for="class_${d[i].id}">${d[i].level.title}</label>
-                        </div>`;
-                        $(".class-list2").append(temp2)
+                        // let temp2 = `
+                        // <div class="custom-control custom-checkbox">
+                        //     <input type="checkbox" class="custom-control-input" value="${d[i].id}" id="class_${d[i].id}" name="class_ids">
+                        //     <label class="custom-control-label" for="class_${d[i].id}">${d[i].level.title}</label>
+                        // </div>`;
+                        // $(".class-list2").append(temp2)
                     }
                     $('.emp-det-link').click(function(e) {
                         e.preventDefault();
@@ -479,7 +479,10 @@ function addSubject() {
         subject_ids.push(id)
     })
 
-    let formData = {subject_ids};
+    let create_syllabus = $("#create_syll").is(":checked")
+
+    let formData = {subject_ids, create_syllabus};
+
 
     showLoader("Adding Subjects...")
 
@@ -496,6 +499,7 @@ function addSubject() {
                 getData();
                 getSubjects();
                 getAllSubjects();
+                getSyllabi()
             }
             else {
                 pushNotification("n_error", data.message, 3000)
@@ -697,7 +701,7 @@ function getSyllabi() {
                             <td>
                             <div class="w-bold-x">${e[i].subject.title}</div>
                             </td>
-                            <td>
+                            <td style="max-width:250px;white-space:wrap;">
                             ${e[i].curriculum.classrooms.map((item, index) => {
                                 return `${item.title}`
                             }).join(', ')}
@@ -776,28 +780,20 @@ function getSyllabi() {
 getSyllabi()
 
 function addSyllabus() {
-    let class_ids = $("input[name='class_ids']:checked").map(function() {
-        return $(this).val();
-      }).get();
-    var term_ids = $("input[name='term_ids']:checked").map(function() {
-            return $(this).val();
-        }).get();
+    // let class_ids = $("input[name='class_ids']:checked").map(function() {
+    //     return $(this).val();
+    //   }).get();
+    // var term_ids = $("input[name='term_ids']:checked").map(function() {
+    //         return $(this).val();
+    //     }).get();
     let subject_id = $("#sub-filter2").val();
 
     if(!subject_id) {
         pushNotification("n_warning", "Kindly select a subject to continue", 3000);
         return;
     }
-    if(class_ids.length === 0) {
-        pushNotification("n_warning", "Kindly select at least one class to continue", 3000);
-        return;
-    }
-    if(term_ids.length === 0) {
-        pushNotification("n_warning", "Kindly select at least one term to continue", 3000);
-        return;
-    }
 
-    let formData = {class_ids, term_ids, subject_id}
+    let formData = {subject_id}
 
     showLoader("Adding Curriculum...")
 
@@ -816,7 +812,8 @@ function addSyllabus() {
                     The following curriculum already exists for your school:
                     <ul class="mt-3" style="padding-left: 20px;">
                     ${ex.map((item, index) => {
-                        return `<li>Term ${item.curriculum.term} ${item.subject.title} for ${item.curriculum.classroom.title}</li>`
+                        return `<li>Term ${item.curriculum.term} ${item.subject.title} for ${item.curriculum.classrooms.map((item, index) => {
+                            return item.title}).join(', ')}</li>`
                     })}
                     </ul>`;
                     pushNotification("n_info", temp, -1)
@@ -854,7 +851,7 @@ function getSyllabus(syllabus_id, action) {
     admin.subject.getSyllabus({
         params: {syllabus_id},
         onSuccess: (data) => {
-            console.log(data)
+            //console.log(data)
             if(data.status == "success") {
                 let d = data.data;
                 $(".cur-id").val(d.id)
@@ -1274,6 +1271,35 @@ function generateContent() {
     })
 }
 
+function generateTopics() {
+    let syllabus_id = $(".cur-name").data('id')
+
+    let formData = {syllabus_id};
+
+    showLoader("Generating topics...")
+
+    admin.subject.generateTopic({
+        formData: formData,
+        onSuccess: (data) => {
+            //console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                getSyllabi();
+                getTopics(syllabus_id);
+            }
+            else {
+                pushNotification("n_error", data.message, 3000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
+}
+
 function generateFile(topic_id) {
     let syllabus_id = $(".cur-name").data('id')
 
@@ -1638,6 +1664,8 @@ $(".class-export-btn").click(function(e) {e.preventDefault();})
 $(".sub-export-btn").click(function(e) {e.preventDefault();})
 $(".edit-time-btn").click(function(e) {e.preventDefault();getTimetab()})
 $(".gen-content-btn").click(function(e) {e.preventDefault();generateContent()})
+$(".gen-top-btn").click(function(e) {e.preventDefault();generateTopics()})
+
 
 $("#sub-course").on('input', function() {filterCourses()})
 
