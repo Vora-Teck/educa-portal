@@ -946,7 +946,7 @@ function deleteSyllabus() {
 function getTopics(syllabus_id) {
     $(".top-list").empty();
     let loader = `<tr>
-        <td colspan="4" class="">
+        <td colspan="5" class="">
         <i class="fa fa-spinner rotate"></i>&nbsp;&nbsp;&nbsp;Processing...
         </td>
     </tr>`;
@@ -965,8 +965,31 @@ function getTopics(syllabus_id) {
                             let temp = `
                             <tr class="" data-id="${d[i].id}">
                                 <td>${d[i].week}</td>
-                                <td>${d[i].title}</td>
-                                <td style="max-width: 250px;white-space: wrap;">${d[i].description}</td>
+                                <td style="max-width:300px;min-width:200px;white-space:wrap !important;">${d[i].title}</td>
+                                <td style="max-width:400px;min-width:300px;white-space:wrap !important;">${d[i].description}</td>
+                                <td style="max-width:400px;min-width:300px;white-space:wrap !important;">
+                                    <details>
+                                        <summary>
+                                            Learning Objectives
+                                        </summary>
+                                        <ul>
+                                            ${d[i].lesson_plan.objectives.map((item, index) => {
+                                                return `<li>${item}</li>`
+                                            }).join('')}
+                                        </ul>
+                                    </details>
+                                    <details>
+                                        <summary>
+                                            Learning Materials
+                                        </summary>
+                                        <ul>
+                                            ${d[i].lesson_plan.learning_materials.map((item, index) => {
+                                                return `<li>${item}</li>`
+                                            }).join('')}
+                                        </ul>
+                                    </details>    
+                                </td>
+                                
                                 <td class="w-text-gray h4">
                                     <a class="top-det-link tooltipa" href="#" data-id="${d[i].id}">
                                         <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
@@ -992,7 +1015,7 @@ function getTopics(syllabus_id) {
                     }
                     else {
                         let temp = `<tr>
-                        <td colspan="4">
+                        <td colspan="5">
                         ${data.message}.
                         </td>
                         </tr>`;
@@ -1022,7 +1045,7 @@ function getTopics(syllabus_id) {
                 }
                 else {
                     let temp = `<tr>
-                        <td colspan="4">
+                        <td colspan="5">
                         ${data.message} <span class="w-text-red" onclick="getTopics(${syllabus_id})">click here </span>to try again
                         </td>
                     </tr>`;
@@ -1429,8 +1452,18 @@ function getTimetable() {
     })
 }
 
-function getTimetab() {
+async function getClassSubjects() {
+    let data = await admin.subject.getSubjects({
+        params: {pagesize: 10}
+    })
+    return data
+}
+
+async function getTimetab() {
     $(".update-time-con").addClass('active')
+
+    let subs = await getClassSubjects()
+    console.log(subs)
 
     let class_id = $("#class-filter2").val()
 

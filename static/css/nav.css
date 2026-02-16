@@ -2378,6 +2378,16 @@ ul.breadcrumb li a:hover {
   opacity: 1;
 }
 
+details {
+  margin-bottom: 15px;
+}
+details ul {
+  list-style-type: square;
+  padding-left: 25px;
+}
+summary {
+  font-weight: bolder;
+}
 
 .n_error {background:red;color:#fff}
 .n_success {background:green;color:#fff}
