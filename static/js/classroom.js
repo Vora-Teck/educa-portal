@@ -102,15 +102,24 @@ function getClassrooms() {
                             <td>
                             ${d[i].data?.total_students || '0'} (${d[i].data?.female || '0'}F, ${d[i].data?.male || '0'}M)
                             </td>
-                            <td class="w-text-gray h4">
-                                <a class="emp-det-link tooltipa" href="#" data-id="${d[i].id}">
-                                    <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Edit ${d[i].level.title} Class</span>
-                                </a>
-                                <a class="emp-del-link tooltipa" href="#" data-id="${d[i].id}">
-                                    <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Delete ${d[i].level.title} Class</span>
-                                </a>
+
+                            <td class="w-center">
+                                <div class="dropdown">
+                                    <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu">
+                                    <div class="dropdown-header">${d[i].level.title}</div>
+                                        <a class="dropdown-item emp-det-link" data-id="${d[i].id}" href="#">
+                                            <i class="fa fa-edit"></i>&nbsp;
+                                            Update Info
+                                        </a>
+                                        <a class="w-text-red w-hover-red dropdown-item emp-del-link" data-id="${d[i].id}" href="#">
+                                            <i class="fa fa-trash"></i>&nbsp;
+                                            Delete Class
+                                        </a>
+                                    
+                                    </div>
+                                </div>
+                                
                             </td>
                         </tr>`;
                         $('.class-list').append(temp)
@@ -392,15 +401,24 @@ function getSubjects() {
                             </td>
                             <td style="white-space:wrap; max-width:250px !important;">${e[i].metadata.teachers?.join(', ') || '<i class="w-small w-text-gray">No teacher assigned</i>'}</td>
                             <td style="white-space:wrap; max-width:250px !important;">${e[i].metadata.classes?.join(', ') || '<i class="w-small w-text-gray">No classes added</i>'}</td>
-                            <td class="w-text-gray h4">
-                                <a class="emp-det-link2 tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Edit ${e[i].title}</span>
-                                </a>
-                                <a class="emp-del-link2 tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Delete ${e[i].title}</span>
-                                </a>
+                            
+                            <td class="w-center">
+                                <div class="dropdown">
+                                    <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu">
+                                    <div class="dropdown-header">${e[i].title} Class</div>
+                                        <a class="dropdown-item emp-det-link2" data-id="${e[i].id}" href="#">
+                                            <i class="fa fa-edit"></i>&nbsp;
+                                            Update Info
+                                        </a>
+                                        <a class="w-text-red w-hover-red dropdown-item emp-del-link2" data-id="${e[i].id}" href="#">
+                                            <i class="fa fa-trash"></i>&nbsp;
+                                            Delete Subject
+                                        </a>
+                                    
+                                    </div>
+                                </div>
+                                
                             </td>
                           </tr>`;
                           $('.subject-list').append(temp)
@@ -621,7 +639,6 @@ function getAllSubjects() {
                 if(data.status == 'success') {
                     if(data.data) {
                         let e = data.data;
-                        subjects_list = e;
                         for(var i in e) {
                             subjects_map[`${e[i].id}`] = e[i].title
                             $('#sub-filter').append(`<option value="${e[i].id}">${e[i].title}</option>`)
@@ -709,23 +726,32 @@ function getSyllabi() {
                             <td>${terms[e[i].curriculum.term - 1]} Term</td>
                             <td class="w-center">${digify(e[i].no_of_topics)}</td>
                             <td>${e[i].teacher?.firstName || '<i class="w-small w-text-gray">No teacher assigned</i>'} ${e[i].teacher?.lastName || ``}</td>
-                            <td class="w-text-gray h4">
-                                <a class="emp-top-link3 tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-file-text"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">View Topics</span>
-                                </a>
-                                <a class="emp-down-link3 tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-download"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Download Curriculum</span>
-                                </a>
-                                <a class="emp-det-link3 tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Edit Curriculum</span>
-                                </a>
-                                <a class="emp-del-link3 tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Delete Curriculum</span>
-                                </a>
+                            
+
+                            <td class="w-center">
+                                <div class="dropdown">
+                                    <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item emp-top-link3" data-id="${e[i].id}" href="#">
+                                            <i class="fa fa-file-text"></i>&nbsp;
+                                            View Topics/Notes
+                                        </a>
+                                        <a class="dropdown-item emp-down-link3" data-id="${e[i].id}" href="#">
+                                            <i class="fa fa-download"></i>&nbsp;
+                                            Download Curriculum
+                                        </a>
+                                        <a class="dropdown-item emp-det-link3" data-id="${e[i].id}" href="#">
+                                            <i class="fa fa-edit"></i>&nbsp;
+                                            Update Curriculum
+                                        </a>
+                                        <a class="w-text-red w-hover-red dropdown-item emp-del-link3" data-id="${e[i].id}" href="#">
+                                            <i class="fa fa-trash"></i>&nbsp;
+                                            Delete Curriculum
+                                        </a>
+                                    
+                                    </div>
+                                </div>
+                                
                             </td>
                           </tr>`;
                           $('.curriculum-list').append(temp)
@@ -989,26 +1015,37 @@ function getTopics(syllabus_id) {
                                         </ul>
                                     </details>    
                                 </td>
-                                
-                                <td class="w-text-gray h4">
-                                    <a class="top-det-link tooltipa" href="#" data-id="${d[i].id}">
-                                        <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
-                                        <span class="tooltiptext w-card">Edit week ${d[i].week} Topic</span>
-                                    </a>
+                
+
+                                <td class="w-center">
+                                <div class="dropdown">
+                                    <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu">
                                     ${d[i].file ? `
-                                    <a class="top-file-link tooltipa" href="#"  data-id="${base_url}${d[i].file}">
-                                        <i class="fa fa-download"></i>&nbsp;&nbsp;&nbsp;
-                                        <span class="tooltiptext w-card">Download week ${d[i].week} Document</span>
-                                    </a>` : `
-                                    <a class="top-file-gen tooltipa" href="#"  data-id="${d[i].id}">
-                                        <i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;&nbsp;
-                                        <span class="tooltiptext w-card">Generate week ${d[i].week} PDF</span>
-                                    </a>`}
-                                    <a class="top-del-link tooltipa" href="#" data-id="${d[i].id}">
-                                        <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
-                                        <span class="tooltiptext w-card">Delete week ${d[i].week} Topic</span>
-                                    </a>
-                                </td>
+                                        <a class="dropdown-item top-file-link" data-id="${base_url}${d[i].file}" href="#">
+                                            <i class="fa fa-download"></i>&nbsp;
+                                            Download Note
+                                        </a>
+                                        ` : `
+                                        <a class="dropdown-item top-file-gen" data-id="${d[i].id}" href="#">
+                                            <i class="fa fa-file-pdf-o"></i>&nbsp;
+                                            Generate Note PDF
+                                        </a>
+                                        `}
+                                        
+                                        <a class="dropdown-item top-det-link" data-id="${d[i].id}" href="#">
+                                            <i class="fa fa-edit"></i>&nbsp;
+                                            Update week ${d[i].week}
+                                        </a>
+                                        <a class="w-text-red w-hover-red dropdown-item top-del-link" data-id="${d[i].id}" href="#">
+                                            <i class="fa fa-trash"></i>&nbsp;
+                                            Delete week ${d[i].week}
+                                        </a>
+                                    
+                                    </div>
+                                </div>
+                                
+                            </td>
                             </tr>`;
                             $('.top-list').append(temp)
                         }
@@ -1374,12 +1411,15 @@ function getTimetable() {
 
     $(".time-table-body").empty().html(loader_process)
     $(".time-table-head").empty()
+    $(".time-table-body2").empty().html(loader_process)
+    $(".time-table-head2").empty()
     $(".time-name").html(``)
 
     $(".time-btns").addClass("w-hide")
 
     if(!class_id) {
         $(".time-table-body").empty();
+        $(".time-table-body2").empty();
         pushNotification("n_info", "Kindly select a class", 5000);
         return;
     }
@@ -1390,6 +1430,7 @@ function getTimetable() {
         params: {class_id},
             onSuccess: (data) => {
                 $(".time-table-body").empty()
+                $(".time-table-body2").empty()
                 //console.log(data)
                 if(data.status == "success") {
                     let d = data.data;
@@ -1402,6 +1443,7 @@ function getTimetable() {
                     let thu = d.thursday;
                     let fri = d.friday;
 
+                    // Horizontal arrangements
                     $(".time-table-head").append(`<th></th>`)
                     for(let i in periods) {
                         var temp = `<th style="text-align:center;">${timify(periods[i].start)}<br>-<br>${timify(periods[i].end)}</th>`;
@@ -1438,6 +1480,31 @@ function getTimetable() {
                         fri_row += `<td>${fri[a].subject}</td>`
                     }
                     $(".time-table-body").append(`<tr>${fri_row}</tr>`)
+                    
+                    // Vertical arrangements
+                    $(".time-table-head2").append(`
+                        <th>Periods</th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                    `)
+
+                    for(let j = 0; j < periods.length; j++) {
+                        let temp = `
+                        <tr>
+                            <td>${timify(periods[j].start)}<br>-<br>${timify(periods[j].end)}</td>
+                            <td>${mon[j].subject}</td>
+                            <td>${tue[j].subject}</td>
+                            <td>${wed[j].subject}</td>
+                            <td>${thu[j].subject}</td>
+                            <td>${fri[j].subject}</td>
+                        </tr>`;
+
+                        $(".time-table-body2").append(temp)
+                    }
+
                     $(".time-btns").removeClass("w-hide")
                 }
                 else {
@@ -1452,18 +1519,25 @@ function getTimetable() {
     })
 }
 
-async function getClassSubjects() {
-    let data = await admin.subject.getSubjects({
-        params: {pagesize: 10}
-    })
-    return data
+async function getClassSubjects(class_id) {
+    try {
+        let data = await admin.subject.getClassSubjects({
+            params: {class_id}
+        })
+        //console.log(data)
+        if(data.status == "success") {
+            return [true, data.data]
+        }
+        else {return [false, data.message]}
+    }
+    catch(err) {
+        console.log(err)
+        return [false, "Error occurred, kindly check your internet connection!"]
+    }
 }
 
 async function getTimetab() {
     $(".update-time-con").addClass('active')
-
-    let subs = await getClassSubjects()
-    console.log(subs)
 
     let class_id = $("#class-filter2").val()
 
@@ -1478,6 +1552,16 @@ async function getTimetab() {
 
     showLoader("Fetching data...")
 
+    let [stat, subs] = await getClassSubjects(class_id)
+    if(stat === true) {
+        subjects_list = subs
+    }
+    else {
+        pushNotification("n_error", subs, 5000);
+        hideLoader();
+        return
+    }
+    //console.log(subjects_list)
     admin.timetable.getTimetable({
         params: {class_id},
             onSuccess: (data) => {
@@ -1492,109 +1576,89 @@ async function getTimetab() {
                     let thu = d.thursday;
                     let fri = d.friday;
 
-                    $(".time-form-head").append(`<th></th>`)
-                    for(let i in periods) {
-                        var temp = `
-                        <th style="text-align:center;" class="period-input">
-                            <h4 class="w-center">Period ${parseInt(i) + 1}</h4>
-                            <div class="input-con" style="margin-bottom:10px;">
-                                <input type="time" class="period-start" value="${periods[i].start}" />
-                            </div>
-                            <div class="input-con" style="margin-bottom:0px;">
-                                <input type="time" class="period-end" value="${periods[i].end}" />
-                            </div>
-                        </th>`;
-                        $(".time-form-head").append(temp)
+                    // Vertical arrangements
+                    $(".time-form-head").append(`
+                        <th class="w-center">Periods (start / end)</th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                    `)
+
+                    for(let j = 0; j < periods.length; j++) {
+                        let temp = `
+                        <tr>
+                            <td style="text-align:center;" class="period-input">
+                                <div class="w-flex w-flex-center w-align-center" style="gap:5px;">
+                                <div class="input-con" style="margin-bottom:10px;">
+                                    <input type="time" class="period-start" value="${periods[j].start}" />
+                                </div>
+                                <div>-</div>
+                                <div class="input-con" style="margin-bottom:0px;">
+                                    <input type="time" class="period-end" value="${periods[j].end}" />
+                                </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-con mon_row" style="margin-bottom:0px;">
+                                    <select class="time-select">
+                                        <option value="" ${mon[j].id == '' ? 'selected' : ''}>Break</option>
+                                        ${subjects_list.map(p => `
+                                            <option value="${p.id}" ${mon[j].id == p.id ? 'selected' : ''}>${p.title}</option>
+                                            `).join('')}
+                                    </select>
+                                    <input class="time-hidden" type="hidden" value="${mon[j].subject}" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-con tue_row" style="margin-bottom:0px;">
+                                    <select class="time-select">
+                                        <option value="" ${tue[j].id == '' ? 'selected' : ''}>Break</option>
+                                        ${subjects_list.map(p => `
+                                            <option value="${p.id}" ${tue[j].id == p.id ? 'selected' : ''}>${p.title}</option>
+                                            `).join('')}
+                                    </select>
+                                    <input class="time-hidden" type="hidden" value="${tue[j].subject}" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-con wed_row" style="margin-bottom:0px;">
+                                    <select class="time-select">
+                                        <option value="" ${wed[j].id == '' ? 'selected' : ''}>Break</option>
+                                        ${subjects_list.map(p => `
+                                            <option value="${p.id}" ${wed[j].id == p.id ? 'selected' : ''}>${p.title}</option>
+                                            `).join('')}
+                                    </select>
+                                    <input class="time-hidden" type="hidden" value="${wed[j].subject}" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-con thu_row" style="margin-bottom:0px;">
+                                    <select class="time-select">
+                                        <option value="" ${thu[j].id == '' ? 'selected' : ''}>Break</option>
+                                        ${subjects_list.map(p => `
+                                            <option value="${p.id}" ${thu[j].id == p.id ? 'selected' : ''}>${p.title}</option>
+                                            `).join('')}
+                                    </select>
+                                    <input class="time-hidden" type="hidden" value="${thu[j].subject}" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-con fri_row" style="margin-bottom:0px;">
+                                    <select class="time-select">
+                                        <option value="" ${fri[j].id == '' ? 'selected' : ''}>Break</option>
+                                        ${subjects_list.map(p => `
+                                            <option value="${p.id}" ${fri[j].id == p.id ? 'selected' : ''}>${p.title}</option>
+                                            `).join('')}
+                                    </select>
+                                    <input class="time-hidden" type="hidden" value="${fri[j].subject}" />
+                                </div>
+                            </td>
+                        </tr>`;
+
+                        $(".time-form-body").append(temp)
                     }
-
-                    let mon_row = `<td>Mon</td>`;
-                    let tue_row = `<td>Tue</td>`;
-                    let wed_row = `<td>Wed</td>`;
-                    let thu_row = `<td>Thur</td>`;
-                    let fri_row = `<td>Fri</td>`;
-
-                    for(let a in mon) {
-                        mon_row += `
-                        <td>
-                            <div class="input-con mon_row" style="margin-bottom:0px;">
-                                <select class="time-select">
-                                    <option value="" ${mon[a].id == '' ? 'selected' : ''}>Break</option>
-                                    ${subjects_list.map(p => `
-                                        <option value="${p.id}" ${mon[a].id == p.id ? 'selected' : ''}>${p.title}</option>
-                                        `).join('')}
-                                </select>
-                                <input class="time-hidden" type="hidden" value="${mon[a].subject}" />
-                            </div>
-                        </td>
-                        `
-                    }
-                    $(".time-form-body").append(`<tr>${mon_row}</tr>`)
-
-                    for(let a in tue) {
-                        tue_row += `
-                        <td>
-                            <div class="input-con tue_row" style="margin-bottom:0px;">
-                                <select class="time-select">
-                                    <option value="" ${tue[a].id == '' ? 'selected' : ''}>Break</option>
-                                    ${subjects_list.map(p => `
-                                        <option value="${p.id}" ${tue[a].id == p.id ? 'selected' : ''}>${p.title}</option>
-                                        `).join('')}
-                                </select>
-                                <input class="time-hidden" type="hidden" value="${tue[a].subject}" />
-                            </div>
-                        </td>
-                        `
-                    }
-                    $(".time-form-body").append(`<tr>${tue_row}</tr>`)
-
-                    for(let a in wed) {
-                        wed_row += `
-                        <td>
-                            <div class="input-con wed_row" style="margin-bottom:0px;">
-                                <select class="time-select">
-                                    <option value="" ${wed[a].id == '' ? 'selected' : ''}>Break</option>
-                                    ${subjects_list.map(p => `
-                                        <option value="${p.id}" ${wed[a].id == p.id ? 'selected' : ''}>${p.title}</option>
-                                        `).join('')}
-                                </select>
-                                <input class="time-hidden" type="hidden" value="${wed[a].subject}" />
-                            </div>
-                        </td>`
-                    }
-                    $(".time-form-body").append(`<tr>${wed_row}</tr>`)
-
-                    for(let a in thu) {
-                        thu_row += `
-                        <td>
-                            <div class="input-con thu_row" style="margin-bottom:0px;">
-                                <select class="time-select">
-                                    <option value="" ${thu[a].id == '' ? 'selected' : ''}>Break</option>
-                                    ${subjects_list.map(p => `
-                                        <option value="${p.id}" ${thu[a].id == p.id ? 'selected' : ''}>${p.title}</option>
-                                        `).join('')}
-                                </select>
-                                <input class="time-hidden" type="hidden" value="${thu[a].subject}" />
-                            </div>
-                        </td>`
-                    }
-                    $(".time-form-body").append(`<tr>${thu_row}</tr>`)
-
-                    for(let a in fri) {
-                        fri_row += `
-                        <td>
-                            <div class="input-con fri_row" style="margin-bottom:0px;">
-                                <select class="time-select">
-                                    <option value="" ${fri[a].id == '' ? 'selected' : ''}>Break</option>
-                                    ${subjects_list.map(p => `
-                                        <option value="${p.id}" ${fri[a].id == p.id ? 'selected' : ''}>${p.title}</option>
-                                        `).join('')}
-                                </select>
-                                <input class="time-hidden" type="hidden" value="${fri[a].subject}" />
-                            </div>
-                        </td>`
-                    }
-                    $(".time-form-body").append(`<tr>${fri_row}</tr>`)
-
                     $(".time-select").on('change', function() {
                         let val = $(this).val();
                         let tit = subjects_map[`${val}`]

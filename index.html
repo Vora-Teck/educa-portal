@@ -140,14 +140,11 @@ showSchoolInfo()
   <!-- header -->
   <template id="header">
     <header>
-      <div class="h3 w-bold-x page-name"></div>
+      <div class="h4 w-bold-x page-name"></div>
 
       <div class="side-content">
 
-        <a href="#" class="search-icon">
-          <i class="fa fa-search"></i>
-        </a>
-        <a href="/#messages">
+        <a href="/#messages" class="comm-icon">
           <i class="fa fa-comment-o"></i>
           <span class="count">0</span>
         </a>
@@ -1130,13 +1127,14 @@ showSchoolInfo()
             <table class="table staff-table">
               <thead>
                 <tr>
+                  <th>Image</th>
                   <th>Staff ID</th>
                   <th>Full Name</th>
                   <th>Gender</th>
                   <th>Role</th>
                   <th>Class Assigned</th>
                   <th>Status</th>
-                  <th>Actions</th>
+                  <th class="w-center">Actions</th>
                 </tr>
               </thead>
               <tbody class="staff-list">
@@ -2037,7 +2035,7 @@ showSchoolInfo()
                   <th class="w-center">Gender</th>
                   <th>Class</th>
                   <th>Status</th>
-                  <th>Actions</th>
+                  <th class="w-center">Actions</th>
                 </tr>
               </thead>
               <tbody class="student-list">
@@ -3177,7 +3175,7 @@ showSchoolInfo()
                   <th>Topic</th>
                   <th>Description</th>
                   <th>Lesson Plan</th>
-                  <th>Actions</th>
+                  <th class="w-center">Actions</th>
                 </tr>
               </thead>
               <tbody class="top-list">
@@ -3448,6 +3446,10 @@ showSchoolInfo()
       <div class="modal-header">
         <div class="h5 w-bold-x w-text-blue">Update <span class="time-name"></span></div>
       </div>
+      <div class="w-text-gray mt-3">
+        <b class="w-text-black">NOTE: </b>Only subjects that have been assigned to this class will be shown as a option when choosing timetable subjects.<br>
+        e.g Chemistry will only be shown as an option to senior science classes and not to other classes that do not offer chemistry.
+      </div>
       <form class="modal-content mt-3 update-time-form">
         
         <div class="table-responsive">
@@ -3561,7 +3563,7 @@ showSchoolInfo()
                       <th>Class Teacher</th>
                       <th>Category</th>
                       <th>No. of Students</th>
-                      <th>Actions</th>
+                      <th class="w-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="class-list">
@@ -3608,7 +3610,7 @@ showSchoolInfo()
                       <th>Subject</th>
                       <th>Assigned Teacher(s)</th>
                       <th>Classes</th>
-                      <th>Actions</th>
+                      <th class="w-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="subject-list">
@@ -3684,7 +3686,7 @@ showSchoolInfo()
                       <th>Term</th>
                       <th class="w-center">No. of Topics</th>
                       <th>Assigned Teacher</th>
-                      <th>Actions</th>
+                      <th class="w-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="curriculum-list">
@@ -3740,17 +3742,35 @@ showSchoolInfo()
                 </div>
                 <div class="h4 w-bold-x time-name"></div>
               </div>
-    
+
+
+
               <div class="table-responsive">
-                <table class="table staff-table time-table table-bordered">
-                  <thead>
-                    <tr class="time-table-head">
-                    </tr>
-                  </thead>
-                  <tbody class="time-table-body">
-                  </tbody>
-                </table>
+                    <table class="table staff-table time-table table-bordered">
+                      <thead>
+                        <tr class="time-table-head2">
+                        </tr>
+                      </thead>
+                      <tbody class="time-table-body2">
+                      </tbody>
+                    </table>
               </div>
+
+              <div class="table-responsive w-hide">
+                    <table class="table staff-table time-table table-bordered">
+                      <thead>
+                        <tr class="time-table-head">
+                        </tr>
+                      </thead>
+                      <tbody class="time-table-body">
+                      </tbody>
+                    </table>
+              </div>
+
+    
+              
+
+              
     
             </div>
           </div>

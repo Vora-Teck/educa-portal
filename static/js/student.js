@@ -148,19 +148,24 @@ function getStudents() {
                             <td class="w-bold-x">${e[i].is_active ? `
                                 <span class="w-text-green">Active</span>` : `
                                 <span class="w-text-red">Inactive</span>`}</td>
-                            <td class="w-text-gray h4">
-                                <a class="emp-det-link tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">View</span>
-                                </a>
-                                <a class="emp-del-link tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Delete Record</span>
-                                </a>
-                                <a class="emp-rel-link tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-credit-card"></i>
-                                    <span class="tooltiptext w-card">Print ID Card</span>
-                                </a>
+
+                            <td class="w-center">
+                                <div class="dropdown">
+                                    <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu">
+                                    <div class="dropdown-header">${e[i].firstName} ${e[i].middleName} ${e[i].lastName}</div>
+                                        <a class="dropdown-item emp-det-link" data-id="${e[i].id}" href="#">
+                                            <i class="fa fa-eye"></i>&nbsp;
+                                            View Details
+                                        </a>
+                                        <a class="w-text-red w-hover-red dropdown-item emp-del-link" data-id="${e[i].id}" href="#">
+                                            <i class="fa fa-trash"></i>&nbsp;
+                                            Delete Records
+                                        </a>
+                                    
+                                    </div>
+                                </div>
+                                
                             </td>
                           </tr>`;
                           $('.student-list').append(temp)

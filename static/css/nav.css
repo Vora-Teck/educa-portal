@@ -285,6 +285,9 @@ body {
     border-radius: 5px;
     cursor: pointer;
   }
+  .sidenav a > i {
+    color: #fff;
+  }
   
   .sidenav a:hover, .sidenav a.active {
     background: var(--primary-color);
@@ -401,7 +404,7 @@ header {
     .admin-pro {display:none;}
 }
 @media screen and (max-width:400px) {
-  .search-icon {display:none;}
+  .comm-icon {display:none;}
 }
 @media screen and (min-width:700px) {
   #search {min-width: 300px;}
@@ -1453,7 +1456,7 @@ ul.breadcrumb li a:hover {
 
 .dropdown-item {
   padding: 10px 15px !important;
-  font-size: 17px;
+  font-size: 15px;
 }
 .dropdown-item:hover {
   background: var(--primary-color);
@@ -2385,8 +2388,15 @@ details ul {
   list-style-type: square;
   padding-left: 25px;
 }
+.page-name {
+  white-space: nowrap;
+}
 summary {
   font-weight: bolder;
+}
+.time-table-head2 th,
+.time-table-body2 tr td {
+  text-align: center;
 }
 
 .n_error {background:red;color:#fff}

@@ -178,7 +178,7 @@ function generatePayroll() {
 }
 
 function initiatePayroll(payroll_id) {
-    showLoader("Generating Receipt...")
+    showLoader("Initiating transaction...")
 
     admin.payroll.initiateSinglePayment({
         formData: {payroll_id},
@@ -287,7 +287,7 @@ function makePayment() {
     let reference = $("#pay-reference").val();
     let password = $("#pay-password").val();
 
-    showLoader("Making Transfer...")
+    showLoader("Making payment...")
 
     admin.payroll.makeSinglePayment({
         formData: {reference, password},
@@ -449,26 +449,25 @@ function getBankAccounts() {
                                 <div class="dropdown">
                                     <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
                                     <div class="dropdown-menu">
-                                    <!--
-                                    <a class="dropdown-item b-det-link" data-id='${JSON.stringify(e[i])}' href="#">
-                                        <i class="fa fa-edit"></i>&nbsp;
-                                        Update Account
-                                    </a>
-                                    -->
-                                    ${e[i].verification_status == "verified" ? `
-                                        <a class="dropdown-item b-act-link" data-id="${e[i].id}" data-action="reject" href="#">
-                                        <i class="fa fa-times-circle"></i>&nbsp;
-                                        Mark As Rejected
-                                        </a>` : `
-                                        <a class="dropdown-item b-act-link" data-id="${e[i].id}" data-action="verify" href="#">
-                                        <i class="fa fa-check-circle"></i>&nbsp;
-                                        Mark As Verified
-                                        </a>`}
+                                        <!--
+                                        <a class="dropdown-item b-det-link" data-id='${JSON.stringify(e[i])}' href="#">
+                                            <i class="fa fa-edit"></i>&nbsp;
+                                            Update Account
+                                        </a>
+                                        -->
+                                        ${e[i].verification_status == "verified" ? `
+                                            <a class="dropdown-item b-act-link" data-id="${e[i].id}" data-action="reject" href="#">
+                                            <i class="fa fa-times-circle"></i>&nbsp;
+                                            Mark As Rejected
+                                            </a>` : `
+                                            <a class="dropdown-item b-act-link" data-id="${e[i].id}" data-action="verify" href="#">
+                                            <i class="fa fa-check-circle"></i>&nbsp;
+                                            Mark As Verified
+                                            </a>
+                                        `}
                                     
                                     </div>
                                 </div>
-                                </td>
-                                
                                 
                             </td>
                           </tr>`;

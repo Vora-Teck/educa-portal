@@ -64,7 +64,7 @@ function getStaff() {
 
     $('.staff-list').empty()
     loader = `<tr>
-        <td colspan="7" class="">
+        <td colspan="8" class="">
         <i class="fa fa-spinner rotate"></i>&nbsp;&nbsp;&nbsp;Processing...
         </td>
     </tr>`;
@@ -112,6 +112,11 @@ function getStaff() {
                         let e = data.data;
                         for(var i in e) {
                             let temp = `<tr class="staff-row">
+                            <td> 
+                                    <img class="w-circle" style="width:40px;height:40px;"
+                                    src="${e[i].image ? `${base_url}${e[i].image}` : `/static/image/avatar.png`}" 
+                                    alt="" />
+                                </td>
                             <td>
                             <div class="w-bold-x">${e[i].staffId}</div>
                             </td>
@@ -121,20 +126,26 @@ function getStaff() {
                             <td>${e[i].classes_assigned.join(', ')}</td>
                             <td class="w-bold-x">${e[i].is_active ? `
                                 <span class="w-text-green">Active</span>` : `
-                                <span class="w-text-red">Inactive</span>`}</td>
-                            <td class="w-text-gray h4">
-                                <a class="emp-det-link tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">View</span>
-                                </a>
-                                <a class="emp-del-link tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Delete Record</span>
-                                </a>
-                                <a class="emp-rel-link tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-credit-card"></i>
-                                    <span class="tooltiptext w-card">Print ID Card</span>
-                                </a>
+                                <span class="w-text-red">Inactive</span>`}
+                            </td>
+
+                            <td class="w-center">
+                                <div class="dropdown">
+                                    <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu">
+                                    <div class="dropdown-header">${e[i].firstName} ${e[i].lastName}</div>
+                                        <a class="dropdown-item emp-det-link" data-id="${e[i].id}" href="#">
+                                            <i class="fa fa-eye"></i>&nbsp;
+                                            View Details
+                                        </a>
+                                        <a class="w-text-red w-hover-red dropdown-item emp-del-link" data-id="${e[i].id}" href="#">
+                                            <i class="fa fa-trash"></i>&nbsp;
+                                            Delete Records
+                                        </a>
+                                    
+                                    </div>
+                                </div>
+                                
                             </td>
                           </tr>`;
                           $('.staff-list').append(temp)
@@ -155,7 +166,7 @@ function getStaff() {
                     }
                     else {
                         let temp = `<tr>
-                        <td colspan="7">${data.message}</td>
+                        <td colspan="8">${data.message}</td>
                         </tr>`;
                         $('.staff-list').append(temp)
                     }
@@ -163,7 +174,7 @@ function getStaff() {
                 else {
                     pushNotification("n_error", data.message, 3000);
                     let temp = `<tr>
-                        <td colspan="7">${data['message']}</td>
+                        <td colspan="8">${data['message']}</td>
                         </tr>`;
                     $('.staff-list').append(temp)
                 }
