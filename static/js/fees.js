@@ -180,15 +180,18 @@ function getTuitions() {
                             <td>&#8358;${digify(e[i].amount)}</td>
                             <td>${info}</td>
 
-                            <td class="w-text-gray h4">
-                                <a class="ev-pay-link tooltipa" href="#" data-id='${JSON.stringify(e[i])}'>
-                                    <i class="fa fa-money"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">View Payments</span>
-                                </a>
-                                <a class="ev-det-link tooltipa" href="#" data-id='${JSON.stringify(e[i])}'>
-                                    <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Edit Tuition</span>
-                                </a>
+                            <td class="w-center">
+                                    <div class="dropdown">
+                                        <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item ev-pay-link" data-id='${JSON.stringify(e[i])}' href="#">
+                                                <i class="fa fa-money"></i>&nbsp;View Payments
+                                            </a>
+                                            <a class="dropdown-item ev-det-link" data-id='${JSON.stringify(e[i])}' href="#">
+                                                <i class="fa fa-edit"></i>&nbsp;Edit Tuition
+                                            </a>                                        
+                                        </div>
+                                    </div>
                             </td>
                           </tr>`;
                           $('.tuition-list').append(temp)

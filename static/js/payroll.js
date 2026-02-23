@@ -94,20 +94,21 @@ function getPayroll() {
                                 <span class="danger-btn">Not Paid</span>`
                             }
                             </td>
-                            <td class="w-text-gray">
-                            ${e[i].is_paid ? `
-                                <a class="t-det-link tooltipa" href="#" data-id='${e[i].id}'>
-                                    <i class="fa fa-bank"></i>&nbsp;View Transaction
-                                    <span class="tooltiptext w-card">View Transaction</span>
-                                </a>`: `
-                                
-                                <a class="t-pay-link tooltipa" href="#" data-id='${e[i].id}'>
-                                    <i class="fa fa-bank"></i>&nbsp;Make Payment
-                                    <span class="tooltiptext w-card">Make Payment</span>
-                                </a>`
-                            }
-                                
-                                
+                            <td class="w-center">
+                                    <div class="dropdown">
+                                        <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                        <div class="dropdown-menu">
+                                        <div class="dropdown-header">${e[i].staff.firstName} ${e[i].staff.middleName} ${e[i].staff.lastName}</div>
+                                            ${e[i].is_paid ? `
+                                                <a class="dropdown-item t-det-link" data-id='${e[i].id}' href="#">
+                                                <i class="fa fa-file-text"></i>&nbsp;View Transaction
+                                                </a>` : `
+                                                <a class="dropdown-item t-pay-link" data-id='${e[i].id}' href="#">
+                                                <i class="fa fa-dollar"></i>&nbsp;Make Payment
+                                            </a>  `}
+                                                                          
+                                        </div>
+                                    </div>
                             </td>
                           </tr>`;
                           $('.pay-list').append(temp)

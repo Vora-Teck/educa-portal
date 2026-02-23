@@ -58,9 +58,9 @@ function getSessions() {
                         let temp = `
                         <tr>
                         <td class="w-bold-x">${d[i].title}</td>
-                        <td>${d[i].start_year}</td>
-                        <td>${d[i].end_year}</td>
-                        <td class="w-text-gray h4">
+                        <td class="w-center">${d[i].start_year}</td>
+                        <td class="w-center">${d[i].end_year}</td>
+                        <td class="w-text-gray w-center h4">
                                 <a class="emp-det-link tooltipa" href="#" data-id='${JSON.stringify(d[i])}'>
                                     <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
                                     <span class="tooltiptext w-card">Update Session</span>
@@ -216,7 +216,7 @@ function getTerms() {
                             <td class="w-center">${e[i].number_of_weeks}</td>
                             <td class="w-center">${datify(e[i].start_date)}</td>
                             <td class="w-center">${datify(e[i].end_date)}</td>
-                            <td class="w-text-gray h4">
+                            <td class="w-text-gray h4 w-center">
                                 <a class="term-det-link tooltipa" href="#" data-id='${JSON.stringify(e[i])}'>
                                     <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
                                     <span class="tooltiptext w-card">Update Term</span>
@@ -420,19 +420,23 @@ function getEvents() {
                             <span class="${stat[e[i].status.toLowerCase()]}">${e[i].status}</span>
                             </td>
                             <td>${e[i].venue}</td>
-                            <td class="w-text-gray h4">
-                                <a class="ev-broad-link tooltipa" href="#" data-id='${JSON.stringify(e[i])}'>
-                                    <i class="fa fa-bullhorn"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">${e[i].broadcasted === true ? `Rebroadcast` : `Broadcast`} Event</span>
-                                </a>
-                                <a class="ev-det-link tooltipa" href="#" data-id='${JSON.stringify(e[i])}'>
-                                    <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Edit Event</span>
-                                </a>
-                                <a class="ev-del-link tooltipa" href="#" data-id='${JSON.stringify(e[i])}'>
-                                    <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Delete Event</span>
-                                </a>
+                            <td class="w-center">
+                                    <div class="dropdown">
+                                        <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                        <div class="dropdown-menu">
+                                        <div class="dropdown-header">${e[i].title}</div>
+                                            <a class="dropdown-item ev-broad-link" data-id='${JSON.stringify(e[i])}' href="#">
+                                                <i class="fa fa-bullhorn"></i>&nbsp;
+                                                ${e[i].broadcasted === true ? `Rebroadcast` : `Broadcast`} Event
+                                            </a>
+                                            <a class="dropdown-item ev-det-link" data-id='${JSON.stringify(e[i])}' href="#">
+                                                <i class="fa fa-edit"></i>&nbsp;Update Event
+                                            </a>
+                                            <a class="dropdown-item w-text-red w-hover-red ev-del-link" data-id='${JSON.stringify(e[i])}' href="#">
+                                                <i class="fa fa-trash"></i>&nbsp;Delete Event
+                                            </a>                                        
+                                        </div>
+                                    </div>
                             </td>
                           </tr>`;
                           $('.event-list').append(temp)

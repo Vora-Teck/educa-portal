@@ -3450,6 +3450,12 @@ showSchoolInfo()
         <b class="w-text-black">NOTE: </b>Only subjects that have been assigned to this class will be shown as a option when choosing timetable subjects.<br>
         e.g Chemistry will only be shown as an option to senior science classes and not to other classes that do not offer chemistry.
       </div>
+
+      <div class="mt-3 w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px">
+        <button class="dark-btn add-period-btn">Add Period&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+        <button class="insight-btn generate-time-btn">Generate Timetable with AI <i class="fa fa-star"></i></button>
+      </div>
+
       <form class="modal-content mt-3 update-time-form">
         
         <div class="table-responsive">
@@ -3466,6 +3472,44 @@ showSchoolInfo()
         <div class="w-white w-padding-top input-con w-flex w-flex-end w-align-center" style="gap:20px;position:sticky;bottom:0;">
           <button class="clear-btn canc-btn13">Cancel</button>
           <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top small-con gen-time-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Generate Timetable with Eduka AI</div>
+      </div>
+      <form class="modal-content mt-3 gen-time-form">
+
+        <p class="w-text-gray"><i>
+          IMPORTANT NOTICE:
+          <ul class="w-text-gray" style="padding-left:20px;">
+            <li>The A.I generated timetable are based on the availabe subjects for the selected clssroom.</li>
+            <li>If you have any additional instructions for the timetable, kindly enter it into the "Additional instructions field"</li>
+          </ul>
+          
+        </i></p>
+
+        <div class="input-con">
+          <label for="">Minimum number of subjects per day</label>
+          <input type="number" id="min-sub" min="1" value="3" required>
+        </div>
+        <div class="input-con">
+          <label for="">Maximum number of subjects per day</label>
+          <input type="number" id="max-sub" min="1" value="6" required>
+        </div>
+        <div class="input-con">
+          <label for="">Additional Instructions</label>
+          <textarea rows="5" id="time-prompt" value=""></textarea>
+        </div>
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn15">Cancel</button>
+          <input type="submit" value="Generate">
         </div>
       </form>
     </div>
@@ -3720,9 +3764,6 @@ showSchoolInfo()
                     <select id="class-filter2" class="form-control" style="max-width:170px;"></select>
                 </div>
                 
-                <div class="w-flex w-flex-end w-align-center" style="gap:10px;width:fit-content;">
-                  <button class="insight-btn generate-time-btn">Generate Timetable with AI <i class="fa fa-plus"></i></button>
-                </div>
                 
               </form>
 
@@ -3890,6 +3931,10 @@ showSchoolInfo()
         e.preventDefault();
         $(".export-top-con").removeClass('active')
     })
+    $(".canc-btn15").click(function(e) {
+        e.preventDefault();
+        $(".gen-time-con").removeClass('active')
+    })
 
     $('#emp_search2').on('input', function(e) {
       $('#emp_page2').val(1);
@@ -3914,7 +3959,6 @@ showSchoolInfo()
     </div>
 
     <div class="side-opt-con" style="gap:15px;">
-      <button class="side-btn gen-que-btn">Generate questions with EdukaAI</button>
       <button class="light-btn que-export-btn"><i class="fa fa-file-pdf-o"></i> Export to PDF</button>
     </div>
 
@@ -3944,6 +3988,7 @@ showSchoolInfo()
                 
       
                 <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+                  <button class="side-btn gen-que-btn">Generate questions with EdukaAI</button>
                   <button class="dark-btn add-que-btn">Add Question&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
                   
                 </div>
@@ -3958,7 +4003,7 @@ showSchoolInfo()
                       <th style="min-width:200px">Question</th>
                       <th>Options</th>
                       <th>Answer</th>
-                      <th>Actions</th>
+                      <th class="w-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="que-list">
@@ -3975,8 +4020,9 @@ showSchoolInfo()
       <div class="tab-pane container" id="essay_que">
         <div class="w-white">
 
-          <div class="w-padding w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+          <div class="w-padding w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
             <div class="h4 w-bold-x" style="color:orangered">Essay Question</div>
+            <button class="side-btn gen-essay-btn">Generate Questions with EdukaAI</button>
           </div>
 
           <form class="w-padding mt-3 update-essay-form">
@@ -4157,7 +4203,7 @@ showSchoolInfo()
     <div class="modal-body">
       <div class="close-modal">X</div>
       <div class="modal-header">
-        <div class="h5 w-bold-x w-text-blue">Generate Questions with Eduka AI</div>
+        <div class="h5 w-bold-x w-text-blue">Generate MCQ Questions with Eduka AI</div>
       </div>
       <form class="modal-content mt-3 gen-que-form">
 
@@ -4186,6 +4232,41 @@ showSchoolInfo()
 
         <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
           <button class="clear-btn canc-btn10">Cancel</button>
+          <input type="submit" value="Generate">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top small-con gen-essay-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Generate Essay Questions with Eduka AI</div>
+      </div>
+      <form class="modal-content mt-3 gen-essay-form">
+
+        <p class="w-text-gray"><i>
+          IMPORTANT NOTICE:
+          <ul class="w-text-gray" style="padding-left:20px;">
+            <li>The A.I generated questions are based on the school's syllabus on the exam subject.</li>
+            <li>The questions are generated based on the topics for the current term and the term(s) before (except for first term which has no previous term).</li>
+            <li>If you have any exceptions you'd like to make such as specific topics or specific instructions, kindly enter it into the "Additional instructions field"</li>
+          </ul>
+          
+        </i></p>
+
+        <div class="input-con">
+          <label for="">Number of Questions</label>
+          <input type="number" id="que-count2" min="1" value="5" required>
+        </div>
+        <div class="input-con">
+          <label for="">Additional Instructions</label>
+          <textarea rows="5" id="que-prompt2" value=""></textarea>
+        </div>
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn11">Cancel</button>
           <input type="submit" value="Generate">
         </div>
       </form>
@@ -4491,7 +4572,7 @@ showSchoolInfo()
                       <th>Date</th>
                       <th>Duration</th>
                       <th>Status</th>
-                      <th>Actions</th>
+                      <th class="w-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="test-list">
@@ -4561,7 +4642,7 @@ showSchoolInfo()
                       <th>Date</th>
                       <th>Duration</th>
                       <th>Status</th>
-                      <th>Actions</th>
+                      <th class="w-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="exam-list">
@@ -4648,7 +4729,7 @@ showSchoolInfo()
                       <th class="w-center">Average Score</th>
                       <th class="w-center">Grade</th>
                       <th class="w-center">Position</th>
-                      <th>Actions</th>
+                      <th class="w-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="result-list">
@@ -4760,6 +4841,10 @@ showSchoolInfo()
     $(".canc-btn10").click(function(e) {
         e.preventDefault();
         $(".gen-que-con").removeClass('active')
+    })
+    $(".canc-btn11").click(function(e) {
+        e.preventDefault();
+        $(".gen-essay-con").removeClass('active')
     })
     
 
@@ -5469,9 +5554,9 @@ showSchoolInfo()
                   <thead>
                     <tr>
                       <th>Title</th>
-                      <th>Start Year</th>
-                      <th>End Year</th>
-                      <th>Actions</th>
+                      <th class="w-center">Start Year</th>
+                      <th class="w-center">End Year</th>
+                      <th class="w-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="session-list">
@@ -5515,7 +5600,7 @@ showSchoolInfo()
                       <th class="w-center">No of Weeks</th>
                       <th class="w-center">Start Date</th>
                       <th class="w-center">End Date</th>
-                      <th>Actions</th>
+                      <th class="w-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="term-list">
@@ -5581,7 +5666,7 @@ showSchoolInfo()
                       <th>Time</th>
                       <th class="w-center">Status</th>
                       <th>Venue</th>
-                      <th>Actions</th>
+                      <th class="w-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="event-list">
@@ -5957,7 +6042,7 @@ showSchoolInfo()
                       <th>Classrooms</th>
                       <th>Amount</th>
                       <th>Breakdown</th>
-                      <th>Actions</th>
+                      <th class="w-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="tuition-list">
@@ -6357,7 +6442,7 @@ showSchoolInfo()
                       <th>Amount</th>
                       <th class="w-center">Status</th>
                       <th>Date</th>
-                      <th>Actions</th>
+                      <th class="w-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="trans-list">
@@ -6430,7 +6515,7 @@ showSchoolInfo()
                       <th class="w-center">Status</th>
                       <th>Date</th>
                       <th>Expiry Date</th>
-                      <th>Actions</th>
+                      <th class="w-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="sub-list">
@@ -6714,7 +6799,7 @@ showSchoolInfo()
                       <th>Staff ID</th>
                       <th>Amount</th>
                       <th class="w-center">Status</th>
-                      <th>Actions</th>
+                      <th class="w-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="pay-list">

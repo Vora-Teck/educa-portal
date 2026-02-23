@@ -73,15 +73,20 @@ function getTransactions() {
                                 <span class="${stat_f[e[i].status]}">${e[i].status}</span>
                             </td>
                             <td>${datify(e[i].date, true)}</td>
-                            <td class="w-text-gray h4">
-                                <a class="t-det-link tooltipa" href="#" data-id='${JSON.stringify(e[i])}'>
-                                    <i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">View Details</span>
-                                </a>
-                                <a class="t-rec-link tooltipa" href="#" data-id='${e[i].reference}'>
-                                    <i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Generate Receipt</span>
-                                </a>
+                            
+                            <td class="w-center">
+                                    <div class="dropdown">
+                                        <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                        <div class="dropdown-menu">
+                                        <div class="dropdown-header">Ref: ${e[i].reference}</div>
+                                            <a class="dropdown-item t-det-link" data-id='${JSON.stringify(e[i])}' href="#">
+                                                <i class="fa fa-eye"></i>&nbsp;View Details
+                                            </a>
+                                            <a class="dropdown-item t-rec-link" data-id='${e[i].reference}' href="#">
+                                                <i class="fa fa-file-pdf-o"></i>&nbsp;Generate Receipt
+                                            </a>                                        
+                                        </div>
+                                    </div>
                             </td>
                           </tr>`;
                           $('.trans-list').append(temp)
@@ -265,15 +270,19 @@ function getSubscriptions() {
                             </td>
                             <td>${datify(e[i].date)}</td>
                             <td>${datify(e[i].expiry_date)}</td>
-                            <td class="w-text-gray h4">
-                                <a class="s-det-link tooltipa" href="#" data-id='${JSON.stringify(e[i])}'>
-                                    <i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">View Details</span>
-                                </a>
-                                <a class="s-rec-link tooltipa" href="#" data-id='${e[i].reference}'>
-                                    <i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Generate Receipt</span>
-                                </a>
+                            <td class="w-center">
+                                    <div class="dropdown">
+                                        <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                        <div class="dropdown-menu">
+                                        <div class="dropdown-header">Ref: ${e[i].reference}</div>
+                                            <a class="dropdown-item s-det-link" data-id='${JSON.stringify(e[i])}' href="#">
+                                                <i class="fa fa-eye"></i>&nbsp;View Details
+                                            </a>
+                                            <a class="dropdown-item s-rec-link" data-id='${e[i].reference}' href="#">
+                                                <i class="fa fa-file-pdf-o"></i>&nbsp;Generate Receipt
+                                            </a>                                        
+                                        </div>
+                                    </div>
                             </td>
                           </tr>`;
                           $('.sub-list').append(temp)

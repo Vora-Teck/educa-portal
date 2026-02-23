@@ -1,7 +1,7 @@
 showLoader("Loading Data...")
 
 var subjects_list = []
-var subjects_map = {'': 'Break'}
+var subjects_map = {'0': 'Break'}
 
 function getData() {
 
@@ -1018,34 +1018,33 @@ function getTopics(syllabus_id) {
                 
 
                                 <td class="w-center">
-                                <div class="dropdown">
-                                    <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
-                                    <div class="dropdown-menu">
-                                    ${d[i].file ? `
-                                        <a class="dropdown-item top-file-link" data-id="${base_url}${d[i].file}" href="#">
-                                            <i class="fa fa-download"></i>&nbsp;
-                                            Download Note
-                                        </a>
-                                        ` : `
-                                        <a class="dropdown-item top-file-gen" data-id="${d[i].id}" href="#">
-                                            <i class="fa fa-file-pdf-o"></i>&nbsp;
-                                            Generate Note PDF
-                                        </a>
-                                        `}
+                                    <div class="dropdown">
+                                        <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                        <div class="dropdown-menu">
+                                        ${d[i].file ? `
+                                            <a class="dropdown-item top-file-link" data-id="${base_url}${d[i].file}" href="#">
+                                                <i class="fa fa-download"></i>&nbsp;
+                                                Download Note
+                                            </a>
+                                            ` : `
+                                            <a class="dropdown-item top-file-gen" data-id="${d[i].id}" href="#">
+                                                <i class="fa fa-file-pdf-o"></i>&nbsp;
+                                                Generate Note PDF
+                                            </a>
+                                            `}
+                                            
+                                            <a class="dropdown-item top-det-link" data-id="${d[i].id}" href="#">
+                                                <i class="fa fa-edit"></i>&nbsp;
+                                                Update week ${d[i].week}
+                                            </a>
+                                            <a class="w-text-red w-hover-red dropdown-item top-del-link" data-id="${d[i].id}" href="#">
+                                                <i class="fa fa-trash"></i>&nbsp;
+                                                Delete week ${d[i].week}
+                                            </a>
                                         
-                                        <a class="dropdown-item top-det-link" data-id="${d[i].id}" href="#">
-                                            <i class="fa fa-edit"></i>&nbsp;
-                                            Update week ${d[i].week}
-                                        </a>
-                                        <a class="w-text-red w-hover-red dropdown-item top-del-link" data-id="${d[i].id}" href="#">
-                                            <i class="fa fa-trash"></i>&nbsp;
-                                            Delete week ${d[i].week}
-                                        </a>
-                                    
+                                        </div>
                                     </div>
-                                </div>
-                                
-                            </td>
+                                </td>
                             </tr>`;
                             $('.top-list').append(temp)
                         }
@@ -1578,17 +1577,20 @@ async function getTimetab() {
 
                     // Vertical arrangements
                     $(".time-form-head").append(`
-                        <th class="w-center">Periods (start / end)</th>
+                        <th class="w-center">Periods</th>
+                        <th class="w-center">Start Time - End Time</th>
                         <th>Monday</th>
                         <th>Tuesday</th>
                         <th>Wednesday</th>
                         <th>Thursday</th>
                         <th>Friday</th>
+                        <th>Actions</th>
                     `)
 
                     for(let j = 0; j < periods.length; j++) {
                         let temp = `
-                        <tr>
+                        <tr id="time_row_${j}" data-id="time_row_${j}">
+                            <td class="w-center">${1 + j}</td>
                             <td style="text-align:center;" class="period-input">
                                 <div class="w-flex w-flex-center w-align-center" style="gap:5px;">
                                 <div class="input-con" style="margin-bottom:10px;">
@@ -1600,7 +1602,7 @@ async function getTimetab() {
                                 </div>
                                 </div>
                             </td>
-                            <td>
+                            <td style="min-width:120px;">
                                 <div class="input-con mon_row" style="margin-bottom:0px;">
                                     <select class="time-select">
                                         <option value="" ${mon[j].id == '' ? 'selected' : ''}>Break</option>
@@ -1611,7 +1613,7 @@ async function getTimetab() {
                                     <input class="time-hidden" type="hidden" value="${mon[j].subject}" />
                                 </div>
                             </td>
-                            <td>
+                            <td style="min-width:120px;">
                                 <div class="input-con tue_row" style="margin-bottom:0px;">
                                     <select class="time-select">
                                         <option value="" ${tue[j].id == '' ? 'selected' : ''}>Break</option>
@@ -1622,7 +1624,7 @@ async function getTimetab() {
                                     <input class="time-hidden" type="hidden" value="${tue[j].subject}" />
                                 </div>
                             </td>
-                            <td>
+                            <td style="min-width:120px;">
                                 <div class="input-con wed_row" style="margin-bottom:0px;">
                                     <select class="time-select">
                                         <option value="" ${wed[j].id == '' ? 'selected' : ''}>Break</option>
@@ -1633,7 +1635,7 @@ async function getTimetab() {
                                     <input class="time-hidden" type="hidden" value="${wed[j].subject}" />
                                 </div>
                             </td>
-                            <td>
+                            <td style="min-width:120px;">
                                 <div class="input-con thu_row" style="margin-bottom:0px;">
                                     <select class="time-select">
                                         <option value="" ${thu[j].id == '' ? 'selected' : ''}>Break</option>
@@ -1644,7 +1646,7 @@ async function getTimetab() {
                                     <input class="time-hidden" type="hidden" value="${thu[j].subject}" />
                                 </div>
                             </td>
-                            <td>
+                            <td style="min-width:120px;">
                                 <div class="input-con fri_row" style="margin-bottom:0px;">
                                     <select class="time-select">
                                         <option value="" ${fri[j].id == '' ? 'selected' : ''}>Break</option>
@@ -1655,6 +1657,19 @@ async function getTimetab() {
                                     <input class="time-hidden" type="hidden" value="${fri[j].subject}" />
                                 </div>
                             </td>
+                            <td class="w-center">
+                                <div class="dropdown">
+                                    <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                    <div class="dropdown-menu">
+                                        <a class="w-text-red w-hover-red dropdown-item time-del-link" data-id="time_row_${j}" href="#">
+                                            <i class="fa fa-trash"></i>&nbsp;
+                                            Delete Period
+                                        </a>
+                                    
+                                    </div>
+                                </div>
+                                
+                            </td>
                         </tr>`;
 
                         $(".time-form-body").append(temp)
@@ -1663,6 +1678,11 @@ async function getTimetab() {
                         let val = $(this).val();
                         let tit = subjects_map[`${val}`]
                         $(this).siblings('.time-hidden').val(tit)
+                    })
+                    $(".time-del-link").on('click', function(e) {
+                        e.preventDefault();
+                        let id = $(this).data('id')
+                        $(`tr#${id}`).remove();
                     })
                 }
                 else {
@@ -1675,6 +1695,110 @@ async function getTimetab() {
                 hideLoader()
                 pushNotification("n_error", "Internet connection error!", 3000)
             }
+    })
+}
+
+function addPeriodRow() {
+    let rows_no = $(".time-form-body tr").length;
+    let last_elem = $(".time-form-body tr")[rows_no - 1]
+    let last_elem_id = $(last_elem).data('id')
+    let last_no = last_elem_id.split('_')[2]
+    last_no = parseInt(last_no)
+
+    let temp = `
+        <tr id="time_row_${last_no + 1}">
+            <td class="w-center">${2 + last_no}</td>
+            <td style="text-align:center;" class="period-input">
+                <div class="w-flex w-flex-center w-align-center" style="gap:5px;">
+                    <div class="input-con" style="margin-bottom:10px;">
+                        <input type="time" class="period-start" value="" />
+                    </div>
+                    <div>-</div>
+                    <div class="input-con" style="margin-bottom:0px;">
+                        <input type="time" class="period-end" value="" />
+                    </div>
+                </div>
+            </td>
+            <td style="min-width:120px;">
+                <div class="input-con mon_row" style="margin-bottom:0px;">
+                    <select class="time-select">
+                        <option value="" selected>Break</option>
+                        ${subjects_list.map(p => `
+                            <option value="${p.id}">${p.title}</option>
+                        `).join('')}
+                    </select>
+                    <input class="time-hidden" type="hidden" value="Break" />
+                </div>
+            </td>
+            <td style="min-width:120px;">
+                <div class="input-con tue_row" style="margin-bottom:0px;">
+                    <select class="time-select">
+                        <option value="" selected>Break</option>
+                        ${subjects_list.map(p => `
+                            <option value="${p.id}">${p.title}</option>
+                        `).join('')}
+                    </select>
+                    <input class="time-hidden" type="hidden" value="Break" />
+                </div>
+            </td>
+            <td style="min-width:120px;">
+                <div class="input-con wed_row" style="margin-bottom:0px;">
+                    <select class="time-select">
+                        <option value="" selected>Break</option>
+                        ${subjects_list.map(p => `
+                            <option value="${p.id}">${p.title}</option>
+                        `).join('')}
+                    </select>
+                    <input class="time-hidden" type="hidden" value="Break" />
+                </div>
+            </td>
+            <td style="min-width:120px;">
+                <div class="input-con thu_row" style="margin-bottom:0px;">
+                    <select class="time-select">
+                        <option value="" selected>Break</option>
+                        ${subjects_list.map(p => `
+                            <option value="${p.id}">${p.title}</option>
+                        `).join('')}
+                    </select>
+                    <input class="time-hidden" type="hidden" value="Break" />
+                </div>
+            </td>
+            <td style="min-width:120px;">
+                <div class="input-con fri_row" style="margin-bottom:0px;">
+                    <select class="time-select">
+                        <option value="" selected>Break</option>
+                        ${subjects_list.map(p => `
+                            <option value="${p.id}">${p.title}</option>
+                        `).join('')}
+                    </select>
+                    <input class="time-hidden" type="hidden" value="Break" />
+                </div>
+            </td>
+                            
+            <td class="w-center">
+                <div class="dropdown">
+                    <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                    <div class="dropdown-menu">
+                        <a class="w-text-red w-hover-red dropdown-item time-del-link" data-id="time_row_${last_no + 1}" href="#">
+                            <i class="fa fa-trash"></i>&nbsp;
+                            Delete Period
+                        </a>     
+                    </div>
+                </div>      
+            </td>
+        </tr>`;
+
+    $(".time-form-body").append(temp)
+
+    $(".time-select").on('change', function() {
+        let val = $(this).val();
+        let tit = subjects_map[`${val}`]
+        $(this).siblings('.time-hidden').val(tit)
+    })
+    $(".time-del-link").on('click', function(e) {
+        e.preventDefault();
+        let id = $(this).data('id')
+        $(`tr#${id}`).remove();
     })
 }
 
@@ -1745,6 +1869,48 @@ function updateTimetable() {
     })
 }
 
+function generateTimetable() {
+    let class_id = $("#class-filter2").val();
+    let min_subjects = $("#min-sub").val();
+    let max_subjects = $("#max-sub").val();
+    let prompt = $("#time-prompt").val();
+
+    let periods = [];
+    $(".period-input").each(function() {
+        let start = $(this).find('.period-start').val();
+        let end = $(this).find('.period-end').val();
+        periods.push({start, end})
+    });
+
+    let formData = {class_id, periods, min_subjects, max_subjects, prompt};
+
+    //console.log(formData)
+    showLoader("Generating timetable")
+
+    admin.timetable.generateTimetable({
+        formData: formData,
+        onSuccess: (data) => {
+            //console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                $(".gen-time-form")[0].reset();
+                $(".gen-time-con").removeClass("active")
+                getTimetab()
+                getTimetable()
+            }
+            else {
+                pushNotification("n_error", data.message, 3000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
+}
+
 
 initiateTiny()
 // tinymce.get('blog-post').getContent({format: 'html'})
@@ -1762,6 +1928,9 @@ $(".sub-export-btn").click(function(e) {e.preventDefault();})
 $(".edit-time-btn").click(function(e) {e.preventDefault();getTimetab()})
 $(".gen-content-btn").click(function(e) {e.preventDefault();generateContent()})
 $(".gen-top-btn").click(function(e) {e.preventDefault();generateTopics()})
+$(".add-period-btn").click(function(e) {e.preventDefault();addPeriodRow()})
+$(".generate-time-btn").click(function(e) {e.preventDefault();$(".gen-time-con").addClass("active")})
+
 
 
 $("#sub-course").on('input', function() {filterCourses()})
@@ -1781,3 +1950,4 @@ $(".update-top-form").on('submit', function(e) {e.preventDefault();updateTopic()
 $(".delete-top-form").on('submit', function(e) {e.preventDefault();deleteTopic()})
 $(".export-top-form").on('submit', function(e) {e.preventDefault();exportTopics()})
 $(".update-time-form").on('submit', function(e) {e.preventDefault();updateTimetable()})
+$(".gen-time-form").on('submit', function(e) {e.preventDefault();generateTimetable()})

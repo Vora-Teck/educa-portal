@@ -77,6 +77,9 @@ function timify(time) {
     mins = mins.padStart(2, '0')
     return `${hours}:${mins}${position}`
   }
+  else {
+    return "N/A"
+  }
 }
 
 function monthify(date) {

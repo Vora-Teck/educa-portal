@@ -200,45 +200,54 @@ function getTests() {
                             for(let j in classes) {
                                 clas += `<li>${classes[j].level.title}</li>`
                             }
-                            let temp = `<tr class="staff-row">
-                            <td>
-                            <div class="w-bold-x">${e[i].examId}</div>
-                            </td>
-                            <td>${e[i].course.title}</td>
-                            <td><ul style="padding-left:20px;">${clas}</ul></td>
-                            <td>${e[i].term.title}</td>
-                            <td class="w-center">${datify(e[i].date)}</td>
-                            <td>${e[i].duration} minutes</td>
-                            <td>
-                                ${e[i].active ? `
-                                <span class="success-btn">Active</span>` : `
-                                ${new Date(e[i].date) < new Date() ? `
-                                <span class="info-btn">Completed</span>` : `
-                                <span class="danger-btn">Upcoming</span>`}
-                                `}
-                            </td>
-                            <td class="w-text-gray h4">
-                                <a class="emp-que-link tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-file-text"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">View Questions</span>
-                                </a>
-                                <a class="emp-act-link tooltipa" href="#" data-action="${e[i].active ? 'deactivate' : 'activate'}" data-id="${e[i].id}">
-                                    <i class="fa fa-${e[i].active ? 'times-circle' : 'check-circle'}"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">${e[i].active ? 'Deactivate' : 'Activate'}</span>
-                                </a>
-                                <a class="emp-score-link tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-list-alt"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Scores</span>
-                                </a>
-                                <a class="emp-det-link tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Edit Test</span>
-                                </a>
-                                <a class="emp-del-link tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Delete Test</span>
-                                </a>
-                            </td>
+                            let temp = `
+                            <tr class="staff-row">
+                                <td>
+                                <div class="w-bold-x">${e[i].examId}</div>
+                                </td>
+                                <td>${e[i].course.title}</td>
+                                <td><ul style="padding-left:20px;">${clas}</ul></td>
+                                <td>${e[i].term.title}</td>
+                                <td class="w-center">${datify(e[i].date)}</td>
+                                <td>${e[i].duration} minutes</td>
+                                <td>
+                                    ${e[i].active ? `
+                                    <span class="success-btn">Active</span>` : `
+                                    ${new Date(e[i].date) < new Date() ? `
+                                    <span class="info-btn">Completed</span>` : `
+                                    <span class="danger-btn">Upcoming</span>`}
+                                    `}
+                                </td>
+
+                                <td class="w-center">
+                                    <div class="dropdown">
+                                        <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item emp-que-link" data-id="${e[i].id}" href="#">
+                                                <i class="fa fa-file-text"></i>&nbsp;View Questions
+                                            </a>
+                                            ${e[i].active ? `
+                                                <a class="dropdown-item emp-act-link" data-id="${e[i].id}" data-action="deactivate" href="#">
+                                                    <i class="fa fa-times-circle"></i>&nbsp;Deactivate
+                                                </a>
+                                                ` : `
+                                                <a class="dropdown-item emp-act-link" data-id="${e[i].id}" data-action="activate" href="#">
+                                                    <i class="fa fa-check-circle"></i>&nbsp;Activate
+                                                </a>
+                                            `}
+                                            <a class="dropdown-item emp-score-link" data-id="${e[i].id}" href="#">
+                                                <i class="fa fa-list-alt"></i>&nbsp;View Scores
+                                            </a>
+                                            <a class="dropdown-item emp-det-link" data-id="${e[i].id}" href="#">
+                                                <i class="fa fa-edit"></i>&nbsp;Edit Test
+                                            </a>
+                                            <a class="w-text-red w-hover-red dropdown-item emp-del-link" data-id="${e[i].id}" href="#">
+                                                <i class="fa fa-trash"></i>&nbsp;Delete Test
+                                            </a>
+                                        
+                                        </div>
+                                    </div>
+                                </td>
                           </tr>`;
                           $('.test-list').append(temp)
                         }
@@ -380,54 +389,62 @@ function getExams() {
                                 <span class="danger-btn">Upcoming</span>`}
                                 `}
                             </td>
-                            <td class="w-text-gray h4">
-                                <a class="emp-que-link tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-file-text"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">View Questions</span>
-                                </a>
-                                <a class="emp-act-link tooltipa" href="#" data-action="${e[i].active ? 'deactivate' : 'activate'}" data-id="${e[i].id}">
-                                    <i class="fa fa-${e[i].active ? 'times-circle' : 'check-circle'}"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">${e[i].active ? 'Deactivate' : 'Activate'}</span>
-                                </a>
-                                <a class="emp-score-link tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-list-alt"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Scores</span>
-                                </a>
-                                <a class="emp-det-link tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Edit Exam</span>
-                                </a>
-                                <a class="emp-del-link tooltipa" href="#" data-id="${e[i].id}">
-                                    <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Delete Exam</span>
-                                </a>
+
+                            <td class="w-center">
+                                    <div class="dropdown">
+                                        <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item emp-que-link2" data-id="${e[i].id}" href="#">
+                                                <i class="fa fa-file-text"></i>&nbsp;View Questions
+                                            </a>
+                                            ${e[i].active ? `
+                                                <a class="dropdown-item emp-act-link2" data-id="${e[i].id}" data-action="deactivate" href="#">
+                                                    <i class="fa fa-times-circle"></i>&nbsp;Deactivate
+                                                </a>
+                                                ` : `
+                                                <a class="dropdown-item emp-act-link2" data-id="${e[i].id}" data-action="activate" href="#">
+                                                    <i class="fa fa-check-circle"></i>&nbsp;Activate
+                                                </a>
+                                            `}
+                                            <a class="dropdown-item emp-score-link2" data-id="${e[i].id}" href="#">
+                                                <i class="fa fa-list-alt"></i>&nbsp;View Scores
+                                            </a>
+                                            <a class="dropdown-item emp-det-link2" data-id="${e[i].id}" href="#">
+                                                <i class="fa fa-edit"></i>&nbsp;Edit Exam
+                                            </a>
+                                            <a class="w-text-red w-hover-red dropdown-item emp-del-link" data-id="${e[i].id}" href="#">
+                                                <i class="fa fa-trash"></i>&nbsp;Delete Exam
+                                            </a>
+                                        
+                                        </div>
+                                    </div>
                             </td>
                           </tr>`;
                           $('.exam-list').append(temp)
                         }
-                        $('.emp-que-link').click(function(e) {
+                        $('.emp-que-link2').click(function(e) {
                             e.preventDefault();
                             let id = $(this).data('id');
                             $(".que-side-con").addClass("active")
                             getQuestions(id)
                         })
-                        $('.emp-score-link').click(function(e) {
+                        $('.emp-score-link2').click(function(e) {
                             e.preventDefault();
                             let id = $(this).data('id');
                             $(".score-side-con").addClass("active")
                             getScores(id)
                         })
-                        $('.emp-det-link').click(function(e) {
+                        $('.emp-det-link2').click(function(e) {
                             e.preventDefault();
                             let id = $(this).data('id');
                             getExam(id, "update")
                         })
-                        $('.emp-del-link').click(function(e) {
+                        $('.emp-del-link2').click(function(e) {
                             e.preventDefault();
                             let id = $(this).data('id');
                             getExam(id, "delete");
                         })
-                        $('.emp-act-link').click(function(e) {
+                        $('.emp-act-link2').click(function(e) {
                             e.preventDefault();
                             let id = $(this).data('id');
                             let action = $(this).data('action')
@@ -676,16 +693,21 @@ function getQuestions(exam_id) {
                                     </ol>
                                 </td>
                                 <td style="max-width:250px;white-space:wrap;">${d[i].answer}</td>
-                                <td class="w-text-gray h4">
-                                    <a class="que-det-link tooltipa" href="#" data-id="${d[i].number}">
-                                        <i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;
-                                        <span class="tooltiptext w-card">Edit question ${d[i].number}</span>
-                                    </a>
-                                    <a class="que-del-link tooltipa" href="#" data-id="${d[i].number}">
-                                        <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;
-                                        <span class="tooltiptext w-card">Delete question ${d[i].number}</span>
-                                    </a>
-                                </td>
+              
+                                <td class="w-center">
+                                    <div class="dropdown">
+                                        <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                        <div class="dropdown-menu">
+                                        <div class="dropdown-header">Question ${d[i].number}</div>
+                                            <a class="dropdown-item que-det-link" data-id="${d[i].number}" href="#">
+                                                <i class="fa fa-edit"></i>&nbsp;Edit Question
+                                            </a>
+                                            <a class="dropdown-item w-text-red w-hover-red que-del-link" data-id="${d[i].number}" href="#">
+                                                <i class="fa fa-trash"></i>&nbsp;Delete Question
+                                            </a>                                        
+                                        </div>
+                                    </div>
+                            </td>
                             </tr>`;
                             $('.que-list').append(temp)
                         }
@@ -804,6 +826,44 @@ function generateQuestion() {
                 getQuestions(exam_id)
                 $(".gen-que-form")[0].reset()
                 $(".gen-que-con").removeClass('active')
+            }
+            else {
+                pushNotification("n_error", data.message, 3000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
+}
+
+function generateEssay() {
+    let exam_id = $(".exam-name").data('id')
+    let question_count = $("#que-count2").val();
+    let prompt = $("#que-prompt2").val();
+
+    let formData = {exam_id, question_count, prompt}
+
+    //console.log(formData)
+    showLoader("Generating Questions...")
+
+    admin.exam.generateExamEssay({
+        formData: formData,
+        onSuccess: (data) => {
+            console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                //getQuestions(exam_id)
+                $(".gen-essay-form")[0].reset()
+                $(".gen-essay-con").removeClass('active')
+                let d = data.data;
+                let temp = `
+                ${renderMarkdown(d.content)}
+                `;
+                tinymce.get('que-essay').setContent(temp)
             }
             else {
                 pushNotification("n_error", data.message, 3000)
@@ -1254,17 +1314,23 @@ function getResults() {
                             <td class="w-center">${d[i].grade}</td>
                             <td class="w-center">${d[i].position || 'N/A'}</td>
 
-                            <td class="w-text-gray h4">
-                                <a class="emp-view-link tooltipa" href="#" data-id="${d[i].id}">
-                                    <i class="fa fa-file-text"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">View Result</span>
-                                </a>
-                                ${d[i].file ? `
-                                    <a class="emp-download-link tooltipa" href="#" data-id="${d[i].file}">
-                                    <i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;&nbsp;
-                                    <span class="tooltiptext w-card">Download Result</span>
-                                </a>` : ``}
-                                
+                            <td class="w-center">
+                                    <div class="dropdown">
+                                        <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                                        <div class="dropdown-menu">
+                                        <div class="dropdown-header">${d[i].student.firstName} ${d[i].student.middleName} ${d[i].student.lastName}</div>
+                                            <a class="dropdown-item emp-view-link" data-id="${d[i].id}" href="#">
+                                                <i class="fa fa-file-text"></i>&nbsp;View Result
+                                            </a>
+                                            ${d[i].file ? `
+                                                <a class="dropdown-item emp-download-link" data-id="${d[i].file}" href="#">
+                                                    <i class="fa fa-file-pdf-o"></i>&nbsp;Download Result
+                                                </a>
+                                                ` : ``
+                                            }
+                                        
+                                        </div>
+                                    </div>
                             </td>
                           </tr>`;
                           $('.result-list').append(temp)
@@ -1472,6 +1538,7 @@ $(".spread-btn").click(function(e) {
     $(".spread-con").addClass("active")
 })
 $(".gen-que-btn").click(function(e) {e.preventDefault();$(".gen-que-con").addClass('active')})
+$(".gen-essay-btn").click(function(e) {e.preventDefault();$(".gen-essay-con").addClass('active')})
 
 
 
@@ -1480,6 +1547,7 @@ $(".update-exam-form").on('submit', function(e) {e.preventDefault();updateExam()
 $(".delete-exam-form").on('submit', function(e) {e.preventDefault();deleteExam()})
 $(".add-que-form").on('submit', function(e) {e.preventDefault();addQuestion()})
 $(".gen-que-form").on('submit', function(e) {e.preventDefault();generateQuestion()})
+$(".gen-essay-form").on('submit', function(e) {e.preventDefault();generateEssay()})
 $(".update-essay-form").on('submit', function(e) {e.preventDefault();updateEssay()})
 $(".update-que-form").on('submit', function(e) {e.preventDefault();updateQuestion()})
 $(".delete-que-form").on('submit', function(e) {e.preventDefault();deleteQuestion()})
