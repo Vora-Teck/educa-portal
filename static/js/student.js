@@ -302,13 +302,18 @@ function getStudent(id) {
                 else {$("#std-teacher").html(`---`)}
                 
                 let r = data.results;
+                //console.log(r)
                 $(".std-res").empty();
                 for(let i in r) {
                     let keys = Object.keys(r[i]);
                     let values = Object.values(r[i])
 
                     let keys_m = keys.map(k => `<li>${k}</li>`).join("")
-                    let values_m = values.map(l => `<li data-id="${l}" class="w-text-blue w-bold-x">View Result</li>`).join("")
+                    let values_m = values.map(l => `
+                      <li class="w-text-blue w-bold-x">
+                      <a href="${buildStudentParams(l)}" target="_blank">View Result</a>
+                      </li>
+                    `).join("")
 
                     var temp = `
                     <tr>
@@ -327,7 +332,6 @@ function getStudent(id) {
 
                 let fees = data.fees;
                 $(".std-pay").empty();
-                console.log(fees)
                 for(let i in fees) {
                   let t = fees[i].tuition;
                     let temp = `
@@ -384,6 +388,13 @@ function getStudent(id) {
             pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
         }
   })
+}
+
+
+function buildStudentParams(id) {
+  let obj = {type: "single", doc_id: id}
+  let url = buildQueryParams(obj, '/results', '')
+  return url
 }
 
 function debounce(func, delay) {

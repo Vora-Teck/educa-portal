@@ -71,22 +71,22 @@
         <i class="fa fa-caret-right"></i>
       </a>
 
-      <!--
+      
       <a href="/#messages" class="comm-act">
         <span><img src="/static/icons/_ui-message-text-square-02.svg" alt="">&nbsp;&nbsp;&nbsp;Communication Tools</span>
         <i class="fa fa-caret-right"></i>
       </a>
-
+      <!--
       <a href="/#id_card" class="id-act">
         <span><img src="/static/icons/_ui-face-id.svg" alt="">&nbsp;&nbsp;&nbsp;ID Card Management</span>
         <i class="fa fa-caret-right"></i>
       </a>
-
+      -->
       <a href="/#reports" class="report-act">
         <span><img src="/static/icons/_ui-bar-chart-07.svg" alt="">&nbsp;&nbsp;&nbsp;AI Reports & Analytics</span>
         <i class="fa fa-caret-right"></i>
       </a>
-      -->
+      
 
       <a href="/#subscription" class="sub-act">
         <span><img src="/static/icons/_ui-gift-02.svg" alt="">&nbsp;&nbsp;&nbsp;Subscription</span>
@@ -4391,45 +4391,6 @@ showSchoolInfo()
         
         <div>
           <div id="accordion" class="report-con">
-
-            <div class="card">
-              <div class="card-header">
-                <a class="card-link" data-toggle="collapse" href="#collapseOne">
-                  Collapsible Group Item #1
-                </a>
-              </div>
-              <div id="collapseOne" class="collapse show" data-parent="#accordion">
-                <div class="card-body">
-                  Lorem ipsum..
-                </div>
-              </div>
-            </div>
-          
-            <div class="card">
-              <div class="card-header">
-                <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
-                  Collapsible Group Item #2
-                </a>
-              </div>
-              <div id="collapseTwo" class="collapse" data-parent="#accordion">
-                <div class="card-body">
-                  Lorem ipsum..
-                </div>
-              </div>
-            </div>
-          
-            <div class="card">
-              <div class="card-header">
-                <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
-                  Collapsible Group Item #3
-                </a>
-              </div>
-              <div id="collapseThree" class="collapse" data-parent="#accordion">
-                <div class="card-body">
-                  Lorem ipsum..
-                </div>
-              </div>
-            </div>
           
           </div>
         </div>
@@ -4705,9 +4666,10 @@ showSchoolInfo()
                   <select id="result-action" class="sub-filter form-control" style="max-width:250px;">
                     <option value="">--- ---</option>
                     <option value="view">View Class Students' Results -- per class / term</option>
+                    <!--
                     <option value="single">Generate Class Students' Results PDF -- per class / term</option>
-                    
-                    <option value="bulk">Download Bulk Results -- per class / term</option>
+                    -->
+                    <option value="bulk">Generate Class Students' Results PDF -- per class / term</option>
                     
                   </select>
                   
@@ -5927,17 +5889,19 @@ showSchoolInfo()
     </div>
   </div>
 
-  <div class="modal-con modal-top small-con trans-fees-con">
-    <div class="modal-body">
+  <div class="modal-con modal-top trans-fees-con">
+    <div class="modal-body" style="max-width:500px;">
       <div class="close-modal">X</div>
       <div class="modal-header">
         <div class="h5 w-bold-x w-text-blue">Transaction Payment for <span class="pay-name2"></span></div>
       </div>
-      <div class="modal-content mt-3 trans-fees-form">
+      <div class="modal-content mt-3">
 
+        <div id="accordion" class="mb-3 trans-fees-form">
+          
+        </div>
         
-        
-        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+        <div class="mt-3 input-con w-flex w-flex-end w-align-center" style="gap:20px;">
           <button class="clear-btn canc-btn4">Cancel</button>
         </div>
       </div>

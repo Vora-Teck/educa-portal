@@ -523,12 +523,73 @@ function getTransactions(fees_id) {
             if(data.status == "success") {
                 let d = data.data;
                 let e = d.transactions;
+                let t_status = {
+                    success: "fa-check-circle w-text-green",
+                    pending: "fa-clock-o w-text-orange",
+                    failed: "fa-times-circle w-text-red",
+                    reversed: "fa-repeat w-text-brown"
+                }
+                let stat_f = {
+                    success: "success-btn", pending: "info-btn",
+                    failed: "danger-btn", reversed: "warning-btn"
+                }
                 if(e.length > 0) {
                     for(let i in e) {
                         let temp = `
-                        `
+                        <div class="card">
+                            <div class="card-header">
+                                <a class="card-link" data-toggle="collapse" href="#collapse_${i}">
+                                <i class="w-big fa ${t_status[e[i].status]}"></i>
+                                &nbsp;&nbsp;Reference: ${e[i].reference} - ${e[i].status}
+                                </a>
+                            </div>
+                            <div id="collapse_${i}" class="${parseInt(i) == 0 ? ``: `collapse`}" data-parent="#accordion">
+                                <div class="w-padding">
+                                    <div class="w-center mt-3 mb-3">
+                                        <div class="h2 trans-amt w-bold-xx">&#8358;${digify(e[i].amount, true)}</div>
+                                        <div class="h5 trans-stat mt-2">
+                                            <span class="${stat_f[e[i].status]}">${e[i].status}</span>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tbody class="trans-det-table">
+                                            <tr>
+                                                <td>Transaction Type</td>
+                                                <td class="trans-type">${e[i].transaction_type}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Description</td>
+                                                <td class="trans-des">${e[i].description}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Date</td>
+                                                <td class="trans-date">${datify(e[i].date, true)}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Reference</td>
+                                                <td class="trans-ref">${e[i].reference}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Payment Mode</td>
+                                                <td class="trans-ref">${e[i].details.payment_mode}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="w-center mt-3 mb-3">
+                                        <button class="dark-btn fee-rec-btn" data-id="${e[i].reference}">Download Receipt</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>`;
                         $(".trans-fees-form").append(temp)
                     }
+                    $(".fee-rec-btn").click(function(e) {
+                        e.preventDefault();
+                        let ref = $(this).data('id');
+                        generateReceipt(ref)
+                    })
                 }
                 else {
                     let temp = `
@@ -549,6 +610,31 @@ function getTransactions(fees_id) {
             hideLoader()
         }
       })
+}
+
+
+function generateReceipt(reference, type="transaction") {
+    showLoader("Generating Receipt...")
+
+    admin.transaction.generateReceipt({
+        params: {reference, type},
+        onSuccess: (data) => {
+            //console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                downloadFile(data.data)
+            }
+            else {
+                pushNotification("n_error", data.message, 5000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
 }
 
 

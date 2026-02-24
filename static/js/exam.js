@@ -1376,10 +1376,10 @@ function viewResult(obj) {
 }
 
 function downloadClassResult(class_id, term_id) {
-    let obj = {type: "bulk", class_id, term_id}
-    let url = buildQueryParams(obj, '/results', '')
+    //let obj = {type: "bulk", class_id, term_id}
+    //let url = buildQueryParams(obj, '/results', '')
 
-    let formData = {class_id, term_id, url}
+    let formData = {class_id, term_id}
 
     //console.log(formData)
     showLoader(`Generating PDF...`)
@@ -1387,10 +1387,11 @@ function downloadClassResult(class_id, term_id) {
     admin.result.classResultPDF({
         formData: formData,
         onSuccess: (data) => {
-            console.log(data)
+            //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 downloadFile(data.data)
+                getResults()
             }
             else {
                 pushNotification("n_error", data.message, 3000)
@@ -1406,10 +1407,7 @@ function downloadClassResult(class_id, term_id) {
 }
 
 function generateClassResult(class_id, term_id) {
-    let obj = {type: "single"}
-    let url = buildQueryParams(obj, '/results', '')
-
-    let formData = {class_id, term_id, url}
+    let formData = {class_id, term_id}
 
     //console.log(formData)
     showLoader(`Generating Results PDF...`)
@@ -1417,7 +1415,7 @@ function generateClassResult(class_id, term_id) {
     admin.result.studentResultPDF({
         formData: formData,
         onSuccess: (data) => {
-            console.log(data)
+            //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
             }
