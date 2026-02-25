@@ -1911,6 +1911,40 @@ function generateTimetable() {
     })
 }
 
+function downloadTimetable() {
+    let class_id = $("#class-filter2").val()
+
+    if(!class_id) {
+        pushNotification("n_info", "Kindly select a class", 5000);
+        return;
+    }
+
+    let formData = {class_id};
+
+    //console.log(formData)
+    showLoader("Generating document...")
+
+    admin.timetable.downloadTimetable({
+        formData: formData,
+        onSuccess: (data) => {
+            //console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                downloadFile(data.data)
+            }
+            else {
+                pushNotification("n_error", data.message, 3000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
+}
+
 
 initiateTiny()
 // tinymce.get('blog-post').getContent({format: 'html'})
@@ -1930,6 +1964,7 @@ $(".gen-content-btn").click(function(e) {e.preventDefault();generateContent()})
 $(".gen-top-btn").click(function(e) {e.preventDefault();generateTopics()})
 $(".add-period-btn").click(function(e) {e.preventDefault();addPeriodRow()})
 $(".generate-time-btn").click(function(e) {e.preventDefault();$(".gen-time-con").addClass("active")})
+$(".down-time-btn").click(function(e) {e.preventDefault();downloadTimetable()})
 
 
 

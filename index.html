@@ -82,7 +82,7 @@
         <i class="fa fa-caret-right"></i>
       </a>
       -->
-      <a href="/#reports" class="report-act">
+      <a href="/#analytics" class="report-act">
         <span><img src="/static/icons/_ui-bar-chart-07.svg" alt="">&nbsp;&nbsp;&nbsp;AI Reports & Analytics</span>
         <i class="fa fa-caret-right"></i>
       </a>
@@ -3771,7 +3771,7 @@ showSchoolInfo()
                 <div class="h5 w-bold-x">Class Time Table</div>
 
                 <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
-                  <button class="side-btn time-btns w-hide class-export-btn">Download&nbsp;&nbsp;<i class="fa fa-download"></i></button>
+                  <button class="side-btn time-btns w-hide down-time-btn">Download&nbsp;&nbsp;<i class="fa fa-download"></i></button>
                   <button class="dark-btn time-btns w-hide edit-time-btn">Edit&nbsp;&nbsp;<i class="fa fa-edit"></i></button>
                 </div>
               </div>
@@ -6917,126 +6917,24 @@ showSchoolInfo()
   <?use-template: "sidenav"?>
 
   <!-- Event Modals -->
-
-  <div class="modal-con modal-top pay-trans-con">
-    <div class="modal-body" style="max-width:500px">
-      <div class="close-modal">X</div>
-      <div class="modal-header">
-        <div class="h4 w-bold-x w-text-blue">Transfer Details</div>
-      </div>
-      <form class="modal-content mt-3 pay-trans-form">
-        <div class="w-center mt-3 mb-3">
-          <div class="h2 pay-amt w-bold-xx"></div>
-        </div>
-
-        <div class="table-responsive">
-          <table class="table">
-            <tbody class="pay-det-table">
-              
-            </tbody>
-          </table>
-        </div>
-
-        <input type="hidden" id="pay-reference">
-        <div class="input-con">
-          <label for="">Enter your password to continue</label>
-          <input type="password" id="pay-password" required>
-        </div>
-        
-        
-        <div class="input-con w-flex w-flex-end w-align-center w-white w-padding" style="gap:20px;position:sticky;bottom:-10px;">
-          <button class="clear-btn canc-btn2">Cancel</button>
-          <input type="submit" value="Proceed With Transfer">
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-con modal-top view-trans-con">
-    <div class="modal-body" style="max-width:500px">
-      <div class="close-modal">X</div>
-      <div class="modal-header">
-        <div class="h4 w-bold-x w-text-blue">Transaction Details</div>
-      </div>
-      <form class="modal-content mt-3 view-trans-form">
-        <div class="w-center mt-3 mb-3">
-          <div class="h2 trans-amt w-bold-xx"></div>
-          <div class="h5 trans-stat mt-2"></div>
-        </div>
-
-        <div class="table-responsive">
-          <table class="table">
-            <tbody class="trans-det-table">
-              <tr>
-                <td>Transaction Type</td>
-                <td class="trans-type"></td>
-              </tr>
-              <tr>
-                <td>Staff</td>
-                <td class="trans-staff"></td>
-              </tr>
-              <tr>
-                <td>Description</td>
-                <td class="trans-des"></td>
-              </tr>
-              <tr>
-                <td>Date</td>
-                <td class="trans-date"></td>
-              </tr>
-              <tr>
-                <td>Reference</td>
-                <td class="trans-ref"></td>
-              </tr>
-              <tr>
-                <td colspan="2">More Details</td>
-              </tr>
-            </tbody>
-            <tfoot class="trans-det-table trans-info-tab">
-
-            </tfoot>
-          </table>
-        </div>
-        
-        
-        <input type="hidden" class="trans-id">
-        <div class="input-con w-flex w-flex-end w-align-center w-white w-padding" style="gap:20px;position:sticky;bottom:-10px;">
-          <button class="clear-btn canc-btn3">Cancel</button>
-          <input type="submit" value="Generate Receipt">
-        </div>
-      </form>
-    </div>
-  </div>
-
-
-  <div class="modal-con modal-top small-con add-bank-con">
+  <div class="modal-con modal-top small-con add-memo-con">
     <div class="modal-body">
       <div class="close-modal">X</div>
       <div class="modal-header">
-        <div class="h5 w-bold-x w-text-blue">Add New Staff Bank Account</div>
+        <div class="h5 w-bold-x w-text-blue">Create New Memo</div>
       </div>
-      <form class="modal-content mt-3 add-bank-form">
+      <form class="modal-content mt-3 add-memo-form">
 
         <div class="input-con">
-          <label for="st-lname">Select Staff</label>
-          <select id="acc-staff" class="staff-filter"></select>
+          <label for="st-lname">Subject</label>
+          <input type="text" id="memo-subject" required />
         </div>
 
         <div class="input-con">
-          <label for="st-lname">Account Number</label>
-          <input type="text" id="acc-num" maxlength="10" />
+          <label for="st-lname">Message</label>
+          <textarea id="memo-message" rows="5"></textarea>
         </div>
-
-        <div class="input-con">
-          <label for="st-lname">Search Bank</label>
-          <select id="acc-bank" class="bank-filter"></select>
-        </div>
-
-        <div id="verify-name"></div>
-
-        <div class="input-con">
-          <label for="st-lname">Account Name</label>
-          <input type="text" id="acc-name" readonly />
-        </div>
+        
         
         <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
           <button class="clear-btn canc-btn">Cancel</button>
@@ -7046,6 +6944,122 @@ showSchoolInfo()
     </div>
   </div>
 
+  <div class="modal-con modal-top small-con update-memo-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Update <span class="memo-name"></span></div>
+      </div>
+      <form class="modal-content mt-3 update-memo-form">
+
+        <div class="input-con">
+          <label for="st-lname">Subject</label>
+          <input type="text" id="memo-subject2" required />
+        </div>
+
+        <div class="input-con">
+          <label for="st-lname">Message</label>
+          <textarea id="memo-message2" rows="5"></textarea>
+        </div>
+
+          <input type="hidden" class="memo-id">
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn2">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con delete-memo-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-red w-bold-x">
+          <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
+          Delete <b class="memo-name"></b>
+        </div>
+      </div>
+      <form class="modal-content delete-memo-form">
+        
+        <h4>
+          This is a destructive action and cannot be reversed. Are you sure you want to proceed?
+        </h4>
+
+        <input type="hidden" class="memo-id">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn3">Cancel</button>
+          <input type="submit" class="w-red" value="Delete Memo">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con broadcast-memo-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-blue w-bold-x">
+          <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
+          Broadcast <b class="memo-name"></b>
+        </div>
+      </div>
+      <form class="modal-content broadcast-memo-form">
+        
+        <h4>
+          Broadcast this event to your target audience via the available means below:
+        </h4>
+
+        <div class="input-con">
+          <label for="">Select Target Audience:</label>
+
+          <div class="w-padding w-flex w-flex-wrap w-flex-start w-align-center" style="gap:20px">
+            
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" value="staff" id="e-staff" name="event-audience">
+              <label class="custom-control-label" for="e-staff">School Staff</label>
+            </div>
+
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" value="parent" id="e-parent" name="event-audience">
+              <label class="custom-control-label" for="e-parent">Parents</label>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="input-con">
+          <label for="">Select Broadcast Media:</label>
+
+          <div class="w-padding w-flex w-flex-wrap w-flex-start w-align-center" style="gap:20px">
+            
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" value="email" id="e-email" name="event-media">
+              <label class="custom-control-label" for="e-email">Email</label>
+            </div>
+
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" value="sms" id="e-sms" name="event-media" disabled>
+              <label class="custom-control-label" for="e-sms">SMS (&#8358;5 per SMS) <i>(Not available)</i></label>
+            </div>
+
+          </div>
+        </div>
+
+        <input type="hidden" class="memo-id">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn8">Cancel</button>
+          <input type="submit" value="Broadcast Memo">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  
+
 
   <main class="">
     <?use-template: "header"?>
@@ -7053,10 +7067,7 @@ showSchoolInfo()
     <!-- Nav tabs -->
     <ul class="nav nav-tabs class-tabs">
       <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#home">Broadcast</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#home2">Internal Memo</a>
+        <a class="nav-link active" data-toggle="tab" href="#home">Memos</a>
       </li>
     </ul>
     <!-- Tab panes -->
@@ -7070,13 +7081,13 @@ showSchoolInfo()
               <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
                 
                 <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
-                  <div class="h4 w-bold-x" style="color:orangered">Payroll List</div>
+                  <div class="h4 w-bold-x" style="color:orangered">Memo List</div>
                  
                 </div>
                 
     
                 <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
-                  <button class="dark-btn gen-payroll-btn">Generate Payroll&nbsp;&nbsp;<i class="fa fa-refresh"></i></button>
+                  <button class="dark-btn add-memo-btn">Create Memo&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
                   
                 </div>
     
@@ -7085,111 +7096,33 @@ showSchoolInfo()
 
               <div class="mb-2 mt-3 w-flex w-flex-between w-flex-wrap w-align-center">
 
-                <div class="w-flex w-flex-start w-align-center" style="gap:15px;max-width:fit-content;">
-                  <span>Year</span>
-                  <select id="year-filter" class="sub-filter form-control mb-2" style="width:150px;"></select>
-                </div>
-
-                <div class="w-flex w-flex-start w-align-center" style="gap:15px;max-width:fit-content;">
-                  <span>Month</span>
-                  <select id="month-filter" class="sub-filter form-control mb-2" style="width:200px;"></select>
-                </div>
-                
-                
-
-              </div>
-
-              
-    
-              <div class="table-responsive">
-                <table class="table staff-table">
-                  <thead>
-                    <tr>
-                      <th>Staff</th>
-                      <th>Staff ID</th>
-                      <th>Amount</th>
-                      <th class="w-center">Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody class="pay-list">
-                  </tbody>
-                </table>
-              </div>
-
-              
-    
-              <div class="page_nos mt-3" id="page_nos">
-                <a href="#" class="page_no"><i class="fa fa-angle-left"></i></a>
-    
-                <a href="#" class="page_no"><i class="fa fa-angle-right"></i></a>
-              </div>
-    
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-pane container" id="home2">
-        <div class="w-padding">
-          <div class="row mt-2 w-white">
-            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-    
-              <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
-                
-                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
-                  <div class="h4 w-bold-x" style="color:orangered">Staff Bank Accounts</div>
-                 
-                </div>
-                
-    
-                <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
-                  <button class="dark-btn add-bank-btn">Add Bank Account&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
-                  
-                </div>
-    
-                <input type="hidden" id="emp_page2" value="1" />
-              </form>
-
-              <div class="mb-2 mt-3 w-flex w-flex-between w-flex-wrap w-align-center">
-
-                <div class="input-group mb-3" style="margin:0;max-width:270px;">
-                  <input type="text" class="form-control" placeholder="Search by staff name, account name, account number, etc" id="emp_search2" value="" />
+                <div class="input-group" style="margin:0;max-width:300px;">
+                  <input type="text" class="form-control" placeholder="Search by subject, message" id="emp_search" value="" />
                   <div class="input-group-append">
                     <span class="input-group-text" style="background:none;"><i class="fa fa-search"></i></span>
                   </div>
                 </div>
 
-                <select id="status-filter" class="sub-filter form-control mb-2" style="width:200px;">
-                    <option value="">All Status</option>
-                    <option value="verified">Verified</option>
-                    <option value="pending">Pending</option>
-                    <option value="rejected">Rejected</option>
-                </select>
-                
-
-              </div>
-
-              <div class="table-responsive">
-                <table class="table staff-table">
-                  <thead>
-                    <tr>
-                      <th>Staff</th>
-                      <th>Account Name</th>
-                      <th>Account Number</th>
-                      <th>Bank Name</th>
-                      <th class="w-center">Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody class="acc-list">
-                  </tbody>
-                </table>
               </div>
 
               
     
-              <div class="page_nos mt-3" id="page_nos2">
+              <div class="table-responsive">
+                <table class="table staff-table">
+                  <thead>
+                    <tr>
+                      <th>Subject</th>
+                      <th>Message</th>
+                      <th>Date</th>
+                      <th class="w-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="event-list">
+                  </tbody>
+                </table>
+              </div>
+    
+              <div class="page_nos mt-3" id="page_nos">
                 <a href="#" class="page_no"><i class="fa fa-angle-left"></i></a>
     
                 <a href="#" class="page_no"><i class="fa fa-angle-right"></i></a>
@@ -7214,21 +7147,9 @@ showSchoolInfo()
       $(this).parent('div').parent('.side-con').removeClass('active')
     })
 
-    $("#month-filter").on('change', function() {
-      $("#emp_page").val(1);
-      getPayroll()
-    })
-    $("#year-filter").on('change', function() {
-      $("#emp_page").val(1);
-      getPayroll()
-    })
-    $("#status-filter").on('change', function() {
-      $("#emp_page2").val(1);
-      getBankAccounts()
-    })
 
-    $('#emp_search2').on('input', function(e) {
-            $('#emp_page2').val(1);
+    $('#emp_search').on('input', function(e) {
+            $('#emp_page').val(1);
             delayedSearch(e.target.value)
           })
 
@@ -7238,18 +7159,21 @@ showSchoolInfo()
     
     $(".canc-btn").click(function(e) {
         e.preventDefault();
-        $(".add-bank-con").removeClass('active')
+        $(".add-memo-con").removeClass('active')
     })
     $(".canc-btn2").click(function(e) {
         e.preventDefault();
-        $(".pay-trans-con").removeClass('active')
+        $(".update-memo-con").removeClass('active')
     })
     $(".canc-btn3").click(function(e) {
         e.preventDefault();
-        $(".view-trans-con").removeClass('active')
+        $(".delete-memo-con").removeClass('active')
     })
     
-    
+    $(".canc-btn8").click(function(e) {
+        e.preventDefault();
+        $(".broadcast-memo-con").removeClass('active')
+    })
 
     $('#emp_search2').on('input', function(e) {
       $('#emp_page2').val(1);
@@ -8003,6 +7927,189 @@ showSchoolInfo()
   </script>
 </template>
 
+<template id="analytics">
+    
+  <?use-template: "sidenav"?>
+  <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+  <main class="">
+    <?use-template: "header"?>
+    <div class="alert-note alert alert-danger">
+      <i class="fa fa-warning"></i> Click <a class="w-text-blue" href="/#company_profile">here</a> to add company details.
+    </div>
+
+    <div class="dash-menu">
+      <div class="dash-box w-white w-round">
+        <div>
+          <a href="/#school" class="menu-con-6 dash-menu-con">
+            <div>
+              <div class="h6 w-bold-x w-text-black">Wallet Balance</div>
+              <div class="dash-no bal-item">&#8358;0</div>
+              <div class="dash-comm w-text-green"><span class="bal-item2">&#8358;0</span> available.</div>
+            </div>
+            <img src="/static/icons/_ui-bank-note-01.svg" alt="">
+          </a>
+        </div>
+
+        <div>
+          <a href="/#students" class="menu-con-1 dash-menu-con">
+            <div>
+              <div class="h6 w-bold-x w-text-black">Total Students</div>
+              <div class="dash-no std-item">0</div>
+              <div class="dash-comm w-text-green">0 new students</div>
+            </div>
+            <img src="/static/icons/_ui-users-01c.svg" alt="">
+          </a>
+        </div>
+        
+        <div>
+          <a href="/#staff" class="menu-con-2 dash-menu-con">
+            <div>
+              <div class="h6 w-bold-x w-text-black">Total Teachers</div>
+              <div class="dash-no tea-item">0</div>
+              <div class="dash-comm w-text-green">0 new teachers</div>
+            </div>
+            <img src="/static/icons/_ui-users-03c.svg" alt="">
+          </a>
+        </div>
+        
+        <div>
+          <a href="/#fees" class="menu-con-4 dash-menu-con">
+            <div>
+              <div class="h6 w-bold-x w-text-black">Fees Collected</div>
+              <div class="dash-no fee-item">&#8358;0</div>
+              <div class="dash-comm w-text-green"><span class="fee-item2">&#8358;0</span> This term</div>
+            </div>
+            <img src="/static/icons/_ui-bank-note-01.svg" alt="">
+          </a>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+        <div class="insight-con" id="insight-list">
+          <div class="w-flex w-flex-between w-align-center">
+            <div class="h4 w-bold-x w-text-white">
+              <img src="/static/icons/_ui-stars-02.svg" alt="">&nbsp;&nbsp;AI Insights</div>
+            <button class="white-btn">View More</button>
+          </div>
+          <ul class="insight-list">
+            <li>
+              <i class="fa fa-circle w-text-orange"></i>
+              <span>AI Insight feature not availabe yet. You'll definitely have it very soon.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+        <div class="analysis-con">
+          <div class="w-flex w-flex-between w-around-center">
+            <div class="h4 w-bold-x">Analytics</div>
+            <select id="analytic-week">
+              <option value="1">Week 1</option>
+              <option value="2">Week 2</option>
+            </select>
+          </div>
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#home">Student Distribution</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#menu1">Fee Collection</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#menu2">Attendance Trend</a>
+            </li>
+          </ul>
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div class="tab-pane active container" id="home">
+              <section id="bar1" class="mb-3"></section>
+            </div>
+            <div class="tab-pane container" id="menu1">
+              <div id="donutTop"></div>
+            </div>
+            <div class="tab-pane container" id="menu2">
+              <div id="bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mt-2">
+      <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+        <div class="insight-con" id="cal-con">
+          <div class="h4 w-bold-x">Calendar</div>
+
+          <div id="dash_calendar">
+
+            <div id="calendar_header">
+                <i class="fa fa-chevron-left"></i>
+                <h1></h1>
+                <i class="fa fa-chevron-right"></i>
+            </div>
+
+            <div id="calendar_weekdays"></div>
+            <div id="calendar_content"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-7 col-lg-7 col-xl-7">
+        <div class="insight-con">
+          <div class="w-flex w-flex-between w-around-center">
+            <div class="h4 w-bold-x">Upcomig Events</div>
+            <div class="w-flex w-flex-end w-align-center" style="gap:10px;width:fit-content">
+              <a href="/#calendar">
+                <button class="light-btn">View All</button>
+              </a>
+              <a href="/#calendar">
+                <button class="dark-btn">Add New Event</button>
+              </a>
+              
+            </div>
+          </div>
+          <ul class="event-list">
+            <li>
+              <div class="w-flex w-flex-between w-align-center mb-3">
+                <div class="w-bold-x h5">
+                  <i class="fa fa-circle w-text-blue"></i>
+                  &nbsp;&nbsp;Children's Day
+                </div>
+                <div class="w-text-gray">March 7, 2025</div>
+              </div>
+              <p>The event will be celebrated in the school hall. Everyone must prepare an activity for the day</p>
+            </li>
+            <li>
+              <div class="w-flex w-flex-between w-align-center mb-3">
+                <div class="w-bold-x h5">
+                  <i class="fa fa-circle w-text-blue"></i>
+                  &nbsp;&nbsp;Children's Day
+                </div>
+                <div class="w-text-gray">March 7, 2025</div>
+              </div>
+              <p>The event will be celebrated in the school hall. Everyone must prepare an activity for the day</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+  
+  </main>
+  <script src="/static/js/dashboard.js"></script>
+  <script>
+    $('.report-act').addClass('active')
+    $(".page-name").text("AI Analytics")
+  </script>
+</template>
+
 
 
 <!-- Sample Template -->
@@ -8107,6 +8214,9 @@ showSchoolInfo()
 </template>
 <template route="/marketplace">
   <?use-template: "marketplace"?>
+</template>
+<template route="/analytics">
+  <?use-template: "analytics"?>
 </template>
 
 <!-- Standard Meta -->
