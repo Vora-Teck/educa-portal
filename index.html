@@ -46,8 +46,13 @@
         <i class="fa fa-caret-right"></i>
       </a>
 
-      <a href="/#attendance" class="attend-act">
-        <span><img src="/static/icons/_ui-file-check-02.svg" alt="">&nbsp;&nbsp;&nbsp;Attendance</span>
+      <a href="/#student_attendance" class="attend-act">
+        <span><img src="/static/icons/_ui-file-check-02.svg" alt="">&nbsp;&nbsp;&nbsp;Student Attendance</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      <a href="/#staff_attendance" class="sattend-act">
+        <span><img src="/static/icons/_ui-file-check-02.svg" alt="">&nbsp;&nbsp;&nbsp;Staff Attendance</span>
         <i class="fa fa-caret-right"></i>
       </a>
 
@@ -4818,7 +4823,7 @@ showSchoolInfo()
   </script>
 </template>
 
-<template id="attendance">
+<template id="student_attendance">
   <?use-template: "sidenav"?>
 
   <!-- Curriculum Modals -->
@@ -5079,7 +5084,7 @@ showSchoolInfo()
   <script src="/static/js/attendance.js"></script>
   <script>
     $('.attend-act').addClass('active')
-    $(".page-name").text("Attendance Management");
+    $(".page-name").text("Students Attendance");
 
     $(".close-side").click(function() {
       $(this).parent('div').parent('.side-con').removeClass('active')
@@ -5111,6 +5116,309 @@ showSchoolInfo()
       getAttendance()
     })
     $("#class-filter").on('change', function() {
+      getAttendance()
+    })
+
+    $(".close-side").click(function() {
+      $(this).parent('div').parent('.side-con').removeClass('active')
+    })
+
+    $(".close-modal").click(function() {
+      $(this).parent('.modal-body').parent('.modal-con').removeClass('active')
+    })
+    
+    $(".canc-btn").click(function(e) {
+        e.preventDefault();
+        $(".mark-att-con").removeClass('active')
+    })
+    
+
+    $('#emp_search').on('input', function(e) {
+      let val = $(this).val().toLowerCase();
+      $(".att-row").each((index, elem) => {
+        let std_n = $(elem).data('name');
+        if(std_n.includes(val)) {
+          $(elem).show();
+        }
+        else {
+          $(elem).hide()
+        }
+      })
+    })
+
+  </script>
+</template>
+
+<template id="staff_attendance">
+  <?use-template: "sidenav"?>
+
+  <!-- Curriculum Modals -->
+
+  <div class="modal-con nav-con insight-side-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h4 w-bold-xx">
+          Generative AI Insights
+        </div>
+      </div>
+
+      <div class="insight-con" id="insight-list">
+        <div class="w-flex w-flex-between w-align-center">
+          <div class="h4 w-bold-x w-text-white">
+            <img src="/static/icons/_ui-stars-02.svg" alt="">&nbsp;&nbsp;AI Insights</div>
+          
+        </div>
+
+        <div class="mt-3 w-flex w-flex-start w-align-center w-text-white w-flex-wrap" style="gap:15px;">
+          <div>
+            <i class="fa fa-circle w-text-green w-border w-circle"></i>&nbsp;&nbsp;Improvement
+          </div>
+          <div>
+            <i class="fa fa-circle w-text-blue w-border w-circle"></i>&nbsp;&nbsp;Satisfactory
+          </div>
+          <div>
+            <i class="fa fa-circle w-text-orange w-border w-circle"></i>&nbsp;&nbsp;Need Attention
+          </div>
+          <div>
+            <i class="fa fa-circle w-text-red w-border w-circle"></i>&nbsp;&nbsp;Critical
+          </div>
+        </div>
+
+        <ul class="insight-list">
+          <li>
+            <i class="fa fa-circle w-text-orange"></i>
+            <span>Mr John Doe has recorded attendance inconsistently in 3 classes this month.</span>
+          </li>
+          <li>
+            <i class="fa fa-circle w-text-blue"></i>
+            <span>Ms Sarah's students scored 20% higher in English this term compared to last.</span>
+          </li>
+          <li>
+            <i class="fa fa-circle w-text-green"></i>
+            <span>Ms Sarah's students scored 20% higher in English this term compared to last.</span>
+          </li>
+          <li>
+            <i class="fa fa-circle w-text-red"></i>
+            <span>Ms Sarah's students scored 20% higher in English this term compared to last.</span>
+          </li>
+          <li>
+            <i class="fa fa-circle w-text-red"></i>
+            <span>Ms Sarah's students scored 20% higher in English this term compared to last.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="modal-con modal-top mark-att-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Staff Attendance For <span class="curr-date"></span></div>
+      </div>
+      <form class="modal-content mt-3 mark-att-form">
+
+        <div class="table-responsive">
+          <table class="table staff-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Full Name</th>
+                <th>Staff ID</th>
+                <th>Morning</th>
+                <th>Afternoon</th>
+              </tr>
+            </thead>
+            <tbody class="curr-att-list">
+            </tbody>
+          </table>
+        </div>
+        
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn">Cancel</button>
+          <input type="submit" value="Save Attendance">
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <main class="">
+    <?use-template: "header"?>
+
+    <div class="dash-menu">
+      <div class="dash-box w-white w-round">
+        
+        <div>
+          <div class="menu-con-8 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/att_1.svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Present</div>
+            </div>
+            <div>
+              <div class="dash-no mb-3">0</div>
+              <div class="h5 w-text-green w-bold-x mt-3">78%</div>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="menu-con-9 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/att_2.svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Absent</div>
+            </div>
+            <div>
+              <div class="dash-no mb-3">0</div>
+              <div class="h5 w-text-red w-bold-x mt-3">12%</div>
+            </div>
+          </div>
+          
+        </div>
+        
+        <div>
+          <div class="menu-con-10 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/att_3.svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Late</div>
+            </div>
+            <div>
+              <div class="dash-no mb-3">0</div>
+              <div class="h5 w-text-green w-bold-x mt-3">12%</div>
+            </div>
+            
+          </div>
+        </div>
+
+        <div>
+          <div class="menu-con-11 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/att_4.svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Overall Attendance Rate</div>
+            </div>
+            <div class="dash-no">0%</div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Nav tabs -->
+    <div class="class-tabs w-flex w-flex-between w-align-center w-flex-wrap">
+      <div class="h5 w-bold-x" style="white-space: nowrap;">Staff Register</div>
+
+      <div class="w-flex w-flex-end w-align-center w-flex-wrap" style="gap:15px;">
+
+        <label for="">Session</label>
+        <select id="session-filter" class="side-btn form-control" style="max-width:180px;font-size:15px;">
+          
+        </select>
+        
+        <button class="side-btn" style="font-size:15px">Attendance Report <i class="fa fa-file-pdf-o"></i></button>
+
+        <button class="insight-btn">AI Insights <i class="fa fa-star"></i></button>
+        
+
+      </div>
+    </div>
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+      <div class="tab-pane active container" id="home">
+        
+        <div class="w-padding">
+          <div class="row mt-2 w-white">
+            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    
+              <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+                
+                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:auto;">
+                  <div class="input-group" style="margin:0;max-width:200px;">
+                    <input type="text" class="form-control" placeholder="Search by name, ID" id="emp_search" value="" />
+                    <div class="input-group-append">
+                      <span class="input-group-text" style="background:none;"><i class="fa fa-search"></i></span>
+                    </div>
+                  </div>
+                </div>
+                
+    
+                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:auto;">
+                  <div>Term</div>
+
+                  <select id="term-filter" class="form-control" style="width:120px;">
+                    
+                  </select>
+                  
+                  <div>Week</div>
+
+                  <select id="week-filter" class="form-control" style="width:100px;">
+                    
+                  </select>
+                  <button class="dark-btn mark-att-btn" style="white-space: nowrap;">Mark Attendance&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+                  
+                </div>
+    
+                <input type="hidden" id="emp_page" value="1" />
+              </form>
+
+              <div class="mb-2 mt-3 w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;">
+                
+
+                <div class="h5 w-block w-bold-x att-dates" style="text-align:right"></div>
+                
+
+              </div>
+    
+              <div class="table-responsive">
+                <table class="table staff-table">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Full Name</th>
+                      <th>Staff ID</th>
+                      <th>Monday</th>
+                      <th>Tuesday</th>
+                      <th>Wednesday</th>
+                      <th>Thursday</th>
+                      <th>Friday</th>
+                    </tr>
+                  </thead>
+                  <tbody class="att-list">
+                  </tbody>
+                </table>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+  
+  <script src="/static/js/staff_attendance.js"></script>
+  <script>
+    $('.sattend-act').addClass('active')
+    $(".page-name").text("Staff Attendance");
+
+    $(".close-side").click(function() {
+      $(this).parent('div').parent('.side-con').removeClass('active')
+    })
+
+
+
+    $("#week-filter").on('change', function() {
+      getAttendance()
+    })
+    $("#session-filter").on('change', function() {
+      getAttendance()
+    })
+    $("#term-filter").on('change', function() {
       getAttendance()
     })
 
@@ -8188,8 +8496,11 @@ showSchoolInfo()
 <template route="/exams">
   <?use-template: "exams"?>
 </template>
-<template route="/attendance">
-  <?use-template: "attendance"?>
+<template route="/student_attendance">
+  <?use-template: "student_attendance"?>
+</template>
+<template route="/staff_attendance">
+  <?use-template: "staff_attendance"?>
 </template>
 <template route="/calendar">
   <?use-template: "calendar"?>
