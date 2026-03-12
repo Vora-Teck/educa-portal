@@ -14,8 +14,8 @@ function getData() {
               //console.log(data);
               let d = data.data;
               if(data.status == 'success') {
-                  $(".bal-item").html(`&#8358;${shortify(d.balance, true)}`)
-                  $(".bal-item2").html(`&#8358;${digify(d.balance, true)}`)
+                  //$(".bal-item").html(`&#8358;${shortify(d.balance, true)}`)
+                  //$(".bal-item2").html(`&#8358;${digify(d.balance, true)}`)
                   $(".std-item").html(`${digify(d.students.total)}`)
                   $(".tea-item").html(`${digify(d.staff)}`)
                   $(".fee-item").html(`&#8358;${shortify(d.fees.total, true)}`)

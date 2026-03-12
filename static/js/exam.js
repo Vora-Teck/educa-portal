@@ -223,6 +223,7 @@ function getTests() {
                                     <div class="dropdown">
                                         <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
                                         <div class="dropdown-menu">
+                                            <div class="dropdown-header">${e[i].course.title}</div>
                                             <a class="dropdown-item emp-que-link" data-id="${e[i].id}" href="#">
                                                 <i class="fa fa-file-text"></i>&nbsp;View Questions
                                             </a>
@@ -394,6 +395,7 @@ function getExams() {
                                     <div class="dropdown">
                                         <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
                                         <div class="dropdown-menu">
+                                        <div class="dropdown-header">${e[i].course.title}</div>
                                             <a class="dropdown-item emp-que-link2" data-id="${e[i].id}" href="#">
                                                 <i class="fa fa-file-text"></i>&nbsp;View Questions
                                             </a>
@@ -412,7 +414,7 @@ function getExams() {
                                             <a class="dropdown-item emp-det-link2" data-id="${e[i].id}" href="#">
                                                 <i class="fa fa-edit"></i>&nbsp;Edit Exam
                                             </a>
-                                            <a class="w-text-red w-hover-red dropdown-item emp-del-link" data-id="${e[i].id}" href="#">
+                                            <a class="w-text-red w-hover-red dropdown-item emp-del-link2" data-id="${e[i].id}" href="#">
                                                 <i class="fa fa-trash"></i>&nbsp;Delete Exam
                                             </a>
                                         

@@ -200,16 +200,6 @@ showSchoolInfo()
 
       <div class="dash-menu">
         <div class="dash-box w-white w-round">
-          <div>
-            <a href="/#school" class="menu-con-6 dash-menu-con">
-              <div>
-                <div class="h6 w-bold-x w-text-black">Wallet Balance</div>
-                <div class="dash-no bal-item">&#8358;0</div>
-                <div class="dash-comm w-text-green"><span class="bal-item2">&#8358;0</span> available.</div>
-              </div>
-              <img src="/static/icons/_ui-bank-note-01.svg" alt="">
-            </a>
-          </div>
 
           <div>
             <a href="/#students" class="menu-con-1 dash-menu-con">
@@ -4973,7 +4963,7 @@ showSchoolInfo()
               <img src="/static/icons/att_4.svg" alt="">
               <div class="h6 w-bold w-text-black pt-2">Overall Attendance Rate</div>
             </div>
-            <div class="dash-no">0%</div>
+            <div class="dash-no att-item">0%</div>
           </div>
         </div>
         
@@ -7676,294 +7666,6 @@ showSchoolInfo()
 <template id="settings">
   <?use-template: "sidenav"?>
 
-  <div class="modal-con delete-card-con">
-    <div class="modal-body" style="max-width:500px !important">
-      <div class="close-modal">X</div>
-      <div class="modal-header">
-        <div class="h5 w-text-red w-bold-x">
-          <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
-          Delete Card
-        </div>
-      </div>
-      <form class="modal-content delete-card-form">
-        
-        <h4>This is a destructive action and cannot be reversed.
-        </h4>
-        
-        <div class="input-con">
-          <label for="">Enter your Password to proceed:</label>
-          <input type="password" id="card-delete-password" required />
-        </div>
-
-
-        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
-          <button class="clear-btn canc-btn3">Cancel</button>
-          <input type="submit" class="w-red" value="Delete Card">
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-con modal-top small-con add-bank-con">
-    <div class="modal-body">
-      <div class="close-modal">X</div>
-      <div class="modal-header">
-        <div class="h5 w-bold-x w-text-blue">Add Bank Account</div>
-      </div>
-      <form class="modal-content mt-3 add-bank-form">
-
-          <div class="input-con">
-            <label for="st-lname">Account Number</label>
-            <input type="text" id="account-number" maxlength="10">
-          </div>
-
-          <div class="input-con">
-            <label for="st-lname">Select Bank</label>
-            <select id="bank-name">
-              
-            </select>
-          </div>
-
-          <div class="input-con">
-            <div id="verify-name"></div>
-          </div>
-          <input type="hidden" id="verified" value="" />
-        
-        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
-          <button class="clear-btn canc-btn1">Cancel</button>
-          <input type="submit" class="add-bank-submit" value="Continue" disabled>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-con log-con modal-top">
-    <div class="modal-body">
-      <div class="close-modal">X</div>
-      <div class="modal-header">
-        <div class="h5 w-bold-x">
-          <i class="fa fa-ul-list"></i>&nbsp;&nbsp;
-          Account Logs
-        </div>
-      </div>
-      <div class="modal-content">
-        
-        <ul class="nav nav-tabs class-tabs">
-          <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#wall_log">Wallet Logs</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#rev_log">Revenue</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#exp_log">Expenses</a>
-          </li>
-        </ul>
-
-        <div class="tab-content">
-
-          <div class="tab-pane active container" id="wall_log">
-            <div class="table-responsive l-table">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Description</th>
-                    <th>Type</th>
-                    <th style="white-space:nowrap">Initial Balance</th>
-                    <th>Amount</th>
-                    <th style="white-space:nowrap">Final Balance</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody class="log-table">
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="tab-pane container" id="rev_log">
-            <div class="table-responsive l-table">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Transaction</th>
-                    <th>Amount</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody class="rev-table">
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="tab-pane container" id="exp_log">
-            <div class="table-responsive l-table">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Transaction</th>
-                    <th>Amount</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody class="exp-table">
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        
-        </div>
-        
-
-
-        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
-          <button class="clear-btn canc-btn2">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-con modal-top small-con add-gallery-con">
-    <div class="modal-body">
-      <div class="close-modal">X</div>
-      <div class="modal-header">
-        <div class="h5 w-bold-x w-text-blue">Add Gallery</div>
-      </div>
-      <form class="modal-content mt-3 add-gallery-form">
-
-          <div class="input-con">
-            <label for="st-lname"><span class="w-text-red">*</span> Title</label>
-            <input type="text" id="gall-title">
-          </div>
-
-          <div class="input-con">
-            <label for="st-lname"><span class="w-text-red">*</span> Image</label>
-            
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="gall-img" accept="image/*">
-              <label class="custom-file-label" for="gall-img">Choose Image</label>
-            </div>
-            <div class="veri-img gall-img"></div>
-          </div>
-
-          <div class="input-con">
-            <label for="st-lname">Description</label>
-            <textarea id="gall-des" rows="6"></textarea>
-          </div>
-
-      
-        
-        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
-          <button class="clear-btn canc-btn4">Cancel</button>
-          <input type="submit" value="Save">
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Curriculum Modals -->
-
-  <div class="side-con cur-side-con">
-    <div class="w-flex w-flex-between w-align-center">
-      <ul class="breadcrumb">
-        <li><a href="/#classes">Curriculum</a></li>
-        <li class="cur-name" data-id=""></li>
-      </ul>
-      <button class="close-side btn btn-danger">X&nbsp;Close</button>
-    </div>
-
-    <div class="side-opt-con" style="gap:15px;">
-      <button class="side-btn">Generate Topics with EdukaAI</button>
-    </div>
-
-    <div class="w-padding">
-      <div class="row mt-2 w-white">
-        <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-  
-          <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
-            
-            <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
-              <div class="h4 w-bold-x" style="color:orangered">Topic List</div>
-            </div>
-            
-  
-            <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
-              <button class="dark-btn add-top-btn">Add Topic&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
-              <button class="light-btn top-export-btn">Export&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
-            </div>
-  
-          </form>
-  
-          <div class="table-responsive">
-            <table class="table staff-table">
-              <thead>
-                <tr>
-                  <th>Week</th>
-                  <th>Title</th>
-                  <th>Description</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody class="top-list">
-              </tbody>
-            </table>
-          </div>
-  
-        </div>
-      </div>
-    </div>
-
-
-  </div>
-
-  <div class="modal-con modal-top small-con fund-con">
-    <div class="modal-body">
-      <div class="close-modal">X</div>
-      <div class="modal-header">
-        <div class="h5 w-bold-x w-text-blue">Fund Wallet</div>
-      </div>
-      <form class="modal-content mt-3 fund-form">
-
-        <div class="input-con">
-          <label for="st-fname">Enter amount to fund: (1.5% service charge apply)</label>
-          <input type="number" id="fund-amount" placeholder="Min: &#8358;100" required />
-          <p class="mt-2"><b>Total Amount: </b>&#8358;<span id="tot_amount">0</span></p>
-        </div>
-
-        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
-          <button class="clear-btn canc-btn">Cancel</button>
-          <input id="fund-submit-btn" type="submit" value="Continue" disabled>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-con modal-top small-con withdraw-con">
-    <div class="modal-body">
-      <!--
-      <div class="close-modal">X</div>
-      -->
-      <div class="modal-header">
-        <div class="h5 w-bold-x w-text-blue">Withdraw Fund</div>
-      </div>
-      <form class="modal-content mt-3 withdraw-form">
-
-        <div class="withdraw-form-content">
-
-        </div>
-
-        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
-          <button class="clear-btn canc-btn1">Cancel</button>
-          <input id="withdraw-submit-btn" type="submit" value="Continue">
-        </div>
-      </form>
-    </div>
-  </div>
-
 
   <main class="">
     <?use-template: "header"?>
@@ -8103,6 +7805,19 @@ showSchoolInfo()
                 This is to enable accurate structure of students' and staffs' attendance.
               </i></div>
               <input type="number" id="config-week" min="1" max="20" />
+            </div>
+
+            <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <label for="st-fname"><span class="w-text-red">*</span> CBT Facial Verification</label>
+              <div class="w-small w-text-gray"><i>
+                When enabled, your school CBT software will require facial verification of students after logging in. 
+                This is usually essential to prevent impersonation during exam. 
+                If the PC used by the student does not have a front camera, the verification step will be skipped. 
+              </i></div>
+              <select id="config-cbt">
+                <option value="true">Enabled</option>
+                <option value="false">Disabled</option>
+              </select>
             </div>
 
           </div>
@@ -8279,139 +7994,236 @@ showSchoolInfo()
             <img src="/static/icons/_ui-users-03c.svg" alt="">
           </a>
         </div>
-        
+
         <div>
-          <a href="/#fees" class="menu-con-4 dash-menu-con">
+          <a href="/#student_attendance" class="menu-con-3 dash-menu-con">
             <div>
-              <div class="h6 w-bold-x w-text-black">Fees Collected</div>
-              <div class="dash-no fee-item">&#8358;0</div>
-              <div class="dash-comm w-text-green"><span class="fee-item2">&#8358;0</span> This term</div>
+              <div class="h6 w-bold-x w-text-black">Attendance Rate</div>
+              <div class="dash-no att-item"></div>
+              <div class="dash-comm w-text-green">This Term</div>
             </div>
-            <img src="/static/icons/_ui-bank-note-01.svg" alt="">
+            <img src="/static/icons/_ui-file-check-02c.svg" alt="">
           </a>
         </div>
+
+        <div>
+          <a class="menu-con-3 dash-menu-con">
+            <div>
+              <div class="h6 w-bold-x w-text-black">Top Performing Class</div>
+              <div class="dash-no sma top-class-item"></div>
+              <div class="dash-comm w-text-green"><span class="top-class-avg"></span> This Term</div>
+            </div>
+            <img src="/static/icons/Frame 17.svg" alt="">
+          </a>
+        </div>
+
+        <div>
+          <a class="menu-con-2 dash-menu-con">
+            <div>
+              <div class="h6 w-bold-x w-text-black">Top Performing Subject</div>
+              <div class="dash-no sma top-sub-item"></div>
+              <div class="dash-comm w-text-green"><span class="top-sub-avg"></span> This Term</div>
+            </div>
+            <img src="/static/icons/Frame 17 (1).svg" alt="">
+          </a>
+        </div>
+
+        <div>
+          <a class="menu-con-1 dash-menu-con">
+            <div>
+              <div class="h6 w-bold-x w-text-black">Most Populated Class</div>
+              <div class="dash-no sma most-pop-item"></div>
+              <div class="dash-comm w-text-green most-pop-text"></div>
+            </div>
+            <img src="/static/icons/Frame 17.svg" alt="">
+          </a>
+        </div>
+
+        <div>
+          <a class="menu-con-5 dash-menu-con">
+            <div>
+              <div class="h6 w-bold-x w-text-black">Pending Approvals</div>
+              <div class="dash-no sma pend-item">0</div>
+            </div>
+            <img src="/static/icons/_ui-info-octagon.svg" alt="">
+          </a>
+        </div>
+
         
       </div>
     </div>
 
-    <div class="row mt-2">
-      <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-        <div class="insight-con" id="insight-list">
-          <div class="w-flex w-flex-between w-align-center">
-            <div class="h4 w-bold-x w-text-white">
-              <img src="/static/icons/_ui-stars-02.svg" alt="">&nbsp;&nbsp;AI Insights</div>
-            <button class="white-btn">View More</button>
-          </div>
-          <ul class="insight-list">
-            <li>
-              <i class="fa fa-circle w-text-orange"></i>
-              <span>AI Insight feature not availabe yet. You'll definitely have it very soon.</span>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs class-tabs">
+      <li class="nav-item">
+        <a class="nav-link active mb-2" data-toggle="tab" href="#home">Academic Performance Report</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link mb-2" data-toggle="tab" href="#menu1">Attendance Reports</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link mb-2" data-toggle="tab" href="#menu2">Financial Reports</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link mb-2" data-toggle="tab" href="#menu3">Staff & Teacher Reports</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link mb-2" data-toggle="tab" href="#menu4">AI Insights & Recommendations</a>
+      </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
 
-      <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-        <div class="analysis-con">
-          <div class="w-flex w-flex-between w-around-center">
-            <div class="h4 w-bold-x">Analytics</div>
-            <select id="analytic-week">
-              <option value="1">Week 1</option>
-              <option value="2">Week 2</option>
-            </select>
-          </div>
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs">
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#home">Student Distribution</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#menu1">Fee Collection</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#menu2">Attendance Trend</a>
-            </li>
-          </ul>
-          <!-- Tab panes -->
-          <div class="tab-content">
-            <div class="tab-pane active container" id="home">
+      <div class="tab-pane active container" id="home">
+        
+        <div class="row mt-2">
+          <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="analysis-con">
+              <div class="w-flex w-flex-between w-align-center w-flex-wrap">
+                <div class="">
+                  <div class="h5 w-bold-x">Subject Performance</div>
+                  <div class="h6 w-text-gray">Average score per subject</div>
+                </div>
+                <div class="w-flex w-flex-end w-align-center" style="gap:10px;width:fit-content">
+                  <select class="side-btn class-filter" id="sub-per-class" style="max-width:180px;">
+                    
+                  </select>
+                  <select class="term-filter dark-btn" id="sub-per-term" style="max-width:200px;">
+                    
+                  </select>
+                </div>
+              </div>
+
               <section id="bar1" class="mb-3"></section>
+                
             </div>
-            <div class="tab-pane container" id="menu1">
+          </div>
+
+          <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="analysis-con">
+              <div class="w-flex w-flex-between w-align-center w-flex-wrap">
+                <div class="">
+                  <div class="h5 w-bold-x">Class Performance</div>
+                  <div class="h6 w-text-gray">Average scores by class</div>
+                </div>
+                <div class="w-flex w-flex-end w-align-center" style="gap:10px;width:fit-content">
+                  
+                  <select class="term-filter dark-btn" id="class-per-term" style="max-width:200px;">
+                    
+                  </select>
+                </div>
+              </div>
+
+              <section id="bar" class="mb-3"></section>
+                
+            </div>
+          </div>
+    
+          <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="analysis-con">
+              <div class="w-flex w-flex-between w-align-center w-flex-wrap">
+                <div class="">
+                  <div class="h5 w-bold-x">Pass vs Fail Rate</div>
+                  <div class="h6 w-text-gray">Overall exam outcome</div>
+                </div>
+                <div class="w-flex w-flex-end w-align-center" style="gap:10px;width:fit-content">
+                  <select class="side-btn class-filter" id="pass-fail-class" style="max-width:180px;">
+                    
+                  </select>
+                  <select class="term-filter dark-btn" id="pass-fail-term" style="max-width:200px;">
+                    
+                  </select>
+                </div>
+              </div>
+
               <div id="donutTop"></div>
-            </div>
-            <div class="tab-pane container" id="menu2">
-              <div id="bar"></div>
+
             </div>
           </div>
+
+          <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="insight-con">
+              <div class="w-flex w-flex-between w-align-center w-flex-wrap">
+                <div class="">
+                  <div class="h5 w-bold-x">Top Performing Subjects</div>
+                  <div class="h6 w-text-gray">Subjects with the highest average scores</div>
+                </div>
+                <div class="w-flex w-flex-end w-align-center" style="gap:10px;width:fit-content">
+                  <select class="side-btn class-filter" id="top-sub-class" style="max-width:180px;">
+                    
+                  </select>
+                  <select class="term-filter dark-btn" id="top-sub-term" style="max-width:200px;">
+                    
+                  </select>
+                </div>
+              </div>
+
+              <ul class="top-sub-list">
+                
+              </ul>
+            </div>
+          </div>
+
+          <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="insight-con" id="insight-list">
+              <div class="w-flex w-flex-between w-align-center">
+                <div class="h4 w-bold-x w-text-white">
+                  <img src="/static/icons/_ui-stars-02.svg" alt="">&nbsp;&nbsp;AI Insights</div>
+                <button class="white-btn">View More</button>
+              </div>
+              <ul class="insight-list">
+                <li>
+                  <i class="fa fa-circle w-text-orange"></i>
+                  <span>AI Insight feature not availabe yet. You'll definitely have it very soon.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="insight-con">
+              <div class="w-flex w-flex-between w-align-center w-flex-wrap">
+                <div class="">
+                  <div class="h5 w-bold-x">Lowest Performing Subjects</div>
+                  <div class="h6 w-text-gray">Subjects that need attention</div>
+                </div>
+                <div class="w-flex w-flex-end w-align-center" style="gap:10px;width:fit-content">
+                  <select class="side-btn class-filter" id="low-sub-class" style="max-width:180px;">
+                    
+                  </select>
+                  <select class="term-filter dark-btn" id="low-sub-term" style="max-width:200px;">
+                    
+                  </select>
+                </div>
+              </div>
+
+              <ul class="low-sub-list">
+                
+              </ul>
+            </div>
+          </div>
+    
         </div>
+    
+
       </div>
+
+      <div class="tab-pane container" id="menu1"></div>
+
+      <div class="tab-pane container" id="menu2"></div>
+
+      <div class="tab-pane container" id="menu3"></div>
+
+      <div class="tab-pane container" id="menu4"></div>
 
     </div>
 
-    <div class="row mt-2">
-      <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
-        <div class="insight-con" id="cal-con">
-          <div class="h4 w-bold-x">Calendar</div>
-
-          <div id="dash_calendar">
-
-            <div id="calendar_header">
-                <i class="fa fa-chevron-left"></i>
-                <h1></h1>
-                <i class="fa fa-chevron-right"></i>
-            </div>
-
-            <div id="calendar_weekdays"></div>
-            <div id="calendar_content"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-7 col-lg-7 col-xl-7">
-        <div class="insight-con">
-          <div class="w-flex w-flex-between w-around-center">
-            <div class="h4 w-bold-x">Upcomig Events</div>
-            <div class="w-flex w-flex-end w-align-center" style="gap:10px;width:fit-content">
-              <a href="/#calendar">
-                <button class="light-btn">View All</button>
-              </a>
-              <a href="/#calendar">
-                <button class="dark-btn">Add New Event</button>
-              </a>
-              
-            </div>
-          </div>
-          <ul class="event-list">
-            <li>
-              <div class="w-flex w-flex-between w-align-center mb-3">
-                <div class="w-bold-x h5">
-                  <i class="fa fa-circle w-text-blue"></i>
-                  &nbsp;&nbsp;Children's Day
-                </div>
-                <div class="w-text-gray">March 7, 2025</div>
-              </div>
-              <p>The event will be celebrated in the school hall. Everyone must prepare an activity for the day</p>
-            </li>
-            <li>
-              <div class="w-flex w-flex-between w-align-center mb-3">
-                <div class="w-bold-x h5">
-                  <i class="fa fa-circle w-text-blue"></i>
-                  &nbsp;&nbsp;Children's Day
-                </div>
-                <div class="w-text-gray">March 7, 2025</div>
-              </div>
-              <p>The event will be celebrated in the school hall. Everyone must prepare an activity for the day</p>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    
 
 
   
   </main>
-  <script src="/static/js/dashboard.js"></script>
+  <script src="/static/js/analytics.js"></script>
   <script>
     $('.report-act').addClass('active')
     $(".page-name").text("AI Analytics")

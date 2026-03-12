@@ -32,6 +32,7 @@ function schoolConfig() {
               
               $("#config-renew").val(d.auto_renewal.toString());
               $("#config-payroll").val(d.auto_payroll.toString());
+              $("#config-cbt").val(d.cbt_verification.toString());
               $("#config-date").val(d.payroll_date);
               $("#config-term").val(d.term_per_session);
               $("#config-week").val(d.weeks_per_term);
@@ -116,11 +117,13 @@ function updateConfig() {
   auto_payroll = (auto_payroll == "true");
   let auto_renew = $("#config-renew").val();
   auto_renew = (auto_renew == "true");
+  let cbt_verification = $("#config-cbt").val()
+  cbt_verification = (cbt_verification == "true");
   let payroll_date = $("#config-date").val();
   let term_per_session = $("#config-term").val();
   let weeks_per_term = $("#config-week").val()
 
-  formData = {auto_payroll, auto_renew, payroll_date, term_per_session, weeks_per_term};
+  formData = {auto_payroll, cbt_verification, auto_renew, payroll_date, term_per_session, weeks_per_term};
   
   showLoader("Updating configurations...")
 
