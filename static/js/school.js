@@ -222,7 +222,7 @@ async function getDomain() {
                         domain_temp = `
                         <div class="alert alert-warning">
                         <i class="fa fa-clock-o"></i>&nbsp;&nbsp;
-                        Your school portal request is pending is currently under review. Kindly note than request can take up to 48 hours for approval.
+                        Your school portal request is pending is currently under review. Kindly note that request can take up to 48 hours for approval.
                         </div>`
                     }
                     $("#dom-name").html(d.domain)
