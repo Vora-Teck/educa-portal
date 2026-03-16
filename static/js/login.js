@@ -8,6 +8,10 @@ function authenticate() {
         return
     }
     const formData = {email, password}
+
+    localStorage.removeItem("educa_school_info");
+    localStorage.removeItem("educa_user_info");
+    
     showLoader("Authenticating...")
 
     admin.account.login({
@@ -98,4 +102,18 @@ function logout() {
         }
   })
 }
+
+
+$("#pass-btn").on('click', function(e) {
+        e.preventDefault();
+        var passInput = $("#password");
+        if(passInput.attr('type') == "password") {
+                passInput.attr('type', 'text')
+                $(this).html(`<i class="fa fa-eye-slash"></i>`)
+        }
+        else {
+                passInput.attr('type', 'password')
+                $(this).html(`<i class="fa fa-eye"></i>`)
+        }
+})
 

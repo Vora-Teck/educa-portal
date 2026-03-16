@@ -136,61 +136,66 @@ async function schoolDocument() {
     admin.school.schoolDocument({
             onSuccess: (data) => {
                 //console.log(data)
-                let d = data.data;
-                let veri_temp = ``
+                if(data.status == "success") {
+                    let d = data.data;
+                    let veri_temp = ``
 
-                if(d.is_verified || d.verification_status == "verified") {
-                    veri_temp = `
-                    <div class="alert alert-success">
-                    <i class="fa fa-check-circle"></i>&nbsp;&nbsp;
-                    Your school KYC information has been verified
-                    </div>`;
-                    $(".school-verify-form input").attr('disabled', true)
-                    $(".school-verify-form select").attr('disabled', true)
-                }
-                else if(d.verification_status == 'pending') {
-                    veri_temp = `
-                    <div class="alert alert-info">
-                    <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-                    Your school KYC verification is <b>pending</b> and is currently <b>under review</b>
-                    </div>`
+                    if(d.is_verified || d.verification_status == "verified") {
+                        veri_temp = `
+                        <div class="alert alert-success">
+                        <i class="fa fa-check-circle"></i>&nbsp;&nbsp;
+                        Your school KYC information has been verified
+                        </div>`;
+                        $(".school-verify-form input").attr('disabled', true)
+                        $(".school-verify-form select").attr('disabled', true)
+                    }
+                    else if(d.verification_status == 'pending') {
+                        veri_temp = `
+                        <div class="alert alert-info">
+                        <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+                        Your school KYC verification is <b>pending</b> and is currently <b>under review</b>
+                        </div>`
+                    }
+                    else {
+                        veri_temp = `
+                        <div class="alert alert-warning">
+                        <i class="fa fa-warning"></i>&nbsp;&nbsp;Kindly provide the following information below to complete your school KYC
+                        </div>`
+                    }
+                    $(".veri-alert").html(veri_temp)
+
+                    $("#veri-type").val(d.registration_type);
+                    $("#veri-num").val(d.registration_number);
+
+                    if(d.registration_document) {
+                        let items = d.registration_document.split('/');
+                        let filename = items[items.length - 1];
+                        let file_split = filename.split('.')
+                        $(".veri-ex-doc").html(`
+                                <div class="alert alert-success">
+                                <i class="fa fa-file-o"></i>&nbsp;&nbsp;
+                                ${truncateWord(file_split[0], 15)}${file_split[1]}
+                                </div>  
+                        `)
+                    }
+                    if(d.school_image_1) {
+                        $(".veri-img1").html(`
+                            <img src="${base_url}${d.school_image_1}" alt="" />
+                        `)
+                    }
+                    if(d.school_image_2) {
+                        $(".veri-img2").html(`
+                            <img src="${base_url}${d.school_image_2}" alt="" />
+                        `)
+                    }
+                    if(d.school_image_3) {
+                        $(".veri-img3").html(`
+                            <img src="${base_url}${d.school_image_3}" alt="" />
+                        `)
+                    }
                 }
                 else {
-                    veri_temp = `
-                    <div class="alert alert-warning">
-                    <i class="fa fa-warning"></i>&nbsp;&nbsp;Kindly provide the following information below to complete your school KYC
-                    </div>`
-                }
-                $(".veri-alert").html(veri_temp)
-
-                $("#veri-type").val(d.registration_type);
-                $("#veri-num").val(d.registration_number);
-
-                if(d.registration_document) {
-                    let items = d.registration_document.split('/');
-                    let filename = items[items.length - 1];
-                    let file_split = filename.split('.')
-                    $(".veri-ex-doc").html(`
-                            <div class="alert alert-success">
-                            <i class="fa fa-file-o"></i>&nbsp;&nbsp;
-                            ${truncateWord(file_split[0], 15)}${file_split[1]}
-                            </div>  
-                    `)
-                }
-                if(d.school_image_1) {
-                    $(".veri-img1").html(`
-                        <img src="${base_url}${d.school_image_1}" alt="" />
-                    `)
-                }
-                if(d.school_image_2) {
-                    $(".veri-img2").html(`
-                        <img src="${base_url}${d.school_image_2}" alt="" />
-                    `)
-                }
-                if(d.school_image_3) {
-                    $(".veri-img3").html(`
-                        <img src="${base_url}${d.school_image_3}" alt="" />
-                    `)
+                    pushNotification("n_error", data.message, 5000)
                 }
                 
             },
@@ -401,7 +406,7 @@ async function setup() {
         await schoolAccount()
         await schoolDocument()
         await getDomain()
-        await getGallery()
+        //await getGallery()
         await getCard()
         await getAccount()
     }

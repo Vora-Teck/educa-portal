@@ -61,6 +61,7 @@ function getNotifications() {
                             tuition: "fa-graduation-cap info-btn",
                             subscription: "fa-repeat warning-btn",
                             transfer: "fa-bank info-btn",
+                            deposit: "fa-bank info-btn",
                             funding: "fa-dollar info-btn",
                             verification: "fa-shield success-btn",
                             approval: "fa-check-circle success-btn",

@@ -441,6 +441,11 @@ document.querySelector("#pass-btn").addEventListener('click', function(e) {
 
 $("#setupForm").on("submit", (e) => {
         e.preventDefault();
+        let accept = $("#accept_terms");
+        if(!accept.is(":checked")) {
+                pushNotification("n_info", "Kindly check the box to agree to our terms of use to proceed.")
+                return;
+        }
         showLoader("Setting up Account...")
         admin.school.setup({
                 formData: formValues,

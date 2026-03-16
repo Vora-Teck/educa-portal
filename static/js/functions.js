@@ -346,6 +346,47 @@ function showPlanInfo() {
 })
 }
 
+function verificationStatus() {
+  admin.school.schoolDocument({
+          onSuccess: (data) => {
+              //console.log(data)
+              if (data.status == "success") {
+                $(".veri-alert2").empty()
+                let d = data.data;
+                let veri_temp = ``
+                if(d.is_verified || d.verification_status == "verified") {
+                  veri_temp = ``;
+                }
+                else if(d.verification_status == 'pending') {
+                    veri_temp = `
+                    <div class="alert alert-info">
+                    <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
+                    Your school KYC verification is <b>pending</b> and is currently <b>under review</b>
+                    </div>`
+                }
+                else {
+                    veri_temp = `
+                    <div class="alert alert-warning">
+                    <i class="fa fa-warning"></i>&nbsp;&nbsp;Kindly <a href="#school">Click Here</a> to complete your school KYC verification.
+                    </div>`
+                }
+                $(".veri-alert2").html(veri_temp)
+              }
+              else {}
+          },
+          onError: (error) => {
+              console.error(error);
+              //pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+              //hideLoader()
+          }
+  })
+}
+
+function showHeaderInfo() {
+  //showPlanInfo()
+  verificationStatus()
+}
+
 function renderMarkdown(markdownText) {
   const rawHtml = marked.parse(markdownText);
   //return DOMPurify.sanitize(rawHtml);

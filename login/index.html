@@ -39,7 +39,7 @@
                     <a href="#signup">
                         <button class="reg-btn">Register</button>
                     </a>
-                    <p class="copyright w-text-white w-bold">Copyright &copy; Educa.</p>
+                    <p class="copyright w-text-white w-bold">Copyright &copy; Eduka.</p>
                 </div>
             </div>
     
@@ -54,10 +54,25 @@
                             <label for="username">Email</label>
                             <input type="email" id="email" placeholder="" required />
                         </div>
+                        <!--
                         <div class="input-con">
                             <label for="password">Password</label>
                             <input type="password" id="password" placeholder="" required />
                         </div>
+                        -->
+                        <div class="cus-form-control input-con">
+                            <label for="password">
+                                Password
+                                <span style="color: red;">*</span>
+                            </label>
+                            <div class="form-upgrade">
+                                <input type="password" id="password" required>
+                                <button class="upgrade-icon" id="pass-btn" style="width:80px !important;">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
                         <a href="#forgot-password" class="w-right w-text-blue mb-3">Forgot Password?</a>
                         <div class="input-con">
                             <input type="submit" value="Log In" />
@@ -87,7 +102,7 @@
                     <a href="/login/">
                         <button class="reg-btn">Login</button>
                     </a>
-                    <p class="copyright w-text-white w-bold">Copyright &copy; Educa.</p>
+                    <p class="copyright w-text-white w-bold">Copyright &copy; Eduka.</p>
                 </div>
             </div>
     
@@ -130,7 +145,7 @@
                     <a href="/login/">
                         <button class="reg-btn">Login</button>
                     </a>
-                    <p class="copyright w-text-white w-bold">Copyright &copy; Educa.</p>
+                    <p class="copyright w-text-white w-bold">Copyright &copy; Eduka.</p>
                 </div>
             </div>
     
@@ -467,7 +482,11 @@
                                 </div>
                             </fieldset>
 
-                
+                            <div class="custom-control custom-checkbox  mb-3">
+                                <input type="checkbox" class="custom-control-input" id="accept_terms">
+                                <label class="custom-control-label" for="accept_terms">By signing up, you agree to our <a href="http://eduka.ng/#terms_of_use" target="_blank">Terms of Use</a>,  
+                                    <a href="http://eduka.ng/#privacy_policy" target="_blank">Privacy Policy</a> and <a href="http://eduka.ng/#cookie_policy" target="_blank">Cookie Policy</a>.</label>
+                            </div>
                             <button id="btn" type="submit">Confirm and Submit</button>
                         </section>
                         

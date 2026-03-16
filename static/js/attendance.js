@@ -29,7 +29,7 @@ async function setWeek() {
 }
 
 
-function getData() {
+function getAttendanceData() {
     $("#session-filter").empty()
     admin.attendance.getData({
         onSuccess: (data) => {
@@ -57,6 +57,37 @@ function getData() {
         }
   })
 }
+
+function getData() {
+
+    showLoader("Loading Data...")
+  
+    admin.school.schoolData({
+      params: {page: "attendance"},
+        onSuccess: (data) => {
+                console.log(data);
+                let d = data.data;
+                if(data.status == 'success') {
+                    $(".att-item").html(`${d.attendance_rate}%`)
+                    $(".att-count").html(`${d.all_count}`)
+                    $(".abs-rate").html(`${d.absent_rate}%`)
+                    $(".abs-count").html(`${d.absent_count}`)
+                    $(".pre-rate").html(`${d.present_rate}%`)
+                    $(".pre-count").html(`${d.present_count}`)
+                }
+                else {
+                    pushNotification("n_error", data.message, 3000)
+                }
+                hideLoader()
+        },
+        onError: (error) => {
+                console.error(error);
+                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+                hideLoader()
+        }
+    })
+  }
+  
 
 
 function getClassrooms() {
@@ -86,6 +117,7 @@ function getClassrooms() {
   })
 }
 
+getAttendanceData()
 getData()
 
 /* =========== Attendance Section =============== */
@@ -291,7 +323,7 @@ function markAttendance() {
                     pushNotification('n_error', data.message, 3000)
                 }
                 hideLoader()
-                //getData()
+                //getAttendanceData()
                 getAttendance()
             },
             onError: (error) => {

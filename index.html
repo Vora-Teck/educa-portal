@@ -185,9 +185,12 @@ showSchoolInfo()
     <div class="plan-alert2">
       
     </div>
+    <div class="veri-alert2">
+      
+    </div>
     <script>
       showUserInfo()
-      showPlanInfo()
+      showHeaderInfo()
     </script>
     
   </template>
@@ -2473,9 +2476,11 @@ showSchoolInfo()
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#menu3">Bank Account/Card</a>
       </li>
+      <!--
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#menu5">Gallery</a>
       </li>
+      -->
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
@@ -2857,6 +2862,7 @@ showSchoolInfo()
         </div>
       </div>
 
+      <!--
       <div class="tab-pane container" id="menu5">
         
         <div class="w-padding w-white">
@@ -2872,7 +2878,7 @@ showSchoolInfo()
         </div>
 
       </div>
-
+      -->
     </div>
 
   </main>
@@ -4928,8 +4934,8 @@ showSchoolInfo()
               <div class="h6 w-bold w-text-black pt-2">Present</div>
             </div>
             <div>
-              <div class="dash-no mb-3">0</div>
-              <div class="h5 w-text-green w-bold-x mt-3">78%</div>
+              <div class="pre-count dash-no mb-3">0</div>
+              <div class="pre-rate h5 w-text-green w-bold-x mt-3">0%</div>
             </div>
           </div>
         </div>
@@ -4941,34 +4947,23 @@ showSchoolInfo()
               <div class="h6 w-bold w-text-black pt-2">Absent</div>
             </div>
             <div>
-              <div class="dash-no mb-3">0</div>
-              <div class="h5 w-text-red w-bold-x mt-3">12%</div>
+              <div class="dash-no mb-3 abs-count">0</div>
+              <div class="h5 abs-rate w-text-red w-bold-x mt-3">0%</div>
             </div>
           </div>
           
         </div>
         
         <div>
-          <div class="menu-con-10 dash-menu-con cl">
-            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
-              <img src="/static/icons/att_3.svg" alt="">
-              <div class="h6 w-bold w-text-black pt-2">Late</div>
-            </div>
-            <div>
-              <div class="dash-no mb-3">0</div>
-              <div class="h5 w-text-green w-bold-x mt-3">12%</div>
-            </div>
-            
-          </div>
-        </div>
-
-        <div>
           <div class="menu-con-11 dash-menu-con cl">
             <div class="w-flex w-flex-start w-align-center" style="gap:20px">
               <img src="/static/icons/att_4.svg" alt="">
-              <div class="h6 w-bold w-text-black pt-2">Overall Attendance Rate</div>
+              <div class="h6 w-bold w-text-black pt-2">Attendance Rate</div>
             </div>
-            <div class="dash-no att-item">0%</div>
+            <div>
+              <div class="att-count dash-no mb-3">0</div>
+              <div class="h5 w-text-green w-bold-x mt-3 att-item">0%</div>
+            </div>
           </div>
         </div>
         
@@ -5244,62 +5239,6 @@ showSchoolInfo()
   <main class="">
     <?use-template: "header"?>
 
-    <div class="dash-menu">
-      <div class="dash-box w-white w-round">
-        
-        <div>
-          <div class="menu-con-8 dash-menu-con cl">
-            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
-              <img src="/static/icons/att_1.svg" alt="">
-              <div class="h6 w-bold w-text-black pt-2">Present</div>
-            </div>
-            <div>
-              <div class="dash-no mb-3">0</div>
-              <div class="h5 w-text-green w-bold-x mt-3">78%</div>
-            </div>
-          </div>
-        </div>
-        
-        <div>
-          <div class="menu-con-9 dash-menu-con cl">
-            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
-              <img src="/static/icons/att_2.svg" alt="">
-              <div class="h6 w-bold w-text-black pt-2">Absent</div>
-            </div>
-            <div>
-              <div class="dash-no mb-3">0</div>
-              <div class="h5 w-text-red w-bold-x mt-3">12%</div>
-            </div>
-          </div>
-          
-        </div>
-        
-        <div>
-          <div class="menu-con-10 dash-menu-con cl">
-            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
-              <img src="/static/icons/att_3.svg" alt="">
-              <div class="h6 w-bold w-text-black pt-2">Late</div>
-            </div>
-            <div>
-              <div class="dash-no mb-3">0</div>
-              <div class="h5 w-text-green w-bold-x mt-3">12%</div>
-            </div>
-            
-          </div>
-        </div>
-
-        <div>
-          <div class="menu-con-11 dash-menu-con cl">
-            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
-              <img src="/static/icons/att_4.svg" alt="">
-              <div class="h6 w-bold w-text-black pt-2">Overall Attendance Rate</div>
-            </div>
-            <div class="dash-no">0%</div>
-          </div>
-        </div>
-        
-      </div>
-    </div>
 
     <!-- Nav tabs -->
     <div class="class-tabs w-flex w-flex-between w-align-center w-flex-wrap">
@@ -7914,7 +7853,7 @@ showSchoolInfo()
       </div>
 
       <div class="tab-pane container" id="menu2">
-        <form class="w-white w-padding portal-form">
+        <div class="w-white w-padding portal-form">
           <div class="domain-alert"></div>
 
 
@@ -7923,24 +7862,20 @@ showSchoolInfo()
             <div class="new-port col-12 col-xs-12 col-sm-12 col-md-12 col lg-12 col-xl-12">
               <h3 class="mb-3">Request School CBT Software</h3>
               <ul style="padding-left:20px;" class="mb-3">
-                <li>A school portal is a website dedicated for your school which can be used for the following:
+                <li>Eduka CBT Software  can be used for the following:
                   <ol style="padding-left:20px;" class="mb-3 mt-3">
-                    <li>Staff can login to manage students, classes, subjects, exams, attendance, etc</li>
-                    <li>Parents can login to track their children's/ward performance</li>
-                    <li>The website contain school information which enable visitors know more about the school and what they offer.</li>
-                    <li>Prospective students can also register for admission on the school website.</li>
-                  </ol>
-                </li>
-                <li>To be eligible for a school portal, kindly ensure to complete your school KYC verification and ensure your school is verified.</li>
-                <li>To request a school portal, kindly enter your desired domain in the form below.</li>
-                <li>Kindly take note of the following before proceeding:
-                  <ol style="padding-left:20px;" class="mb-3 mt-3">
-                    <li>The domain you choose is to ensure your school portal is accessible at <b><q>https://yourdomain.eduka.ng</q></b></li>
-                    <li>Your domain can only contain <b>lowercase (a-z)</b> characters</li>
+                    <li>Students can write their exams and tests using the CBT software.</li>
+                    <li>The software can be installed on multiple computers for students' use.</li>
+                    <li>The software requires internet connection to connect to the school's server.</li>
+                    <li>To write tests and exams, students will be required to login to the software using their Student ID (provided during student registration on the portal) and Password (by default, using their first name in uppercase, e.g JOHN).</li>
                   </ol>
                 </li>
               </ul>
+
+              
             </div>
+
+            <div class="cbt-con new-port col-12 col-xs-12 col-sm-12 col-md-8 col-lg-7 col-xl-6"></div>
 
           </div>
 
@@ -7948,11 +7883,62 @@ showSchoolInfo()
 
           <div class="old-port row mt-2">
 
-            
+
+            <div class="w-padding col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <h5>Emails</h5>
+              <p id="cbt-emails"></p>
+            </div>
+
+            <div class="w-padding col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <h5>Submission Date</h5>
+              <p id="cbt-date"></p>
+            </div>
+
+            <div class="w-padding col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <h5>Request Status</h5>
+              <p id="cbt-stat"></p>
+            </div>
+
+            <div class="w-padding col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <h5>Operating System</h5>
+              <p id="cbt-ops"></p>
+            </div>
+            <div class="w-padding col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <h5>Software Version</h5>
+              <p id="cbt-ver"></p>
+            </div>
+
+            <div class="w-padding col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <h5>Approval Date</h5>
+              <p id="cbt-app"></p>
+            </div>
+
+            <div class="cbt-link w-flex w-flex-start w-align-center w-flex-wrap w-padding" style="gap:15px;">
+              
+            </div>
+
 
           </div>
 
-        </form>
+          <div class="accor-con old-port mt-2">
+            <button class="accordion">
+            <img src="/static/icons/_ui-users-02.svg" alt="">
+            &nbsp;How to Use Eduka CBT
+          </button>
+          <div class="panel">
+            <div class="dash-box">
+              <div>
+                <ol type="1">
+                  <li>
+                    <div class="h4 w-bold-x">Download and Install the software</div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          </div>
+
+        </div>
 
         
       </div>
@@ -8021,7 +8007,20 @@ showSchoolInfo()
         e.preventDefault();
         $(".add-gallery-con").removeClass('active')
     })
-    
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
 
   </script>
 </template>
@@ -8613,7 +8612,10 @@ showSchoolInfo()
     <script src="/dist/semantic.min.js"></script>
     <script src="/static/tinymce/tinymce.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>                                                                                         
+<!--
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+-->                                                   
+<script src="/static/js/apexcharts.js"></script>                                      
 
 <script>
 var on = XJSX.event.on,

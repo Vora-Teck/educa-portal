@@ -71,7 +71,23 @@ function getCBT() {
                         Your school CBT software is being processed at the moment. Kindly note that request can take up to 3 business days for approval.
                         </div>`
                     }
-                    
+                    $("#cbt-emails").html(d.allowed_emails.join(', '))
+                    $("#cbt-date").html(datify(d.created, true))
+                    $("#cbt-stat").html(d.resolved ? `Approved` : `Pending`)
+                    $("#cbt-ops").html(d.os)
+                    $("#cbt-ver").html(`${d.major_version}.${d.minor_version}.${d.patch_version}`)
+                    $("#cbt-app").html(d.updated ? datify(d.updated, false) : 'N/A')
+                    if(d.file) {
+                      $(".cbt-link").html(`
+                        <button class="cbt-down-btn dark-btn" data-id="${d.file}">Download CBT Software</button>
+                        
+                      `)
+                    }
+
+                    $(".cbt-down-btn").click(function() {
+                      let link = $(this).data('id');
+                      downloadFile(link)
+                    })
                 }
                 else {
                     let p = data.product;
@@ -107,7 +123,7 @@ function getCBT() {
                         }).join('')}
                       </div>
 
-                      <div class="w-flex w-flex-around w-align-center" style="gap:15px;">
+                      <div class="w-flex w-flex-around w-align-center w-flex-wrap" style="gap:15px;">
                         
                         <div class="button">
                           <div class="button-layer"></div>
@@ -291,14 +307,14 @@ function cbt_checkout(os) {
 
             $("#cbt-method").empty().append(`<option value="paystack">Paystack Payment Gateway</option>`);
             
-            /*
+            
             if(data.card) {
                 $("#cbt-method").append(`<option value="card" selected>${data.card}</option>`);
               }
               if(data.wallet) {
                 $("#cbt-method").append(`<option value="wallet" selected>Wallet Balance - &#8358;${digify(data.wallet, true)}</option>`);
               }
-                */
+              
             $(".pay-cbt-con").addClass("active")
           }
           else {
@@ -345,18 +361,20 @@ function makePayment() {
       onSuccess: (data) => {
         //console.log(data);
         if(data.status == "success") {
-        if(method == "card") verifyPayment(data.reference);
+          if(method == "card") verifyPayment(data.reference);
+          else if(method == "wallet") {
+              pushNotification("n_success", data.message, -1);
+              $(".pay-cbt-form")[0].reset()
+              $(".pay-cbt-con").removeClass("active")
+              getCBT();
+              hideLoader()
+          }
+        }
         else {
-            pushNotification("n_success", data.message, -1);
-            $(".pay-cbt-form")[0].reset()
-            $(".pay-cbt-con").removeClass("active")
-            getCBT();
+          pushNotification("n_error", data.message, -1);
+          hideLoader()
         }
-        }
-        else {
-          pushNotification("n_error", data.message, -1)
-        }
-        hideLoader()
+        
       },
       onError: (error) => {
         console.error(error);
@@ -407,6 +425,8 @@ function makePayment() {
     }
     
   })
+
+  
 $(".lightbox-close").on('click', function() {$(".lightbox").removeClass("active")})
 $(".update-config-form").submit(function(e) {e.preventDefault();updateConfig()})
 $(".update-user-form").submit(function(e) {e.preventDefault();updateProfile()})

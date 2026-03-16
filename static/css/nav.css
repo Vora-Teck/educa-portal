@@ -2293,7 +2293,6 @@ ul.breadcrumb li a:hover {
 .shoe_des{
   font-size: 12px;
   font-weight: 400;
-  color: red;
   text-align: justify;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -2344,8 +2343,9 @@ ul.breadcrumb li a:hover {
   position: relative;
   height: 50px;
   width: 100%;
+  max-width:300px;
   border-radius: 25px;
-  margin-top: 30px;
+  margin-top: 15px;
   overflow: hidden;
 }
 .product-card .button .button-layer{
