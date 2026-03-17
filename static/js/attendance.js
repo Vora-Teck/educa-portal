@@ -65,7 +65,7 @@ function getData() {
     admin.school.schoolData({
       params: {page: "attendance"},
         onSuccess: (data) => {
-                console.log(data);
+                //console.log(data);
                 let d = data.data;
                 if(data.status == 'success') {
                     $(".att-item").html(`${d.attendance_rate}%`)
