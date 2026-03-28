@@ -107,21 +107,12 @@
         <span><i class="fa fa-bell"></i>&nbsp;&nbsp;&nbsp;Notifications</span>
         <i class="fa fa-caret-right"></i>
       </a>
-      <!--
-      <a href="/#marketplace" class="mark-act">
-        <span><img src="/static/icons/_ui-building-02.svg" alt="">&nbsp;&nbsp;&nbsp;Marketplace</span>
+
+      <a href="/#customer_support" class="sup-act">
+        <span><i class="fa fa-headphones"></i>&nbsp;&nbsp;&nbsp;Customer Support</span>
         <i class="fa fa-caret-right"></i>
       </a>
-
       
-      <a class="accordion set-act"><i class="fa fa-gear"></i> Settings</a>
-      <ul class="panel">
-        <li><a class="sub-act" href="#subscription"><i class="fa fa-dollar"></i> Subscription</a></li>
-        <li><a href="#settings"><i class="fa fa-gears"></i> General Settings</a></li>
-        <li><a href="#security"><i class="fa fa-lock"></i> Security Settings</a></li>
-        <li><a href="#staff_settings"><i class="fa fa-group"></i> Staff Settings</a></li>
-      </ul>
-      -->
       <a href="#" class="w-text-red logout-btn">
         <span><i class="fa fa-power-off"></i>&nbsp;&nbsp;&nbsp;Logout</span>
         <i class="fa fa-caret-right"></i>
@@ -154,13 +145,14 @@ showSchoolInfo()
 
       <div class="side-content">
 
-        <a href="/#messages" class="comm-icon">
-          <i class="fa fa-comment-o"></i>
-          <span class="count">0</span>
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
         </a>
-        <a href="/#notifications">
+        <a title="Notifications" href="/#notifications">
           <i class="fa fa-bell-o"></i>
+          <!--
           <span class="count">0</span>
+          -->
         </a>
         
         <div class="admin-pro w-margin-right">
@@ -172,8 +164,8 @@ showSchoolInfo()
           <div class="dropdown">
             <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="/#school"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
-              <a class="dropdown-item" href="/#settings"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
             </div>
           </div>
         </div>
@@ -1291,33 +1283,21 @@ showSchoolInfo()
 
           <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <label for="st-mname">Home Address</label>
-            <input type="text" class="req" id="st-address" />
-            <span class="error-msg">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Home address is required
-            </span>
+            <input type="text" id="st-address" />
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <label for="st-state">State</label>
-            <select id="st-state" class="req2">
+            <select id="st-state">
               <option value="" selected></option>
             </select>
-            <span class="error-msg">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Kindly select a state
-            </span>
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <label for="st-lga">L.G.A</label>
-            <select id="st-lga" class="req2">
+            <select id="st-lga">
               <option value="" selected></option>
             </select>
-            <span class="error-msg">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Kindly select an LGA
-            </span>
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -1326,20 +1306,12 @@ showSchoolInfo()
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <label for="st-mname">Parent/Guardian Name</label>
-            <input type="text" class="req" id="st-pa-name1" />
-            <span class="error-msg">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Name is required
-            </span>
+            <input type="text" id="st-pa-name1" />
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <label for="st-mname">Relationship</label>
-            <input type="text" class="req" id="st-pa-rel1" />
-            <span class="error-msg">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Relationship is required
-            </span>
+            <input type="text" id="st-pa-rel1" />
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
@@ -1353,20 +1325,12 @@ showSchoolInfo()
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <label for="st-mname">Phone Number</label>
-            <input type="tel" class="req" id="st-pa-phone1" />
-            <span class="error-msg">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Phone Number is required
-            </span>
+            <input type="tel" id="st-pa-phone1" />
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
             <label for="st-mname">Home Address</label>
-            <input type="tel" class="req" id="st-pa-address1" />
-            <span class="error-msg">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Address is required
-            </span>
+            <input type="tel" id="st-pa-address1" />
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -1438,35 +1402,23 @@ showSchoolInfo()
             <input type="text" id="st-id2" readonly />
           </div>
 
-          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
-            <label for="st-mname">Home Address</label>
-            <input type="text" class="req" id="st-address2" />
-            <span class="error-msg">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Home address is required
-            </span>
-          </div>
-
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <label for="st-state2">State</label>
-            <select id="st-state2" class="req2">
+            <select id="st-state2">
               <option value="" selected></option>
             </select>
-            <span class="error-msg">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Kindly select a state
-            </span>
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <label for="st-lga">L.G.A</label>
-            <select id="st-lga2" class="req2">
+            <select id="st-lga2">
               <option value="" selected></option>
             </select>
-            <span class="error-msg">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Kindly select an LGA
-            </span>
+          </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <label for="st-mname">Home Address</label>
+            <input type="text" id="st-address2" />
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -1475,20 +1427,12 @@ showSchoolInfo()
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <label for="st-mname">Parent/Guardian Name</label>
-            <input type="text" class="req" id="st-pa-name3" />
-            <span class="error-msg">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Name is required
-            </span>
+            <input type="text" id="st-pa-name3" />
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <label for="st-mname">Relationship</label>
-            <input type="text" class="req" id="st-pa-rel3" />
-            <span class="error-msg">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Relationship is required
-            </span>
+            <input type="text" id="st-pa-rel3" />
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
@@ -1502,20 +1446,12 @@ showSchoolInfo()
 
           <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <label for="st-mname">Phone Number</label>
-            <input type="tel" class="req" id="st-pa-phone3" />
-            <span class="error-msg">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Phone Number is required
-            </span>
+            <input type="tel" id="st-pa-phone3" />
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
             <label for="st-mname">Home Address</label>
-            <input type="tel" class="req" id="st-pa-address3" />
-            <span class="error-msg">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;
-              Address is required
-            </span>
+            <input type="tel" id="st-pa-address3" />
           </div>
 
           <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -1628,6 +1564,92 @@ showSchoolInfo()
         <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
           <button class="clear-btn canc-btn3">Cancel</button>
           <input type="submit" value="Export">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con import-student-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Import Student List</div>
+      </div>
+      <form class="modal-content import-student-form">
+        <h3 class="mb-3">IMPORTANT NOTICE:</h3>
+              <ol type="1" style="padding-left:20px;line-height:1.5" class="mb-3">
+                <li>This feature allows you to upload students data as excel file to register students.</li>
+                <li>This allows you to register multiple students at once.</li>
+                <li>Only students of a single classroom can be uploaded at a time (i.e you can only upload an excel file containing students of the same class at a time).</li>
+                <li>When you select a file, the preview is displayed for extra editing before uploading.</li>
+                <li>Ensure to select the classroom the student list belongs to before uploading.</li>
+                <li>
+                  In the excel file data, the following format must be maintained:
+                  <ul style="padding-left:20px;">
+                    <li>Required columns are: <code>First Name</code>, <code>Last Name</code>, <code>Gender</code>, <code>Date of Birth</code></li>
+                    <li>Optional columns are: <code>Middle Name</code></li>
+                    <li>Gender must be in one of the following format: <code>male</code> or <code>female</code></li>
+                    <li>Date of Birth must be in the format <code>YYYY-MM-DD</code>. e.g <code>2005-10-22</code> (representing 22nd October, 2005)</li>
+                  </ul>
+                </li>
+                <li>Kindly <a href="#" class="w-text-red download-temp-btn"><code>click here to download</code></a> a template excel file for how the student list should be structured.</li>
+              </ol>
+              <details>
+                <summary class="mb-2">
+                  Click to view a sample image of excel data
+                </summary>
+                <img src="/static/image/excel.png" alt="" style="width:100%;height:auto;">
+              </details>
+
+        <div class="w-flex w-flex-between w-align-center w-flex-wrap">
+          <div class="input-con" style="margin-top:20px;">
+            <select id="import-class" style="max-width:250px">
+            </select>
+          </div>
+
+          <div class="w-flex w-flex-start w-flex-wrap w-align-center" style="gap:15px;width:fit-content">
+            <button class="dark-btn download-temp-btn"><i class="fa fa-download"></i> Download Template FIle</button>
+            <div class="input-con" style="margin-top:20px;">
+              <label for="import-file" class="transp-btn"><i class="fa fa-file-excel-o"></i> Select Excel File</label>
+              <input type="file" id="import-file" accept=".csv,.xlsx" style="position:fixed;top:-10000000px">
+            </div>
+          </div>
+          
+
+        </div>
+
+        <div class="w-flex w-flex-wrap w-flx-start w-align-center" style="gap:15px">
+          <span class="info-btn">Total Items: <span id="total-row">0</span></span>
+          <span class="success-btn">Valid Rows: <span id="valid-row">0</span></span>
+          <span class="danger-btn">Invalid Rows: <span id="invalid-row">0</span></span>
+        </div>
+        <p class="mt-2"><b>NOTE: </b>click any of the students' data displayed below to edit directly</p>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>S/N</th>
+                <th style="white-space: nowrap;">First Name</th>
+                <th style="white-space: nowrap;">Middle Name</th>
+                <th style="white-space: nowrap;">Last Name</th>
+                <th style="white-space: nowrap;">Gender</th>
+                <th style="white-space: nowrap;">Date of Birth</th>
+              </tr>
+            </thead>
+            <tbody class="excel-table">
+              <tr>
+                <td colspan="6">
+                  <p class="w-text-gray"><i>Kindly select a file to display data here.</i></p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn5">Cancel</button>
+          <input type="submit" id="uploadBtn" value="Upload" disabled>
         </div>
       </form>
     </div>
@@ -1999,7 +2021,7 @@ showSchoolInfo()
             
 
             <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
-              <button class="transp-btn">Import CSV&nbsp;&nbsp;<i class="fa fa-download"></i></button>
+              <button class="transp-btn import-std-btn">Import CSV&nbsp;&nbsp;<i class="fa fa-upload"></i></button>
               <button class="dark-btn add-student-btn">Add Student&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
             </div>
 
@@ -2094,6 +2116,10 @@ showSchoolInfo()
             e.preventDefault();
             $(".delete-student-con").removeClass('active')
           })
+          $(".canc-btn5").click(function(e) {
+            e.preventDefault();
+            $(".import-student-con").removeClass('active')
+          })
 
     $('#emp_search').on('input', function(e) {
             $('#emp_page').val(1);
@@ -2121,6 +2147,53 @@ showSchoolInfo()
         }
       });
     }
+  </script>
+  <script type="module">
+    import * as XLSX from "./static/module/xlsx.js";
+
+
+    /* ================= FILE PARSING ================= */
+    function processData(data) {
+      //console.log(data)
+      if (!data.length) return pushNotification("n_warning", "Selected file is empty!", 5000);
+
+      try {
+        const mapping = mapHeaders(Object.keys(data[0]));
+
+        tableData = data.map(row => ({
+          first_name: row[mapping.first_name]?.toString().trim(),
+          last_name: row[mapping.last_name]?.toString().trim(),
+          middle_name: row[mapping.middle_name]?.toString().trim(),
+          dob: normalizeDate(row[mapping.dob]),
+          gender: normalizeGender(row[mapping.gender])
+        }));
+
+        revalidateAll();
+
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    function parseFile(file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        let data = new Uint8Array(e.target.result);
+        let wb = XLSX.read(data, { type: "array" });
+        let ws = wb.Sheets[wb.SheetNames[0]];
+        let jsonData = XLSX.utils.sheet_to_json(ws, { defval: "", raw: false });
+        $("#import-file").val(null)
+        processData(jsonData)
+      };
+
+      reader.readAsArrayBuffer(file);
+    }
+
+    $("#import-file").on("change", (e) => {
+      let file = e.target.files[0];
+      if(file) parseFile(file)
+    })
   </script>
 </template>
 
@@ -2402,6 +2475,11 @@ showSchoolInfo()
         <div class="h5 w-bold-x w-text-blue">Withdraw Fund</div>
       </div>
       <form class="modal-content mt-3 withdraw-form">
+        <div class="alert alert-info alert-dismissible fade show">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <i class="w-large fa fa-info-circle"></i> In accordance with CBN directives, an 
+          <b>Electronic Levy</b> of &#8358;50 will be deducted for every transfer of <b>&#8358;10,000 and above.</b>
+        </div>
 
         <div class="withdraw-form-content">
 
@@ -3452,8 +3530,8 @@ showSchoolInfo()
       <div class="modal-header">
         <div class="h5 w-bold-x w-text-blue">Update <span class="time-name"></span></div>
       </div>
-      <div class="w-text-gray mt-3">
-        <b class="w-text-black">NOTE: </b>Only subjects that have been assigned to this class will be shown as a option when choosing timetable subjects.<br>
+      <div class="alert alert-info">
+        <b>NOTE: </b>Only subjects that have been assigned to this class will be shown as a option when choosing timetable subjects.<br>
         e.g Chemistry will only be shown as an option to senior science classes and not to other classes that do not offer chemistry.
       </div>
 
@@ -4074,6 +4152,14 @@ showSchoolInfo()
           </div>
 
           <div class="input-con">
+            <label for="st-lname">Staff Assigned <i class="w-small">(optional)</i></label>
+            <p class="w-text-gray"><i>Only staff assigned to an exam/test can view, update the exam/test and scores associated with it.</i></p>
+            <select class="staff-filter" id="ex-staff">
+              <option value="" selected></option>
+            </select>
+          </div>
+
+          <div class="input-con">
             <label class="w-bold-x" for="st-lname">Select Classes <i class="w-text-gray">(Only select classes that will be writing this exam)</i> </label>
             <div class="class-list2 mb-2 mt-2 w-flex w-flex-start w-align-center w-flex-wrap" style="gap:20px"></div>
           </div>
@@ -4086,6 +4172,15 @@ showSchoolInfo()
           <div class="input-con">
             <label for="st-lname">Exam Duration (in minutes)</label>
             <input type="number" id="exam-duration" />
+          </div>
+
+          <div class="input-con">
+            <label for="st-lname">Percentage of Total Grade 
+              <i><span class="w-text-gray">
+                (This denotes the percentage of the <span class="ex-type"></span> in the total grade of the term. leave it at 100 if you need to record the exact score gotten from CBT)
+              </span></i>
+            </label>
+            <input type="number" id="exam-percent" value="100" min="1" max="100" required />
           </div>
 
           <input type="hidden" id="exam-type">
@@ -4107,6 +4202,14 @@ showSchoolInfo()
       </div>
       <form class="modal-content mt-3 update-exam-form">
 
+        <div class="input-con">
+          <label for="st-lname">Staff Assigned <i class="w-small">(optional)</i></label>
+          <p class="w-text-gray"><i>Only staff assigned to an exam/test can view, update the exam/test and scores associated with it.</i></p>
+          <select class="staff-filter" id="ex-staff2">
+            <option value="" selected></option>
+          </select>
+        </div>
+
           <div class="input-con">
             <label for="st-lname"><span class="ex-type"></span> Date</label>
             <input type="date" id="exam-date2" />
@@ -4115,6 +4218,15 @@ showSchoolInfo()
           <div class="input-con">
             <label for="st-lname"><span class="ex-type"></span> Duration (in minutes)</label>
             <input type="number" id="exam-duration2" />
+          </div>
+
+          <div class="input-con">
+            <label for="st-lname">Percentage of Total Grade 
+              <i><span class="w-text-gray">
+                (This denotes the percentage of the <span class="ex-type"></span> in the total grade of the term. leave it at 100 if you need to record the exact score gotten from CBT)
+              </span></i>
+            </label>
+            <input type="number" id="exam-percent2" min="1" max="100" required />
           </div>
 
           <input type="hidden" class="exam-id">
@@ -4477,7 +4589,10 @@ showSchoolInfo()
     <!-- Nav tabs -->
     <ul class="nav nav-tabs class-tabs">
       <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#home">Tests</a>
+        <a class="nav-link active" data-toggle="tab" href="#menu3">Score Sheet</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#home">Tests</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#menu2">Exams</a>
@@ -4489,7 +4604,74 @@ showSchoolInfo()
     <!-- Tab panes -->
     <div class="tab-content">
 
-      <div class="tab-pane active container" id="home">
+      <div class="tab-pane active container" id="menu3">
+        <div class="w-padding">
+          <div class="row mt-2 w-white">
+            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    
+              <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+                
+                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+                  <div class="h4 w-bold-x" style="color:orangered">Score Sheet</div>
+                 
+                </div>
+                
+                <div class="sheet-btns w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+                  
+                </div>
+              </form>
+
+              <div class="mb-2 mt-3 w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;">
+                <div><i class="fa fa-filter"></i> Filters:</div>
+
+                <select id="term-filter5" class="sco-fil sub-filter2 form-control mb-2" style="max-width:250px;">
+                  
+                </select>
+                
+                <select id="sub-filter5" class="sco-fil sub-filter2 form-control mb-2" style="max-width:180px;">
+                 
+                </select>
+
+                <select id="class-filter5" class="sco-fil sub-filter2 form-control mb-2" style="max-width:180px;">
+
+                </select>
+
+              </div>
+
+              <div class="input-group" style="margin:0;max-width:280px;">
+                <input type="text" class="form-control" placeholder="Search by name, ID" id="emp_search" value="" />
+                <div class="input-group-append">
+                  <span class="input-group-text" style="background:none;"><i class="fa fa-search"></i></span>
+                </div>
+              </div>
+    
+              <div class="table-responsive">
+                <table class="table staff-table">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Student Name</th>
+                      <th>Student ID</th>
+                      <th class="w-center">Test (<span class="test_per">0%</span>)</th>
+                      <th class="w-center">Exam (<span class="exam_per">0%</span>)</th>
+                      <th class="w-center">Average</th>
+                      <th class="w-center">Grade</th>
+                    </tr>
+                  </thead>
+                  <tbody class="score-sheet">
+                    <tr>
+                      <td colspan="7" class="w-text-gray w-italic">Select an academic term, classroom and subject to continue.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane container" id="home">
         
         <div class="w-padding">
           <div class="row mt-2 w-white">
@@ -4534,6 +4716,7 @@ showSchoolInfo()
                     <tr>
                       <th>Exam ID</th>
                       <th>Subject</th>
+                      <th>Staff</th>
                       <th>Class(es)</th>
                       <th>Term</th>
                       <th>Date</th>
@@ -4604,6 +4787,7 @@ showSchoolInfo()
                     <tr>
                       <th>Exam ID</th>
                       <th>Subject</th>
+                      <th>Staff</th>
                       <th>Class(es)</th>
                       <th>Term</th>
                       <th>Date</th>
@@ -6814,6 +6998,61 @@ showSchoolInfo()
 
   <!-- Event Modals -->
 
+  <div class="modal-con small-con add-tax-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue sal-tit"></div>
+      </div>
+      <form class="modal-content mt-3 add-tax-form">
+
+        <div class="input-con">
+          <label for="st-lname">Increments <i>(Optional)</i></label>
+          <p class="w-text-gray"><i>
+            These amounts will be added to the salary.
+          </i></p>
+          <div class="breakdown-con2 mb-3">
+            <div class="w-flex w-flex-start mb-2 w-align-center" style="gap:15px">
+              <input type="text" class="e-breakdown-key2" placeholder="e.g Bonus">
+              <div>:</div>
+              <input type="number" class="e-breakdown-value2" placeholder="e.g &#8358;5,000">
+              <div class="fa fa-times w-text-red h3 rem-breakdown-btn2"></div>
+            </div>
+          </div>
+          <a href="#" id="add-breakdown-btn2" class="light-btn" style="margin-top:20px !important;">
+            <i class="fa fa-plus"></i>&nbsp;&nbsp;Add Increment
+          </a>
+        </div>
+        
+        <div class="input-con">
+          <label for="st-lname">Deductions <i>(Optional)</i></label>
+          <p class="w-text-gray"><i>
+            These amounts will be deducted from the salary and the remainder will be processed as payment.
+          </i></p>
+          <div class="breakdown-con mb-3">
+            <div class="w-flex w-flex-start mb-2 w-align-center" style="gap:15px">
+              <input type="text" class="e-breakdown-key" placeholder="e.g Loan">
+              <div>:</div>
+              <input type="number" class="e-breakdown-value" placeholder="e.g &#8358;5,000">
+              <div class="fa fa-times w-text-red h3 rem-breakdown-btn"></div>
+            </div>
+          </div>
+          <a href="#" id="add-breakdown-btn" class="light-btn" style="margin-top:20px !important;">
+            <i class="fa fa-plus"></i>&nbsp;&nbsp;Add Deduction
+          </a>
+        </div>
+
+        <input type="hidden" id="payroll-id">
+        
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn6">Cancel</button>
+          <input type="submit" value="Proceed">
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div class="modal-con modal-top pay-trans-con">
     <div class="modal-body" style="max-width:500px">
       <div class="close-modal">X</div>
@@ -6821,6 +7060,11 @@ showSchoolInfo()
         <div class="h4 w-bold-x w-text-blue">Transfer Details</div>
       </div>
       <form class="modal-content mt-3 pay-trans-form">
+        <div class="alert alert-info alert-dismissible fade show">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <i class="w-large fa fa-info-circle"></i> In accordance with CBN directives, an 
+          <b>Electronic Levy</b> of &#8358;50 will be deducted for every transfer of <b>&#8358;10,000 and above.</b>
+        </div>
         <div class="w-center mt-3 mb-3">
           <div class="h2 pay-amt w-bold-xx"></div>
         </div>
@@ -6843,6 +7087,58 @@ showSchoolInfo()
         <div class="input-con w-flex w-flex-end w-align-center w-white w-padding" style="gap:20px;position:sticky;bottom:-10px;">
           <button class="clear-btn canc-btn2">Cancel</button>
           <input type="submit" value="Proceed With Transfer">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top pays-trans-con">
+    <div class="modal-body" style="max-width:500px;">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Bulk Transfer Details</div>
+      </div>
+      <form class="modal-content mt-3 pays-trans-form">
+
+        <div class="warnings-con"></div>
+        <div class="errors-con"></div>
+
+        <div class="alert alert-info alert-dismissible fade show">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <i class="w-large fa fa-info-circle"></i> In accordance with CBN directives, an 
+          <b>Electronic Levy</b> of &#8358;50 will be deducted for every transfer of <b>&#8358;10,000 and above.</b>
+        </div>
+
+        <div id="accordion" class="mb-3 pays-con">
+          
+        </div>
+
+        <div class="table-responsive">
+          <table class="table">
+            <tbody class="trans-det-table">
+              <tr>
+                <td class="w-bold-x">Total Amount Payable</td>
+                <td id="total-pay"></td>
+              </tr>
+              <tr>
+                <td class="w-bold-x">Wallet Balance</td>
+                <td id="wall-bal"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="balances-con"></div>
+
+        <input type="hidden" id="pays-reference">
+        <div class="input-con">
+          <label for="">Enter your password to continue</label>
+          <input type="password" id="pays-password" required>
+        </div>
+        
+        <div class="mt-3 input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn4">Cancel</button>
+          <input type="submit" class="pays-btn" value="Proceed With Transfer">
         </div>
       </form>
     </div>
@@ -6898,6 +7194,41 @@ showSchoolInfo()
         <div class="input-con w-flex w-flex-end w-align-center w-white w-padding" style="gap:20px;position:sticky;bottom:-10px;">
           <button class="clear-btn canc-btn3">Cancel</button>
           <input type="submit" value="Generate Receipt">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con delete-pay-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-red w-bold-x">
+          <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
+          Delete Payroll
+        </div>
+      </div>
+      <form class="modal-content delete-pay-form">
+        <div class="alert alert-info fade show">
+          <i class="w-large fa fa-info-circle"></i> Kindly note that <b>ONLY UNPAID</b> payroll can be deleted.
+        </div>
+        <h4>This is a destructive action and cannot be reversed. Kindly note that the following selected payroll will 
+          be affected:
+        </h4>
+        <ul style="padding-left:20px;" class="del-pay-list">
+          
+        </ul>
+        
+        <div class="input-con">
+          <label for="">Enter your Password to proceed:</label>
+          <input type="password" id="pay-delete-password" required />
+        </div>
+
+        <input type="hidden" class="pay-ids">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn5">Cancel</button>
+          <input type="submit" class="w-red" value="Delete Items">
         </div>
       </form>
     </div>
@@ -6965,9 +7296,11 @@ showSchoolInfo()
     
               <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
                 
-                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+                <div class="" style="gap:15px;width:fit-content;">
                   <div class="h4 w-bold-x" style="color:orangered">Payroll List</div>
-                 
+                 <p class="w-text-gray"><i>
+                  Only payroll for active staff will be generated. Check the boxes to select multiple payroll
+                 </i></p>
                 </div>
                 
     
@@ -6979,28 +7312,48 @@ showSchoolInfo()
                 <input type="hidden" id="emp_page" value="1" />
               </form>
 
-              <div class="mb-2 mt-3 w-flex w-flex-between w-flex-wrap w-align-center">
-
-                <div class="w-flex w-flex-start w-align-center" style="gap:15px;max-width:fit-content;">
-                  <span>Year</span>
-                  <select id="year-filter" class="sub-filter form-control mb-2" style="width:150px;"></select>
-                </div>
-
-                <div class="w-flex w-flex-start w-align-center" style="gap:15px;max-width:fit-content;">
-                  <span>Month</span>
-                  <select id="month-filter" class="sub-filter form-control mb-2" style="width:200px;"></select>
-                </div>
+              <div class="mb-2 mt-3 w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px">
                 
-                
+                <div class="w-flex w-flex-start w-flex-wrap w-align-center" style="gap:15px;width:fit-content;">
+
+                  <div class="w-flex w-flex-start w-align-center" style="gap:15px;max-width:fit-content;">
+                    <span>Year</span>
+                    <select id="year-filter" class="sub-filter form-control mb-2" style="width:100px;"></select>
+                  </div>
+  
+                  <div class="w-flex w-flex-start w-align-center" style="gap:15px;max-width:fit-content;">
+                    <span>Month</span>
+                    <select id="month-filter" class="sub-filter form-control mb-2" style="width:150px;"></select>
+                  </div>
+  
+                </div>
+  
+                <form class="payroll-act-form w-flex w-flex-end w-align-center" style="gap:5px;width:fit-content;">
+                  <div style="white-space: nowrap;">Bulk Actions:</div>
+  
+                  <select id="payroll-action" class="sub-filter form-control" style="max-width:250px;">
+                    <option value="">--- ---</option>
+                    <option value="pay">Make Bulk Payment</option>
+                    <option value="delete">Delete Selected Payroll</option>
+                    
+                  </select>
+                  
+                  <button type="submit" class="btn btn-secondary">Go</button>
+  
+                </form>
 
               </div>
-
-              
     
               <div class="table-responsive">
                 <table class="table staff-table">
                   <thead>
                     <tr>
+                      <th style="max-width:30px !important;">
+                        <label class="checkbox-con" style="top:-10px">
+                            <input type="checkbox" class="all_pays">
+                            <span class="checkmark"></span>
+                        </label>
+                    </th>
                       <th>Staff</th>
                       <th>Staff ID</th>
                       <th>Amount</th>
@@ -7143,6 +7496,18 @@ showSchoolInfo()
     $(".canc-btn3").click(function(e) {
         e.preventDefault();
         $(".view-trans-con").removeClass('active')
+    })
+    $(".canc-btn4").click(function(e) {
+        e.preventDefault();
+        $(".pays-trans-con").removeClass('active')
+    })
+    $(".canc-btn5").click(function(e) {
+        e.preventDefault();
+        $(".delete-pay-con").removeClass('active')
+    })
+    $(".canc-btn6").click(function(e) {
+        e.preventDefault();
+        $(".add-tax-con").removeClass('active')
     })
     
     
@@ -8025,43 +8390,309 @@ showSchoolInfo()
   </script>
 </template>
 
-<template id="marketplace">
+<template id="customer_support">
   <?use-template: "sidenav"?>
+
+  <!-- Event Modals -->
+  <div class="modal-con modal-top add-ticket-con">
+    <div class="modal-body" style="max-width:600px;">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Lodge A Complaint</div>
+      </div>
+      <form class="modal-content mt-3 add-ticket-form">
+
+        <div class="input-con">
+          <label for="st-lname">Subject</label>
+          <input type="text" id="ticket-subject" required />
+        </div>
+
+        <div class="input-con">
+          <label for="st-lname">Select Category</label>
+          <select id="ticket-category" required>
+            <option value="support" selected>Technical Support</option>
+            <option value="billing">Payments & Subscriptions</option>
+            <option value="compliance">KYC</option>
+            <option value="reviews">Verification & Requests</option>
+            <option value="eduka_ai">Eduka AI</option>
+            <option value="support">Others</option>
+          </select>
+        </div>
+
+        <div class="input-con">
+          <label for="st-lname">Details</label>
+          <textarea class="html-text ticket-message" name="ticket-message" id="ticket-message"></textarea>
+        </div>
+
+        <div class="input-con">
+          <label for="ticket-file">
+            Add Image (Optional)
+          </label>
+
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="ticket-file" accept="image/*">
+            <label class="custom-file-label" for="ticket-file">Choose image file</label>
+          </div>
+        </div>
+        
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con view-ticket-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-blue w-bold-x tick-name">
+          
+        </div>
+      </div>
+      <div class="modal-content">
+
+        <div class="view-ticket-area"></div>
+        
+
+        <div class="mt-3 input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn2">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal-con cancel-ticket-con">
+    <div class="modal-body" style="max-width:500px !important">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-red w-bold-x">
+          <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;
+          Cancel <b class="tick-name"></b>?
+        </div>
+      </div>
+      <form class="modal-content cancel-ticket-form">
+        
+        <h4>
+          This action cannot be reversed. Are you sure you want to proceed?
+        </h4>
+
+        <input type="hidden" class="ticket-id">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn3">Cancel</button>
+          <input type="submit" class="w-red" value="Cancel Ticket">
+        </div>
+      </form>
+    </div>
+  </div>
+
 
   <main class="">
     <?use-template: "header"?>
 
+    <div class="dash-menu">
+      <div class="dash-box w-white w-round">
+        
+        <div>
+          <div class="menu-con-7 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/Frame 17.svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">All Tickets</div>
+            </div>
+            <div class="dash-no all-count">0</div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="menu-con-8 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/att_1.svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Resolved</div>
+            </div>
+            <div class="dash-no res-count">0</div>
+          </div>
+          
+        </div>
+        
+        <div>
+          <div class="menu-con-4 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/Frame 17 (2).svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">In Progress</div>
+            </div>
+            <div class="dash-no pro-count">0</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="menu-con-2 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/Frame 17 (1).svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Submitted</div>
+            </div>
+            <div class="dash-no sub-count">0</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="menu-con-9 dash-menu-con cl">
+            <div class="w-flex w-flex-start w-align-center" style="gap:20px">
+              <img src="/static/icons/att_2.svg" alt="">
+              <div class="h6 w-bold w-text-black pt-2">Cancelled</div>
+            </div>
+            <div class="dash-no can-count">0</div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="w-padding">
+      <div class="side-opt-con" style="gap:15px;">
+        <a href="https://wa.me/2348143644530" target="_blank">
+          <button class="side-btn w-border-green w-hover-green w-text-green"><i class="fa fa-whatsapp"></i> Message Us on WhatsApp</button>
+        </a>
+      </div>
+    </div>
+
     <!-- Nav tabs -->
     <ul class="nav nav-tabs class-tabs">
       <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#home">My Products</a>
+        <a class="nav-link active" data-toggle="tab" href="#home">Support Tickets</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#home2">Marketplace</a>
+        <a class="nav-link" data-toggle="tab" href="#menu1">Frequently Asked Questions</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu2">Eduka Guide</a>
       </li>
     </ul>
-
+    <!-- Tab panes -->
     <div class="tab-content">
 
       <div class="tab-pane active container" id="home">
-
-      </div>
-
-      <div class="tab-pane container" id="home2">
-        <div class="product-list"></div>
-      </div>
-
+        <div class="w-padding">
+          <div class="row mt-2 w-white">
+            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
     
+              <form class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+                
+                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+                  <div class="h4 w-bold-x" style="color:orangered">Support Tickets</div>
+                 
+                </div>
+                
+    
+                <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+                  <button class="dark-btn add-ticket-btn">Lodge A Complaint&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+                  
+                </div>
+    
+                <input type="hidden" id="emp_page" value="1" />
+              </form>
+
+              <div class="mb-2 mt-3 w-flex w-flex-between w-flex-wrap w-align-center">
+
+                <div class="input-group" style="margin:0;max-width:300px;">
+                  <input type="text" class="form-control" placeholder="Search by subject, ticket ID" id="emp_search" value="" />
+                  <div class="input-group-append">
+                    <span class="input-group-text" style="background:none;"><i class="fa fa-search"></i></span>
+                  </div>
+                </div>
+
+                <select id="status-filter" class="sub-filter form-control mb-2" style="max-width:170px;">
+                  <option value="" selected>All Status</option>
+                  <option value="submitted">Submitted</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="resolved">Resolved</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+
+              </div>
+
+              
+    
+              <div class="table-responsive">
+                <table class="table staff-table">
+                  <thead>
+                    <tr>
+                      <th>Ticket ID</th>
+                      <th>Subject</th>
+                      <th class="w-center">Status</th>
+                      <th>Date</th>
+                      <th class="w-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="ticket-list">
+                  </tbody>
+                </table>
+              </div>
+    
+              <div class="page_nos mt-3" id="page_nos">
+                <a href="#" class="page_no"><i class="fa fa-angle-left"></i></a>
+    
+                <a href="#" class="page_no"><i class="fa fa-angle-right"></i></a>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane container" id="menu1">
+        <div class="w-padding">
+          <div class="row mt-2 w-white">
+            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane container" id="menu2">
+        <div class="w-padding">
+          <div class="row mt-2 w-white">
+            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
   </main>
+
+  <elevenlabs-convai 
+          id="elevenlabs_ai"
+          agent-id="agent_9901kdrbv6eyet1s6y21hf0334mt" 
+          override-first-message="Hi {{user_name}}, i'm here to help you stay on top of your studies. What can i do for you today?"
+         
+      ></elevenlabs-convai>
   
-  <script src="/static/js/product.js"></script>
+  <script src="/static/js/support.js"></script>
+  <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
   <script>
-    $('.mark-act').addClass('active')
-    $(".page-name").text("Marketplace");
+    $('.sup-act').addClass('active')
+    $(".page-name").text("Customer Support");
 
     $(".close-side").click(function() {
       $(this).parent('div').parent('.side-con').removeClass('active')
     })
+
+    $("#status-filter").on('change', function() {
+      $('#emp_page').val(1);
+      getTickets()
+    })
+
+    $('#emp_search').on('input', function(e) {
+            $('#emp_page').val(1);
+            delayedSearch(e.target.value)
+          })
 
     $(".close-modal").click(function() {
       $(this).parent('.modal-body').parent('.modal-con').removeClass('active')
@@ -8069,8 +8700,32 @@ showSchoolInfo()
     
     $(".canc-btn").click(function(e) {
         e.preventDefault();
+        $(".add-ticket-con").removeClass('active')
+    })
+    $(".canc-btn2").click(function(e) {
+        e.preventDefault();
+        $(".view-ticket-con").removeClass('active')
+    })
+    $(".canc-btn3").click(function(e) {
+        e.preventDefault();
+        $(".cancel-ticket-con").removeClass('active')
     })
     
+    $(".canc-btn8").click(function(e) {
+        e.preventDefault();
+        $(".broadcast-memo-con").removeClass('active')
+    })
+
+    $('#emp_search2').on('input', function(e) {
+      $('#emp_page2').val(1);
+      delayedSearch(e.target.value)
+    })
+
+    $(".custom-file-input").on("change", function() {
+  var fileName = $(this).val().split("\\").pop();
+  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
+
   </script>
 </template>
 
@@ -8573,8 +9228,8 @@ showSchoolInfo()
 <template route="/settings">
   <?use-template: "settings"?>
 </template>
-<template route="/marketplace">
-  <?use-template: "marketplace"?>
+<template route="/customer_support">
+  <?use-template: "customer_support"?>
 </template>
 <template route="/analytics">
   <?use-template: "analytics"?>
@@ -8612,9 +9267,7 @@ showSchoolInfo()
     <script src="/dist/semantic.min.js"></script>
     <script src="/static/tinymce/tinymce.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
-<!--
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
--->                                                   
+                                             
 <script src="/static/js/apexcharts.js"></script>                                      
 
 <script>

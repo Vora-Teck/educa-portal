@@ -37,12 +37,14 @@ function getTerms() {
                 $("#term-filter1").empty();
                 $("#term-filter2").empty();
                 $("#term-filter4").empty();
+                $("#term-filter5").empty().prepend(`<option value="" selected>Select Term</option>`);
                 for(let i in d) {
                     let temp = `<option value="${d[i].id}">${d[i].title} - ${d[i].session.title}</option>`;
                     $("#term-filter").append(temp)
                     $("#term-filter1").append(temp)
                     $("#term-filter2").append(temp)
                     $("#term-filter4").append(temp)
+                    $("#term-filter5").append(temp)
                 }
                 getTests()
                 getExams()
@@ -77,6 +79,7 @@ function getAllSubjects() {
                 $('#sub-filter').empty().append(`<option value="" selected>All Subjects</option>`)
                 $('#sub-filter2').empty().append(`<option value="" selected>Select Subject</option>`)
                 $('#sub-filter4').empty().append(`<option value="" selected>Select Subject</option>`)
+                $('#sub-filter5').empty().append(`<option value="" selected>Select Subject</option>`)
                 if(data.status == 'success') {
                     if(data.data) {
                         let e = data.data;
@@ -84,6 +87,7 @@ function getAllSubjects() {
                             $('#sub-filter').append(`<option value="${e[i].id}">${e[i].title}</option>`)
                             $('#sub-filter2').append(`<option value="${e[i].id}">${e[i].title}</option>`)
                             $('#sub-filter4').append(`<option value="${e[i].id}">${e[i].title}</option>`)
+                            $('#sub-filter5').append(`<option value="${e[i].id}">${e[i].title}</option>`)
                         }
                     }
                 }
@@ -103,6 +107,7 @@ function getClassrooms() {
                 $('#class-filter').empty().append(`<option value="" selected>All Classes</option>`)
                 $('#class-filter2').empty().append(`<option value="" selected>All Classes</option>`)
                 $('#class-filter1').empty().append(`<option value="" selected>All Classes</option>`)
+                $('#class-filter5').empty().append(`<option value="" selected>Select Classroom</option>`)
                 if(data.status == 'success') {
                     if(data.data) {
                         let e = data.data;
@@ -110,6 +115,7 @@ function getClassrooms() {
                             $('#class-filter').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
                             $('#class-filter2').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
                             $('#class-filter1').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
+                            $('#class-filter5').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
 
                             let temp2 = `
                             <div class="custom-control custom-checkbox">
@@ -127,11 +133,117 @@ function getClassrooms() {
         }
   })
 }
+
+function getStaff() {
+    admin.staff.staffList({
+        params: {page:1, pagesize:200},
+            onSuccess: (data) => {
+                //console.log(data)
+                let d = data.data
+                $(".staff-filter").empty().append(`<option value="" selected>No staff selected</option>`)
+                for(let i in d) {
+                    let temp = `<option value="${d[i].id}">${d[i].firstName} ${d[i].lastName} (${d[i].qualification})</option>`;
+                    $(".staff-filter").append(temp)
+                }
+            },
+            onError: (error) => console.error(error)
+    })
+}
 getTerms()
 getAllSubjects()
 getClassrooms()
+getStaff()
 
 /* =========== Test Section =============== */
+
+function getScoreSheet() {
+    let class_id = $("#class-filter5").val();
+    let subject_id = $("#sub-filter5").val()
+    let term_id = $("#term-filter5").val()
+
+    $('.score-sheet').empty()
+    $(".sheet-btns").empty()
+    $(".test_per").html(`0%`)
+    $(".exam_per").html(`0%`)
+    loader = `<tr>
+        <td colspan="7" class="">
+        <i class="fa fa-spinner rotate"></i>&nbsp;&nbsp;&nbsp;Processing...
+        </td>
+    </tr>`;
+    $('.score-sheet').append(loader)
+
+    let params = {class_id, term_id, subject_id}
+
+    //console.log(params)
+
+    admin.exam.getScoreSheet({
+        params: params,
+        onSuccess: (data) => {
+            //console.log(data);
+            $('.score-sheet').empty()
+            if(data.status == 'success') {
+                let e = data.data;
+                let s = e.scores;
+
+                $(".test_per").html(`${e.test_percentage}%`)
+                $(".exam_per").html(`${e.exam_percentage}%`)
+
+                if(e.test_id) {
+                    $(".sheet-btns").append(`
+                    <button class="dark-btn" data-id="${e.test_id}">Test Scores&nbsp;&nbsp;<i class="fa fa-plus-circle"></i></button>
+                    `)
+                }
+                if(e.exam_id) {
+                    $(".sheet-btns").append(`
+                    <button class="dark-btn" data-id="${e.exam_id}">Exam Scores&nbsp;&nbsp;<i class="fa fa-plus-circle"></i></button>
+                    `)
+                }
+                
+                if(s.length > 0) {
+                    for(var i in s) {
+                        let temp = `
+                            <tr class="staff-row score-row" data-name="${s[i].name.toLowerCase()} ${s[i].studentId.toLowerCase()}">
+                                <td> 
+                                    <img class="w-circle" style="width:40px;height:40px;"
+                                        src="${s[i].image || `/static/image/avatar.png`}" alt="" />
+                                </td>
+                                <td>${s[i].name}</td>
+                                <td>${s[i].studentId}</td>
+                                <td class="w-center">${s[i].test}</td>
+                                <td class="w-center">${s[i].exam}</td>
+                                <td class="w-center">${s[i].average}</td>
+                                <td class="w-center">${s[i].grade || 'N/A'}</td>
+                            </tr>`;
+                        $('.score-sheet').append(temp)
+                    }
+                }
+                else {
+                    let temp = `<tr>
+                            <td colspan="7" class="w-text-gray w-italic">No score sheet found for this exam.</td>
+                        </tr>`;
+                    $('.score-sheet').append(temp) 
+                }
+
+                $(".sheet-btns button").on('click', function(e) {
+                    e.preventDefault();
+                    let id = $(this).data('id');
+                    getScores(id)
+                })
+            }
+            else {
+                let temp = `<tr>
+                        <td colspan="7" class="w-text-gray w-italic">${data.message}</td>
+                    </tr>`;
+                $('.score-sheet').append(temp)
+            }
+        },
+        onError: (error) => {
+                console.error(error);
+                $('.score-sheet').empty()
+                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+        }
+  })
+}
 
 function getTests() {
     let page = $('#emp_page3').val();
@@ -206,6 +318,7 @@ function getTests() {
                                 <div class="w-bold-x">${e[i].examId}</div>
                                 </td>
                                 <td>${e[i].course.title}</td>
+                                <td>${e[i].teacher?.firstName || `<i class="w-text-gray">Not Assigned</i>`} ${e[i].teacher?.lastName || ''}</td>
                                 <td><ul style="padding-left:20px;">${clas}</ul></td>
                                 <td>${e[i].term.title}</td>
                                 <td class="w-center">${datify(e[i].date)}</td>
@@ -378,6 +491,7 @@ function getExams() {
                             <div class="w-bold-x">${e[i].examId}</div>
                             </td>
                             <td>${e[i].course.title}</td>
+                            <td>${e[i].teacher?.firstName || `<i class="w-text-gray">Not Assigned</i>`} ${e[i].teacher?.lastName || ''}</td>
                             <td><ul style="padding-left:20px;">${clas}</ul></td>
                             <td>${e[i].term.title}</td>
                             <td class="w-center">${datify(e[i].date)}</td>
@@ -485,6 +599,8 @@ function addExam() {
     let date = $("#exam-date").val();
     let duration = $("#exam-duration").val();
     let exam_type = $("#exam-type").val();
+    let percentage = $("#exam-percent").val();
+    let staff_id = $("#ex-staff").val();
 
     if(!subject_id) {
         pushNotification("n_warning", "Kindly select a subject to continue", 3000);
@@ -498,8 +614,12 @@ function addExam() {
         pushNotification("n_warning", "Kindly select a term to continue", 3000);
         return;
     }
+    if(Number(percentage) < 1 || Number(percentage) > 100) {
+        pushNotification("n_warning", "Percentage has to be between 1 and 100", 3000);
+        return;
+    }
 
-    let formData = {class_ids, term_id, subject_id, date, duration, exam_type}
+    let formData = {class_ids, percentage, staff_id, term_id, subject_id, date, duration, exam_type}
 
     //console.log(formData)
 
@@ -571,8 +691,10 @@ function getExam(exam_id, action) {
                   }).join(', ')}`)
                   $(".ex-type").html(capitalize(d.examType))
                 $("#exam-date2").val(d.date)
+                $("#ex-staff2").val(d.teacher?.id || "")
                 $("#exam-duration2").val(d.duration)
                 $(".exam-type2").val(d.examType);
+                $("#exam-percent2").val(d.percentage)
                 
                 $(`.${action}-exam-con`).addClass("active")
             }
@@ -594,8 +716,15 @@ function updateExam() {
     let date = $("#exam-date2").val();
     let duration = $("#exam-duration2").val();
     let exam_type = $(".exam-type2").val();
+    let staff_id = $("#ex-staff2").val();
+    let percentage = $("#exam-percent2").val();
 
-    let formData = {exam_id, date, duration};
+    if(Number(percentage) < 1 || Number(percentage) > 100) {
+        pushNotification("n_warning", "Percentage has to be between 1 and 100", 3000);
+        return;
+    }
+
+    let formData = {exam_id, date, duration, staff_id, percentage};
 
     showLoader(`Updating ${capitalize(exam_type)}...`)
 
@@ -1199,6 +1328,8 @@ function updateScores() {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
+                getScoreSheet();
+                getResults();
             }
             else {
                 pushNotification("n_error", data.message, 3000)
@@ -1537,10 +1668,24 @@ $(".spread-btn").click(function(e) {
     $(".spread-act").html(act).data('action', act);
     $(".spread-con").addClass("active")
 })
+
 $(".gen-que-btn").click(function(e) {e.preventDefault();$(".gen-que-con").addClass('active')})
 $(".gen-essay-btn").click(function(e) {e.preventDefault();$(".gen-essay-con").addClass('active')})
 
+$(".sco-fil").on('change', function() {getScoreSheet()})
 
+$("#emp_search").on('input', function() {
+    let val = $(this).val();
+    $(".score-row").each((index, elem) => {
+        let std_n = $(elem).data('name');
+        if(std_n.includes(val)) {
+          $(elem).show();
+        }
+        else {
+          $(elem).hide()
+        }
+    })
+})
 
 $(".add-exam-form").on('submit', function(e) {e.preventDefault();addExam()})
 $(".update-exam-form").on('submit', function(e) {e.preventDefault();updateExam()})

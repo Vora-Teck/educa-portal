@@ -85,6 +85,12 @@ function getPayroll() {
 
                         for(var i in e) {
                             let temp = `<tr class="staff-row">
+                            <td style="max-width:30px !important;">
+                                <label class="checkbox-con">
+                                    <input type="checkbox" name="pay_ids" value="${e[i].id}" data-id='${JSON.stringify(e[i])}'>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
                             <td class="w-bold-x">${e[i].staff.firstName} ${e[i].staff.middleName} ${e[i].staff.lastName}</td>
                             <td>${e[i].staff.staffId}</td>
                             <td>&#8358;${digify(e[i].amount)}</td>
@@ -103,7 +109,7 @@ function getPayroll() {
                                                 <a class="dropdown-item t-det-link" data-id='${e[i].id}' href="#">
                                                 <i class="fa fa-file-text"></i>&nbsp;View Transaction
                                                 </a>` : `
-                                                <a class="dropdown-item t-pay-link" data-id='${e[i].id}' href="#">
+                                                <a class="dropdown-item t-pay-link" data-id='${e[i].id}' data-name="${e[i].staff.firstName} ${e[i].staff.middleName} ${e[i].staff.lastName}" href="#">
                                                 <i class="fa fa-dollar"></i>&nbsp;Make Payment
                                             </a>  `}
                                                                           
@@ -121,7 +127,10 @@ function getPayroll() {
                         $('.t-pay-link').click(function(e) {
                             e.preventDefault();
                             let id = $(this).data('id');
-                            initiatePayroll(id)
+                            let tit = $(this).data('name');
+                            $("#payroll-id").val(id);
+                            $(".sal-tit").html(`${months[month]} ${year} Salary for ${tit}`)
+                            $(".add-tax-con").addClass("active")
                         })
                     }
                     else {
@@ -178,15 +187,42 @@ function generatePayroll() {
     })
 }
 
-function initiatePayroll(payroll_id) {
+function initiatePayroll() {
+    let payroll_id = $("#payroll-id").val();
+    let deductions = {};
+    let increments = {};
+
+    $(".e-breakdown-key").each(function() {
+        var value = $(this).val();
+        if(value.trim() !== "") {
+            deductions[value] = $(this).siblings(".e-breakdown-value").val();
+        }
+    })
+
+    $(".e-breakdown-key2").each(function() {
+        var value = $(this).val();
+        if(value.trim() !== "") {
+            increments[value] = $(this).siblings(".e-breakdown-value2").val();
+        }
+    })
+
+    if(!payroll_id || payroll_id.trim() == "") {
+        pushNotification("n_warning", "No payroll selected!", 5000);
+        return;
+    }
+
+    let formData = {payroll_id, deductions, increments}
+
     showLoader("Initiating transaction...")
 
     admin.payroll.initiateSinglePayment({
-        formData: {payroll_id},
+        formData: formData,
         onSuccess: (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
+                $(".add-tax-form")[0].reset();
+                $(".add-tax-con").removeClass("active")
                 let d = data.data;
                 $(".pay-det-table").empty();
                 
@@ -195,12 +231,20 @@ function initiatePayroll(payroll_id) {
 
                 let temp = `
                 <tr>
+                    <td>Salary Amount</td>
+                    <td>&#8358;${digify(d.details.salary, true)}</td>
+                </tr>
+                <tr>
                     <td>Transfer Amount</td>
                     <td>&#8358;${digify(d.amount, true)}</td>
                 </tr>
                 <tr>
                     <td>Service Charges</td>
                     <td>&#8358;${digify(d.details.transfer_charges)}</td>
+                </tr>
+                <tr>
+                    <td>Electronic Levy</td>
+                    <td>&#8358;${digify(d.details.electronic_levy)}</td>
                 </tr>
                 <tr>
                     <td>Description</td>
@@ -221,6 +265,155 @@ function initiatePayroll(payroll_id) {
                 $(".pay-det-table").html(temp)
 
                 $(".pay-trans-con").addClass("active")
+            }
+            else {
+                pushNotification("n_error", data.message, 5000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
+}
+
+function initiateBulkPayroll() {
+    let payroll_ids = $("input[name='pay_ids']:checked").map(function() {
+        return $(this).val();
+    }).get();
+
+    if(payroll_ids.length == 0) {
+        pushNotification("n_warning", "No payroll selected", 5000);
+        return;
+    }
+
+    $(".pays-con").empty();
+    $(".errors-con").empty();
+    $(".warnings-con").empty();
+    $(".balances-con").empty();
+    $("#pays-reference").val("")
+
+    showLoader("Initiating transaction...")
+
+    admin.payroll.initiateBulkPayment({
+        formData: {payroll_ids},
+        onSuccess: (data) => {
+            //console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                let e = data.data;
+                let refs = data.references;
+                let balance = data.wallet_balance;
+                let total_cost = data.total_cost;
+                let errors = data.errors;
+                let warnings = data.warnings;
+
+                $("#wall-bal").html(`&#8358;${digify(balance, true)}`);
+                $("#total-pay").html(`&#8358;${digify(total_cost, true)}`);
+
+
+                if(errors.length > 0) {
+                    errors.map((item, index) => {
+                        $(".errors-con").append(`
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <i class="w-large fa fa-times-circle"></i> ${item}
+                            </div>
+                        `)
+                    })
+                }
+                if(warnings.length > 0) {
+                    warnings.map((item, index) => {
+                        $(".errors-con").append(`
+                            <div class="alert alert-warning alert-dismissible fade show">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <i class="w-large fa fa-warning"></i> ${item}
+                            </div>
+                        `)
+                    })
+                }
+                
+                $("#pays-reference").val(refs.join(";"));
+
+                for(let i in e) {
+                    let temp = `
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="card-link w-flex w-flex-between" data-toggle="collapse" href="#collapse_${i}">
+                            <span>${e[i].description} - &#8358;${digify(e[i].amount, true)}</span>
+                            <div class="fa fa-chevron-down"></div>
+                            </a>
+                        </div>
+                        <div id="collapse_${i}" class="collapse" data-parent="#accordion">
+                            <div class="w-padding">
+                                <div class="w-center mt-3 mb-3">
+                                    <div class="h2 trans-amt w-bold-xx">&#8358;${digify(e[i].details.amount_payable, true)}</div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody class="trans-det-table">
+                                        <tr>
+                                            <td>Transfer Amount</td>
+                                            <td>&#8358;${digify(e[i].amount, true)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Service Charges</td>
+                                            <td>&#8358;${digify(e[i].details.transfer_charges)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Electronic Levy</td>
+                                            <td>&#8358;${digify(e[i].details.electronic_levy)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Description</td>
+                                            <td>${e[i].description}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Account Details</td>
+                                            <td>${e[i].details.destination_account_name} | ${e[i].details.destination_account_number}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Recipient Bank</td>
+                                            <td>${e[i].details.destination_bank_name}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Reference</td>
+                                            <td>${e[i].reference}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>`;
+                    $(".pays-con").append(temp)
+                }
+                
+                let is_wallet_valid = Number(balance) >= Number(total_cost);
+                let is_trans_available = e.length > 0;
+                if(is_wallet_valid && is_trans_available) {
+                    $(".pays-btn").attr('disabled', false)
+                }
+                else {
+                    $(".pays-btn").attr('disabled', true)
+                }
+                if(!is_wallet_valid) {
+                    $(".balances-con").append(`
+                        <div class="alert alert-warning fade show">
+                            <i class="w-large fa fa-warning"></i> You do not have sufficient wallet balance to complete this transaction.
+                        </div>
+                    `)
+                }
+                if(!is_trans_available) {
+                    $(".balances-con").append(`
+                        <div class="alert alert-warning fade show">
+                            <i class="w-large fa fa-warning"></i> No transaction available for processing.
+                        </div>
+                    `)
+                }
+                $(".pays-trans-con").addClass("active")
             }
             else {
                 pushNotification("n_error", data.message, 5000)
@@ -313,6 +506,37 @@ function makePayment() {
     })
 }
 
+function makeBulkPayment() {
+    let references = $("#pays-reference").val();
+    let password = $("#pays-password").val();
+
+    references = references.trim().split(";")
+
+    showLoader("Making payment...")
+
+    admin.payroll.makeBulkPayment({
+        formData: {references, password},
+        onSuccess: (data) => {
+            //console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                $(".pays-con").empty();
+                $(".pays-trans-con").removeClass("active")
+                $(".pays-trans-form")[0].reset()
+            }
+            else {
+                pushNotification("n_error", data.message, 5000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
+}
+
 function generateReceipt(reference, type="transaction") {
     showLoader("Generating Receipt...")
 
@@ -336,6 +560,102 @@ function generateReceipt(reference, type="transaction") {
         }
     })
 }
+
+$('#add-breakdown-btn').click(function(e) {
+    e.preventDefault();
+    var temp = `
+    <div class="w-flex w-flex-start mb-2 w-align-center" style="gap:15px">
+      <input type="text" class="e-breakdown-key" placeholder="e.g Loan">
+      <div>:</div>
+      <input type="number" class="e-breakdown-value" placeholder="e.g &#8358;5,000">
+      <div class="fa fa-times w-text-red h3 rem-breakdown-btn"></div>
+    </div>`;
+    $(".breakdown-con").append(temp)
+    $(".rem-breakdown-btn").click(function() {
+      $(this).parent(".w-flex").remove();
+    })
+});
+
+$('#add-breakdown-btn2').click(function(e) {
+    e.preventDefault();
+    var temp = `
+    <div class="w-flex w-flex-start mb-2 w-align-center" style="gap:15px">
+      <input type="text" class="e-breakdown-key2" placeholder="e.g Bonus">
+      <div>:</div>
+      <input type="number" class="e-breakdown-value2" placeholder="e.g &#8358;5,000">
+      <div class="fa fa-times w-text-red h3 rem-breakdown-btn2"></div>
+    </div>`;
+    $(".breakdown-con2").append(temp)
+    $(".rem-breakdown-btn2").click(function() {
+      $(this).parent(".w-flex").remove();
+    })
+});
+
+
+function deletePayroll() {
+    $(".delete-pay-form")[0].reset();
+    $(".del-pay-list").empty()
+
+    let payroll_ids = $("input[name='pay_ids']:checked").map(function() {
+        return $(this).val();
+    }).get();
+
+    if(payroll_ids.length == 0) {
+        pushNotification("n_warning", "No payroll selected", 5000);
+        return;
+    }
+
+    let payroll_objs = $("input[name='pay_ids']:checked").map(function() {
+        return $(this).data('id');
+    }).get();
+
+    //console.log(payroll_ids, payroll_objs)
+    $(".pay-ids").val(payroll_ids.join(";"))
+
+    for(i in payroll_objs) {
+        let d = payroll_objs[i];
+
+        let temp = `
+        <li>${months[d.month]} ${d.year} Salary for ${d.staff.firstName} ${d.staff.middleName} ${d.staff.lastName} (${d.is_paid ? `Paid: will not be deleted` : `Unpaid`})</li>`
+
+        $(".del-pay-list").append(temp);
+    }
+    
+    $(".delete-pay-con").addClass("active")
+}
+
+
+function deletePayrolls() {
+
+    let payroll_ids = $(".pay-ids").val().trim().split(";");
+    let password = $("#pay-delete-password").val();
+  
+    let formData = {payroll_ids, password}
+  
+    showLoader("Deleting Payroll...")
+    
+    admin.payroll.deletePayroll({
+      formData: formData,
+      onSuccess: (data) => {
+          //console.log(data)
+          if(data.status == "success") {
+              pushNotification("n_success", data.message, 5000);
+              $(".delete-pay-form")[0].reset();
+              $(".delete-pay-con").removeClass("active")
+              getPayroll();
+          }
+          else {
+              pushNotification("n_error", data.message, 3000)
+          }
+          hideLoader()
+      },
+      onError: (error) => {
+          console.error(error);
+          pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+          hideLoader()
+      }
+    })
+  }
 
 /* =========== Bank Account Section =============== */
 function getBanks() {
@@ -645,13 +965,42 @@ function accountStatus(account_id, action) {
 $(".gen-payroll-btn").click(function(e) {e.preventDefault();generatePayroll()})
 $(".add-bank-btn").click(function(e) {e.preventDefault();$(".add-bank-con").addClass("active")})
 
-
+$(".add-tax-form").on('submit', function(e) {e.preventDefault();initiatePayroll()})
 $(".pay-trans-form").on('submit', function(e) {e.preventDefault();makePayment()})
+$(".pays-trans-form").on('submit', function(e) {e.preventDefault();makeBulkPayment()})
 $(".add-bank-form").on('submit', function(e) {e.preventDefault();addAccount()})
 $(".view-trans-form").on('submit', function(e) {
     e.preventDefault();
     let ref = $(".trans-id").val();
     generateReceipt(ref)
+})
+$(".delete-pay-form").on('submit', function(e) {e.preventDefault();deletePayrolls()})
+
+
+$(".all_pays").on("change", function() {
+    let is_checked = $(this).is(":checked")
+    $("input[name='pay_ids']").each((index, item) => {
+        $(item).prop('checked', is_checked)
+    })
+})
+
+$(".payroll-act-form").on('submit', function(e) {
+    e.preventDefault();
+    let action = $("#payroll-action").val().trim();
+    if(action == "") {
+        pushNotification("n_warning", "No action selected!", 5000)
+        return;
+    }
+    switch(action) {
+        case "pay":
+            initiateBulkPayroll();
+            break;
+        case "delete":
+            deletePayroll();
+            break;
+        default:
+            break;
+    }
 })
 
 $("#acc-num").on('input', function() {verifyAccount()})

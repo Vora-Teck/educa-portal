@@ -521,7 +521,7 @@ function drawTrendChart(d) {
 
 
 
-drawTrendChart()
+//drawTrendChart()
 
 // ============== Event Listeners =======================
 $("#sub-per-class").on('change', getSubjectPerformance)

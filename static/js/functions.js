@@ -1,7 +1,8 @@
 //const base_image_url = `https://kosmoshr.pythonanywhere.com`;
 
-const admin = new educaSDK.Admin()
-const base_url = educaSDK.BASE_URL
+const admin = new educaSDK.Admin();
+//const XLSX = educaSDK.XLSX;
+const base_url = educaSDK.BASE_URL;
 
 
 /* Navigation bar */
@@ -393,7 +394,17 @@ function renderMarkdown(markdownText) {
   return rawHtml
 }
 
-function initiateTiny(elem='.html-text', content="") {
+function initiateTiny(mini=false, elem='.html-text', content="") {
+  let plugins = ''; let toolbar = '';
+  if(mini) {
+    plugins = 'autolink charmap link lists searchreplace wordcount';
+    toolbar = 'undo redo | blocks | bold italic underline strikethrough | link | align | numlist';
+  }
+  else {
+    plugins = 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount';
+    toolbar = 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | tinycomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat';
+  }
+  
   tinymce.init({
       selector: elem,
       setup: function(editor) {
@@ -401,8 +412,8 @@ function initiateTiny(elem='.html-text', content="") {
             editor.setContent(content)
           })
       },
-      plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | tinycomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+      plugins: plugins,
+      toolbar: toolbar,
       tinycomments_mode: 'embedded',
       tinycomments_author: 'Admin',
       mergetags_list: [

@@ -60,11 +60,13 @@ function getData() {
                 let d = data.data
                 $(".class-filter").empty().append(`<option value="" selected>All Classes</option>`)
                 $("#st-class").empty().append(`<option value="" selected>Select class</option>`)
+                $("#import-class").empty().append(`<option value="" selected>Select classroom</option>`)
                 $(".class-list").empty();
                 for(let i in d) {
                   let temp = `<option value="${d[i].id}">${d[i].level.title}</option>`;
                   $(".class-filter").append(temp)
                   $("#st-class").append(temp)
+                  $("#import-class").append(temp)
                   let temp2 = `
                   <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" value="${d[i].id}" id="class_${d[i].id}" name="class_ids">
@@ -146,8 +148,8 @@ function getStudents() {
                             <td class="w-center">${e[i].gender[0].toUpperCase()}</td>
                             <td>${e[i].classroom.level.title}</td>
                             <td class="w-bold-x">${e[i].is_active ? `
-                                <span class="w-text-green">Active</span>` : `
-                                <span class="w-text-red">Inactive</span>`}</td>
+                                <span class="success-btn">Active</span>` : `
+                                <span class="danger-btn">Inactive</span>`}</td>
 
                             <td class="w-center">
                                 <div class="dropdown">
@@ -439,15 +441,15 @@ function addStudent() {
     let dob = validate($("#st-dob"));
 
     let class_id = validate($("#st-class"));
-    let address = validate($("#st-address"));
-    let state = validate($("#st-state"));
-    let lga = validate($("#st-lga"));
+    let address = $("#st-address").val();
+    let state = $("#st-state").val();
+    let lga = $("#st-lga").val();
 
-    let parent_name1 = validate($("#st-pa-name1"));
-    let parent_rel1 = validate($("#st-pa-rel1"));
-    let parent_email1 = validate($("#st-pa-email1"));
-    let parent_phone1 = validate($("#st-pa-phone1"));
-    let parent_address1 = validate($("#st-pa-address1"));
+    let parent_name1 = $("#st-pa-name1").val();
+    let parent_rel1 = $("#st-pa-rel1").val();
+    let parent_email1 = $("#st-pa-email1").val();
+    let parent_phone1 = $("#st-pa-phone1").val();
+    let parent_address1 = $("#st-pa-address1").val();
 
     let parent_name2 = $("#st-pa-name2").val();
     let parent_rel2 = $("#st-pa-rel2").val();
@@ -502,15 +504,15 @@ function updateStudent() {
     let student_id = $("#update-id").val();
     let middle_name = $("#st-mname2").val();
 
-    let address = validate2($("#st-address2"));
-    let state = validate2($("#st-state2"));
-    let lga = validate2($("#st-lga2"));
+    let address = $("#st-address2").val();
+    let state = $("#st-state2").val();
+    let lga = $("#st-lga2").val();
 
-    let parent_name1 = validate2($("#st-pa-name3"));
-    let parent_rel1 = validate2($("#st-pa-rel3"));
-    let parent_email1 = validate2($("#st-pa-email3"));
-    let parent_phone1 = validate2($("#st-pa-phone3"));
-    let parent_address1 = validate2($("#st-pa-address3"));
+    let parent_name1 = $("#st-pa-name3").val();
+    let parent_rel1 = $("#st-pa-rel3").val();
+    let parent_email1 = $("#st-pa-email3").val();
+    let parent_phone1 = $("#st-pa-phone3").val();
+    let parent_address1 = $("#st-pa-address3").val();
 
     let parent_name2 = $("#st-pa-name4").val();
     let parent_rel2 = $("#st-pa-rel4").val();
@@ -733,6 +735,229 @@ function validate2(elem) {
   return value;
 }
 
+/* ================= CONFIG ================= */
+
+var REQUIRED_FIELDS = ["first_name", "middle_name", "last_name", "gender", "dob"];
+
+var COLUMN_ALIASES = {
+  first_name: ["firstname", "first name", "fname", "first"],
+  last_name: ["lastname", "last name", "surname", "lname"],
+  middle_name: ["othername", "other name", "middlename", "middle name"],
+  dob: ["dob", "dateofbirth", "birthdate"],
+  gender: ["gender", "sex"]
+};
+
+/* ================= STATE ================= */
+
+var tableData = []; // canonical normalized data
+var errorsMap = {}; // rowIndex -> errors[]
+
+/* ================= HELPERS ================= */
+
+function normalize(str) {
+  return str.toLowerCase().replace(/\s+/g, "").replace(/_/g, "");
+}
+
+function mapHeaders(headers) {
+  const mapping = {};
+  const normalized = {};
+
+  headers.forEach(h => {
+    normalized[normalize(h)] = h;
+  });
+
+  for (const field in COLUMN_ALIASES) {
+    let found = false;
+
+    for (const alias of COLUMN_ALIASES[field]) {
+      if (normalized[normalize(alias)]) {
+        mapping[field] = normalized[normalize(alias)];
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) throw new Error(`Missing column: ${field}`);
+  }
+
+  return mapping;
+}
+
+function normalizeGender(val) {
+  if (!val) return null;
+  val = val.toString().toLowerCase();
+  if (val.startsWith("m")) return "male";
+  if (val.startsWith("f")) return "female";
+  return null;
+}
+
+function normalizeDate(val) {
+  if (!val) return null;
+
+  val = val.trim();
+  let pattern = /^(\d{4})-(\d{2})-(\d{2})$/;
+  if(pattern.test(val)) {
+    return val.toString();
+  }
+  return null;
+
+}
+
+
+/* ================= VALIDATION ================= */
+
+function validateRow(row) {
+  const errors = [];
+
+  if (!row.first_name) errors.push("First name required");
+  if (!row.last_name) errors.push("Last name required");
+  if (!row.dob) errors.push("Date of Birth required");
+  if (!row.gender) errors.push("Invalid gender");
+
+  return errors;
+}
+
+function revalidateAll() {
+  errorsMap = {};
+
+  tableData.forEach((row, i) => {
+    const errs = validateRow(row);
+    if (errs.length) errorsMap[i] = errs;
+  });
+
+  updateSummary();
+  renderTable();
+}
+
+
+
+/* ================= RENDER ================= */
+
+function updateSummary() {
+  const total = tableData.length;
+  const invalid = Object.keys(errorsMap).length;
+  const valid = total - invalid;
+
+  $("#total-row").html(total);
+  $("#valid-row").html(valid);
+  $("#invalid-row").html(invalid);
+
+
+  $("#uploadBtn").attr('disabled', valid !== total);
+}
+
+function renderTable() {
+  $(".excel-table").empty()
+  //let headers = REQUIRED_FIELDS;
+
+  for(let i in tableData) {
+    let cell_class = "";
+    let cell_title = "";
+    if (errorsMap[i]) {
+      cell_class = "error";
+      cell_title = errorsMap[i].join(", ");
+    }
+    let table_item = tableData[i];
+    let gend = table_item['gender'];
+    let temp = `
+    <tr>
+      <td title="${cell_title}" class="${cell_class}">${Number(i) + 1}</td>
+      <td title="${cell_title}" class="${cell_class}">
+        <input type="text" data-id="${i}" data-name="first_name" class="excel-input" value="${table_item['first_name'] || ''}" />
+      </td>
+      <td title="${cell_title}" class="${cell_class}">
+        <input type="text" data-id="${i}" data-name="middle_name" class="excel-input" value="${table_item['middle_name'] || ''}" />
+      </td>
+      <td title="${cell_title}" class="${cell_class}">
+        <input type="text" data-id="${i}" data-name="last_name" class="excel-input" value="${table_item['last_name'] || ''}" />
+      </td>
+      <td title="${cell_title}" class="${cell_class}">
+        <select data-name="gender" data-id="${i}" class="excel-select" style="width:120px">
+          <option value="">N/A</option>
+          <option value="male" ${gend == "male" ? "selected" : ""}>Male</option>
+          <option value="female" ${gend == "female" ? "selected" : ""}>Female</option>
+        </select>
+      </td>
+      <td title="${cell_title}" class="${cell_class}">
+        <input type="date" data-id="${i}" data-name="dob" class="excel-select" value="${table_item['dob'] || ''}" />
+      </td>
+    </tr>`;
+    $(".excel-table").append(temp)
+  }
+
+  $(".excel-input").on('input', function() {
+    saveFile($(this))
+  })
+  $(".excel-select").on('change', function() {
+    saveFile($(this))
+  })
+
+}
+
+/* ================= INLINE EDIT ================= */
+
+function saveFile(elem) {
+  let newValue = elem.val().trim();
+  let field = elem.data('name');
+  let rowIndex = parseInt(elem.data('id'));
+
+    if (field === "gender") {
+      newValue = normalizeGender(newValue);
+    }
+
+    if (field === "dob") {
+      newValue = normalizeDate(newValue);
+    }
+
+    tableData[rowIndex][field] = newValue;
+
+    revalidateAll();
+}
+
+/* ================= UPLOAD ================= */
+
+async function uploadStudents() {
+  let class_id = $("#import-class").val();
+
+  if(!class_id || class_id.trim() == "") {
+    pushNotification("n_warning", "Kindly select a classroom to proceed!", 5000);
+    return;
+  }
+  const validRows = tableData.filter((_, i) => !errorsMap[i]);
+
+  let formData = {class_id, data: validRows}
+
+  showLoader("Registering Students...")
+
+    admin.student.addBulkStudent({
+        formData: formData,
+        onSuccess: (data) => {
+            //console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                $(".excel-table").empty();
+                $("#import-class").val("");
+                tableData.length = 0;
+                errorsMap = {}
+                revalidateAll();
+                $(".import-student-con").removeClass("active")
+                getStudents();
+                getData();
+            }
+            else {
+                pushNotification("n_error", data.message, 3000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+      })
+}
+
+
 // ============== Event Listeners ================================
 $(".add-student-form").on('submit', function(e) {e.preventDefault();addStudent()})
 $(".update-student-form").on('submit', function(e) {e.preventDefault();updateStudent()})
@@ -743,6 +968,17 @@ $(".export-btn").click(function(e) {e.preventDefault(); $(".export-student-con")
 $(".std-action").on('click', function() {updateStatus()})
 $(".std-edit-btn").on('click', function() {$(".update-student-con").addClass("active")})
 $(".std-del-btn").on('click', function() {$(".delete-student-con").addClass("active")})
+$(".import-std-btn").on('click', function(e) {e.preventDefault();$(".import-student-con").addClass("active")})
+$(".download-temp-btn").on('click', function(e) {
+  e.preventDefault();
+  let path = `${window.location.protocol}//${window.location.host}/static/module/students_template.xlsx`
+  //console.log(path)
+  downloadFile(path)
+})
+
+
+
+$(".import-student-form").on('submit', (e) => {e.preventDefault(); uploadStudents()})
 
 $(".add-student-form .req").on('input', function() {validate($(this))});
 $(".add-student-form .req2").on('change', function() {validate($(this))});

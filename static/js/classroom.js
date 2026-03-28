@@ -1605,7 +1605,7 @@ async function getTimetab() {
                             <td style="min-width:120px;">
                                 <div class="input-con mon_row" style="margin-bottom:0px;">
                                     <select class="time-select">
-                                        <option value="" ${mon[j].id == '' ? 'selected' : ''}>Break</option>
+                                        <option value="0" ${mon[j].id == '0' ? 'selected' : ''}>Break</option>
                                         ${subjects_list.map(p => `
                                             <option value="${p.id}" ${mon[j].id == p.id ? 'selected' : ''}>${p.title}</option>
                                             `).join('')}
@@ -1616,7 +1616,7 @@ async function getTimetab() {
                             <td style="min-width:120px;">
                                 <div class="input-con tue_row" style="margin-bottom:0px;">
                                     <select class="time-select">
-                                        <option value="" ${tue[j].id == '' ? 'selected' : ''}>Break</option>
+                                        <option value="0" ${tue[j].id == '0' ? 'selected' : ''}>Break</option>
                                         ${subjects_list.map(p => `
                                             <option value="${p.id}" ${tue[j].id == p.id ? 'selected' : ''}>${p.title}</option>
                                             `).join('')}
@@ -1627,7 +1627,7 @@ async function getTimetab() {
                             <td style="min-width:120px;">
                                 <div class="input-con wed_row" style="margin-bottom:0px;">
                                     <select class="time-select">
-                                        <option value="" ${wed[j].id == '' ? 'selected' : ''}>Break</option>
+                                        <option value="0" ${wed[j].id == '0' ? 'selected' : ''}>Break</option>
                                         ${subjects_list.map(p => `
                                             <option value="${p.id}" ${wed[j].id == p.id ? 'selected' : ''}>${p.title}</option>
                                             `).join('')}
@@ -1638,7 +1638,7 @@ async function getTimetab() {
                             <td style="min-width:120px;">
                                 <div class="input-con thu_row" style="margin-bottom:0px;">
                                     <select class="time-select">
-                                        <option value="" ${thu[j].id == '' ? 'selected' : ''}>Break</option>
+                                        <option value="0" ${thu[j].id == '0' ? 'selected' : ''}>Break</option>
                                         ${subjects_list.map(p => `
                                             <option value="${p.id}" ${thu[j].id == p.id ? 'selected' : ''}>${p.title}</option>
                                             `).join('')}
@@ -1649,7 +1649,7 @@ async function getTimetab() {
                             <td style="min-width:120px;">
                                 <div class="input-con fri_row" style="margin-bottom:0px;">
                                     <select class="time-select">
-                                        <option value="" ${fri[j].id == '' ? 'selected' : ''}>Break</option>
+                                        <option value="0" ${fri[j].id == '0' ? 'selected' : ''}>Break</option>
                                         ${subjects_list.map(p => `
                                             <option value="${p.id}" ${fri[j].id == p.id ? 'selected' : ''}>${p.title}</option>
                                             `).join('')}

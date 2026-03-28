@@ -207,3 +207,40 @@ section {
             border: none;
             cursor: pointer;
         }
+        .input-con {
+            margin-bottom: 20px;
+          }
+          .input-con label {
+            display: block;
+            font-weight: 400;
+            margin-bottom: 5px
+          }
+          
+          input:not([type="radio"]),
+          select,
+          textarea {
+            display: inline-block;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            outline: none;
+            background: #fff;
+          }
+          input:not([type="submit"]):focus,
+          textarea:focus,
+          select:focus {
+            border: 1px solid var(--primary-color);
+            background: #fff;
+          }
+          input[type=submit] {
+            background: var(--primary-color);
+            color: #fff;
+            cursor: pointer;
+            padding: 10px 50px;
+            width: fit-content;
+          }
+          input[type=submit]:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+          }

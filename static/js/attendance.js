@@ -323,7 +323,7 @@ function markAttendance() {
                     pushNotification('n_error', data.message, 3000)
                 }
                 hideLoader()
-                //getAttendanceData()
+                getData()
                 getAttendance()
             },
             onError: (error) => {

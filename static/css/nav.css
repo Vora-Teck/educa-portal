@@ -288,8 +288,11 @@ body {
   .sidenav a > i {
     color: #fff;
   }
-  
-  .sidenav a:hover, .sidenav a.active {
+  .sidenav a:hover {
+    background: rgba(5, 109, 212, 0.1);
+    color: #000 !important;
+  }
+  .sidenav a.active {
     background: var(--primary-color);
     color: #fff !important;
   }
@@ -2526,6 +2529,114 @@ summary {
   .lightbox-content {
     width: 100%;
   }
+}
+
+.excel-input, .excel-select {
+  border: none;
+  width: 100%;
+  min-height: 100%;
+  padding: 5px 10px;
+  background: transparent;
+  outline: none;
+}
+td.editable { cursor: pointer; }
+    td.error { background-color: #ffe0e0; }
+    .valid { color: green; }
+    .invalid { color: red; }
+
+/* The container */
+.checkbox-con {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox-con input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  background-color: #eee;
+  border: 1px solid rgba(249, 115, 22, 0.5);
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox-con:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox-con input:checked ~ .checkmark {
+  background-color: #f97316;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-con input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-con .checkmark:after {
+  left: 7px;
+  top: 4px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.email-attachments {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.attach-item {
+  padding: 10px 15px;
+  background: rgba(236, 4, 4, 0.8);
+  color: #fff;
+}
+
+.time-form-body tr td {
+  width: fit-content;
+  padding: 5px !important
+}
+.time-form-body tr input,
+.time-form-body tr select {
+  background: transparent !important;
+  outline: none !important;
+  margin-bottom: 0 !important;
 }
 
 .n_error {background:red;color:#fff}

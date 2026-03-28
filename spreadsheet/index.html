@@ -22,51 +22,7 @@
     </head>
     <body>
         <main>
-            <img src="{{school.icon.url}}" alt="" />
-      
-  
-
-    <div class="tab-content">
-      {% for sheet in sheets %}
-        <div class="tab-pane {%if forloop.counter == 1%}active{%endif%} container" id="menu{{forloop.counter}}">
-            <h3 class="sheet-title">{{ sheet.name }}</h3>
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                <thead class="thead-dark">
-                    {% for header_row in sheet.headers %}
-                    <tr>
-                        {% for cell in header_row %}
-                        {% if cell.value %}
-                            <th
-                            {% if cell.colspan > 1 %} colspan="{{ cell.colspan }}"{% endif %}
-                            {% if cell.rowspan > 1 %} rowspan="{{ cell.rowspan }}"{% endif %}
-                            >{{ cell.value }}</th>
-                        {% else %}
-                            <!-- Render empty th to keep structure if needed -->
-                            <th
-                            {% if cell.colspan > 1 %} colspan="{{ cell.colspan }}"{% endif %}
-                            {% if cell.rowspan > 1 %} rowspan="{{ cell.rowspan }}"{% endif %}
-                            ></th>
-                        {% endif %}
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </thead>
             
-                <tbody>
-                    {% for row in sheet.rows %}
-                    <tr>
-                        {% for val in row %}
-                        <td>{{ val }}</td>
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                </table>
-            </div>
-        </div>
-      {% endfor %}
-    </div>
         </main>
 
     <div class="page-load">

@@ -18,7 +18,7 @@ async function getSchoolInfo() {
                 $("#s-expiry").val(datify(d.expiry_date));
                 $("#s-logo").attr('src', d.logo ? `${base_url}${d.logo}` : `/static/image/logo.png`)
                 //console.log(d.about)
-                initiateTiny('.html-text', d.about)
+                initiateTiny(false, '.html-text', d.about)
             },
             onError: (error) => {
                 console.error(error);
