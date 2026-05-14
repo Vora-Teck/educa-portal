@@ -349,6 +349,9 @@ function getTests() {
                                                     <i class="fa fa-check-circle"></i>&nbsp;Activate
                                                 </a>
                                             `}
+                                            <a class="dropdown-item emp-std-link" data-id="${e[i].id}" href="#">
+                                                <i class="fa fa-users"></i>&nbsp;View Students
+                                            </a>
                                             <a class="dropdown-item emp-score-link" data-id="${e[i].id}" href="#">
                                                 <i class="fa fa-list-alt"></i>&nbsp;View Scores
                                             </a>
@@ -374,8 +377,14 @@ function getTests() {
                         $('.emp-score-link').click(function(e) {
                             e.preventDefault();
                             let id = $(this).data('id');
-                            $(".score-side-con").addClass("active")
+                            //$(".score-side-con").addClass("active")
                             getScores(id)
+                        })
+                        $('.emp-std-link').click(function(e) {
+                            e.preventDefault();
+                            let id = $(this).data('id');
+                            $(".score-side-con").addClass("active")
+                            getExamStudents(id)
                         })
                         $('.emp-det-link').click(function(e) {
                             e.preventDefault();
@@ -522,6 +531,9 @@ function getExams() {
                                                     <i class="fa fa-check-circle"></i>&nbsp;Activate
                                                 </a>
                                             `}
+                                            <a class="dropdown-item emp-std-link2" data-id="${e[i].id}" href="#">
+                                                <i class="fa fa-users"></i>&nbsp;View Students
+                                            </a>
                                             <a class="dropdown-item emp-score-link2" data-id="${e[i].id}" href="#">
                                                 <i class="fa fa-list-alt"></i>&nbsp;View Scores
                                             </a>
@@ -547,8 +559,14 @@ function getExams() {
                         $('.emp-score-link2').click(function(e) {
                             e.preventDefault();
                             let id = $(this).data('id');
-                            $(".score-side-con").addClass("active")
+                            //$(".score-side-con").addClass("active")
                             getScores(id)
+                        })
+                        $('.emp-std-link2').click(function(e) {
+                            e.preventDefault();
+                            let id = $(this).data('id');
+                            $(".score-side-con").addClass("active")
+                            getExamStudents(id)
                         })
                         $('.emp-det-link2').click(function(e) {
                             e.preventDefault();
@@ -1374,6 +1392,110 @@ function showReport(report, user) {
     $(".score-report-con").addClass("active")
 }
 
+function getExamStudents(exam_id) {
+    $(".std-list").empty();
+    let loader = `<tr>
+        <td colspan="4" class="">
+        <i class="fa fa-spinner rotate"></i>&nbsp;&nbsp;&nbsp;Processing...
+        </td>
+    </tr>`;
+
+    $(".std-list").append(loader)
+    $(".update-std-con").addClass("active")
+    admin.exam.getExamStudents({
+        params: {exam_id},
+            onSuccess: (data) => {
+                $(".std-list").empty()
+                //console.log(data)
+                if(data.status == "success") {
+                    let d = data.data;
+
+                    $(".exam-name2").html(data.exam_title)
+                    $(".exam-id3").val(data.exam_id)
+
+                    for(let i in d) {
+                        let temp = `
+                            <tr>
+                                <td style="max-width:30px !important;">
+                                    <label class="checkbox-con">
+                                        <input type="checkbox" name="exam_std_ids" value="${d[i].id}" ${d[i].is_active ? `checked` : ``}>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td> 
+                                    <img class="w-circle" style="width:40px;height:40px;"
+                                    src="${d[i].image ? `${base_url}${d[i].image}` : `/static/image/avatar.png`}" alt="" />
+                                </td>
+                                <td>${d[i].name}</td>
+                                <td>${d[i].student_id}</td>
+                                <td>${d[i].classroom}</td>
+                            </tr>`;
+                            $('.std-list').append(temp)
+                    }
+                }
+                else {
+                    let temp = `<tr>
+                        <td colspan="4">
+                        ${data.message} <span class="w-text-red" onclick="getExamStudents(${exam_id})">click here </span>to try again
+                        </td>
+                    </tr>`;
+                    $('.std-list').html(temp)
+                }
+            },
+            onError: (error) => {
+                console.error(error)
+                let temp = `<tr>
+                        <td colspan="4">
+                        Error occurred.  Kindly check your internet connection and <span class="w-text-red" onclick="getExamStudents(${exam_id})">click here </span>to try again
+                        </td>
+                    </tr>`;
+                    $('.std-list').html(temp)
+            }
+    })
+}
+
+function updateExamStudents() {
+    let exam_id = $(".exam-id3").val()
+    let students_data = []
+    $("input[name='exam_std_ids']").map(function() {
+        let std_data = {
+            id: $(this).val(),
+            is_active: $(this).is(':checked')
+        }
+        students_data.push(std_data);
+    });
+    //console.log(students_data)
+    if(students_data.length == 0) {
+        pushNotification("n_warning", "No student has been selected", 5000);
+        return;
+    }
+
+    let formData = {exam_id, students_data}
+
+    //console.log(formData)
+    showLoader(`Updating data...`)
+
+    admin.exam.updateExamStudents({
+        formData: formData,
+        onSuccess: (data) => {
+            //console.log(data)
+            if(data.status == "success") {
+                pushNotification("n_success", data.message, 5000);
+                //getResults()
+            }
+            else {
+                pushNotification("n_error", data.message, 3000)
+            }
+            hideLoader()
+        },
+        onError: (error) => {
+            console.error(error);
+            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+            hideLoader()
+        }
+    })
+}
+
 /* =========== Result Section =============== */
 function getResults() {
     let page = $('#emp_page2').val();
@@ -1696,6 +1818,7 @@ $(".gen-essay-form").on('submit', function(e) {e.preventDefault();generateEssay(
 $(".update-essay-form").on('submit', function(e) {e.preventDefault();updateEssay()})
 $(".update-que-form").on('submit', function(e) {e.preventDefault();updateQuestion()})
 $(".delete-que-form").on('submit', function(e) {e.preventDefault();deleteQuestion()})
+$(".update-std-form").on('submit', function(e) {e.preventDefault();updateExamStudents()})
 $(".update-score-form").on('submit', function(e) {e.preventDefault();updateScores()})
 $(".result-act-form").on('submit', function(e) {e.preventDefault();resultActions()})
 $(".spread-form").on('submit', function(e) {e.preventDefault();spreadsheetActions()})

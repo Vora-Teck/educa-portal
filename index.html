@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- template -->
-  
   <!-- navigation bar -->
   <template id="sidenav">
     <div id="mySidenav" class="sidenav">
@@ -92,11 +90,12 @@
         <i class="fa fa-caret-right"></i>
       </a>
       
-
+      <!--
       <a href="/#subscription" class="sub-act">
         <span><img src="/static/icons/_ui-gift-02.svg" alt="">&nbsp;&nbsp;&nbsp;Subscription</span>
         <i class="fa fa-caret-right"></i>
       </a>
+      -->
 
       <a href="/#settings" class="setting-act">
         <span><img src="/static/icons/_ui-settings-02.svg" alt="">&nbsp;&nbsp;&nbsp;Settings</span>
@@ -2631,6 +2630,7 @@ showSchoolInfo()
             </div>
           </div>
 
+          <!--
           <div class="row mt-2">
             <div class="col-12 col-xs-12 col-sm-12 col-md-12 col lg-12 col-xl-12">
               <h3 class="mb-3">Subscription Information</h3>
@@ -2650,7 +2650,7 @@ showSchoolInfo()
               <input type="text" id="s-expiry" disabled readonly />
             </div>
           </div>
-
+          -->
           <div class="row mt-2">
             <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
               <input type="submit" value="Save Changes">
@@ -2862,7 +2862,7 @@ showSchoolInfo()
                   <li><span class="w-text-red w-bold">DO NOT</span> add the same bank card twice to avoid duplicate charges</li>
                   <li><span class="w-text-red w-bold">WE DO NOT</span> store your card information such as PIN and CVV to ensure privacy and security of our users.</li>
                   <li>All payments are automated and <span class="w-text-red w-bold">WE DO NOT</span> call our users to provide their card details either via phone calls or text messages, so <span class="w-text-red w-bold">BEWARE</span> of fraudulent activities.</li>
-                  <li>In case of insufficient balance, This card may be used to automate your payments such as expired subscriptions.</li>
+                  <li>In case of insufficient balance, This card may be used to automate your payments such as payroll payments.</li>
                 </ul>
 
                 <form class="add-card-form">
@@ -4497,6 +4497,51 @@ showSchoolInfo()
     </div>
   </div>
 
+  <div class="modal-con update-std-con">
+    <div class="modal-body" style="max-width:700px;">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-blue w-bold-x">
+          <b class="exam-name2"></b> Students
+        </div>
+      </div>
+      <form class="modal-content update-std-form">
+        <p class="">
+          <b>IMPORTANT NOTE:</b>
+        </p>
+        <ul class="w-padding-left">
+          <li>The list below shows the list of students in the classrooms for the selected exam/test.</li>
+          <li>A marked student indicates that the student is currently registered for the exam/test.</li>
+          <li>You can also manually register/de-register a student by marking/um-marking as the case may be.</li>
+          <li>This is paticularly useful for optional subjects such as CRS/IRS where only a part of the students in the class offer the subject.</li>
+        </ul>
+        <div class="table-responsive">
+          <table class="table staff-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Image</th>
+                <th>Student Name</th>
+                <th>Student ID</th>
+                <th>Classroom</th>
+              </tr>
+            </thead>
+            <tbody class="std-list">
+            </tbody>
+          </table>
+        </div>
+  
+
+        <input type="hidden" class="exam-id3">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn12">Cancel</button>
+          <input type="submit" value="Update Data">
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div class="modal-con small-con score-report-con">
     <div class="modal-body" style="max-width:500px !important">
       <div class="close-modal">X</div>
@@ -4997,6 +5042,10 @@ showSchoolInfo()
     $(".canc-btn11").click(function(e) {
         e.preventDefault();
         $(".gen-essay-con").removeClass('active')
+    })
+    $(".canc-btn12").click(function(e) {
+        e.preventDefault();
+        $(".update-std-con").removeClass('active')
     })
     
 
@@ -6760,9 +6809,11 @@ showSchoolInfo()
       <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#home">Transactions</a>
       </li>
+      <!--
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#menu1">Subscriptions</a>
       </li>
+      -->
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
@@ -6844,7 +6895,7 @@ showSchoolInfo()
           </div>
         </div>
       </div>
-
+      <!--
       <div class="tab-pane container" id="menu1">
         
         <div class="w-padding">
@@ -6918,7 +6969,7 @@ showSchoolInfo()
         </div>
 
       </div>
-
+      -->
 
     </div>
 
@@ -8236,7 +8287,7 @@ showSchoolInfo()
             <div class="col-12 col-xs-12 col-sm-12 col-md-12 col lg-12 col-xl-12">
               <h3 class="mb-3">School Configurations</h3>
             </div>
-
+            <!--
             <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
               <label for="st-fname"><span class="w-text-red">*</span> Subscription Auto Renewal</label>
               <div class="w-small w-text-gray"><i>
@@ -8249,6 +8300,7 @@ showSchoolInfo()
                 <option value="false">Disabled</option>
               </select>
             </div>
+            -->
 
             <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
               <label for="st-fname"><span class="w-text-red">*</span> Auto Payroll</label>
@@ -8298,7 +8350,7 @@ showSchoolInfo()
                 If the PC used by the student does not have a front camera, the verification step will be skipped. 
               </i></div>
               <select id="config-cbt">
-                <option value="true">Enabled</option>
+                <option value="true" disabled>Enabled</option>
                 <option value="false">Disabled</option>
               </select>
             </div>
@@ -9621,9 +9673,11 @@ showSchoolInfo()
 <template route="/messages">
   <?use-template: "messages"?>
 </template>
+<!--
 <template route="/subscription">
   <?use-template: "subscription"?>
 </template>
+-->
 <template route="/settings">
   <?use-template: "settings"?>
 </template>

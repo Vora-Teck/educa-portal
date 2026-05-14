@@ -4,7 +4,6 @@ var terms = {1: "First Term", 2: "Second Term", 3: "Third Term", 4: "Fourth Term
 
 showLoader("Loading Data...")
 
-
 async function setTerm() {
     let data = JSON.parse(sessionStorage.eduka_attendance_data)
     var session = $("#session-filter").val();
