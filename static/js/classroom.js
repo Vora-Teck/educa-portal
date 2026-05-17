@@ -1374,7 +1374,7 @@ function generateFile(topic_id) {
                 pushNotification("n_success", data.message, 5000);
                 let d = data.data;
                 downloadFile(d)
-                getTopics(syllabus_id)
+                //getTopics(syllabus_id)
             }
             else {
                 pushNotification("n_error", data.message, 3000)
