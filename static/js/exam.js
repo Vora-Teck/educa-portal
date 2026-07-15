@@ -1619,7 +1619,7 @@ function getResults() {
         },
         onError: (error) => {
                 console.error(error);
-                $('.exam-list').empty()
+                $('.result-list').empty()
                 pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
         }
   })
