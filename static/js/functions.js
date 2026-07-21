@@ -8,6 +8,58 @@ const base_url = educaSDK.BASE_URL;
 /* Navigation bar */
 /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
 //localStorage.removeItem('api_key')
+
+// ============ utility functions ================
+var available_routes = [
+  "#signin", "#forgot-password", "#signup",
+  "#dashboard", "#staff", "#students", "#school", "#classes", 
+  "#student_attendance", "#exams", "#staff_attendance", "#calendar",
+  "#fees", "#transactions", "#payroll", "#notifications", "#messages", 
+  "#settings", "#subscription", "#customer_support", "#analytics",
+]
+function getHash() {
+  let pathname = window.location.pathname;
+  let default_hash = pathname === "/login/" ? "#signin" : '#dashboard'
+  return window.location.hash || default_hash;
+}
+// Hash Routing System
+function showSection(hash) {
+  //console.log(hash)
+  $('.main').empty();
+  $(".sidenav a").removeClass('active')
+  let html_content = $(`template${hash}`).html();
+  $('.main').html(html_content)
+}
+
+async function navigateTo(hash) {
+  window.location.hash = hash;
+  await changeHash()
+}
+
+// Handle hash changes
+async function changeHash() {
+  let pathname = window.location.pathname;
+  let default_hash = pathname === "/login/" ? "#signin" : '#dashboard'
+  let hash = window.location.hash || default_hash;
+  if(!available_routes.includes(hash)) {
+    hash = "#404"
+  }
+  showSection(hash);
+}
+window.onhashchange = changeHash;
+window.changeHash = changeHash;
+
+$(document).ready(async () => {
+  //console.log(getHash())
+  if(getHash() == "#" || getHash() == "") {
+    await navigateTo("#dashboard");
+  }
+  else {
+    await navigateTo(getHash())
+  }
+})
+
+
 function openNav() {
     $(".sidenav").toggleClass('active');
     $("main").toggleClass('active');

@@ -16,7 +16,6 @@
     <link rel="stylesheet" type="text/css" href="/static/css/login.css">
 
     <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/module/swif.js"></script>
     <script src="/static/module/educa-admin-sdk.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/owl.carousel.min.js"></script>
@@ -25,7 +24,7 @@
     <script src="/dist/semantic.min.js"></script> 
     <title>Educa Admin - Login</title>
 
-    <template id="login_page">
+    <template id="signin">
         <div class="row">
             <div class="carou col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-4">
                 
@@ -83,12 +82,11 @@
         </div>
 
         
-    <script src="/static/js/login.js"></script>
-    <script>
-    </script>
+        <script src="/static/js/login.js"></script>
+    
     </template>
 
-    <template id="forgot_page">
+    <template id="forgot-password">
         <div class="row">
             <div class="carou col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-4">
                 
@@ -124,14 +122,12 @@
     
             </div>
         </div>
-
-        
-    <script src="/static/js/login.js"></script>
-    <script>
-    </script>
+ 
+        <script src="/static/js/login.js"></script>
+  
     </template>
 
-    <template id="register_page">
+    <template id="signup">
         <div class="row">
             <div class="carou col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-4">
                 
@@ -505,35 +501,41 @@
             </div>
         </div>
 
-        
-    <script src="/static/js/signup.js"></script>
-    <script>
-        $("#verify-btn").click(function(e) {
-            e.preventDefault();
-            checkSchoolName()
-        })
-        $("#otp-btn").click(function(e) {
-            e.preventDefault();
-            getOTP()
-        })
-    </script>
+        <script src="/static/js/signup.js"></script>
+        <script>
+            $("#verify-btn").click(function(e) {
+                e.preventDefault();
+                checkSchoolName()
+            })
+            $("#otp-btn").click(function(e) {
+                e.preventDefault();
+                getOTP()
+            })
+        </script>
     </template>
 
-    <template route="/">
-        <?use-template: "login_page"?>
-      </template>
-      <template route="/forgot-password">
-        <?use-template: "forgot_page"?>
-      </template>
-      <template route="/signup">
-        <?use-template: "register_page"?>
-      </template>
+    <template id="404">
+  
 
-    <script>
-        var on = XJSX.event.on,
-        emit = XJSX.event.emit;
-        emit("hashchange");
-        </script>
+    <main class="">
+      <?use-template: "header"?>
+      <div class="pusher w-white">
+        <div class="ui  vertical masthead center aligned segment">
+          <img src="/static/logos/warning.png" alt="" style="width: 200px; height:auto;">
+          <h1>Error 404: Page Not Found</h1>
+          <div class="ui message warning" style="margin:1em;">
+            <h2 class="header"><?print: hash?></h2>
+            <p>
+              This path is either hidden or unavailable at the moment.
+              <br />
+            G back to <a href="/#">Home</a>
+          </p>
+        </div>
+      </div>
+    </main>
+    
+</template>
+
 </head>
 <body>
     <div class="page-load">
@@ -546,19 +548,9 @@
 
     <script src="/static/js/functions.js"></script>
 
-    <?on: "hashchange"?>
+      <section class="main">
 
-<?eval:
-"var hash=location.hash
-hash=hash.replace(/^\/?#\/?|^/img,'/')
-var page=document.querySelector(`template[route='${hash}']`)||'404';"?>
-
-<?use-template: page?>
-<?end?>
-    
-
-
-    
+      </section>
     
 </body>
 </html>

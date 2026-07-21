@@ -1,141 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- navigation bar -->
-  <template id="sidenav">
-    <div id="mySidenav" class="sidenav">
-      <div class="logo">
-        <img src="/static/icons/Vector 1 (1).svg" id="site-logo" class="site-logo" alt="">
-        <div>
-          <div class="h5 w-bold-x site-title"></div>
-          <small><i id="site-motto"></i></small>
-        </div>
-      </div>
-
-      <a href="javascript:void(0)" class="closebtn" onclick="openNav()">&times;</a>
-      
-      <a href="/#" class="dash-act">
-        <span><i class="fa fa-th-large"></i>&nbsp;&nbsp;&nbsp;Dashboard</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      <a href="/#staff" class="staff-act">
-        <span><img src="/static/icons/_ui-users-03.svg" alt="">&nbsp;&nbsp;&nbsp;Staff Management</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      <a href="/#students" class="student-act">
-        <span><img src="/static/icons/_ui-users-01.svg" alt="">&nbsp;&nbsp;&nbsp;Student Management</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      <a href="/#school" class="school-act">
-        <span><i class="fa fa-building"></i>&nbsp;&nbsp;&nbsp;School Management</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      <a href="/#classes" class="class-act">
-        <span><img src="/static/icons/_ui-stand.svg" alt="">&nbsp;&nbsp;&nbsp;Class & Subject</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      <a href="/#exams" class="exam-act">
-        <span><img src="/static/icons/_ui-file-check-03.svg" alt="">&nbsp;&nbsp;&nbsp;Exam & Result</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      <a href="/#student_attendance" class="attend-act">
-        <span><img src="/static/icons/_ui-file-check-02.svg" alt="">&nbsp;&nbsp;&nbsp;Student Attendance</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      <a href="/#staff_attendance" class="sattend-act">
-        <span><img src="/static/icons/_ui-file-check-02.svg" alt="">&nbsp;&nbsp;&nbsp;Staff Attendance</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      <a href="/#calendar" class="event-act">
-        <span><img src="/static/icons/_ui-calendar-heart-01.svg" alt="">&nbsp;&nbsp;&nbsp;Calendar & Events</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      <a href="/#fees" class="fees-act">
-        <span><img src="/static/icons/_ui-bank-note-01c.svg" alt="">&nbsp;&nbsp;&nbsp;Fees & Payments</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      <a href="/#transactions" class="trans-act">
-        <span><i class="fa fa-bank"></i>&nbsp;&nbsp;&nbsp;Transactions</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      <a href="/#payroll" class="payroll-act">
-        <span><img src="/static/icons/_ui-file-03.svg" alt="">&nbsp;&nbsp;&nbsp;Payroll</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      
-      <a href="/#messages" class="comm-act">
-        <span><img src="/static/icons/_ui-message-text-square-02.svg" alt="">&nbsp;&nbsp;&nbsp;Communication Tools</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-      <!--
-      <a href="/#id_card" class="id-act">
-        <span><img src="/static/icons/_ui-face-id.svg" alt="">&nbsp;&nbsp;&nbsp;ID Card Management</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-      -->
-      <a href="/#analytics" class="report-act">
-        <span><img src="/static/icons/_ui-bar-chart-07.svg" alt="">&nbsp;&nbsp;&nbsp;AI Reports & Analytics</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-      
-      <!--
-      <a href="/#subscription" class="sub-act">
-        <span><img src="/static/icons/_ui-gift-02.svg" alt="">&nbsp;&nbsp;&nbsp;Subscription</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-      -->
-
-      <a href="/#settings" class="setting-act">
-        <span><img src="/static/icons/_ui-settings-02.svg" alt="">&nbsp;&nbsp;&nbsp;Settings</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      <a href="/#notifications" class="note-act">
-        <span><i class="fa fa-bell"></i>&nbsp;&nbsp;&nbsp;Notifications</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-
-      <a href="/#customer_support" class="sup-act">
-        <span><i class="fa fa-headphones"></i>&nbsp;&nbsp;&nbsp;Customer Support</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-      
-      <a href="#" class="w-text-red logout-btn">
-        <span><i class="fa fa-power-off"></i>&nbsp;&nbsp;&nbsp;Logout</span>
-        <i class="fa fa-caret-right"></i>
-      </a>
-      <br><br><br><br>
-
-      <div class="logo mb-0">
-        <img src="/static/icons/Vector 1 (1).svg" class="site-logo" alt="">
-        <div>
-          <div class="h4 w-bold-x" style="color:var(--primary-color)">Eduka</div>
-          <div class="w-small w-text-gray">All Rights Reserved</div>
-        </div>
-      </div>
-    </div>
-    <script src="/static/js/login.js"></script>
-    <script>
-      
-      $('.logout-btn').click(function(e) {
-        e.preventDefault();
-        logout();
-      })
-showSchoolInfo()
-    </script>
-  </template>
+  <!-- Standard Meta -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <!-- Site Properties -->
+  <title>Eduka Admin - Dashboard</title>
+  <link rel="shortcut icon" href="/static/logos/icon.png" />
+  <link rel="shortcut" href="/static/logos/icon.png" />
+  <link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/rigan.css">
+  <link rel="stylesheet" type="text/css" href="./static/themes/w-theme-blue.css">
+  <link rel="stylesheet" type="text/css" href="./dist/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/toastify.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/sweetalert.min.css">
+  <link rel="stylesheet" href="/static/css/owl.carousel.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/nav.css">
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/popper.min.js"></script>
+  <script src="/static/js/marked.min.js"></script>
+  <script src="/static/module/educa-admin-sdk.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+  <script src="/static/js/owl.carousel.min.js"></script>
+  <script src="/static/js/toastify.min.js"></script>
+  <script src="/static/js/sweetalert.min.js"></script>
+  <script src="/dist/semantic.min.js"></script>
+  <script src="/static/tinymce/tinymce.min.js"></script>
+                                             
+  <script src="/static/js/apexcharts.js"></script>  
+  
 
   <!-- header -->
   <template id="header">
@@ -171,6 +66,11 @@ showSchoolInfo()
 
         <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
       </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
     </header>
 
     <div class="plan-alert2">
@@ -179,20 +79,59 @@ showSchoolInfo()
     <div class="veri-alert2">
       
     </div>
-    <script>
-      showUserInfo()
-      showHeaderInfo()
-    </script>
     
   </template>
 
   <!-- for large screen navigation -->
   <template id="dashboard">
     
-    <?use-template: "sidenav"?>
     <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
     <main class="">
-      <?use-template: "header"?>
+      <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
       <div class="alert-note alert alert-danger">
         <i class="fa fa-warning"></i> Click <a class="w-text-blue" href="/#company_profile">here</a> to add company details.
       </div>
@@ -362,7 +301,7 @@ showSchoolInfo()
 
 <template id="staff">
     
-  <?use-template: "sidenav"?>
+  
 
   <div class="modal-con modal-top add-staff-con">
     <div class="modal-body">
@@ -1015,7 +954,51 @@ showSchoolInfo()
 
   <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
     <div class="w-padding">
       <div class="row mt-2 w-white">
@@ -1213,7 +1196,7 @@ showSchoolInfo()
 
 <template id="students">
     
-  <?use-template: "sidenav"?>
+  
 
   <div class="modal-con modal-top add-student-con">
     <div class="modal-body">
@@ -1914,7 +1897,51 @@ showSchoolInfo()
 
   <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
     <div class="w-padding">
       <div class="row mt-2 w-white">
@@ -2197,7 +2224,7 @@ showSchoolInfo()
 </template>
 
 <template id="school">
-  <?use-template: "sidenav"?>
+  
 
   <div class="modal-con delete-card-con">
     <div class="modal-body" style="max-width:500px !important">
@@ -2494,7 +2521,51 @@ showSchoolInfo()
 
 
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
     <div class="dash-menu">
       <div class="dash-box w-white w-round">
@@ -3027,7 +3098,7 @@ showSchoolInfo()
 </template>
 
 <template id="classes">
-  <?use-template: "sidenav"?>
+  
   <!-- Classroom Modals -->
   <div class="modal-con modal-top small-con add-class-con">
     <div class="modal-body">
@@ -3600,7 +3671,51 @@ showSchoolInfo()
   </div>
 
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
     <div class="dash-menu">
       <div class="dash-box w-white w-round">
@@ -4029,7 +4144,7 @@ showSchoolInfo()
 </template>
 
 <template id="exams">
-  <?use-template: "sidenav"?>
+  
 
   <!-- Question -->
 
@@ -4592,7 +4707,51 @@ showSchoolInfo()
   </div>
 
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
     <div class="dash-menu">
       <div class="dash-box w-white w-round">
@@ -5058,7 +5217,7 @@ showSchoolInfo()
 </template>
 
 <template id="student_attendance">
-  <?use-template: "sidenav"?>
+  
 
   <!-- Curriculum Modals -->
 
@@ -5155,7 +5314,51 @@ showSchoolInfo()
 
 
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
     <div class="dash-menu">
       <div class="dash-box w-white w-round">
@@ -5367,7 +5570,7 @@ showSchoolInfo()
 </template>
 
 <template id="staff_attendance">
-  <?use-template: "sidenav"?>
+  
 
   <!-- Curriculum Modals -->
 
@@ -5464,7 +5667,51 @@ showSchoolInfo()
 
 
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
 
     <!-- Nav tabs -->
@@ -5614,7 +5861,7 @@ showSchoolInfo()
 </template>
 
 <template id="calendar">
-  <?use-template: "sidenav"?>
+  
 
   <!-- Event Modals -->
   <div class="modal-con modal-top small-con add-event-con">
@@ -5906,7 +6153,51 @@ showSchoolInfo()
 
 
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
     <div class="dash-menu">
       <div class="dash-box w-white w-round">
@@ -6186,7 +6477,7 @@ showSchoolInfo()
 </template>
 
 <template id="fees">
-  <?use-template: "sidenav"?>
+  
 
   <!-- Event Modals -->
   <div class="modal-con modal-top small-con add-fees-con">
@@ -6380,7 +6671,51 @@ showSchoolInfo()
 
 
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
     <div class="dash-menu">
       <div class="dash-box w-white w-round">
@@ -6597,7 +6932,7 @@ showSchoolInfo()
 </template>
 
 <template id="transactions">
-  <?use-template: "sidenav"?>
+  
 
   <!-- Event Modals -->
 
@@ -6802,7 +7137,51 @@ showSchoolInfo()
 
 
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs class-tabs">
@@ -7039,7 +7418,7 @@ showSchoolInfo()
 </template>
 
 <template id="payroll">
-  <?use-template: "sidenav"?>
+  
 
   <!-- Event Modals -->
 
@@ -7320,7 +7699,51 @@ showSchoolInfo()
 
 
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs class-tabs">
@@ -7566,7 +7989,7 @@ showSchoolInfo()
 </template>
 
 <template id="messages">
-  <?use-template: "sidenav"?>
+  
 
   <!-- Event Modals -->
   <div class="modal-con modal-top small-con add-memo-con">
@@ -7714,7 +8137,51 @@ showSchoolInfo()
 
 
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs class-tabs">
@@ -7837,7 +8304,7 @@ showSchoolInfo()
 
 <!-- for subscription -->
 <template id="subscription">
-  <?use-template: "sidenav"?>
+  
 
   <div class="modal-con modal-top create-plan-con">
     <div class="modal-body" style="max-width:500px">
@@ -7936,7 +8403,51 @@ showSchoolInfo()
   </div>
 
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
     <div class="alert alert-info plan-alert">
       
     </div>
@@ -8122,7 +8633,7 @@ showSchoolInfo()
 </template>
 
 <template id="settings">
-  <?use-template: "sidenav"?>
+  
 
   <!-- The Modal -->
   <div id="lightbox" class="lightbox">
@@ -8198,7 +8709,51 @@ showSchoolInfo()
   </div>
 
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs class-tabs">
@@ -8541,7 +9096,7 @@ showSchoolInfo()
 </template>
 
 <template id="customer_support">
-  <?use-template: "sidenav"?>
+  
 
   <!-- Event Modals -->
   <div class="modal-con modal-top add-ticket-con">
@@ -8642,7 +9197,51 @@ showSchoolInfo()
 
 
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
     <div class="dash-menu">
       <div class="dash-box w-white w-round">
@@ -8913,10 +9512,54 @@ showSchoolInfo()
 
 <template id="analytics">
     
-  <?use-template: "sidenav"?>
+  
   <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
     <div class="alert-note alert alert-danger">
       <i class="fa fa-warning"></i> Click <a class="w-text-blue" href="/#company_profile">here</a> to add company details.
     </div>
@@ -9462,7 +10105,7 @@ showSchoolInfo()
 
 
 <template id="notifications">
-  <?use-template: "sidenav"?>
+  
 
   <div class="modal-con note-info-con">
     <div class="modal-body" style="max-width:500px !important">
@@ -9505,7 +10148,51 @@ showSchoolInfo()
 
 
   <main class="">
-    <?use-template: "header"?>
+    <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
 
     <div class="w-padding row mt-2 w-white">
             <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -9578,10 +10265,54 @@ showSchoolInfo()
 
 <!-- Sample Template -->
 <template id="">
-    <?use-template: "sidenav"?>
+    
 
     <main class="">
-      <?use-template: "header"?>
+      <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
     </main>
     
     <script src="/static/js/file.js"></script>
@@ -9611,10 +10342,54 @@ showSchoolInfo()
 
   <!-- error 404 page -->
   <template id="404">
-  <?use-template: "sidenav"?>
+  
 
     <main class="">
-      <?use-template: "header"?>
+      <header>
+      <div class="h4 w-bold-x page-name"></div>
+
+      <div class="side-content">
+
+        <a title="Customer Support" href="/#customer_support" class="comm-icon">
+          <i class="fa fa-headphones"></i>
+        </a>
+        <a title="Notifications" href="/#notifications">
+          <i class="fa fa-bell-o"></i>
+          <!--
+          <span class="count">0</span>
+          -->
+        </a>
+        
+        <div class="admin-pro w-margin-right">
+          <img src="/static/image/avatar.png" alt="" class="admin-img" />
+          <div class="admin-name">
+            <span class="w-bold-x admin-user"></span><br>
+            <small class="w-bold">Admin</small>
+          </div>
+          <div class="dropdown">
+            <i class="fa fa-chevron-down dropdown-toggle w-text-gray" data-toggle="dropdown"></i>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/#settings"><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="/#school"><i class="fa fa-credit-card"></i>&nbsp;&nbsp;Wallet</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="opennav" onclick="openNav()"><i class="fa fa-navicon"></i></div>
+      </div>
+
+      <script>
+        showUserInfo()
+      showHeaderInfo()
+      </script>
+    </header>
+
+    <div class="plan-alert2">
+      
+    </div>
+    <div class="veri-alert2">
+      
+    </div>
       <div class="pusher w-white">
         <div class="ui  vertical masthead center aligned segment">
           <img src="/static/logos/warning.png" alt="" style="width: 200px; height:auto;">
@@ -9631,108 +10406,7 @@ showSchoolInfo()
     </main>
     
 </template>
-
-<!-- Routes -->
-<!-- homepage -->
-<template route="/">
-  <?use-template: "dashboard"?>
-</template>
-<template route="/staff">
-  <?use-template: "staff"?>
-</template>
-<template route="/students">
-  <?use-template: "students"?>
-</template>
-<template route="/school">
-  <?use-template: "school"?>
-</template>
-<template route="/classes">
-  <?use-template: "classes"?>
-</template>
-<template route="/exams">
-  <?use-template: "exams"?>
-</template>
-<template route="/student_attendance">
-  <?use-template: "student_attendance"?>
-</template>
-<template route="/staff_attendance">
-  <?use-template: "staff_attendance"?>
-</template>
-<template route="/calendar">
-  <?use-template: "calendar"?>
-</template>
-<template route="/fees">
-  <?use-template: "fees"?>
-</template>
-<template route="/transactions">
-  <?use-template: "transactions"?>
-</template>
-<template route="/payroll">
-  <?use-template: "payroll"?>
-</template>
-<template route="/messages">
-  <?use-template: "messages"?>
-</template>
-<!--
-<template route="/subscription">
-  <?use-template: "subscription"?>
-</template>
--->
-<template route="/settings">
-  <?use-template: "settings"?>
-</template>
-<template route="/customer_support">
-  <?use-template: "customer_support"?>
-</template>
-<template route="/analytics">
-  <?use-template: "analytics"?>
-</template>
-<template route="/notifications">
-  <?use-template: "notifications"?>
-</template>
-
-<!-- Standard Meta -->
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
-<!-- Site Properties -->
-<title>Eduka Admin - Dashboard</title>
-<link rel="shortcut icon" href="/static/logos/icon.png" />
-    <link rel="shortcut" href="/static/logos/icon.png" />
-<link rel="stylesheet" type="text/css" href="./static/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="./static/css/fontawesome.css">
-<link rel="stylesheet" type="text/css" href="./static/css/rigan.css">
-<link rel="stylesheet" type="text/css" href="./static/themes/w-theme-blue.css">
-<link rel="stylesheet" type="text/css" href="./dist/semantic.min.css">
-<link rel="stylesheet" type="text/css" href="/static/css/toastify.min.css">
-<link rel="stylesheet" type="text/css" href="./static/css/sweetalert.min.css">
-<link rel="stylesheet" href="/static/css/owl.carousel.min.css">
-<link rel="stylesheet" type="text/css" href="./static/css/nav.css">
-<script src="/static/js/jquery.min.js"></script>
-<script src="/static/js/popper.min.js"></script>
-<script src="/static/js/marked.min.js"></script>
-    <script src="/static/module/swif.js"></script>
-    <script src="/static/module/educa-admin-sdk.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/owl.carousel.min.js"></script>
-    <script src="/static/js/toastify.min.js"></script>
-    <script src="/static/js/sweetalert.min.js"></script>
-    <script src="/dist/semantic.min.js"></script>
-    <script src="/static/tinymce/tinymce.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
-                                             
-<script src="/static/js/apexcharts.js"></script>                                      
-
-<script>
-var on = XJSX.event.on,
-emit = XJSX.event.emit;
-emit("hashchange");
-</script>
-
-<style type="text/css">
-
-</style>
+                                
 </head>
 <body>
   <div class="page-load">
@@ -9744,15 +10418,145 @@ emit("hashchange");
 
   <script src="/static/js/functions.js"></script>
 
-<?on: "hashchange"?>
+  <section class="section">
+    <div id="mySidenav" class="sidenav">
+      <div class="logo">
+        <img src="/static/icons/Vector 1 (1).svg" id="site-logo" class="site-logo" alt="">
+        <div>
+          <div class="h5 w-bold-x site-title"></div>
+          <small><i id="site-motto"></i></small>
+        </div>
+      </div>
 
-<?eval:
-"var hash=location.hash
-hash=hash.replace(/^\/?#\/?|^/img,'/')
-var page=document.querySelector(`template[route='${hash}']`)||'404';"?>
+      <a href="javascript:void(0)" class="closebtn" onclick="openNav()">&times;</a>
+      
+      <a href="/#" class="dash-act">
+        <span><i class="fa fa-th-large"></i>&nbsp;&nbsp;&nbsp;Dashboard</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
 
-<?use-template: page?>
-<?end?>
+      <a href="/#staff" class="staff-act">
+        <span><img src="/static/icons/_ui-users-03.svg" alt="">&nbsp;&nbsp;&nbsp;Staff Management</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      <a href="/#students" class="student-act">
+        <span><img src="/static/icons/_ui-users-01.svg" alt="">&nbsp;&nbsp;&nbsp;Student Management</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      <a href="/#school" class="school-act">
+        <span><i class="fa fa-building"></i>&nbsp;&nbsp;&nbsp;School Management</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      <a href="/#classes" class="class-act">
+        <span><img src="/static/icons/_ui-stand.svg" alt="">&nbsp;&nbsp;&nbsp;Class & Subject</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      <a href="/#exams" class="exam-act">
+        <span><img src="/static/icons/_ui-file-check-03.svg" alt="">&nbsp;&nbsp;&nbsp;Exam & Result</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      <a href="/#student_attendance" class="attend-act">
+        <span><img src="/static/icons/_ui-file-check-02.svg" alt="">&nbsp;&nbsp;&nbsp;Student Attendance</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      <a href="/#staff_attendance" class="sattend-act">
+        <span><img src="/static/icons/_ui-file-check-02.svg" alt="">&nbsp;&nbsp;&nbsp;Staff Attendance</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      <a href="/#calendar" class="event-act">
+        <span><img src="/static/icons/_ui-calendar-heart-01.svg" alt="">&nbsp;&nbsp;&nbsp;Calendar & Events</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      <a href="/#fees" class="fees-act">
+        <span><img src="/static/icons/_ui-bank-note-01c.svg" alt="">&nbsp;&nbsp;&nbsp;Fees & Payments</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      <a href="/#transactions" class="trans-act">
+        <span><i class="fa fa-bank"></i>&nbsp;&nbsp;&nbsp;Transactions</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      <a href="/#payroll" class="payroll-act">
+        <span><img src="/static/icons/_ui-file-03.svg" alt="">&nbsp;&nbsp;&nbsp;Payroll</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      
+      <a href="/#messages" class="comm-act">
+        <span><img src="/static/icons/_ui-message-text-square-02.svg" alt="">&nbsp;&nbsp;&nbsp;Communication Tools</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+      <!--
+      <a href="/#id_card" class="id-act">
+        <span><img src="/static/icons/_ui-face-id.svg" alt="">&nbsp;&nbsp;&nbsp;ID Card Management</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+      -->
+      <a href="/#analytics" class="report-act">
+        <span><img src="/static/icons/_ui-bar-chart-07.svg" alt="">&nbsp;&nbsp;&nbsp;AI Reports & Analytics</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+      
+      <!--
+      <a href="/#subscription" class="sub-act">
+        <span><img src="/static/icons/_ui-gift-02.svg" alt="">&nbsp;&nbsp;&nbsp;Subscription</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+      -->
+
+      <a href="/#settings" class="setting-act">
+        <span><img src="/static/icons/_ui-settings-02.svg" alt="">&nbsp;&nbsp;&nbsp;Settings</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      <a href="/#notifications" class="note-act">
+        <span><i class="fa fa-bell"></i>&nbsp;&nbsp;&nbsp;Notifications</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+
+      <a href="/#customer_support" class="sup-act">
+        <span><i class="fa fa-headphones"></i>&nbsp;&nbsp;&nbsp;Customer Support</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+      
+      <a href="#" class="w-text-red logout-btn">
+        <span><i class="fa fa-power-off"></i>&nbsp;&nbsp;&nbsp;Logout</span>
+        <i class="fa fa-caret-right"></i>
+      </a>
+      <br><br><br><br>
+
+      <div class="logo mb-0">
+        <img src="/static/icons/Vector 1 (1).svg" class="site-logo" alt="">
+        <div>
+          <div class="h4 w-bold-x" style="color:var(--primary-color)">Eduka</div>
+          <div class="w-small w-text-gray">All Rights Reserved</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main"></div>
+    
+  </section>
+
+  <script src="/static/js/login.js"></script>
+  <script>
+      
+      $('.logout-btn').click(function(e) {
+        e.preventDefault();
+        logout();
+      })
+      showSchoolInfo()
+      
+  </script>
 
 </body>
 </html>                                                                                                                                               
