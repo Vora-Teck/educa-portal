@@ -1,15 +1,19 @@
 var months = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
 
 
-function getData() {
+async function getData() {
 
     showLoader("Loading Data...")
-  
-    admin.school.schoolData({
-        params: {page: "staff"},
-        onSuccess: (data) => {
-                //console.log(data);
-                if(data.status == 'success') {
+
+    let params = {page: "staff"}
+
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.school.schoolData",
+        params, fetcher: admin.school.schoolData
+        })
+
+        if(data.status == 'success') {
                     let d = data.data;
                     $("#pry-f").text(digify(d.primary.female, false))
                     $("#pry-m").text(digify(d.primary.male, false))
@@ -27,23 +31,25 @@ function getData() {
                         pushNotification("n_error", data.message, 3000)
                 }
                 hideLoader()
-        },
-        onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                hideLoader()
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
   }
 
   getData()
 
 
-  function getClassrooms() {
-    admin.classroom.getClassrooms({
-            onSuccess: (data) => {
-                //console.log(data)
-                let d = data.data
+async function getClassrooms() {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.classroom.getClassrooms",
+        fetcher: admin.classroom.getClassrooms
+        })
+
+        let d = data.data
                 $(".class-filter").empty().append(`<option value="" selected>All Classes</option>`)
                 $("#st-class").empty().append(`<option value="" selected>Select class</option>`)
                     for(let i in d) {
@@ -51,13 +57,15 @@ function getData() {
                             $(".class-filter").append(temp)
                             $("#st-class").append(temp)
                     }
-            },
-            onError: (error) => console.error(error)
-    })
+    }
+    catch(error) {
+        console.error(error);
+    }
+
 }
 getClassrooms()
 
-function getStaff() {
+async function getStaff() {
     let page = $('#emp_page').val();
     let pagesize = 20;
     let search = $('#emp_search').val();
@@ -70,11 +78,15 @@ function getStaff() {
     </tr>`;
     $('.staff-list').append(loader)
 
-    admin.staff.staffList({
-        params: {page, pagesize, search},
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.staff-list').empty()
+    let params = {page, pagesize, search}
+
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.staff.staffList",
+        params, fetcher: admin.staff.staffList
+        })
+
+        $('.staff-list').empty()
                 if(data.status == 'success') {
                     let pages = data.total_pages
                     let count = data.total_count;
@@ -178,24 +190,27 @@ function getStaff() {
                         </tr>`;
                     $('.staff-list').append(temp)
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.staff-list').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.staff-list').empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 getStaff()
 
 
-function getTeacher(id) {
+async function getTeacher(id) {
     showLoader("Getting staff data...")
-    admin.staff.staffList({
-        params: {staff_id: id},
-        onSuccess: (data) => {
-            //console.log(data);
+    let params = {staff_id: id}
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.staff.staffList",
+        params, fetcher: admin.staff.staffList
+        })
+
+        //console.log(data);
             if(data.status == 'success') {
                 if(data.status == 'success') {
                     $(".sta-side-con").addClass("active")
@@ -276,16 +291,15 @@ function getTeacher(id) {
                 pushNotification("n_error", data.message, 3000);
             }
             hideLoader()
-        },
-        onError: (error) => {
-            console.error(error);
-            hideLoader()
-            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
-function getStaffPayroll(id) {
+async function getStaffPayroll(id) {
     $(".sta-pay").empty()
     loader = `<tr>
         <td colspan="5" class="">
@@ -293,10 +307,16 @@ function getStaffPayroll(id) {
         </td>
     </tr>`;
     $(".sta-pay").append(loader)
-    admin.payroll.getStaffPayrollHistory({
-        params: {staff_id: id},
-        onSuccess: (data) => {
-            //console.log(data)
+
+    let params = {staff_id: id};
+
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.payroll.getStaffPayrollHistory",
+        params, fetcher: admin.payroll.getStaffPayrollHistory
+        })
+
+        //console.log(data)
             $(".sta-pay").empty()
             if(data.status == "success") {
                 if(data.data) {
@@ -323,12 +343,10 @@ function getStaffPayroll(id) {
                     $(".sta-pay").append(temp)
                 }
             }
-                
-        },
-        onError: (error) => {
-            console.error(error)
-        }
-    })
+    }
+    catch(error) {
+        console.error(error);
+    }
 }
 
 //console.log(buildQueryParams({post_id:5, tag: "sci-fi"}))
@@ -422,11 +440,19 @@ $(".add-staff-form").on('submit', function(e) {
 
     admin.staff.onboardStaff({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-staff-form")[0].reset();
+
+                let page = $('#emp_page').val();
+                let pagesize = 20;
+                let search = $('#emp_search').val();
+
+                let params = {page, pagesize, search}
+                await cache.refresh("admin.staff.staffList", params, admin.staff.staffList)
+                await cache.refresh("admin.school.schoolData", {page: "staff"}, admin.school.schoolData)
                 getStaff();
                 getData()
             }
@@ -443,7 +469,7 @@ $(".add-staff-form").on('submit', function(e) {
       })
 })
 
-function updateStaff() {
+async function updateStaff() {
     updateFormValid = true;
 
     let staff_id = $("#update-id").val();
@@ -477,13 +503,21 @@ function updateStaff() {
     
     admin.staff.updateStaff({
       formData: formData,
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
           //console.log(data)
           if(data.status == "success") {
             $(".update-staff-con").removeClass("active")
-              pushNotification("n_success", data.message, 5000);
-              getTeacher(staff_id);
-              getStaff();
+            pushNotification("n_success", data.message, 5000);
+            
+            await cache.refresh("admin.staff.staffList", {staff_id}, admin.staff.staffList)
+            let page = $('#emp_page').val();
+            let pagesize = 20;
+            let search = $('#emp_search').val();
+
+            let params = {page, pagesize, search}
+            await cache.refresh("admin.staff.staffList", params, admin.staff.staffList)
+            getTeacher(staff_id);
+            getStaff();
           }
           else {
               pushNotification("n_error", data.message, 3000)
@@ -498,7 +532,7 @@ function updateStaff() {
     })
 }
 
-function deleteStaff() {
+async function deleteStaff() {
 
     let staff_id = $("#delete-id").val();
     let password = $("#delete-password").val();
@@ -509,14 +543,24 @@ function deleteStaff() {
     
     admin.staff.deleteStaff({
       formData: formData,
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
           //console.log(data)
           if(data.status == "success") {
-              pushNotification("n_success", data.message, 5000);
-              $(".delete-staff-con").removeClass("active")
-              $(".sta-side-con").removeClass("active")
-              getStaff();
-              getData();
+            pushNotification("n_success", data.message, 5000);
+            $(".delete-staff-con").removeClass("active")
+            $(".sta-side-con").removeClass("active")
+            cache.removeCache("admin.staff.staffList", {staff_id})
+            
+            let page = $('#emp_page').val();
+            let pagesize = 20;
+            let search = $('#emp_search').val();
+
+            let params = {page, pagesize, search}
+            await cache.refresh("admin.staff.staffList", params, admin.staff.staffList)
+            await cache.refresh("admin.school.schoolData", {page: "staff"}, admin.school.schoolData)
+            
+            getStaff();
+            getData();
           }
           else {
               pushNotification("n_error", data.message, 3000)
@@ -607,7 +651,7 @@ uploadBtn.addEventListener("change", function() {
   uploadImage()
 })
 
-function uploadImage() {
+async function uploadImage() {
   let id = $(".sta-id-use").val();
   let image = $("#image-upload")[0].files[0];
 
@@ -620,10 +664,19 @@ function uploadImage() {
 
   admin.staff.uploadImage({
     formData: formData,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
         //console.log(data)
         if(data.status == "success") {
-          pushNotification("n_success", data.message, 3000)
+            pushNotification("n_success", data.message, 3000)
+            await cache.refresh("admin.staff.staffList", {staff_id: id}, admin.staff.staffList)
+            let page = $('#emp_page').val();
+            let pagesize = 20;
+            let search = $('#emp_search').val();
+
+            let params = {page, pagesize, search}
+            await cache.refresh("admin.staff.staffList", params, admin.staff.staffList)
+            getTeacher(id);
+            getStaff();
         }
         else {
           pushNotification("n_error", data.message, -1)
@@ -640,7 +693,7 @@ function uploadImage() {
 })
 }
 
-function updateStatus() {
+async function updateStatus() {
     let staff_id = $(".sta-id-use").val();
     let action = $(".sta-action").data('action');
   
@@ -651,16 +704,23 @@ function updateStatus() {
   
     admin.staff.staffStatus({
       formData: formData,
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
           //console.log(data)
           if(data.status == "success") {
             pushNotification("n_success", data.message, 3000)
+            await cache.refresh("admin.staff.staffList", {staff_id}, admin.staff.staffList)
+            let page = $('#emp_page').val();
+            let pagesize = 20;
+            let search = $('#emp_search').val();
+
+            let params = {page, pagesize, search}
+            await cache.refresh("admin.staff.staffList", params, admin.staff.staffList)
+            getTeacher(staff_id);
+            getStaff();
           }
           else {
             pushNotification("n_error", data.message, -1)
           }
-          getTeacher(staff_id)
-          getStaff()
           hideLoader()
       },
       onError: (error) => {

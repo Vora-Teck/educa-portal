@@ -1,12 +1,16 @@
-function getData() {
+async function getData() {
 
     showLoader("Loading Data...")
-  
-    admin.school.schoolData({
-        params: {page: "student"},
-        onSuccess: (data) => {
-                //console.log(data);
-                if(data.status == 'success') {
+
+    let params = {page: "student"}
+
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.school.schoolData",
+        params, fetcher: admin.school.schoolData
+        })
+
+        if(data.status == 'success') {
                     let d = data.data;
                     let chart = d.chart;
                     let tab = d.table;
@@ -28,16 +32,15 @@ function getData() {
                         pushNotification("n_error", data.message, 3000)
                 }
                 hideLoader()
-        },
-        onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                hideLoader()
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
   }
 
-  function getStates() {
+function getStates() {
     admin.misc.getStates({
             onSuccess: (data) => {
                     $("#st-state").empty().append(`<option value="" selected>Select State</option>`)
@@ -53,11 +56,14 @@ function getData() {
 }
 
 
-  function getClassrooms() {
-    admin.classroom.getClassrooms({
-            onSuccess: (data) => {
-                //console.log(data)
-                let d = data.data
+async function getClassrooms() {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.classroom.getClassrooms",
+        fetcher: admin.classroom.getClassrooms
+        })
+
+        let d = data.data
                 $(".class-filter").empty().append(`<option value="" selected>All Classes</option>`)
                 $("#st-class").empty().append(`<option value="" selected>Select class</option>`)
                 $("#import-class").empty().append(`<option value="" selected>Select classroom</option>`)
@@ -74,12 +80,13 @@ function getData() {
                   </div>`;
                   $(".class-list").append(temp2)
                 }
-            },
-            onError: (error) => console.error(error)
-    })
+    }
+    catch(error) {
+        console.error(error);
+    }
 }
 
-function getStudents() {
+async function getStudents() {
     let page = $('#emp_page').val();
     let pagesize = 20;
     let search = $('#emp_search').val();
@@ -94,11 +101,15 @@ function getStudents() {
     </tr>`;
     $('.student-list').append(loader)
 
-    admin.student.studentList({
-        params: {page, pagesize, search, sort_by, class_id},
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.student-list').empty()
+    let params = {page, pagesize, search, sort_by, class_id}
+
+    try {
+      let data = await cache.fetchOrCache({
+        func: "admin.student.studentList",
+        params, fetcher: admin.student.studentList
+      })
+
+      $('.student-list').empty()
                 if(data.status == 'success') {
                     let pages = data.total_pages
                     let count = data.total_count;
@@ -198,13 +209,12 @@ function getStudents() {
                         </tr>`;
                         $('.student-list').append(temp)
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.student-list').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+      console.error(error);
+      $('.student-list').empty()
+      pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 getData()
@@ -213,13 +223,17 @@ getStudents()
 getStates()
 
 
-function getStudent(id) {
+async function getStudent(id) {
     showLoader("Getting student data...")
-    admin.student.studentList({
-        params: {student_id: id},
-        onSuccess: (data) => {
-            //console.log(data);
-            if(data.status == 'success') {
+    let params = {student_id: id}
+
+    try {
+      let data = await cache.fetchOrCache({
+        func: "admin.student.studentList",
+        params, fetcher: admin.student.studentList
+      })
+
+      if(data.status == 'success') {
                 $(".std-side-con").addClass("active")
                 let d = data.data;
                 // for hidden inputs
@@ -383,13 +397,12 @@ function getStudent(id) {
                 pushNotification("n_error", data.message, 3000);
             }
             hideLoader()
-        },
-        onError: (error) => {
-            console.error(error);
-            hideLoader();
-            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+      console.error(error);
+      hideLoader();
+      pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 
@@ -412,8 +425,6 @@ function debounce(func, delay) {
 var delayedSearch = debounce(getStudents, 500)
 
 
-
-
 function getLgas(state, elem) {
     admin.misc.getLgas({
             params: { state },
@@ -432,7 +443,7 @@ function getLgas(state, elem) {
 var createFormValid = true;
 var updateFormValid = true;
 
-function addStudent() {
+async function addStudent() {
   createFormValid = true;
     let first_name = validate($("#st-fname"));
     let last_name = validate($("#st-lname"));
@@ -477,11 +488,21 @@ function addStudent() {
 
     admin.student.addStudent({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-student-form")[0].reset();
+
+                let page = $('#emp_page').val();
+                let pagesize = 20;
+                let search = $('#emp_search').val();
+                let sort_by = $(".sort-filter").val();
+                let class_id = $(".class-filter").val();
+
+                let params = {page, pagesize, search, sort_by, class_id}
+                await cache.refresh("admin.student.studentList", params, admin.student.studentList)
+                await cache.refresh("admin.school.schoolData", {page: "student"}, admin.school.schoolData)
                 getStudents();
                 getData();
             }
@@ -498,7 +519,7 @@ function addStudent() {
       })
 }
 
-function updateStudent() {
+async function updateStudent() {
     updateFormValid = true;
 
     let student_id = $("#update-id").val();
@@ -539,11 +560,21 @@ function updateStudent() {
     
     admin.student.updateStudent({
       formData: formData,
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
           //console.log(data)
           if(data.status == "success") {
             $(".update-student-con").removeClass("active")
               pushNotification("n_success", data.message, 5000);
+              
+              let page = $('#emp_page').val();
+              let pagesize = 20;
+              let search = $('#emp_search').val();
+              let sort_by = $(".sort-filter").val();
+              let class_id = $(".class-filter").val();
+
+              await cache.refresh("admin.student.studentList", {student_id}, admin.student.studentList)
+              let params = {page, pagesize, search, sort_by, class_id}
+              await cache.refresh("admin.student.studentList", params, admin.student.studentList)
               getStudent(student_id);
               getStudents();
           }
@@ -560,7 +591,7 @@ function updateStudent() {
     })
 }
 
-function deleteStudent() {
+async function deleteStudent() {
 
   let student_id = $("#delete-id").val();
   let password = $("#delete-password").val();
@@ -571,12 +602,23 @@ function deleteStudent() {
   
   admin.student.deleteStudent({
     formData: formData,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
         //console.log(data)
         if(data.status == "success") {
             pushNotification("n_success", data.message, 5000);
             $(".delete-student-con").removeClass("active")
             $(".std-side-con").removeClass("active")
+            
+            let page = $('#emp_page').val();
+            let pagesize = 20;
+            let search = $('#emp_search').val();
+            let sort_by = $(".sort-filter").val();
+            let class_id = $(".class-filter").val();
+
+            cache.removeCache("admin.student.studentList", {student_id})
+            let params = {page, pagesize, search, sort_by, class_id}
+            await cache.refresh("admin.student.studentList", params, admin.student.studentList)
+            await cache.refresh("admin.school.schoolData", {page: "student"}, admin.school.schoolData)
             getStudents();
             getData();
         }
@@ -644,7 +686,7 @@ uploadBtn.addEventListener("change", function() {
   uploadImage()
 })
 
-function uploadImage() {
+async function uploadImage() {
   let id = $(".std-id-use").val();
   let image = $("#image-upload")[0].files[0];
 
@@ -657,14 +699,24 @@ function uploadImage() {
 
   admin.student.updateStudentPhoto({
     formData: formData,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
         //console.log(data)
         if(data.status == "success") {
           pushNotification("n_success", data.message, 3000)
         }
         else {
           pushNotification("n_error", data.message, -1)
+          let page = $('#emp_page').val();
+              let pagesize = 20;
+              let search = $('#emp_search').val();
+              let sort_by = $(".sort-filter").val();
+              let class_id = $(".class-filter").val();
+
+              await cache.refresh("admin.student.studentList", {student_id: id}, admin.student.studentList)
+              let params = {page, pagesize, search, sort_by, class_id}
+              await cache.refresh("admin.student.studentList", params, admin.student.studentList)
           getStudent(id)
+          getStudents()
         }
         hideLoader()
     },
@@ -676,7 +728,7 @@ function uploadImage() {
 })
 }
 
-function updateStatus() {
+async function updateStatus() {
   let student_id = $(".std-id-use").val();
   let action = $(".std-action").data('action');
 
@@ -687,16 +739,28 @@ function updateStatus() {
 
   admin.student.updateAccount({
     formData: formData,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
         //console.log(data)
         if(data.status == "success") {
           pushNotification("n_success", data.message, 3000)
+          let page = $('#emp_page').val();
+          let pagesize = 20;
+          let search = $('#emp_search').val();
+          let sort_by = $(".sort-filter").val();
+          let class_id = $(".class-filter").val();
+
+          await cache.refresh("admin.student.studentList", {student_id}, admin.student.studentList)
+          let params = {page, pagesize, search, sort_by, class_id}
+          await cache.refresh("admin.student.studentList", params, admin.student.studentList)
+
+          getStudent(student_id)
+          getStudents()
         }
         else {
           pushNotification("n_error", data.message, -1)
         }
-        getStudent(student_id)
-        getStudents()
+
+        
         hideLoader()
     },
     onError: (error) => {
@@ -931,7 +995,7 @@ async function uploadStudents() {
 
     admin.student.addBulkStudent({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
@@ -941,6 +1005,16 @@ async function uploadStudents() {
                 errorsMap = {}
                 revalidateAll();
                 $(".import-student-con").removeClass("active")
+
+                let page = $('#emp_page').val();
+                let pagesize = 20;
+                let search = $('#emp_search').val();
+                let sort_by = $(".sort-filter").val();
+                let classs_id = $(".class-filter").val();
+
+                let params = {page, pagesize, search, sort_by, class_id: classs_id}
+                await cache.refresh("admin.student.studentList", params, admin.student.studentList)
+                await cache.refresh("admin.school.schoolData", {page: "student"}, admin.school.schoolData)
                 getStudents();
                 getData();
             }

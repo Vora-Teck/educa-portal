@@ -1,9 +1,12 @@
 
 async function getSchoolInfo() {
-    admin.school.schoolInfo({
-            onSuccess: (data) => {
-                //console.log(data)
-                let d = data.data
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.school.schoolInfo",
+        fetcher: admin.school.schoolInfo
+        })
+
+        let d = data.data
                 $("#s-name").val(d.name);
                 $("#s-motto").val(d.motto);
                 $("#s-year").val(d.year_established);
@@ -19,60 +22,64 @@ async function getSchoolInfo() {
                 $("#s-logo").attr('src', d.logo ? `${base_url}${d.logo}` : `/static/image/logo.png`)
                 //console.log(d.about)
                 initiateTiny(false, '.html-text', d.about)
-            },
-            onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                //hideLoader()
-            }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 async function schoolConfig() {
-    admin.school.config({
-            onSuccess: (data) => {
-                //console.log(data)
-                let d = data.data
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.school.config",
+        fetcher: admin.school.config
+        })
+
+        let d = data.data
                 
                 $("#config-renew").val(d.auto_renewal.toString());
                 $("#config-payroll").val(d.auto_payroll.toString());
                 $("#config-date").val(d.payroll_date);
                 $("#config-term").val(d.term_per_session);
                 $("#config-week").val(d.weeks_per_term);
-            },
-            onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                //hideLoader()
-            }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 async function schoolAccount() {
-    admin.wallet.balance({
-            onSuccess: (data) => {
-                //console.log(data)
-                let d = data.data
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.wallet.balance",
+        fetcher: admin.wallet.balance,
+        ttl: Date.now() + 600000
+        })
+
+        let d = data.data
                 $(".bal-item").html(`&#8358;${shortify(d.walletBalance, true)}`)
                 $(".rev-item").html(`&#8358;${shortify(d.total_revenue, true)}`)
                 $(".exp-item").html(`&#8358;${shortify(d.total_expenses, true)}`)
-                
-            },
-            onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                //hideLoader()
-            }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 
 }
 
 async function walletLog() {
     showLoader("Fetching logs...")
-    admin.wallet.log({
-            onSuccess: (data) => {
-                //console.log(data)
-                if(data.status == "success") {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.wallet.log",
+        fetcher: admin.wallet.log,
+        ttl: Date.now() + 120000
+        })
+
+        if(data.status == "success") {
                     let d = data.data;
                     let logs = d.log.reverse();
                     let revs = d.revenue;
@@ -123,20 +130,22 @@ async function walletLog() {
                     pushNotification("n_error", data.message, 5000)
                 }
                 hideLoader()
-            },
-            onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                hideLoader()
-            }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 async function schoolDocument() {
-    admin.school.schoolDocument({
-            onSuccess: (data) => {
-                //console.log(data)
-                if(data.status == "success") {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.school.schoolDocument",
+        fetcher: admin.school.schoolDocument
+        })
+
+        if(data.status == "success") {
                     let d = data.data;
                     let veri_temp = ``
 
@@ -197,21 +206,21 @@ async function schoolDocument() {
                 else {
                     pushNotification("n_error", data.message, 5000)
                 }
-                
-            },
-            onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                //hideLoader()
-            }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 async function getDomain() {
-    admin.school.domain({
-            onSuccess: (data) => {
-                //console.log(data)
-                let domain_temp = ``
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.school.domain",
+        fetcher: admin.school.domain
+        })
+
+        let domain_temp = ``
                 if(data.data) {
                     let d = data.data;
                     $(".new-port").hide();
@@ -246,13 +255,11 @@ async function getDomain() {
                     </div>`
                 }
                 $(".domain-alert").html(domain_temp)
-            },
-            onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                //hideLoader()
-            }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 async function getGallery() {
@@ -297,10 +304,13 @@ async function getGallery() {
 }
 
 async function getCard() {
-    admin.card.get({
-            onSuccess: (data) => {
-                //console.log(data)
-                let domain_temp = ``
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.card.get",
+        fetcher: admin.card.get
+        })
+
+        let domain_temp = ``
                 if(data.data) {
                     let d = data.data;
                     $(".new-card").hide();
@@ -328,21 +338,22 @@ async function getCard() {
                     </div>`
                 }
                 $(".card-alert").html(domain_temp)
-            },
-            onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                //hideLoader()
-            }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 async function getBanks() {
     showLoader("Processing...")
-    admin.bank.list({
-            onSuccess: (data) => {
-                //console.log(data)
-                $("#bank-name").empty()
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.bank.list",
+        fetcher: admin.bank.list
+        })
+
+        $("#bank-name").empty()
                 for(let i in data) {
                     let temp = `
                     <option value="${data[i].bankCode}">${data[i].bankName}</option>`;
@@ -350,20 +361,22 @@ async function getBanks() {
                 }
                 $("#bank-name").prepend(`<option value="" selected>-- Select Bank --</option>`)
                 hideLoader()
-            },
-            onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                hideLoader()
-            }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 async function getAccount() {
-    admin.bank.get({
-            onSuccess: (data) => {
-                //console.log(data)
-                let domain_temp = ``
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.bank.get",
+        fetcher: admin.bank.get
+        })
+
+        let domain_temp = ``
                 if(data.data) {
                     let d = data.data;
                     $(".new-bank").hide();
@@ -390,13 +403,11 @@ async function getAccount() {
                     </div>`
                 }
                 $(".bank-alert").html(domain_temp)
-            },
-            onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                //hideLoader()
-            }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 async function setup() {
@@ -434,7 +445,7 @@ function verifyTransaction(reference) {
     showLoader("Verifying transaction...")
     admin.wallet.verifyPayment({
         params: {reference},
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == 'success') {
                 pushNotification("n_success", `Transaction ${data.transaction_status}`, -1)
@@ -442,8 +453,9 @@ function verifyTransaction(reference) {
             else {
                 pushNotification("n_error", data.message, 5000)
             }
-            schoolAccount()
             hideLoader()
+            await cache.refresh("admin.wallet.balance", {}, admin.wallet.balance, Date.now() + 600000)
+            await schoolAccount()
         },
         onError: (error) => {
             console.error(error);
@@ -619,12 +631,13 @@ $(".withdraw-form").submit(function(e) {
         $("#withdraw-submit-btn").attr('disabled', true)
         admin.wallet.makeWithdrawal({
             formData: {reference, password},
-            onSuccess: (data) => {
+            onSuccess: async (data) => {
                 //console.log(data)
                 if(data.status == 'success') {
                     pushNotification("n_success", data.message, 5000)
                     $(".canc-btn1").click()
-                    schoolAccount()
+                    await cache.refresh("admin.wallet.balance", {}, admin.wallet.balance, Date.now() + 600000)
+                    await schoolAccount()
                 }
                 else {
                     pushNotification("n_error", data.message, 5000)
@@ -670,7 +683,7 @@ function updateSchoolInfo(stat) {
 
     admin.school.updateInfo({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             if(data.status == 'success') {
                 pushNotification("n_success", data.message, 5000)
             }
@@ -678,7 +691,9 @@ function updateSchoolInfo(stat) {
                 pushNotification("n_error", data.message, 5000)
             }
             hideLoader()
-            getSchoolInfo()
+            await cache.refresh("admin.school.schoolInfo", {}, admin.school.schoolInfo)
+            await getSchoolInfo()
+
             if(stat == "info") {
                 let info = JSON.parse(localStorage.getItem("educa_school_info"))
                 info['motto'] = formData['motto']
@@ -707,10 +722,11 @@ $(".portal-form").submit(function(e) {
 
     admin.school.requestDomain({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             if(data.status == 'success') {
                 pushNotification("n_success", data.message, 5000);
-                getDomain()
+                await cache.refresh("admin.school.domain", {}, admin.school.domain)
+                await getDomain()
             }
             else {
                 pushNotification("n_error", data.message, 5000)
@@ -750,16 +766,17 @@ function uploadLogo() {
 
   admin.school.uploadLogo({
     formData: formData,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
         //console.log(data)
         if(data.status == "success") {
-          pushNotification("n_success", data.message, 3000)
+            pushNotification("n_success", data.message, 3000)
+            await cache.refresh("admin.school.schoolInfo", {}, admin.school.schoolInfo)
+            await getSchoolInfo()
         }
         else {
           pushNotification("n_error", data.message, -1)
         }
         hideLoader()
-        getSchoolInfo()
         localStorage.removeItem("educa_school_info");
         showSchoolInfo()
     },
@@ -796,10 +813,11 @@ $(".school-verify-form").submit(function(e) {
 
     admin.school.verify({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             if(data.status == 'success') {
                 pushNotification("n_success", data.message, 5000)
-                schoolDocument()
+                await cache.refresh("admin.school.schoolDocument", {}, admin.school.schoolDocument)
+                await schoolDocument()
             }
             else {
                 pushNotification("n_error", data.message, 5000)
@@ -820,16 +838,17 @@ function verifyCharge(reference) {
     showLoader("Verifying transaction...")
     admin.card.verifyPayment({
         params: {reference},
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == 'success') {
                 pushNotification("n_success", `Transaction ${data.transaction_status}`, -1)
                 pushNotification("n_success", `${data.message}`, -1)
+                await cache.refresh("admin.card.get", {}, admin.card.get)
+                await getCard()
             }
             else {
                 pushNotification("n_error", data.message, 5000)
             }
-            getCard()
             hideLoader()
         },
         onError: (error) => {
@@ -884,18 +903,19 @@ function deleteCard() {
     showLoader("Deleting card...")
     admin.card.delete({
         formData: {password},
-            onSuccess: (data) => {
+            onSuccess: async (data) => {
                 //console.log(data)
                 if(data.status == 'success') {
                     $(".delete-card-form")[0].reset();
                     $(".delete-card-con").removeClass("active")
                     pushNotification("n_success", data.message, 3000)
+                    await cache.refresh("admin.card.get", {}, admin.card.get)
+                    await getCard()
                 }
                 else {
                     pushNotification("n_error", data.message, 3000)
                 }
                 hideLoader()
-                getCard()
             },
             onError: (error) => {
                 console.error(error);
@@ -972,18 +992,19 @@ function addAccount() {
     showLoader("Adding bank account...")
     admin.bank.add({
         formData: formData,
-            onSuccess: (data) => {
+            onSuccess: async (data) => {
                 //console.log(data)
                 if(data.status == 'success') {
                     $(".add-bank-form")[0].reset();
                     $(".add-bank-con").removeClass('active')
                     pushNotification("n_success", data.message, 5000)
+                    await cache.refresh("admin.bank.get", {}, admin.bank.get)
+                    await getAccount()
                 }
                 else {
                     pushNotification("n_error", data.message, 5000)
                 }
                 hideLoader();
-                getAccount();
             },
             onError: (error) => {
                 console.error(error);

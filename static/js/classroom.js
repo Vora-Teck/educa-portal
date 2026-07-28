@@ -3,13 +3,15 @@ showLoader("Loading Data...")
 var subjects_list = []
 var subjects_map = {'0': 'Break'}
 
-function getData() {
+async function getData() {
+    let params = {page: "class"}
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.school.schoolData",
+        params, fetcher: admin.school.schoolData
+        })
 
-    admin.school.schoolData({
-        params: {page: "class"},
-        onSuccess: (data) => {
-                //console.log(data);
-                if(data.status == 'success') {
+        if(data.status == 'success') {
                     let d = data.data;
                     $(".class-no").html(digify(d.total_classes));
                     $(".sub-no").html(digify(d.total_subjects));
@@ -19,39 +21,46 @@ function getData() {
                         pushNotification("n_error", data.message, 3000)
                 }
                 hideLoader()
-        },
-        onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                hideLoader()
-        }
-  })
-  }
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
+}
 
 getData()
 
 /* =========== Classroom Section =============== */
-function getLevels() {
-    admin.classroom.getClassLevels({
-        params: {exclude: "true"},
-            onSuccess: (data) => {
-                //console.log(data)
-                let d = data.data
+async function getLevels() {
+    let params = {exclude: "true"};
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.classroom.getClassLevels",
+        params, fetcher: admin.classroom.getClassLevels
+        })
+
+        let d = data.data
                 $("#cl-level").empty().append(`<option value="" selected>Select Level</option>`)
                 for(let i in d) {
                     let temp = `<option value="${d[i].id}">${d[i].title}</option>`;
                     $("#cl-level").append(temp)
                 }
-            },
-            onError: (error) => console.error(error)
-    })
+    }
+    catch(error) {
+        console.error(error);
+    }
 }
-function getStaff() {
-    admin.staff.staffList({
-        params: {page:1, pagesize:200},
-            onSuccess: (data) => {
-                //console.log(data)
-                let d = data.data
+
+async function getStaff() {
+    let params = {page:1, pagesize:300};
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.staff.staffList",
+        params, fetcher: admin.staff.staffList
+        })
+
+        let d = data.data
                 $("#cl-staff").empty().append(`<option value="" selected>No staff selected</option>`)
                 $("#cl-staff2").empty().append(`<option value="" selected>No staff selected</option>`)
                 $("#cur-staff").empty().append(`<option value="" selected>No staff selected</option>`)
@@ -61,14 +70,15 @@ function getStaff() {
                     $("#cl-staff2").append(temp)
                     $("#cur-staff").append(temp)
                 }
-            },
-            onError: (error) => console.error(error)
-    })
+    }
+    catch(error) {
+        console.error(error);
+    }
 }
 getLevels()
 getStaff()
 
-function getClassrooms() {
+async function getClassrooms() {
     $(".class-list").empty()
     //$(".class-list2").empty()
     $("#class-filter").empty().append(`<option selected value="">All Classes</option>`)
@@ -79,9 +89,14 @@ function getClassrooms() {
         </td>
     </tr>`;
     $('.class-list').append(loader)
-    admin.classroom.getClassrooms({
-            onSuccess: (data) => {
-                $(".class-list").empty()
+
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.classroom.getClassrooms",
+        fetcher: admin.classroom.getClassrooms
+        })
+
+        $(".class-list").empty()
                 //console.log(data)
                 if(data.status == "success") {
                     let d = data.data;
@@ -151,17 +166,16 @@ function getClassrooms() {
                     </tr>`;
                     $('.class-list').html(temp)
                 }
-            },
-            onError: (error) => {
-                console.error(error)
-                let temp = `<tr>
+    }
+    catch(error) {
+        console.error(error);
+        let temp = `<tr>
                         <td colspan="5">
                         Error occurred.  Kindly check your internet connection and <span class="w-text-red" onclick="getClassrooms()">click here </span>to try again
                         </td>
                     </tr>`;
                     $('.class-list').html(temp)
-            }
-    })
+    }
 }
 getClassrooms()
 
@@ -176,11 +190,14 @@ function addClassroom() {
 
     admin.classroom.addClassroom({
         formData: formData,
-        onSuccess: (data) => {
-            console.log(data)
+        onSuccess: async (data) => {
+            //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-class-form")[0].reset();
+                await cache.refresh("admin.classroom.getClassrooms", {}, admin.classroom.getClassrooms)
+                await cache.refresh("admin.classroom.getClassLevels", {exclude: "true"}, admin.classroom.getClassLevels)
+                await cache.refresh("admin.school.schoolData", {page: "class"}, admin.school.schoolData)
                 getData();
                 getLevels();
                 getClassrooms();
@@ -198,14 +215,19 @@ function addClassroom() {
       })
 }
 
-function getClassroom(class_id, action) {
+async function getClassroom(class_id, action) {
+    //console.log(typeof(class_id))
     showLoader("Processing...")
+    let params = {class_id}
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.classroom.getClassrooms",
+        params, fetcher: admin.classroom.getClassrooms
+        })
 
-    admin.classroom.getClassrooms({
-        params: {class_id},
-        onSuccess: (data) => {
-            //console.log(data)
-            if(data.status == "success") {
+        //console.log(data)
+
+        if(data.status == "success") {
                 let d = data.data;
                 $(".class-id").val(d.id)
                 $(".class-name").html(d.level.title)
@@ -219,18 +241,18 @@ function getClassroom(class_id, action) {
                 pushNotification("n_error", data.message, 3000)
             }
             hideLoader()
-        },
-        onError: (error) => {
-            console.error(error)
-            pushNotification("n_error", "Error occurred. Kindly check your internet connection", 3000)
-            hideLoader()
-        }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 function updateClassroom() {
-    let class_id = $(".class-id").val();
+    let class_id = Number($(".class-id").val());
     let staff_id = $("#cl-staff2").val();
+    
 
     let formData = {class_id, staff_id};
 
@@ -238,12 +260,15 @@ function updateClassroom() {
 
     admin.classroom.updateClassroom({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".update-class-form")[0].reset();
                 $(".update-class-con").removeClass("active");
+                await cache.refresh("admin.classroom.getClassrooms", {class_id}, admin.classroom.getClassrooms)
+                await cache.refresh("admin.classroom.getClassrooms", {}, admin.classroom.getClassrooms)
+                //getClassroom(class_id, "update")
                 getClassrooms();
             }
             else {
@@ -260,7 +285,7 @@ function updateClassroom() {
 }
 
 function deleteClassroom() {
-    let class_id = $(".class-id").val();
+    let class_id = Number($(".class-id").val());
     let password = $("#class-delete-password").val();
 
     let formData = {class_id, password};
@@ -269,12 +294,16 @@ function deleteClassroom() {
 
     admin.classroom.deleteClassroom({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".delete-class-form")[0].reset();
                 $(".delete-class-con").removeClass("active");
+                cache.removeCache("admin.classroom.getClassrooms", {class_id})
+                await cache.refresh("admin.classroom.getClassrooms", {}, admin.classroom.getClassrooms)
+                await cache.refresh("admin.classroom.getClassLevels", {exclude: "true"}, admin.classroom.getClassLevels)
+                await cache.refresh("admin.school.schoolData", {page: "class"}, admin.school.schoolData)
                 getData();
                 getLevels();
                 getClassrooms();
@@ -295,11 +324,15 @@ function deleteClassroom() {
 /* ============= Subject Section ================= */
 var selected_courses = [];
 
-function getCourses() {
-    admin.subject.getCourses({
-            onSuccess: (data) => {
-                //console.log(data)
-                let d = data.data
+async function getCourses() {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.subject.getCourses",
+        fetcher: admin.subject.getCourses
+        })
+
+        let d = data.data
+        //console.log(d)
                 $("#course-suggestions").empty()
                 
                 for(let i in d) {
@@ -332,14 +365,14 @@ function getCourses() {
                         filterCourses()
                     })
                 })
-                
-            },
-            onError: (error) => console.error(error)
-    })
+    }
+    catch(error) {
+        console.error(error);
+    }
 }
 getCourses();
 
-function getSubjects() {
+async function getSubjects() {
     let page = $('#emp_page2').val();
     let pagesize = 20;
     let search = $('#emp_search2').val();
@@ -352,11 +385,15 @@ function getSubjects() {
     </tr>`;
     $('.subject-list').append(loader)
 
-    admin.subject.getSubjects({
-        params: {page, pagesize, search},
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.subject-list').empty()
+    let params = {page, pagesize, search}
+
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.subject.getSubjects",
+        params, fetcher: admin.subject.getSubjects
+        })
+
+        $('.subject-list').empty()
                 selected_courses.length = 0;
                 if(data.status == 'success') {
                     let pages = data.total_pages
@@ -448,13 +485,12 @@ function getSubjects() {
                         </tr>`;
                         $('.subject-list').append(temp)
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.subject-list').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.subject-list').empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 getSubjects()
@@ -506,14 +542,34 @@ function addSubject() {
 
     admin.subject.addSubject({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-sub-form")[0].reset();
                 filterCourses()
                 $(".subs-selected").empty();
-                $(".add-sub-con").removeClass('active')
+                $(".add-sub-con").removeClass('active');
+
+                await cache.refresh("admin.school.schoolData", {page: "class"}, admin.school.schoolData)
+                await cache.refresh("admin.subject.getSubjects", {pagesize: 300}, admin.subject.getSubjects)
+                
+                let page = $('#emp_page2').val();
+                let pagesize = 20;
+                let search = $('#emp_search2').val();
+                await cache.refresh("admin.subject.getSubjects", {page, pagesize, search}, admin.subject.getSubjects)
+                
+                let spage = $('#emp_page3').val();
+                let spagesize = 20;
+                let sclass_id = $("#class-filter").val();
+                let ssubject_id = $("#sub-filter").val()
+                let sterm = $("#term-filter").val()
+                let ssort_by = $("#sort-filter").val()
+                await cache.refresh("admin.subject.getSyllabus", {
+                    page: spage, pagesize: spagesize, class_id: sclass_id, subject_id: ssubject_id,
+                    term: sterm, sort_by: ssort_by
+                }, admin.subject.getSyllabus)
+                
                 getData();
                 getSubjects();
                 getAllSubjects();
@@ -532,15 +588,17 @@ function addSubject() {
       })
 }
 
-function getSubject(subject_id, action) {
+async function getSubject(subject_id, action) {
     showLoader("Processing...")
-    //console.log(subject_id)
+    let params = {subject_id}
 
-    admin.subject.getSubjects({
-        params: {subject_id},
-        onSuccess: (data) => {
-            //console.log(data)
-            if(data.status == "success") {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.subject.getSubjects",
+        params, fetcher: admin.subject.getSubjects
+        })
+
+        if(data.status == "success") {
                 let d = data.data;
                 $(".sub-id").val(d.id)
                 $(".sub-name").html(d.title)
@@ -552,17 +610,17 @@ function getSubject(subject_id, action) {
                 pushNotification("n_error", data.message, 3000)
             }
             hideLoader()
-        },
-        onError: (error) => {
-            console.error(error)
-            pushNotification("n_error", "Error occurred. Kindly check your internet connection", 3000)
-            hideLoader()
-        }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
+
 }
 
 function updateSubject() {
-    let subject_id = $(".sub-id").val();
+    let subject_id = Number($(".sub-id").val());
     let title = $("#sub-title").val();
 
     let formData = {subject_id, title};
@@ -571,12 +629,21 @@ function updateSubject() {
 
     admin.subject.updateSubject({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".update-sub-form")[0].reset();
                 $(".update-sub-con").removeClass("active");
+
+                await cache.refresh("admin.subject.getSubjects", {pagesize: 300}, admin.subject.getSubjects)
+                await cache.refresh("admin.subject.getSubjects", {subject_id}, admin.subject.getSubjects)
+                
+                let page = $('#emp_page2').val();
+                let pagesize = 20;
+                let search = $('#emp_search2').val();
+                await cache.refresh("admin.subject.getSubjects", {page, pagesize, search}, admin.subject.getSubjects)
+                
                 getSubjects();
                 getAllSubjects();
             }
@@ -594,7 +661,7 @@ function updateSubject() {
 }
 
 function deleteSubject() {
-    let subject_id = $(".sub-id").val();
+    let subject_id = Number($(".sub-id").val());
     let password = $("#sub-delete-password").val();
 
     let formData = {subject_id, password};
@@ -603,12 +670,22 @@ function deleteSubject() {
 
     admin.subject.deleteSubject({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".delete-sub-form")[0].reset();
                 $(".delete-sub-con").removeClass("active");
+
+                cache.removeCache("admin.subject.getSubjects", {subject_id})
+                await cache.refresh("admin.school.schoolData", {page: "class"}, admin.school.schoolData)
+                await cache.refresh("admin.subject.getSubjects", {pagesize: 300}, admin.subject.getSubjects)
+                 
+                let page = $('#emp_page2').val();
+                let pagesize = 20;
+                let search = $('#emp_search2').val();
+                await cache.refresh("admin.subject.getSubjects", {page, pagesize, search}, admin.subject.getSubjects)
+                
                 getData();
                 getSubjects();
                 getAllSubjects();
@@ -627,16 +704,18 @@ function deleteSubject() {
 }
 
 /* ============= Curriculum Section ================= */
-function getAllSubjects() {
-    let pagesize = 300;
+async function getAllSubjects() {
+    let params = {pagesize: 300}
     $('#sub-filter').empty().append(`<option value="" selected>All Subjects</option>`)
     $('#sub-filter2').empty().append(`<option value="" selected>Select Subject</option>`)
     
-    admin.subject.getSubjects({
-        params: {pagesize},
-        onSuccess: (data) => {
-                //console.log(data);
-                if(data.status == 'success') {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.subject.getSubjects",
+        params, fetcher: admin.subject.getSubjects
+        })
+
+        if(data.status == 'success') {
                     if(data.data) {
                         let e = data.data;
                         for(var i in e) {
@@ -646,18 +725,17 @@ function getAllSubjects() {
                         }
                     }
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 getAllSubjects()
 
-function getSyllabi() {
+async function getSyllabi() {
     let page = $('#emp_page3').val();
-    let pagesize = 10;
+    let pagesize = 20;
     let class_id = $("#class-filter").val();
     let subject_id = $("#sub-filter").val()
     let term = $("#term-filter").val()
@@ -672,11 +750,15 @@ function getSyllabi() {
     </tr>`;
     $('.curriculum-list').append(loader)
 
-    admin.subject.getSyllabus({
-        params: {page, pagesize, class_id, term, subject_id, sort_by},
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.curriculum-list').empty()
+    let params = {page, pagesize, class_id, term, subject_id, sort_by}
+
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.subject.getSyllabus",
+        params, fetcher: admin.subject.getSyllabus
+        })
+
+        $('.curriculum-list').empty()
                 if(data.status == 'success') {
                     let pages = data.total_pages
                     let count = data.total_count;
@@ -794,13 +876,12 @@ function getSyllabi() {
                         </tr>`;
                         $('.curriculum-list').append(temp)
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.curriculum-list').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.curriculum-list').empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 getSyllabi()
@@ -825,7 +906,7 @@ function addSyllabus() {
 
     admin.subject.addSyllabus({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
@@ -854,6 +935,20 @@ function addSyllabus() {
                     </ul>`;
                     pushNotification("n_error", temp2, -1)
                 }
+
+                await cache.refresh("admin.school.schoolData", {page: "class"}, admin.school.schoolData)
+                 
+                let page = $('#emp_page3').val();
+                let pagesize = 20;
+                let class_id = $("#class-filter").val();
+                let subject_id = $("#sub-filter").val()
+                let term = $("#term-filter").val()
+                let sort_by = $("#sort-filter").val();
+
+                await cache.refresh("admin.subject.getSyllabus", {
+                    page, pagesize, class_id, term, subject_id, sort_by
+                }, admin.subject.getSyllabus)
+                
                 getData();
                 getSyllabi();
             }
@@ -870,15 +965,17 @@ function addSyllabus() {
       })
 }
 
-function getSyllabus(syllabus_id, action) {
+async function getSyllabus(syllabus_id, action) {
     showLoader("Processing...")
-    //console.log(subject_id)
+    let params = {syllabus_id}
 
-    admin.subject.getSyllabus({
-        params: {syllabus_id},
-        onSuccess: (data) => {
-            //console.log(data)
-            if(data.status == "success") {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.subject.getSyllabus",
+        params, fetcher: admin.subject.getSyllabus
+        })
+
+        if(data.status == "success") {
                 let d = data.data;
                 $(".cur-id").val(d.id)
                 $(".cur-name").html(`
@@ -894,17 +991,16 @@ function getSyllabus(syllabus_id, action) {
                 pushNotification("n_error", data.message, 3000)
             }
             hideLoader()
-        },
-        onError: (error) => {
-            console.error(error)
-            pushNotification("n_error", "Error occurred. Kindly check your internet connection", 3000)
-            hideLoader()
-        }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 function updateSyllabus() {
-    let syllabus_id = $(".cur-id").val();
+    let syllabus_id = Number($(".cur-id").val());
     let staff_id = $("#cur-staff").val();
 
     let formData = {syllabus_id, staff_id};
@@ -913,12 +1009,31 @@ function updateSyllabus() {
 
     admin.subject.updateSyllabus({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".update-cur-form")[0].reset();
                 $(".update-cur-con").removeClass("active");
+
+                await cache.refresh("admin.subject.getSyllabus", {syllabus_id}, admin.subject.getSyllabus)
+
+                let page = $('#emp_page3').val();
+                let pagesize = 20;
+                let class_id = $("#class-filter").val();
+                let subject_id = $("#sub-filter").val()
+                let term = $("#term-filter").val()
+                let sort_by = $("#sort-filter").val();
+
+                await cache.refresh("admin.subject.getSyllabus", {
+                    page, pagesize, class_id, term, subject_id, sort_by
+                }, admin.subject.getSyllabus)
+
+                let spage = $('#emp_page2').val();
+                let spagesize = 20;
+                let ssearch = $('#emp_search2').val();
+                await cache.refresh("admin.subject.getSubjects", {page: spage, pagesize: spagesize, search: ssearch}, admin.subject.getSubjects)
+                
                 getSyllabi();
                 getSubjects();
             }
@@ -936,7 +1051,7 @@ function updateSyllabus() {
 }
 
 function deleteSyllabus() {
-    let syllabus_id = $(".cur-id").val();
+    let syllabus_id = Number($(".cur-id").val());
     let password = $("#cur-delete-password").val();
 
     let formData = {syllabus_id, password};
@@ -945,12 +1060,32 @@ function deleteSyllabus() {
 
     admin.subject.deleteSyllabus({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".delete-cur-form")[0].reset();
                 $(".delete-cur-con").removeClass("active");
+
+                cache.removeCache('admin.subject.getSyllabus', {syllabus_id})
+                await cache.refresh("admin.school.schoolData", {page: "class"}, admin.school.schoolData)
+                 
+                let page = $('#emp_page3').val();
+                let pagesize = 20;
+                let class_id = $("#class-filter").val();
+                let subject_id = $("#sub-filter").val()
+                let term = $("#term-filter").val()
+                let sort_by = $("#sort-filter").val();
+                await cache.refresh("admin.subject.getSyllabus", {
+                    page, pagesize, class_id, term, subject_id, sort_by
+                }, admin.subject.getSyllabus)
+
+                let spage = $('#emp_page2').val();
+                let spagesize = 20;
+                let ssearch = $('#emp_search2').val();
+                await cache.refresh("admin.subject.getSubjects", {page: spage, pagesize: spagesize, search: ssearch}, admin.subject.getSubjects)
+                
+
                 getData();
                 getSyllabi();
                 getSubjects();
@@ -969,7 +1104,8 @@ function deleteSyllabus() {
     })
 }
 
-function getTopics(syllabus_id) {
+async function getTopics(syllabus_id) {
+    syllabus_id = Number(syllabus_id)
     $(".top-list").empty();
     let loader = `<tr>
         <td colspan="5" class="">
@@ -977,10 +1113,15 @@ function getTopics(syllabus_id) {
         </td>
     </tr>`;
     $(".top-list").append(loader)
-    admin.subject.getTopics({
-        params: {syllabus_id},
-            onSuccess: (data) => {
-                $(".top-list").empty()
+    let params = {syllabus_id}
+
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.subject.getTopics",
+        params, fetcher: admin.subject.getTopics
+        })
+
+        $(".top-list").empty()
                 //console.log(data)
                 if(data.status == "success") {
                     $(".cur-name").html(data.syllabus).data('id', syllabus_id)
@@ -1087,21 +1228,21 @@ function getTopics(syllabus_id) {
                     </tr>`;
                     $('.top-list').html(temp)
                 }
-            },
-            onError: (error) => {
-                console.error(error)
-                let temp = `<tr>
+    }
+    catch(error) {
+        console.error(error);
+        let temp = `<tr>
                         <td colspan="4">
                         Error occurred.  Kindly check your internet connection and <span class="w-text-red" onclick="getTopics(${syllabus_id})">click here </span>to try again
                         </td>
                     </tr>`;
-                    $('.top-list').html(temp)
-            }
-    })
+        $('.top-list').html(temp)
+    }
 }
 
 function addTopic() {
     let syllabus_id = $(".cur-name").data('id')
+    syllabus_id = Number(syllabus_id)
     let week = $("#to-week").val();
     let title = $("#to-title").val();
     let description = $("#to-des").val();
@@ -1115,12 +1256,25 @@ function addTopic() {
 
     admin.subject.addTopic({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-top-form")[0].reset();
                 $(".custom-file-label").html(`Choose file`)
+
+                let page = $('#emp_page3').val();
+                let pagesize = 20;
+                let class_id = $("#class-filter").val();
+                let subject_id = $("#sub-filter").val()
+                let term = $("#term-filter").val()
+                let sort_by = $("#sort-filter").val();
+                await cache.refresh("admin.subject.getSyllabus", {
+                    page, pagesize, class_id, term, subject_id, sort_by
+                }, admin.subject.getSyllabus)
+
+                await cache.refresh("admin.subject.getTopics", { syllabus_id }, admin.subject.getTopics)
+
                 getSyllabi()
                 getTopics(syllabus_id)
                 //$(".add-sub-con").removeClass('active')

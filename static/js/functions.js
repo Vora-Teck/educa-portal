@@ -1,13 +1,30 @@
-//const base_image_url = `https://kosmoshr.pythonanywhere.com`;
-
 const admin = new educaSDK.Admin();
 //const XLSX = educaSDK.XLSX;
 const base_url = educaSDK.BASE_URL;
+const cache = new ApiCache({persist: true})
+
+cache.on('updated', (entry) => {
+  //console.log("Cache updated:", entry)
+})
 
 
 /* Navigation bar */
 /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
 //localStorage.removeItem('api_key')
+
+async function cache_template() {
+  try {
+    let data = await cache.fetchOrCache({
+      func: "",
+      params, fetcher: admin.calendar.eventList
+    })
+  }
+  catch(error) {
+    console.error(error);
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
+}
+
 
 // ============ utility functions ================
 var available_routes = [
@@ -298,7 +315,7 @@ function checkResponse(data) {
 //document.addEventListener('online', checkStatus)
 //document.addEventListener('offline', checkStatus)
 
-function showSchoolInfo() {
+async function showSchoolInfo() {
   let info = localStorage.getItem("educa_school_info");
   if(info) {
       info = JSON.parse(info);
@@ -310,24 +327,27 @@ function showSchoolInfo() {
       }
   }
   else {
-      admin.school.schoolInfo({
-          onSuccess: (data) => {
-              let d = data.data;
+    try {
+      let data = await cache.fetchOrCache({
+        func: "admin.school.schoolInfo",
+        fetcher: admin.school.schoolInfo
+      })
+
+      let d = data.data;
               if(d.logo !== null) {
                   d['logo'] = base_url + d.logo
               }
               let obj = {name: d.name, logo: d.logo, motto: d.motto}
               localStorage.setItem('educa_school_info', JSON.stringify(obj));
               showSchoolInfo()
-          },
-          onError: (error) => {
-              console.error(error)
-          }
-        })
+    }
+    catch(error) {
+      console.error(error);
+    }
   }
 }
 
-function showUserInfo() {
+async function showUserInfo() {
   let info = localStorage.getItem("educa_user_info");
   if(info) {
       info = JSON.parse(info);
@@ -335,26 +355,30 @@ function showUserInfo() {
       $(".admin-user").html(info.full_name)
   }
   else {
-    admin.account.getProfile({
-          onSuccess: (data) => {
-              let d = data.data;
-              let obj = {full_name: `${d.firstName} ${d.lastName}`}
-              localStorage.setItem('educa_user_info', JSON.stringify(obj));
-              showUserInfo()
-          },
-          onError: (error) => {
-              console.error(error)
-          }
-        })
+    try {
+      let data = await cache.fetchOrCache({
+        func: "admin.account.getProfile",
+        fetcher: admin.account.getProfile
+      })
+      let d = data.data;
+      let obj = {full_name: `${d.firstName} ${d.lastName}`}
+      localStorage.setItem('educa_user_info', JSON.stringify(obj));
+      showUserInfo()
+    }
+    catch(error) {
+      console.error(error);
+    }
   }
 }
 
-function showPlanInfo() {
+async function showPlanInfo() {
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.subscription.getCurrentPlan",
+      params, fetcher: admin.subscription.getCurrentPlan
+    })
 
-  admin.subscription.getCurrentPlan({
-      onSuccess: (data) => {
-              //console.log(data);
-              $(".plan-alert2").empty()
+    $(".plan-alert2").empty()
               if(data.status == 'success') {
                 let d = data.data;
                 let temp = ``
@@ -391,19 +415,21 @@ function showPlanInfo() {
               else {
                 //pushNotification("n_error", data.message, 3000)
               }
-      },
-      onError: (error) => {
-              console.error(error);
-              //pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-      }
-})
+  }
+  catch(error) {
+    console.error(error);
+  }
 }
 
-function verificationStatus() {
-  admin.school.schoolDocument({
-          onSuccess: (data) => {
-              //console.log(data)
-              if (data.status == "success") {
+async function verificationStatus() {
+
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.school.schoolDocument",
+      fetcher: admin.school.schoolDocument
+    })
+
+    if (data.status == "success") {
                 $(".veri-alert2").empty()
                 let d = data.data;
                 let veri_temp = ``
@@ -423,16 +449,13 @@ function verificationStatus() {
                     <i class="fa fa-warning"></i>&nbsp;&nbsp;Kindly <a href="#school">Click Here</a> to complete your school KYC verification.
                     </div>`
                 }
-                $(".veri-alert2").html(veri_temp)
-              }
-              else {}
-          },
-          onError: (error) => {
-              console.error(error);
-              //pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-              //hideLoader()
-          }
-  })
+      $(".veri-alert2").html(veri_temp)
+    }
+    else {}
+  }
+  catch(error) {
+    console.error(error);
+  }
 }
 
 function showHeaderInfo() {

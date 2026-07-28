@@ -4,15 +4,21 @@ window.Apex = {
   }
 };
 
-function getData() {
+async function getData() {
 
   showLoader("Loading Data...")
 
-  admin.school.schoolData({
-    params: {page: "dashboard"},
-      onSuccess: (data) => {
-              //console.log(data);
-              let d = data.data;
+  let params = {page: "dashboard"}
+
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.school.schoolData",
+      params, fetcher: admin.school.schoolData
+    })
+
+    //console.log(data)
+
+    let d = data.data;
               if(data.status == 'success') {
                   //$(".bal-item").html(`&#8358;${shortify(d.balance, true)}`)
                   //$(".bal-item2").html(`&#8358;${digify(d.balance, true)}`)
@@ -28,18 +34,18 @@ function getData() {
                       pushNotification("n_error", data.message, 3000)
               }
               hideLoader()
-      },
-      onError: (error) => {
-              console.error(error);
-              pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-              hideLoader()
-      }
-  })
+  }
+  catch(error) {
+    console.error(error);
+    hideLoader()
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
+
 }
 
 getData()
 
-function getEvents() {
+async function getEvents() {
   let page = 1;
   let pagesize = 3;
   let search = '';
@@ -54,13 +60,13 @@ function getEvents() {
 
   let params = {page, pagesize, status, search}
 
-  //console.log(params)
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.calendar.eventList",
+      params, fetcher: admin.calendar.eventList
+    })
 
-  admin.calendar.eventList({
-    params: params,
-    onSuccess: (data) => {
-      //console.log(data);
-      $('.event-list').empty()
+    $('.event-list').empty()
       if(data.status == 'success') {
         if(data.data) {
           let e = data.data;
@@ -95,13 +101,14 @@ function getEvents() {
           </li>`;
         $('.event-list').append(temp)
       }
-      },
-      onError: (error) => {
-              console.error(error);
-              $('.event-list').empty()
-              pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-      }
-})
+  }
+  catch(error) {
+    console.error(error);
+    $('.event-list').empty()
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
+  
+  
 }
 getEvents()
 

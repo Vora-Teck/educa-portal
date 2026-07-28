@@ -1,5 +1,5 @@
 
-function authenticate() {
+async function authenticate() {
     let email = $('#email').val();
     let password = $('#password').val();
 
@@ -11,6 +11,7 @@ function authenticate() {
 
     localStorage.removeItem("educa_school_info");
     localStorage.removeItem("educa_user_info");
+    cache.clear()
     
     showLoader("Authenticating...")
 
@@ -88,6 +89,7 @@ function logout() {
                         pushNotification("n_success", data.message, 3000)
                         localStorage.removeItem("educa_school_info");
                         localStorage.removeItem("educa_user_info");
+                        cache.clear()
                         location.href = '/login/'
                 }
                 else {
