@@ -19,7 +19,7 @@ async function getSchoolInfo() {
                 $("#s-plan").val(`${d.plan.title} Plan`);
                 $("#s-duration").val(d.duration);
                 $("#s-expiry").val(datify(d.expiry_date));
-                $("#s-logo").attr('src', d.logo ? `${base_url}${d.logo}` : `/static/image/logo.png`)
+                $("#s-logo").attr('src', d.logo ? `${d.logo}` : `/static/image/logo.png`)
                 //console.log(d.about)
                 initiateTiny(false, '.html-text', d.about)
     }
@@ -189,17 +189,17 @@ async function schoolDocument() {
                     }
                     if(d.school_image_1) {
                         $(".veri-img1").html(`
-                            <img src="${base_url}${d.school_image_1}" alt="" />
+                            <img src="${d.school_image_1}" alt="" />
                         `)
                     }
                     if(d.school_image_2) {
                         $(".veri-img2").html(`
-                            <img src="${base_url}${d.school_image_2}" alt="" />
+                            <img src="${d.school_image_2}" alt="" />
                         `)
                     }
                     if(d.school_image_3) {
                         $(".veri-img3").html(`
-                            <img src="${base_url}${d.school_image_3}" alt="" />
+                            <img src="${d.school_image_3}" alt="" />
                         `)
                     }
                 }
@@ -772,6 +772,8 @@ function uploadLogo() {
             pushNotification("n_success", data.message, 3000)
             await cache.refresh("admin.school.schoolInfo", {}, admin.school.schoolInfo)
             await getSchoolInfo()
+            localStorage.removeItem("educa_school_info");
+            await showSchoolInfo()
         }
         else {
           pushNotification("n_error", data.message, -1)

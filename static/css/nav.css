@@ -1461,6 +1461,12 @@ ul.breadcrumb li a:hover {
 .borderless-table td {border: none !important}
 
 
+.dropdown-menu {
+  z-index: 30000 !important;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
 .dropdown-item {
   padding: 10px 15px !important;
   font-size: 15px;

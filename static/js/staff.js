@@ -126,7 +126,7 @@ async function getStaff() {
                             let temp = `<tr class="staff-row">
                             <td> 
                                     <img class="w-circle" style="width:40px;height:40px;"
-                                    src="${e[i].image ? `${base_url}${e[i].image}` : `/static/image/avatar.png`}" 
+                                    src="${e[i].image ? `${e[i].image}` : `/static/image/avatar.png`}" 
                                     alt="" />
                                 </td>
                             <td>
@@ -256,7 +256,7 @@ async function getTeacher(id) {
                     $("#sta-ass-sub").html(`${data.roles.subjects.join(', ')}`)
                     $("#sta-ass-cl").html(`${data.roles.classes.join(', ')}`)
                     if(d.image) {
-                        $("#sta-image").attr('src', `${base_url}${d.image}`)
+                        $("#sta-image").attr('src', `${d.image}`)
                     }
                     else {
                         $("#sta-image").attr('src', `/static/image/avatar.png`)

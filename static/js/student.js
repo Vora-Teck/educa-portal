@@ -149,7 +149,7 @@ async function getStudents() {
                             let temp = `<tr class="staff-row">
                             <td> 
                                     <img class="w-circle" style="width:40px;height:40px;"
-                                    src="${e[i].image ? `${base_url}${e[i].image}` : `/static/image/avatar.png`}" 
+                                    src="${e[i].image ? `${e[i].image}` : `/static/image/avatar.png`}" 
                                     alt="" />
                                 </td>
                             <td class="w-bold-x">${e[i].firstName} ${e[i].middleName} ${e[i].lastName}</td>
@@ -224,6 +224,7 @@ getStates()
 
 
 async function getStudent(id) {
+  id = Number(id)
     showLoader("Getting student data...")
     let params = {student_id: id}
 
@@ -232,6 +233,8 @@ async function getStudent(id) {
         func: "admin.student.studentList",
         params, fetcher: admin.student.studentList
       })
+
+      console.log(data)
 
       if(data.status == 'success') {
                 $(".std-side-con").addClass("active")
@@ -307,7 +310,7 @@ async function getStudent(id) {
                   $(".std-action").data('action', 'activate').html('Activate Student')
                 }
                 if(d.image) {
-                    $("#std-image").attr('src', `${base_url}${d.image}`)
+                    $("#std-image").attr('src', `${d.image}`)
                 }
                 else {
                     $("#std-image").attr('src', `/static/image/student.png`)
@@ -523,6 +526,7 @@ async function updateStudent() {
     updateFormValid = true;
 
     let student_id = $("#update-id").val();
+    student_id = Number(student_id)
     let middle_name = $("#st-mname2").val();
 
     let address = $("#st-address2").val();
@@ -592,8 +596,8 @@ async function updateStudent() {
 }
 
 async function deleteStudent() {
-
   let student_id = $("#delete-id").val();
+  student_id = Number(student_id)
   let password = $("#delete-password").val();
 
   let formData = {student_id, password}
@@ -687,11 +691,15 @@ uploadBtn.addEventListener("change", function() {
 })
 
 async function uploadImage() {
-  let id = $(".std-id-use").val();
+  let student_id = $(".std-id-use").val();
+  student_id = Number(student_id)
   let image = $("#image-upload")[0].files[0];
 
+  //let resp = await upload_to_server(image)
+  //console.log(resp)
+
   let formData = new FormData();
-  formData.append("student_id", id);
+  formData.append("student_id", student_id);
   formData.append("image", image)
 
 
@@ -703,20 +711,21 @@ async function uploadImage() {
         //console.log(data)
         if(data.status == "success") {
           pushNotification("n_success", data.message, 3000)
-        }
-        else {
-          pushNotification("n_error", data.message, -1)
           let page = $('#emp_page').val();
               let pagesize = 20;
               let search = $('#emp_search').val();
               let sort_by = $(".sort-filter").val();
               let class_id = $(".class-filter").val();
 
-              await cache.refresh("admin.student.studentList", {student_id: id}, admin.student.studentList)
+              await cache.refresh("admin.student.studentList", {student_id}, admin.student.studentList)
               let params = {page, pagesize, search, sort_by, class_id}
               await cache.refresh("admin.student.studentList", params, admin.student.studentList)
-          getStudent(id)
+          getStudent(student_id)
           getStudents()
+        }
+        else {
+          pushNotification("n_error", data.message, -1)
+          
         }
         hideLoader()
     },

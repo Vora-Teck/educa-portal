@@ -1163,24 +1163,24 @@ async function getTopics(syllabus_id) {
                                         <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
                                         <div class="dropdown-menu">
                                         ${d[i].file ? `
-                                            <a class="dropdown-item top-file-link" data-id="${base_url}${d[i].file}" href="#">
+                                            <a class="dropdown-item top-file-link" data-id="${d[i].id}" href="#">
                                                 <i class="fa fa-download"></i>&nbsp;
-                                                Download Note
+                                                Download Note Document
                                             </a>
                                             ` : `
                                             <a class="dropdown-item top-file-gen" data-id="${d[i].id}" href="#">
                                                 <i class="fa fa-file-pdf-o"></i>&nbsp;
-                                                Generate Note PDF
+                                                Download Note Document
                                             </a>
                                             `}
                                             
                                             <a class="dropdown-item top-det-link" data-id="${d[i].id}" href="#">
                                                 <i class="fa fa-edit"></i>&nbsp;
-                                                Update week ${d[i].week}
+                                                Update week ${d[i].week} Note
                                             </a>
                                             <a class="w-text-red w-hover-red dropdown-item top-del-link" data-id="${d[i].id}" href="#">
                                                 <i class="fa fa-trash"></i>&nbsp;
-                                                Delete week ${d[i].week}
+                                                Delete week ${d[i].week} Note
                                             </a>
                                         
                                         </div>
@@ -1211,7 +1211,7 @@ async function getTopics(syllabus_id) {
                     $('.top-file-link').click(function(e) {
                         e.preventDefault();
                         let id = $(this).data('id');
-                        downloadFile(id)
+                        generateFile(id)
                     })
                     $('.top-file-gen').click(function(e) {
                         e.preventDefault();
@@ -1292,15 +1292,20 @@ function addTopic() {
       })
 }
 
-function getTopic(topic_id, action) {
+async function getTopic(topic_id, action) {
     showLoader("Processing...")
-    //console.log(subject_id)
+    topic_id = Number(topic_id)
+    let params = { topic_id }
 
-    admin.subject.getTopics({
-        params: {topic_id},
-        onSuccess: (data) => {
-            //console.log(data)
-            if(data.status == "success") {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.subject.getTopics",
+        params, fetcher: admin.subject.getTopics
+        })
+
+        //console.log(data)
+
+        if(data.status == "success") {
                 let d = data.data;
                 $(".top-id").val(d.id)
                 $(".top-name").html(`${d.week}`)
@@ -1322,18 +1327,19 @@ function getTopic(topic_id, action) {
                 pushNotification("n_error", data.message, 3000)
             }
             hideLoader()
-        },
-        onError: (error) => {
-            console.error(error)
-            pushNotification("n_error", "Error occurred. Kindly check your internet connection", 3000)
-            hideLoader()
-        }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 function updateTopic() {
     let syllabus_id = $(".cur-name").data('id')
+    syllabus_id = Number(syllabus_id)
     let topic_id = $(".top-id").val()
+    topic_id = Number(topic_id)
     let week = $("#to-week2").val();
     let title = $("#to-title2").val();
     let description = $("#to-des2").val();
@@ -1346,12 +1352,15 @@ function updateTopic() {
 
     admin.subject.updateTopic({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
-                $(".update-top-form")[0].reset();
-                $(".update-top-con").removeClass("active");
+                //$(".update-top-form")[0].reset();
+                //$(".update-top-con").removeClass("active");
+
+                await cache.refresh("admin.subject.getTopics", { topic_id }, admin.subject.getTopics)
+                await cache.refresh("admin.subject.getTopics", { syllabus_id }, admin.subject.getTopics)
                 getTopics(syllabus_id)
             }
             else {
@@ -1369,7 +1378,9 @@ function updateTopic() {
 
 function deleteTopic() {
     let syllabus_id = $(".cur-name").data('id')
+    syllabus_id = Number(syllabus_id)
     let topic_id = $(".top-id").val();
+    topic_id = Number(topic_id)
 
     let formData = {topic_id};
 
@@ -1377,12 +1388,26 @@ function deleteTopic() {
 
     admin.subject.deleteTopic({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".delete-top-form")[0].reset();
                 $(".delete-top-con").removeClass("active");
+
+                cache.removeCache("admin.subject.getTopics", { topic_id })
+                await cache.refresh("admin.subject.getTopics", { syllabus_id }, admin.subject.getTopics)
+                
+                let page = $('#emp_page3').val();
+                let pagesize = 20;
+                let class_id = $("#class-filter").val();
+                let subject_id = $("#sub-filter").val()
+                let term = $("#term-filter").val()
+                let sort_by = $("#sort-filter").val();
+                await cache.refresh("admin.subject.getSyllabus", {
+                    page, pagesize, class_id, term, subject_id, sort_by
+                }, admin.subject.getSyllabus)
+
                 getSyllabi();
                 getTopics(syllabus_id);
             }
@@ -1419,7 +1444,7 @@ function exportTopics() {
               if(data.status == "success") {
                   d = data.data;
                   pushNotification("n_success", data.message, 5000);
-                  downloadFile(`${base_url}${d.file_url}`,d.file_name)
+                  downloadFile(`${d.file_url}`,d.file_name)
                   $(".export-top-form")[0].reset();
                   $(".export-top-con").removeClass('active')
               }
@@ -1485,7 +1510,8 @@ function generateContent() {
 }
 
 function generateTopics() {
-    let syllabus_id = $(".cur-name").data('id')
+    let syllabus_id = $(".cur-name").data('id');
+    syllabus_id = Number(syllabus_id)
 
     let formData = {syllabus_id};
 
@@ -1493,10 +1519,23 @@ function generateTopics() {
 
     admin.subject.generateTopic({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
+
+                await cache.refresh("admin.subject.getTopics", { syllabus_id }, admin.subject.getTopics)
+
+                let page = $('#emp_page3').val();
+                let pagesize = 20;
+                let class_id = $("#class-filter").val();
+                let subject_id = $("#sub-filter").val()
+                let term = $("#term-filter").val()
+                let sort_by = $("#sort-filter").val();
+                await cache.refresh("admin.subject.getSyllabus", {
+                    page, pagesize, class_id, term, subject_id, sort_by
+                }, admin.subject.getSyllabus)
+
                 getSyllabi();
                 getTopics(syllabus_id);
             }
@@ -1527,7 +1566,7 @@ function generateFile(topic_id) {
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 let d = data.data;
-                downloadFile(d)
+                downloadFile(d, data.filename)
                 //getTopics(syllabus_id)
             }
             else {
@@ -1557,8 +1596,9 @@ function setup() {
 }
 setup()
 
-function getTimetable() {
-    let class_id = $("#class-filter2").val()
+async function getTimetable() {
+    let class_id = $("#class-filter2").val();
+    class_id = Number(class_id)
 
     let loader_process = `<div class="loader mb-3" style="margin:auto;"></div>`;
 
@@ -1577,12 +1617,13 @@ function getTimetable() {
         return;
     }
 
-    //showLoader("Fetching timetable...")
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.timetable.getTimetable",
+        params: {class_id}, fetcher: admin.timetable.getTimetable
+        })
 
-    admin.timetable.getTimetable({
-        params: {class_id},
-            onSuccess: (data) => {
-                $(".time-table-body").empty()
+        $(".time-table-body").empty()
                 $(".time-table-body2").empty()
                 //console.log(data)
                 if(data.status == "success") {
@@ -1663,28 +1704,31 @@ function getTimetable() {
                 else {
                     pushNotification("n_error", data.message, 3000)
                 }
-            },
-            onError: (error) => {
-                console.error(error)
-                $(".time-table-body").empty()
-                pushNotification("n_error", "Internet connection error!", 3000)
-            }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        $(".time-table-body").empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
+
 }
 
 async function getClassSubjects(class_id) {
+    class_id = Number(class_id)
+
     try {
-        let data = await admin.subject.getClassSubjects({
-            params: {class_id}
+        let data = await cache.fetchOrCache({
+        func: "admin.subject.getClassSubjects",
+        params: {class_id}, fetcher: admin.subject.getClassSubjects
         })
-        //console.log(data)
+
         if(data.status == "success") {
             return [true, data.data]
         }
         else {return [false, data.message]}
     }
-    catch(err) {
-        console.log(err)
+    catch(error) {
+        console.error(error);
         return [false, "Error occurred, kindly check your internet connection!"]
     }
 }
@@ -1693,6 +1737,7 @@ async function getTimetab() {
     $(".update-time-con").addClass('active')
 
     let class_id = $("#class-filter2").val()
+    class_id = Number(class_id)
 
     $(".time-form-head").empty()
     $(".time-form-body").empty()
@@ -1714,12 +1759,14 @@ async function getTimetab() {
         hideLoader();
         return
     }
-    //console.log(subjects_list)
-    admin.timetable.getTimetable({
-        params: {class_id},
-            onSuccess: (data) => {
-                //console.log(data)
-                if(data.status == "success") {
+    
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.timetable.getTimetable",
+        params: {class_id}, fetcher: admin.timetable.getTimetable
+        })
+
+        if(data.status == "success") {
                     let d = data.data;
 
                     let periods = d.period;
@@ -1843,13 +1890,13 @@ async function getTimetab() {
                     pushNotification("n_error", data.message, 3000)
                 }
                 hideLoader()
-            },
-            onError: (error) => {
-                console.error(error)
-                hideLoader()
-                pushNotification("n_error", "Internet connection error!", 3000)
-            }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
+
 }
 
 function addPeriodRow() {
@@ -1958,6 +2005,7 @@ function addPeriodRow() {
 
 function updateTimetable() {
     let class_id = $("#class-filter2").val();
+    class_id = Number(class_id)
 
     let periods = [];
     let mondays = [];
@@ -2004,10 +2052,12 @@ function updateTimetable() {
 
     admin.timetable.updateTimetable({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
+
+                await cache.refresh("admin.timetable.getTimetable", { class_id }, admin.timetable.getTimetable)
                 getTimetable()
             }
             else {
@@ -2025,6 +2075,7 @@ function updateTimetable() {
 
 function generateTimetable() {
     let class_id = $("#class-filter2").val();
+    class_id = Number(class_id)
     let min_subjects = $("#min-sub").val();
     let max_subjects = $("#max-sub").val();
     let prompt = $("#time-prompt").val();
@@ -2039,16 +2090,19 @@ function generateTimetable() {
     let formData = {class_id, periods, min_subjects, max_subjects, prompt};
 
     //console.log(formData)
-    showLoader("Generating timetable")
+    showLoader("Generating timetable..")
 
     admin.timetable.generateTimetable({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".gen-time-form")[0].reset();
                 $(".gen-time-con").removeClass("active")
+
+                await cache.refresh("admin.timetable.getTimetable", { class_id }, admin.timetable.getTimetable)
+
                 getTimetab()
                 getTimetable()
             }

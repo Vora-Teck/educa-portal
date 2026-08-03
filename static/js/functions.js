@@ -3,6 +3,17 @@ const admin = new educaSDK.Admin();
 const base_url = educaSDK.BASE_URL;
 const cache = new ApiCache({persist: true})
 
+let file_storage_url = ""
+
+if(window.location.protocol == "http:") {
+  file_storage_url = `http://127.0.0.1:5000`;
+}
+else {
+  file_storage_url = `https://files.eduka.ng`;
+}
+
+const FILE_STORAGE_URL = file_storage_url;
+
 cache.on('updated', (entry) => {
   //console.log("Cache updated:", entry)
 })
@@ -22,6 +33,31 @@ async function cache_template() {
   catch(error) {
     console.error(error);
     pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
+}
+
+
+async function upload_to_server(file) {
+
+  const form = new FormData()
+  form.append("file", file)
+
+  try {
+    let response = await fetch(`${FILE_STORAGE_URL}/api/upload`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json"
+      },
+      body: form
+    })
+
+    let data = await response.json()
+    console.log(data)
+    return data
+  }
+  catch(err) {
+    console.log(err)
+    return {"error": err}
   }
 }
 
@@ -335,7 +371,7 @@ async function showSchoolInfo() {
 
       let d = data.data;
               if(d.logo !== null) {
-                  d['logo'] = base_url + d.logo
+                  d['logo'] = d.logo
               }
               let obj = {name: d.name, logo: d.logo, motto: d.motto}
               localStorage.setItem('educa_school_info', JSON.stringify(obj));

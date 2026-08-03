@@ -1,12 +1,13 @@
 showLoader("Loading Data...")
 
-function getData() {
+async function getData() {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.school.schoolData",
+        params: {page: "exam"}, fetcher: admin.school.schoolData
+        })
 
-    admin.school.schoolData({
-        params: {page: "exam"},
-        onSuccess: (data) => {
-                //console.log(data);
-                if(data.status == 'success') {
+        if(data.status == 'success') {
                     let d = data.data;
                     $(".class-no").html(digify(d.total_exams));
                     $(".sub-no").html(digify(d.active_exams));
@@ -16,23 +17,25 @@ function getData() {
                         pushNotification("n_error", data.message, 3000)
                 }
                 hideLoader()
-        },
-        onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                hideLoader()
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
   }
 
 getData()
 
 
-function getTerms() {
-    admin.calendar.termList({
-            onSuccess: (data) => {
-                //console.log(data)
-                let d = data.data
+async function getTerms() {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.calendar.termList",
+        fetcher: admin.calendar.termList
+        })
+
+        let d = data.data
                 $("#term-filter").empty();
                 $("#term-filter1").empty();
                 $("#term-filter2").empty();
@@ -49,34 +52,42 @@ function getTerms() {
                 getTests()
                 getExams()
                 getResults()
-            },
-            onError: (error) => console.error(error)
-    })
+    }
+    catch(error) {
+        console.error(error);
+    }
 }
-function getSessions() {
-    admin.calendar.sessionList({
-            onSuccess: (data) => {
-                //console.log(data)
-                let d = data.data
+
+async function getSessions() {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.calendar.sessionList",
+        fetcher: admin.calendar.sessionList
+        })
+
+        let d = data.data
                 $("#session-filter").empty();
                 for(let i in d) {
                     let temp = `<option value="${d[i].id}">${d[i].title}</option>`;
                     $("#session-filter").append(temp)
                 }
-            },
-            onError: (error) => console.error(error)
-    })
+    }
+    catch(error) {
+        console.error(error);
+    }
 }
 getSessions()
 
-function getAllSubjects() {
+async function getAllSubjects() {
     let pagesize = 300;
-    
-    admin.subject.getSubjects({
-        params: {pagesize},
-        onSuccess: (data) => {
-                //console.log(data);
-                $('#sub-filter').empty().append(`<option value="" selected>All Subjects</option>`)
+
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.subject.getSubjects",
+        params: {pagesize}, fetcher: admin.subject.getSubjects
+        })
+
+        $('#sub-filter').empty().append(`<option value="" selected>All Subjects</option>`)
                 $('#sub-filter2').empty().append(`<option value="" selected>Select Subject</option>`)
                 $('#sub-filter4').empty().append(`<option value="" selected>Select Subject</option>`)
                 $('#sub-filter5').empty().append(`<option value="" selected>Select Subject</option>`)
@@ -91,24 +102,26 @@ function getAllSubjects() {
                         }
                     }
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
-function getClassrooms() {
+async function getClassrooms() {
     $(".class-list2").empty()
-    admin.classroom.getClassrooms({
-        onSuccess: (data) => {
-                //console.log(data);
-                $('#class-filter').empty().append(`<option value="" selected>All Classes</option>`)
-                $('#class-filter2').empty().append(`<option value="" selected>All Classes</option>`)
-                $('#class-filter1').empty().append(`<option value="" selected>All Classes</option>`)
-                $('#class-filter5').empty().append(`<option value="" selected>Select Classroom</option>`)
-                if(data.status == 'success') {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.classroom.getClassrooms",
+        fetcher: admin.classroom.getClassrooms
+        })
+
+        $('#class-filter').empty().append(`<option value="" selected>All Classes</option>`)
+        $('#class-filter2').empty().append(`<option value="" selected>All Classes</option>`)
+        $('#class-filter1').empty().append(`<option value="" selected>All Classes</option>`)
+        $('#class-filter5').empty().append(`<option value="" selected>Select Classroom</option>`)
+        if(data.status == 'success') {
                     if(data.data) {
                         let e = data.data;
                         for(var i in e) {
@@ -125,30 +138,33 @@ function getClassrooms() {
                             $(".class-list2").append(temp2)
                         }
                     }
-                }
-        },
-        onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
         }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
-function getStaff() {
-    admin.staff.staffList({
-        params: {page:1, pagesize:200},
-            onSuccess: (data) => {
-                //console.log(data)
-                let d = data.data
+async function getStaff() {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.staff.staffList",
+        params: {page:1, pagesize:300}, fetcher: admin.staff.staffList
+        })
+
+        let d = data.data
                 $(".staff-filter").empty().append(`<option value="" selected>No staff selected</option>`)
                 for(let i in d) {
                     let temp = `<option value="${d[i].id}">${d[i].firstName} ${d[i].lastName} (${d[i].qualification})</option>`;
                     $(".staff-filter").append(temp)
                 }
-            },
-            onError: (error) => console.error(error)
-    })
+    }
+    catch(error) {
+        console.error(error);
+    }
 }
+
 getTerms()
 getAllSubjects()
 getClassrooms()
@@ -156,7 +172,7 @@ getStaff()
 
 /* =========== Test Section =============== */
 
-function getScoreSheet() {
+async function getScoreSheet() {
     let class_id = $("#class-filter5").val();
     let subject_id = $("#sub-filter5").val()
     let term_id = $("#term-filter5").val()
@@ -174,13 +190,13 @@ function getScoreSheet() {
 
     let params = {class_id, term_id, subject_id}
 
-    //console.log(params)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.exam.getScoreSheet",
+        params, fetcher: admin.exam.getScoreSheet
+        })
 
-    admin.exam.getScoreSheet({
-        params: params,
-        onSuccess: (data) => {
-            //console.log(data);
-            $('.score-sheet').empty()
+        $('.score-sheet').empty()
             if(data.status == 'success') {
                 let e = data.data;
                 let s = e.scores;
@@ -236,16 +252,15 @@ function getScoreSheet() {
                     </tr>`;
                 $('.score-sheet').append(temp)
             }
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.score-sheet').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.score-sheet').empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
-function getTests() {
+async function getTests() {
     let page = $('#emp_page3').val();
     let pagesize = 20;
     let class_id = $("#class-filter2").val();
@@ -263,13 +278,13 @@ function getTests() {
 
     let params = {page, pagesize, class_id, term_id, subject_id, exam_type}
 
-    //console.log(params)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.exam.getExams",
+        params, fetcher: admin.exam.getExams
+        })
 
-    admin.exam.getExams({
-        params: params,
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.test-list').empty()
+        $('.test-list').empty()
                 if(data.status == 'success') {
                     let pages = data.total_pages
                     //let count = data.total_count;
@@ -417,18 +432,17 @@ function getTests() {
                         </tr>`;
                         $('.test-list').append(temp)
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.test-list').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.test-list').empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 
 /* =========== Exam Section =============== */
-function getExams() {
+async function getExams() {
     let page = $('#emp_page').val();
     let pagesize = 20;
     let class_id = $("#class-filter").val();
@@ -446,13 +460,13 @@ function getExams() {
 
     let params = {page, pagesize, class_id, term_id, subject_id, exam_type}
 
-    //console.log(params)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.exam.getExams",
+        params, fetcher: admin.exam.getExams
+        })
 
-    admin.exam.getExams({
-        params: params,
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.exam-list').empty()
+        $('.exam-list').empty()
                 if(data.status == 'success') {
                     let pages = data.total_pages
                     //let count = data.total_count;
@@ -599,13 +613,12 @@ function getExams() {
                         </tr>`;
                         $('.exam-list').append(temp)
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.exam-list').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.exam-list').empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 function addExam() {
@@ -645,12 +658,17 @@ function addExam() {
 
     admin.exam.addExam({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-exam-form")[0].reset();
                 //$(".add-cur-con").removeClass('active')
+
+                await cache.refresh("admin.school.schoolData", {page: "exam"}, admin.school.schoolData)
+                cache.clearFunction("admin.exam.getExams")
+                cache.clearFunction("admin.result.getResults")
+
                 getData();
                 getTests();
                 getExams();
@@ -673,17 +691,42 @@ function examStatus(exam_id, action) {
     showLoader("Updating exam status...")
     admin.exam.updateExamStatus({
         formData: {exam_id, action},
-            onSuccess: (data) => {
+            onSuccess: async (data) => {
                 if(data.status == 'success') {
                     pushNotification('n_success', data.message, 3000)
                 }
                 else {
                     pushNotification('n_error', data.message, 3000)
                 }
+
+                hideLoader()
+
+                await cache.refresh("admin.school.schoolData", {page: "exam"}, admin.school.schoolData)
+                
+                let page = $('#emp_page').val();
+                let pagesize = 20;
+                let class_id = $("#class-filter").val();
+                let subject_id = $("#sub-filter").val()
+                let term_id = $("#term-filter").val()
+                let exam_type = "exam";
+                await cache.refresh("admin.exam.getExams", {
+                    page, pagesize, class_id, subject_id, term_id, exam_type
+                }, admin.exam.getExams)
+                
+                let tpage = $('#emp_page3').val();
+                let tpagesize = 20;
+                let tclass_id = $("#class-filter2").val();
+                let tsubject_id = $("#sub-filter4").val()
+                let tterm_id = $("#term-filter4").val()
+                let texam_type = "test";
+                await cache.refresh("admin.exam.getExams", {
+                    tpage, tpagesize, tclass_id, tsubject_id, tterm_id, texam_type
+                }, admin.exam.getExams)
+
                 getExams()
                 getTests()
                 getData()
-                hideLoader()
+                
             },
             onError: (error) => {
                 console.error(error)
@@ -693,15 +736,16 @@ function examStatus(exam_id, action) {
     })
 }
 
-function getExam(exam_id, action) {
+async function getExam(exam_id, action) {
     showLoader("Processing...")
-    //console.log(subject_id)
+    exam_id = Number(exam_id)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.exam.getExams",
+        params: {exam_id}, fetcher: admin.exam.getExams
+        })
 
-    admin.exam.getExams({
-        params: {exam_id},
-        onSuccess: (data) => {
-            //console.log(data)
-            if(data.status == "success") {
+        if(data.status == "success") {
                 let d = data.data;
                 $(".exam-id").val(d.id)
                 $(".exam-name").html(`${d.term.title} ${d.course.title} ${capitalize(d.examType)} for ${d.classrooms.map(function(item) {
@@ -720,17 +764,17 @@ function getExam(exam_id, action) {
                 pushNotification("n_error", data.message, 3000)
             }
             hideLoader()
-        },
-        onError: (error) => {
-            console.error(error)
-            pushNotification("n_error", "Error occurred. Kindly check your internet connection", 3000)
-            hideLoader()
-        }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 function updateExam() {
     let exam_id = $(".exam-id").val();
+    exam_id = Number(exam_id)
     let date = $("#exam-date2").val();
     let duration = $("#exam-duration2").val();
     let exam_type = $(".exam-type2").val();
@@ -748,19 +792,44 @@ function updateExam() {
 
     admin.exam.updateExam({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".update-exam-form")[0].reset();
                 $(".update-exam-con").removeClass("active");
-                getExams();
-                getTests()
+                hideLoader()
+                await cache.refresh("admin.exam.getExams", {exam_id}, admin.exam.getExams)
+                
+                let page, pagesize, class_id, subject_id, term_id;
+                if(exam_type === "exam") {
+                    page = $('#emp_page').val();
+                    pagesize = 20;
+                    class_id = $("#class-filter").val();
+                    subject_id = $("#sub-filter").val()
+                    term_id = $("#term-filter").val()
+                    await cache.refresh("admin.exam.getExams", {
+                        page, pagesize, class_id, subject_id, term_id, exam_type
+                    }, admin.exam.getExams);
+                    await getExams();
+                }
+                else if(exam_type === "test") {
+                    page = $('#emp_page3').val();
+                    pagesize = 20;
+                    class_id = $("#class-filter2").val();
+                    subject_id = $("#sub-filter4").val()
+                    term_id = $("#term-filter4").val()
+                    await cache.refresh("admin.exam.getExams", {
+                        page, pagesize, class_id, subject_id, term_id, exam_type
+                    }, admin.exam.getExams)
+                    await getTests()
+                }
             }
             else {
                 pushNotification("n_error", data.message, 3000)
+                hideLoader()
             }
-            hideLoader()
+            
         },
         onError: (error) => {
             console.error(error);
@@ -772,6 +841,7 @@ function updateExam() {
 
 function deleteExam() {
     let exam_id = $(".exam-id").val();
+    exam_id = Number(exam_id)
     let password = $("#exam-delete-password").val();
     let exam_type = $(".exam-type2").val();
 
@@ -781,12 +851,17 @@ function deleteExam() {
 
     admin.exam.deleteExam({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".delete-exam-form")[0].reset();
                 $(".delete-exam-con").removeClass("active");
+
+                await cache.refresh("admin.school.schoolData", {page: "exam"}, admin.school.schoolData)
+                cache.clearFunction("admin.exam.getExams")
+                cache.clearFunction("admin.result.getResults")
+
                 getData();
                 getExams();
                 getTests()
