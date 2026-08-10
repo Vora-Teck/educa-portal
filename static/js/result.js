@@ -64,7 +64,7 @@ function loadResult() {
                         let header = `
                             <header>
                                 <img class="school_logo" 
-                                    src="${school.logo ? `${base_url}${school.logo}` : `/static/logos/logo.png`}" 
+                                    src="${school.logo ? `${school.logo}` : `/static/logos/logo.png`}" 
                                     alt="school_logo"
                                 />
                                 <div class="school-details">
@@ -83,7 +83,7 @@ function loadResult() {
                                         <td rowspan="3" class="photo-placeholder">
                                             <img 
                                                 class="user_img" 
-                                                src="${user.image ? `${base_url}${user.image}` : `${base_url}${school.logo}`}" 
+                                                src="${user.image ? `${user.image}` : `${school.logo}`}" 
                                                 style="width:100%;height:100%;" 
                                                 alt="user_image"
                                             />
@@ -455,7 +455,7 @@ function loadResult() {
                         let header = `
                         <header>
                             <img class="school_logo" 
-                                src="${school.logo ? `${base_url}${school.logo}` : `/static/logos/logo.png`}" 
+                                src="${school.logo ? `${school.logo}` : `/static/logos/logo.png`}" 
                                 alt="school_logo"
                             />
                             <div class="school-details">
@@ -474,7 +474,7 @@ function loadResult() {
                                         <td rowspan="3" class="photo-placeholder">
                                             <img 
                                                 class="user_img" 
-                                                src="${user.image ? `${base_url}${user.image}` : `${base_url}${school.logo}`}" 
+                                                src="${user.image ? `${user.image}` : `${school.logo}`}" 
                                                 style="width:100%;height:100%;" 
                                                 alt="user_image"
                                             />

@@ -263,7 +263,7 @@ async function getTeacher(id) {
                     }
                     if(d.resume) {
                         $("#sta-resume").html(`
-                            <a href="${base_url}${d.resume}" target="_blank">
+                            <a href="${d.resume}" target="_blank">
                                 <button class="light-btn">
                                     <i class="fa fa-eye"></i>&nbsp;&nbsp;View
                                 </button>
@@ -593,7 +593,7 @@ function exportList() {
               if(data.status == "success") {
                   d = data.data;
                   pushNotification("n_success", data.message, 5000);
-                  downloadFile(`${base_url}${d.file_url}`,d.file_name)
+                  downloadFile(`${d.file_url}`,d.file_name)
                   $(".export-staff-form")[0].reset();
               }
               else {

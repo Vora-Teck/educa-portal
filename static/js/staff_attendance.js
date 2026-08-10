@@ -32,10 +32,13 @@ async function setWeek() {
 
 async function getData() {
     $("#session-filter").empty()
-    admin.attendance.getData({
-        onSuccess: (data) => {
-                //console.log(data);
-                if(data.status == 'success') {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.attendance.getData",
+        fetcher: admin.attendance.getData
+        })
+
+        if(data.status == 'success') {
                     let d = data.data
                     for(let s in d) {
                         var temp = `<option value="${s}">${s}</option>`
@@ -49,13 +52,12 @@ async function getData() {
                     hideLoader()
                 }
             hideLoader()
-        },
-        onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                hideLoader()
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 getData()
@@ -77,13 +79,13 @@ async function getAttendance() {
 
     let params = {session, week, term}
 
-    //console.log(params)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.attendance.getStaffAttendance",
+        params, fetcher: admin.attendance.getStaffAttendance
+        })
 
-    admin.attendance.getStaffAttendance({
-        params: params,
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.att-list').empty()
+        $('.att-list').empty()
                 if(data.status == 'success') {
                     if(data.data) {
                         let e = data.data;
@@ -142,23 +144,26 @@ async function getAttendance() {
                         $('.att-list').append(temp)
                 }
                 hideLoader()
-        },
-        onError: (error) => {
-            console.error(error);
-            $('.att-list').empty()
-            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-            hideLoader()
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.att-list').empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+        hideLoader()
+    }
 }
 
-function getTodayAttendance() {
+async function getTodayAttendance() {
     showLoader("Fetching attendance...")
     $(".curr-att-list").empty()
-    admin.attendance.getCurrentStaffAttendance({
-            onSuccess: (data) => {
-                //console.log(data)
-                if(data.status == 'success') {
+    let today = (new Date()).toLocaleDateString().replaceAll('/', '-')
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.attendance.getCurrentStaffAttendance",
+        params: { today }, fetcher: admin.attendance.getCurrentStaffAttendance
+        })
+
+        if(data.status == 'success') {
                     let e = data.data;
 
                     var std_ids = []
@@ -215,13 +220,12 @@ function getTodayAttendance() {
                     pushNotification('n_error', data.message, 3000)
                 }
                 hideLoader()
-            },
-            onError: (error) => {
-                console.error(error)
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                hideLoader()
-            }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 function markAttendance() {
@@ -244,16 +248,20 @@ function markAttendance() {
     showLoader("Updating attendance...")
     admin.attendance.markStaffAttendance({
         formData: formData,
-            onSuccess: (data) => {
+            onSuccess: async (data) => {
                 if(data.status == 'success') {
                     pushNotification('n_success', data.message, 3000)
+
+                    let today = (new Date()).toLocaleDateString().replaceAll('/', '-')
+                    await cache.refresh("admin.attendance.getCurrentStaffAttendance", {today}, admin.attendance.getCurrentStaffAttendance)
+                    cache.clearFunction("admin.attendance.getStaffAttendance")
+                    
+                    getAttendance()
                 }
                 else {
                     pushNotification('n_error', data.message, 3000)
                 }
                 hideLoader()
-                //getData()
-                getAttendance()
             },
             onError: (error) => {
                 console.error(error)

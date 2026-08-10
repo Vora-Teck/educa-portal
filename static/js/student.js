@@ -660,7 +660,7 @@ function exportList() {
             if(data.status == "success") {
                 d = data.data;
                 pushNotification("n_success", data.message, 5000);
-                downloadFile(`${base_url}${d.file_url}`,d.file_name)
+                downloadFile(`${d.file_url}`,d.file_name)
                 $(".export-student-form")[0].reset();
             }
             else {

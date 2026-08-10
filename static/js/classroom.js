@@ -1316,7 +1316,7 @@ async function getTopic(topic_id, action) {
                 $("#to-week2").val(d.week);
                 $("#to-title2").val(d.title);
                 $("#to-file3").html(
-                    d.file ? `currently: <a href="${base_url}${d.file}">${d.file}</a>` : ``
+                    d.file ? `currently: <a href="${d.file}">${d.file}</a>` : ``
                 )
                 $("#to-des2").val(d.description);
                 tinymce.get('to-content2').setContent(d.content)

@@ -4657,6 +4657,50 @@
     </div>
   </div>
 
+  <div class="modal-con update-cbt-con">
+    <div class="modal-body" style="max-width:700px;">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-text-blue w-bold-x">
+          <b class="exam-name4"></b> CBT Students
+        </div>
+      </div>
+      <form class="modal-content update-cbt-form">
+        <p class="">
+          <b>IMPORTANT NOTE:</b>
+        </p>
+        <ul class="w-padding-left">
+          <li>The list below shows the list of students in the classrooms for the selected exam/test CBT.</li>
+          <li>Select students you wish to reset their CBT timers and click on the <b>&quot;Reset Timer&quot; button to reset their timer</b></li>
+          <li>This is particularly useful when a student already started their CBT but unable to submit due to circumstances such as power outage, network outage, etc.</li>
+        </ul>
+        <div class="table-responsive">
+          <table class="table staff-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Image</th>
+                <th>Student Name</th>
+                <th>Student ID</th>
+                <th>Classroom</th>
+              </tr>
+            </thead>
+            <tbody class="cbt-list">
+            </tbody>
+          </table>
+        </div>
+  
+
+        <input type="hidden" class="exam-id4">
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn13">Cancel</button>
+          <input type="submit" value="Reset Timer">
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div class="modal-con small-con score-report-con">
     <div class="modal-body" style="max-width:500px !important">
       <div class="close-modal">X</div>
@@ -4666,7 +4710,9 @@
         </div>
       </div>
       <div class="modal-content">
-        
+        <div class="h6 p-2"><b>Started Exam By: </b><span class="rep-start"></span></div>
+        <div class="h6 p-2"><b>Estimated End Time: </b><span class="rep-est"></span></div>
+        <div class="h6 p-2"><b>Submitted By: </b><span class="rep-end"></span></div>
         <div>
           <div id="accordion" class="report-con">
           
@@ -5205,6 +5251,10 @@
     $(".canc-btn12").click(function(e) {
         e.preventDefault();
         $(".update-std-con").removeClass('active')
+    })
+    $(".canc-btn13").click(function(e) {
+        e.preventDefault();
+        $(".update-cbt-con").removeClass('active')
     })
     
 

@@ -91,7 +91,7 @@ function loadSpreadsheet() {
 
                 let template = `
                 <img 
-                src="${school.logo ? `${base_url}${school.logo}` : `/static/logos/logo.png`}" 
+                src="${school.logo ? `${school.logo}` : `/static/logos/logo.png`}" 
                 alt="" />
                 <h2>Broadsheet Result Data for ${session.title}</h2>
 
