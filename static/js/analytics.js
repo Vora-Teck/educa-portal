@@ -4,15 +4,17 @@ window.Apex = {
   }
 };
 // ====================== General Data ======================
-function getData() {
+async function getData() {
 
   showLoader("Loading Data...")
 
-  admin.school.schoolData({
-    params: {page: "analytic"},
-      onSuccess: (data) => {
-              //console.log(data);
-              let d = data.data;
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.school.schoolData",
+      params: {page: "analytic"}, fetcher: admin.school.schoolData
+    })
+
+    let d = data.data;
               if(data.status == 'success') {
                   $(".bal-item").html(`&#8358;${shortify(d.balance, true)}`)
                   $(".bal-item2").html(`&#8358;${digify(d.balance, true)}`)
@@ -30,23 +32,26 @@ function getData() {
                   $(".att-item").html(`${d.attendance_rate}%`)
               }
               else {
-                      pushNotification("n_error", data.message, 3000)
+                pushNotification("n_error", data.message, 3000)
               }
               hideLoader()
-      },
-      onError: (error) => {
-              console.error(error);
-              pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-              hideLoader()
-      }
-  })
+  }
+  catch(error) {
+    console.error(error);
+    hideLoader()
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
 }
 getData()
+
 async function getTerms() {
-  admin.calendar.termList({
-          onSuccess: (data) => {
-              //console.log(data)
-              let d = data.data
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.calendar.termList",
+      fetcher: admin.calendar.termList
+    })
+
+    let d = data.data
               $(".term-filter").empty();
               for(let i in d) {
                   let temp = `<option value="${d[i].id}">${d[i].title} - ${d[i].session.title}</option>`;
@@ -55,34 +60,42 @@ async function getTerms() {
             getClassrooms();
             getClassPerformance();
             getFeesData();
-          },
-          onError: (error) => console.error(error)
-  })
+  }
+  catch(error) {
+    console.error(error);
+  }
 }
 getTerms()
 
 async function getSessions() {
-  admin.calendar.sessionList({
-          onSuccess: (data) => {
-              //console.log(data)
-              let d = data.data
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.calendar.sessionList",
+      fetcher: admin.calendar.sessionList
+    })
+
+    let d = data.data
               $(".session-filter").empty();
               for(let i in d) {
                   let temp = `<option value="${d[i].id}">${d[i].title}</option>`;
                   $(".session-filter").append(temp)
               }
             staffPerformanceData()
-          },
-          onError: (error) => console.error(error)
-  })
+  }
+  catch(error) {
+    console.error(error);
+  }
 }
 getSessions()
 
 async function getClassrooms() {
-  admin.classroom.getClassrooms({
-      onSuccess: (data) => {
-              //console.log(data);
-              $('.class-filter').empty()
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.classroom.getClassrooms",
+      fetcher: admin.classroom.getClassrooms
+    })
+
+    $('.class-filter').empty()
               if(data.status == 'success') {
                   if(data.data) {
                       let e = data.data;
@@ -97,12 +110,11 @@ async function getClassrooms() {
                 getPerformingSubjects("low")
                 getFeesBreakdown()
               }
-      },
-      onError: (error) => {
-              console.error(error);
-              pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-      }
-})
+  }
+  catch(error) {
+    console.error(error);
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
 }
 
 // ====================== Academic Report ========================
@@ -110,68 +122,72 @@ async function getSubjectPerformance() {
   let class_id = $("#sub-per-class").val();
   let term_id = $("#sub-per-term").val()
 
-  admin.analytic.getSubjectPerformance({
-    params: {class_id, term_id},
-      onSuccess: (data) => {
-              //console.log(data);
-              if(data.status == 'success') {
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.analytic.getSubjectPerformance",
+      params: {class_id, term_id}, fetcher: admin.analytic.getSubjectPerformance
+    })
+
+    if(data.status == 'success') {
                 $("#bar1").empty()
                   subPerformanceChart(data.data)
               }
               else {
                 pushNotification("n_network", data.message, 3000)
               }
-      },
-      onError: (error) => {
-              console.error(error);
-              pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-      }
-})
+  }
+  catch(error) {
+    console.error(error);
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
+
 }
 
 async function getClassPerformance() {
   let term_id = $("#class-per-term").val()
 
-  admin.analytic.getClassPerformance({
-    params: {term_id},
-      onSuccess: (data) => {
-              //console.log(data);
-              if(data.status == 'success') {
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.analytic.getClassPerformance",
+      params: {term_id}, fetcher: admin.analytic.getClassPerformance
+    })
+
+    if(data.status == 'success') {
                 $("#bar").empty()
                   classPerformanceChart(data.data)
               }
               else {
                 pushNotification("n_network", data.message, 3000)
               }
-      },
-      onError: (error) => {
-              console.error(error);
-              pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-      }
-})
+  }
+  catch(error) {
+    console.error(error);
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
 }
 
 async function getPassFailRate() {
   let class_id = $("#pass-fail-class").val();
-  let term_id = $("#pass-fail-term").val()
+  let term_id = $("#pass-fail-term").val();
 
-  admin.analytic.getPassFailRate({
-    params: {class_id, term_id},
-      onSuccess: (data) => {
-              //console.log(data);
-              if(data.status == 'success') {
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.analytic.getPassFailRate",
+      params: {class_id, term_id}, fetcher: admin.analytic.getPassFailRate
+    })
+
+    if(data.status == 'success') {
                 $("#donutTop").empty()
                   passFailChart(data.data)
               }
               else {
                 pushNotification("n_network", data.message, 3000)
               }
-      },
-      onError: (error) => {
-              console.error(error);
-              pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-      }
-})
+  }
+  catch(error) {
+    console.error(error);
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
 }
 
 async function getPerformingSubjects(typ) {
@@ -180,11 +196,13 @@ async function getPerformingSubjects(typ) {
 
   $(`.${typ}-sub-list`).empty()
 
-  admin.analytic.getPerformingSubjects({
-    params: {class_id, term_id, type:typ},
-      onSuccess: (data) => {
-        //console.log(data);
-        if(data.status == 'success') {
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.analytic.getPerformingSubjects",
+      params: {class_id, term_id, type:typ}, fetcher: admin.analytic.getPerformingSubjects
+    })
+
+    if(data.status == 'success') {
             let d = data.data;
             if(d.length > 0) {
               for(let i in d) {
@@ -208,12 +226,12 @@ async function getPerformingSubjects(typ) {
         else {
           pushNotification("n_network", data.message, 3000)
         }
-      },
-      onError: (error) => {
-        console.error(error);
-        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-      }
-})
+  }
+  catch(error) {
+    console.error(error);
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
+
 }
 
 // =================== Financial Report =========================
@@ -227,12 +245,14 @@ async function getFeesData() {
         </td>
     </tr>`;
     $('.out-list').append(loader)
+  
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.analytic.getFeesData",
+      params: {term_id}, fetcher: admin.analytic.getFeesData
+    })
 
-  admin.analytic.getFeesData({
-    params: {term_id},
-      onSuccess: (data) => {
-        //console.log(data);
-        if(data.status == 'success') {
+    if(data.status == 'success') {
             let d = data.data;
             let e = d.outstanding;
             let a = d.trend;
@@ -259,15 +279,14 @@ async function getFeesData() {
           $('.out-list').empty()
           pushNotification("n_error", data.message, 3000)
         }
-      },
-      onError: (error) => {
-        console.error(error);
-        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-      }
-  })
+  }
+  catch(error) {
+    console.error(error);
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
 }
 
-function getFeesBreakdown() {
+async function getFeesBreakdown() {
   let term_id = $(`#fees-break-term`).val();
   let class_id = $("#fees-break-class").val();
 
@@ -277,11 +296,13 @@ function getFeesBreakdown() {
     </p>`;
     $('#donutTop3').append(loader)
 
-  admin.analytic.getFeesBreakdown({
-    params: {term_id, class_id},
-      onSuccess: (data) => {
-        //console.log(data);
-        $('#donutTop3').empty()
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.analytic.getFeesBreakdown",
+      params: {term_id, class_id}, fetcher: admin.analytic.getFeesBreakdown
+    })
+
+    $('#donutTop3').empty()
         if(data.status == 'success') {
           let d = data.data;
           if(d) {
@@ -298,13 +319,12 @@ function getFeesBreakdown() {
         else {
           pushNotification("n_error", data.message, 3000)
         }
-      },
-      onError: (error) => {
-        console.error(error);
-        $('#donutTop3').empty()
-        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-      }
-})
+  }
+  catch(error) {
+    console.error(error);
+    $('#donutTop3').empty()
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
 }
 
 var months = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
@@ -332,15 +352,17 @@ function setYearMonth() {
 setYearMonth()
 
 
-function getPayrollData() {
+async function getPayrollData() {
   let month = $("#month-filter").val();
   let year = $("#year-filter").val();
 
-  admin.analytic.getPayrollData({
-    params: {month, year},
-      onSuccess: (data) => {
-        //console.log(data);
-        if(data.status == 'success') {
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.analytic.getPayrollData",
+      params: {month, year}, fetcher: admin.analytic.getPayrollData
+    })
+
+    if(data.status == 'success') {
             let d = data.data;
             $("#pay-staff").html(digify(d.total_staff));
             $("#pay-cost").html(digify(d.payroll_cost));
@@ -350,16 +372,16 @@ function getPayrollData() {
         else {
           pushNotification("n_error", data.message, 3000)
         }
-      },
-      onError: (error) => {
-        console.error(error);
-        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-      }
-})
+  }
+  catch(error) {
+    console.error(error);
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
+
 }
 
 // =================== Staff Report =========================
-function staffPerformanceData() {
+async function staffPerformanceData() {
   let term = $(`#level-term`).val();
   let session_id = $(`#level-session`).val();
   let class_level = $("#level-cat").val();
@@ -374,11 +396,13 @@ function staffPerformanceData() {
     $('.workload-list').append(loader)
     $('.perform-list').append(loader)
 
-  admin.analytic.staffPerformanceData({
-    params: {term, class_level, session_id},
-      onSuccess: (data) => {
-        //console.log(data);
-        $('.workload-list').empty()
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.analytic.staffPerformanceData",
+      params: {term, class_level, session_id}, fetcher: admin.analytic.staffPerformanceData
+    })
+
+    $('.workload-list').empty()
         $('.perform-list').empty()
         if(data.status == 'success') {
             let d = data.data;
@@ -450,12 +474,11 @@ function staffPerformanceData() {
           $('.workload-list').append(temp)
           $('.perform-list').append(temp)
         }
-      },
-      onError: (error) => {
-        console.error(error);
-        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-      }
-  })
+  }
+  catch(error) {
+    console.error(error);
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
 }
 
 

@@ -1,10 +1,13 @@
 showLoader("Loading profile...")
 
-function getProfile() {
-  admin.account.getProfile({
-          onSuccess: (data) => {
-              //console.log(data)
-              if(data.status == "success") {
+async function getProfile() {
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.account.getProfile",
+      fetcher: admin.account.getProfile
+    })
+
+    if(data.status == "success") {
                 let d = data.data
                 $("#p-fname").val(d.firstName);
                 $("#p-lname").val(d.lastName);
@@ -15,20 +18,22 @@ function getProfile() {
                 pushNotification("n_error", data.message, 4000)
               }
               hideLoader()
-          },
-          onError: (error) => {
-              console.error(error);
-              pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-              hideLoader()
-          }
-  })
+  }
+  catch(error) {
+    console.error(error);
+    hideLoader()
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
 }
 
-function schoolConfig() {
-  admin.school.config({
-          onSuccess: (data) => {
-              //console.log(data)
-              let d = data.data
+async function schoolConfig() {
+  try {
+    let data = await cache.fetchOrCache({
+      func: "admin.school.config",
+      fetcher: admin.school.config
+    })
+
+    let d = data.data
               
               $("#config-renew").val(d.auto_renewal.toString());
               $("#config-payroll").val(d.auto_payroll.toString());
@@ -36,13 +41,11 @@ function schoolConfig() {
               $("#config-date").val(d.payroll_date);
               $("#config-term").val(d.term_per_session);
               $("#config-week").val(d.weeks_per_term);
-          },
-          onError: (error) => {
-              console.error(error);
-              pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-              //hideLoader()
-          }
-  })
+  }
+  catch(error) {
+    console.error(error);
+    pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+  }
 }
 
 function getCBT() {
@@ -189,9 +192,10 @@ function updateProfile() {
 
   admin.account.updateProfile({
       formData: formData,
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
           if(data.status == 'success') {
-              pushNotification("n_success", data.message, 5000)
+              pushNotification("n_success", data.message, 5000);
+              await cache.refresh("admin.account.getProfile", {}, admin.account.getProfile)
           }
           else {
               pushNotification("n_error", data.message, 5000)
@@ -261,9 +265,10 @@ function updateConfig() {
 
   admin.school.updateConfig({
       formData: formData,
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
           if(data.status == 'success') {
               pushNotification("n_success", data.message, 5000)
+              await cache.refresh("admin.school.config", {}, admin.school.config)
           }
           else {
               pushNotification("n_error", data.message, 5000)

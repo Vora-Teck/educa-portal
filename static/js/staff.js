@@ -451,7 +451,8 @@ $(".add-staff-form").on('submit', function(e) {
                 let search = $('#emp_search').val();
 
                 let params = {page, pagesize, search}
-                await cache.refresh("admin.staff.staffList", params, admin.staff.staffList)
+                
+            cache.clearFunction("admin.staff.staffList")
                 await cache.refresh("admin.school.schoolData", {page: "staff"}, admin.school.schoolData)
                 getStaff();
                 getData()
@@ -556,7 +557,7 @@ async function deleteStaff() {
             let search = $('#emp_search').val();
 
             let params = {page, pagesize, search}
-            await cache.refresh("admin.staff.staffList", params, admin.staff.staffList)
+            cache.clearFunction("admin.staff.staffList")
             await cache.refresh("admin.school.schoolData", {page: "staff"}, admin.school.schoolData)
             
             getStaff();

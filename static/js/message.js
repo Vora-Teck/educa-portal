@@ -1,14 +1,14 @@
 /* =========== Transaction Section =============== */
 showLoader("Loading data...")
 
-function getMemos() {
+async function getMemos() {
     let page = $('#emp_page').val();
     let pagesize = 10;
     let search = $('#emp_search').val();
 
     $('.event-list').empty()
     loader = `<tr>
-        <td colspan="4" class="">
+        <td colspan="5" class="">
         <i class="fa fa-spinner rotate"></i>&nbsp;&nbsp;&nbsp;Processing...
         </td>
     </tr>`;
@@ -16,12 +16,13 @@ function getMemos() {
 
     let params = {page, pagesize, search}
 
-    //console.log(params)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.memo.memoList",
+        params, fetcher: admin.memo.memoList
+        })
 
-    admin.memo.memoList({
-        params: params,
-        onSuccess: (data) => {
-                //console.log(data);
+        //console.log(data);
                 $('.event-list').empty()
                 if(data.status == 'success') {
                     let pages = data.total_pages
@@ -65,6 +66,7 @@ function getMemos() {
                             </td>
                             <td style="max-width:300px;white-space:wrap;">${e[i].message}</td>
                             <td>${datify(e[i].date, true)}</td>
+                            <td>${datify(e[i].updated, true)}</td>
                             <td class="w-center">
                                     <div class="dropdown">
                                         <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
@@ -111,19 +113,18 @@ function getMemos() {
                 else {
                     pushNotification("n_error", data.message, 3000);
                     let temp = `<tr>
-                        <td colspan="4" class="w-text-gray w-italic">${data['message']}</td>
+                        <td colspan="5" class="w-text-gray w-italic">${data['message']}</td>
                         </tr>`;
                         $('.event-list').append(temp)
                 }
                 hideLoader()
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.event-list').empty()
-                hideLoader()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.event-list').empty()
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 getMemos()
 
@@ -159,6 +160,8 @@ function addMemo() {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-memo-form")[0].reset();
                 $(".add-memo-con").removeClass('active')
+
+                cache.clearFunction("admin.memo.memoList")
                 getMemos()
             }
             else {
@@ -196,12 +199,18 @@ function updateMemo() {
 
     admin.memo.updateMemo({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".update-memo-form")[0].reset();
-                $(".update-memo-con").removeClass('active')
+                $(".update-memo-con").removeClass('active');
+
+                let page = $('#emp_page').val();
+                let pagesize = 10;
+                let search = $('#emp_search').val();
+                await cache.refresh("admin.memo.memoList", {page, pagesize, search}, admin.memo.memoList)
+
                 getMemos()
             }
             else {
@@ -232,6 +241,8 @@ function deleteMemo() {
                 pushNotification("n_success", data.message, 5000);
                 $(".delete-memo-form")[0].reset();
                 $(".delete-memo-con").removeClass('active')
+
+                cache.clearFunction("admin.memo.memoList")
                 getMemos()
             }
             else {
@@ -266,12 +277,17 @@ function broadcastMemo() {
 
     admin.memo.broadcastMemo({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".broadcast-memo-form")[0].reset();
                 $(".broadcast-memo-con").removeClass('active')
+
+                let page = $('#emp_page').val();
+                let pagesize = 10;
+                let search = $('#emp_search').val();
+                await cache.refresh("admin.memo.memoList", {page, pagesize, search}, admin.memo.memoList)
                 getMemos()
             }
             else {

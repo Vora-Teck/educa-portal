@@ -1,9 +1,9 @@
 /* =========== Transaction Section =============== */
 showLoader("Loading data...")
 
-function getNotifications() {
+async function getNotifications() {
     let page = $('#emp_page').val();
-    let pagesize = 15;
+    let pagesize = 20;
 
     $('.event-list').empty()
     loader = `<tr>
@@ -15,13 +15,14 @@ function getNotifications() {
 
     let params = {page, pagesize}
 
-    //console.log(params)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.memo.notifications",
+        params, fetcher: admin.memo.notifications,
+        ttl: 10 * 60 * 1000
+        })
 
-    admin.memo.notifications({
-        params: params,
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.note-list').empty()
+        $('.note-list').empty()
                 if(data.status == 'success') {
                     let pages = data.total_pages
                     //let count = data.total_count;
@@ -103,14 +104,13 @@ function getNotifications() {
                         $('.note-list').append(temp)
                 }
                 hideLoader()
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.note-list').empty()
-                hideLoader()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.note-list').empty()
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 getNotifications()
 
@@ -132,13 +132,4 @@ function getNotification(obj) {
 
     $(`.note-info-con`).addClass("active")
 }
-
-
-// ========== Event Listeners ======================
-$(".add-memo-btn").click(function(e) {e.preventDefault();$(".add-memo-con").addClass('active')})
-
-$(".add-memo-form").on('submit', function(e) {e.preventDefault();addMemo()})
-$(".update-memo-form").on('submit', function(e) {e.preventDefault();updateMemo()})
-$(".delete-memo-form").on('submit', function(e) {e.preventDefault();deleteMemo()})
-$(".broadcast-memo-form").on('submit', function(e) {e.preventDefault();broadcastMemo()})
 

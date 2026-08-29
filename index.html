@@ -1173,6 +1173,8 @@
           })
 
     $('#emp_search').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
             $('#emp_page').val(1);
             delayedSearch(e.target.value)
           })
@@ -2148,6 +2150,8 @@
           })
 
     $('#emp_search').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
             $('#emp_page').val(1);
             delayedSearch(e.target.value)
           })
@@ -4136,6 +4140,8 @@
     })
 
     $('#emp_search2').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
       $('#emp_page2').val(1);
       delayedSearch(e.target.value)
     })
@@ -5259,6 +5265,8 @@
     
 
     $('#emp_search2').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
       $('#emp_page2').val(1);
       delayedSearch(e.target.value)
     })
@@ -6476,6 +6484,8 @@
     })
 
     $('#emp_search').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
             $('#emp_page').val(1);
             delayedSearch(e.target.value)
           })
@@ -6519,6 +6529,8 @@
     
 
     $('#emp_search2').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
       $('#emp_page2').val(1);
       delayedSearch(e.target.value)
     })
@@ -6945,6 +6957,8 @@
     })
 
     $('#emp_search').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
             $('#emp_page').val(1);
             delayedSearch(e.target.value)
           })
@@ -6974,6 +6988,8 @@
     
 
     $('#emp_search2').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
       $('#emp_page2').val(1);
       delayedSearch(e.target.value)
     })
@@ -7427,11 +7443,15 @@
     })
 
     $('#emp_search').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
             $('#emp_page').val(1);
             delayedSearch(e.target.value)
           })
     
           $('#emp_search2').on('input', function(e) {
+            let valu = $(this).val().trim();
+          if(valu.length < 3 && valu !== "") return;
             $('#emp_page2').val(1);
             delayedSearch2(e.target.value)
           })
@@ -7460,6 +7480,8 @@
     
 
     $('#emp_search2').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
       $('#emp_page2').val(1);
       delayedSearch(e.target.value)
     })
@@ -7995,9 +8017,11 @@
     })
 
     $('#emp_search2').on('input', function(e) {
-            $('#emp_page2').val(1);
-            delayedSearch(e.target.value)
-          })
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
+      $('#emp_page2').val(1);
+      delayedSearch(e.target.value)
+    })
 
     $(".close-modal").click(function() {
       $(this).parent('.modal-body').parent('.modal-con').removeClass('active')
@@ -8028,13 +8052,6 @@
         $(".add-tax-con").removeClass('active')
     })
     
-    
-
-    $('#emp_search2').on('input', function(e) {
-      $('#emp_page2').val(1);
-      delayedSearch(e.target.value)
-    })
-
   </script>
 </template>
 
@@ -8283,6 +8300,7 @@
                       <th>Subject</th>
                       <th>Message</th>
                       <th>Date</th>
+                      <th>Updated On</th>
                       <th class="w-center">Actions</th>
                     </tr>
                   </thead>
@@ -8318,6 +8336,8 @@
 
 
     $('#emp_search').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
             $('#emp_page').val(1);
             delayedSearch(e.target.value)
           })
@@ -8345,6 +8365,8 @@
     })
 
     $('#emp_search2').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
       $('#emp_page2').val(1);
       delayedSearch(e.target.value)
     })
@@ -8670,6 +8692,8 @@
     })
 
     $('#emp_search').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
       $('#emp_page').val(1);
       delayedSearch(e.target.value)
     })
@@ -9521,6 +9545,8 @@
     })
 
     $('#emp_search').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
             $('#emp_page').val(1);
             delayedSearch(e.target.value)
           })
@@ -9548,6 +9574,8 @@
     })
 
     $('#emp_search2').on('input', function(e) {
+      let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
       $('#emp_page2').val(1);
       delayedSearch(e.target.value)
     })
@@ -10383,6 +10411,8 @@
       })
 
       $('#emp_search').on('input', function(e) {
+        let valu = $(this).val().trim();
+      if(valu.length < 3 && valu !== "") return;
         $('#emp_page').val(1);
         delayedSearch(e.target.value)
       })

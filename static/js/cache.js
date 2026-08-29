@@ -1,7 +1,7 @@
 class ApiCache {
     constructor(options = {}) {
         this.storageKey = options.storageKey || "eduka_api_cache";
-        this.defaultTTL = options.defaultTTL || 60 * 60 * 1000; // 1 hour
+        this.defaultTTL = options.defaultTTL || 30 * 60 * 1000; // 1 hour
         this.maxEntries = options.maxEntries || 500;
         this.persist = options.persist !== false;
 

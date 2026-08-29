@@ -46,9 +46,7 @@ async function getData() {
 getData()
 
 async function getEvents() {
-  let page = 1;
   let pagesize = 3;
-  let search = '';
   let status = 'Upcoming';
 
   $('.event-list').empty()
@@ -58,7 +56,7 @@ async function getEvents() {
   </tr>`;
   $('.event-list').append(loader)
 
-  let params = {page, pagesize, status, search}
+  let params = {pagesize, status}
 
   try {
     let data = await cache.fetchOrCache({

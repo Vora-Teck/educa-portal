@@ -1,14 +1,15 @@
 showLoader("Loading Data...")
 
-function getData() {
+async function getData() {
 
     showLoader("Loading Data...")
-  
-    admin.school.schoolData({
-      params: {page: "fees"},
-        onSuccess: (data) => {
-                //console.log(data);
-                let d = data.data;
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.school.schoolData",
+        params: {page: "fees"}, fetcher: admin.school.schoolData
+        })
+
+        let d = data.data;
                 if(data.status == 'success') {
                     $(".bal-item").html(`&#8358;${shortify(d.balance, true)}`)
                     $(".bal-item2").html(`&#8358;${digify(d.balance, true)}`)
@@ -26,13 +27,12 @@ function getData() {
                         pushNotification("n_error", data.message, 3000)
                 }
                 hideLoader()
-        },
-        onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                hideLoader()
-        }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 getData()
@@ -40,14 +40,17 @@ getData()
 
 /* =========== Calendar Section =============== */
 
-function getTerms() {
+async function getTerms() {
     $('#term-filter').empty()
     $('#tuition-term').empty()
 
-    admin.calendar.termList({
-        onSuccess: (data) => {
-                //console.log(data);
-                if(data.status == 'success') {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.calendar.termList",
+        fetcher: admin.calendar.termList
+        })
+
+        if(data.status == 'success') {
                     let e = data.data;
                         
                     for(var i in e) {
@@ -60,21 +63,23 @@ function getTerms() {
                 else {
                     pushNotification("n_error", data.message, 3000);
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 getTerms()
 
-function getClassrooms() {
+async function getClassrooms() {
     $(".class-list").empty()
-    admin.classroom.getClassrooms({
-            onSuccess: (data) => {
-                //console.log(data)
-                if(data.status == "success") {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.classroom.getClassrooms",
+        fetcher: admin.classroom.getClassrooms
+        })
+
+        if(data.status == "success") {
                     let d = data.data;
                     for(let i in d) {
                         $("#class-filter").append(`<option value="${d[i].id}">${d[i].level.title}</option>`);
@@ -90,19 +95,18 @@ function getClassrooms() {
                 else {
                     pushNotification("n_error", data.message, 3000);
                 }
-            },
-            onError: (error) => {
-                console.error(error)
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-            }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 getClassrooms()
 
 
 
 /* =========== Tuition Section =============== */
-function getTuitions() {
+async function getTuitions() {
     let page = $('#emp_page').val();
     let pagesize = 20;
     let class_id = $('#class-filter').val();
@@ -118,13 +122,13 @@ function getTuitions() {
 
     let params = {page, pagesize, class_id, term_id}
 
-    //console.log(params)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.fees.getTuitions",
+        params, fetcher: admin.fees.getTuitions
+        })
 
-    admin.fees.getTuitions({
-        params: params,
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.tuition-list').empty()
+        $('.tuition-list').empty()
                 if(data.status == 'success') {
                     let pages = data.total_pages
                     //let count = data.total_count;
@@ -221,13 +225,12 @@ function getTuitions() {
                         </tr>`;
                         $('.tuition-list').append(temp)
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.tuition-list').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.tuition-list').empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 
@@ -255,13 +258,17 @@ function addTuition() {
 
     admin.fees.addTuition({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-fees-form")[0].reset();
                 $(".add-fees-con").removeClass('active')
                 $(".breakdown-con").empty()
+
+                await cache.refresh("admin.school.schoolData", {page: "fees"}, admin.school.schoolData)
+                cache.clearFunction("admin.fees.getTuitions")
+
                 getData()
                 getTuitions()
             }
@@ -338,6 +345,7 @@ $('#add-breakdown-btn2').click(function(e) {
 
 function updateTuition() {
     let tuition_id = $(".fees-id").val();
+    tuition_id = Number(tuition_id)
     let amount = $("#tuition-amount2").val();
     let breakdown = {}
 
@@ -357,13 +365,21 @@ function updateTuition() {
 
     admin.fees.updateTuition({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".update-fees-form")[0].reset();
                 $(".update-fees-con").removeClass('active')
                 $(".breakdown-con2").empty()
+
+                await cache.refresh("admin.school.schoolData", {page: "fees"}, admin.school.schoolData)
+                let page = $('#emp_page').val();
+                let pagesize = 20;
+                let class_id = $('#class-filter').val();
+                let term_id = $("#term-filter").val();
+                await cache.refresh("admin.fees.getTuitions", {page, pagesize, class_id, term_id}, admin.fees.getTuitions)
+                await cache.refresh("admin.fees.getTuitionFees", {tuition_id}, admin.fees.getTuitionFees)
                 getData()
                 getTuitions()
             }
@@ -382,8 +398,7 @@ function updateTuition() {
 
 var current_fees = {}
 
-function getTuitionFees(obj) {
-    
+async function getTuitionFees(obj) {
     $(".fees-name").data('id', obj.id).html(`Tuition for ${obj.term.title} ${obj.term.session.title}`);
     $(".tuition-class2").html(obj.classrooms.map((item, index) => {
         return `${item.level.title}`
@@ -392,11 +407,13 @@ function getTuitionFees(obj) {
     $(".pay-list").empty()
     showLoader("Fetching data...")
 
-    admin.fees.getTuitionFees({
-        params: {tuition_id: obj.id},
-        onSuccess: (data) => {
-            //console.log(data)
-            if(data.status == "success") {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.fees.getTuitionFees",
+        params: {tuition_id: obj.id}, fetcher: admin.fees.getTuitionFees
+        })
+
+        if(data.status == "success") {
                 current_fees = obj
                 if(data.data) {
                     let d = data.data;
@@ -467,17 +484,17 @@ function getTuitionFees(obj) {
                 pushNotification("n_error", data.message, 5000)
             }
             hideLoader()
-        },
-        onError: (error) => {
-            console.error(error);
-            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-            hideLoader()
-        }
-      })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 function payFees() {
     let fees_id = $("#pay-id").val();
+    fees_id = Number(fees_id)
     let amount = $("#fees-amount").val();
     let password = $("#fees-password").val();
 
@@ -489,12 +506,17 @@ function payFees() {
 
     admin.fees.updateFeeStatus({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".pay-fees-form")[0].reset();
                 $(".pay-fees-con").removeClass('active')
+
+                await cache.refresh("admin.school.schoolData", {page: "fees"}, admin.school.schoolData)
+                await cache.refresh("admin.fees.getTuitionFees", {tuition_id: current_fees.id}, admin.fees.getTuitionFees)
+                await cache.refresh("admin.fees.getFeeTransaction", {fees_id}, admin.fees.getFeeTransaction)
+
                 getData()
                 getTuitionFees(current_fees)
             }
@@ -511,15 +533,16 @@ function payFees() {
     })
 }
 
-function getTransactions(fees_id) {
-
+async function getTransactions(fees_id) {
     showLoader("Fetching transactions...")
     $(".trans-fees-form").empty()
 
-    admin.fees.getFeeTransaction({
-        params: {fees_id},
-        onSuccess: (data) => {
-            console.log(data)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.fees.getFeeTransaction",
+        params: {fees_id}, fetcher: admin.fees.getFeeTransaction
+        })
+        
             if(data.status == "success") {
                 let d = data.data;
                 let e = d.transactions;
@@ -540,7 +563,7 @@ function getTransactions(fees_id) {
                             <div class="card-header">
                                 <a class="card-link" data-toggle="collapse" href="#collapse_${i}">
                                 <i class="w-big fa ${t_status[e[i].status]}"></i>
-                                &nbsp;&nbsp;Reference: ${e[i].reference} - ${e[i].status}
+                                &nbsp;&nbsp;Reference: ${e[i].reference} - ${datify(e[i].date, false)}
                                 </a>
                             </div>
                             <div id="collapse_${i}" class="${parseInt(i) == 0 ? ``: `collapse`}" data-parent="#accordion">
@@ -603,13 +626,12 @@ function getTransactions(fees_id) {
                 pushNotification("n_error", data.message, 5000)
             }
             hideLoader()
-        },
-        onError: (error) => {
-            console.error(error);
-            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-            hideLoader()
-        }
-      })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 

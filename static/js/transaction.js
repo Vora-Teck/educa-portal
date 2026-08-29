@@ -1,5 +1,5 @@
 /* =========== Transaction Section =============== */
-function getTransactions() {
+async function getTransactions() {
     let page = $('#emp_page').val();
     let pagesize = 20;
     let search = $('#emp_search').val();
@@ -16,13 +16,14 @@ function getTransactions() {
 
     let params = {page, pagesize, search, status, type}
 
-    //console.log(params)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.transaction.getTransactions",
+        params, fetcher: admin.transaction.getTransactions,
+        ttl: 20 * 60 * 1000
+        })
 
-    admin.transaction.getTransactions({
-        params: params,
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.trans-list').empty()
+        $('.trans-list').empty()
                 if(data.status == 'success') {
                     let pages = data.total_pages
                     //let count = data.total_count;
@@ -116,13 +117,12 @@ function getTransactions() {
                         </tr>`;
                         $('.trans-list').append(temp)
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.trans-list').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.trans-list').empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 function debounce(func, delay) {
@@ -195,7 +195,7 @@ function generateReceipt(reference, type="transaction") {
 }
 
 /* =========== Subscriptions Section =============== */
-function getSubscriptions() {
+async function getSubscriptions() {
     let page = $('#emp_page2').val();
     let pagesize = 20;
     let search = $('#emp_search2').val();
@@ -211,13 +211,13 @@ function getSubscriptions() {
 
     let params = {page, pagesize, search, status}
 
-    //console.log(params)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.subscription.subscriptionHistory",
+        params, fetcher: admin.subscription.subscriptionHistory
+        })
 
-    admin.subscription.subscriptionHistory({
-        params: params,
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.sub-list').empty()
+        $('.sub-list').empty()
                 if(data.status == 'success') {
                     let pages = data.total_pages
                     //let count = data.total_count;
@@ -312,13 +312,12 @@ function getSubscriptions() {
                         </tr>`;
                         $('.sub-list').append(temp)
                 }
-        },
-        onError: (error) => {
-                //console.error(error);
-                $('.trans-list').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.sub-list').empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 //getSubscriptions()

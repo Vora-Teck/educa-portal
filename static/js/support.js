@@ -1,13 +1,15 @@
 /* =========== Ticket Section =============== */
-function getData() {
+async function getData() {
 
     showLoader("Loading Data...")
-  
-    admin.school.schoolData({
-        params: {page: "ticket"},
-        onSuccess: (data) => {
-                //console.log(data);
-                if(data.status == 'success') {
+
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.school.schoolData",
+        params: {page: "ticket"}, fetcher: admin.school.schoolData
+        })
+
+        if(data.status == 'success') {
                     let d = data.data;
                     $(".all-count").html(digify(d.all, false))
                     $(".res-count").html(digify(d.resolved, false))
@@ -19,17 +21,16 @@ function getData() {
                     pushNotification("n_error", data.message, 3000)
                 }
                 hideLoader()
-        },
-        onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                hideLoader()
-        }
-  })
-  }
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
+}
 getData()
 
-function getTickets() {
+async function getTickets() {
     let page = $('#emp_page').val();
     let pagesize = 10;
     let search = $('#emp_search').val();
@@ -45,13 +46,14 @@ function getTickets() {
 
     let params = {page, pagesize, search, status}
 
-    //console.log(params)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.ticket.ticketList",
+        params, fetcher: admin.ticket.ticketList,
+        ttl: 20 * 60 * 60
+        })
 
-    admin.ticket.ticketList({
-        params: params,
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.ticket-list').empty()
+        $('.ticket-list').empty()
                 if(data.status == 'success') {
                     let pages = data.total_pages
                     //let count = data.total_count;
@@ -143,13 +145,12 @@ function getTickets() {
                         </tr>`;
                         $('.ticket-list').append(temp)
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.ticket-list').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.ticket-list').empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 getTickets()
 
@@ -184,12 +185,16 @@ function addTicket() {
 
     admin.ticket.createTicket({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-ticket-form")[0].reset();
                 $(".add-ticket-con").removeClass('active')
+
+                cache.clearFunction("admin.ticket.ticketList")
+                await cache.refresh("admin.school.schoolData", {page: "ticket"}, admin.school.schoolData)
+                
                 getData()
                 getTickets()
             }
@@ -206,13 +211,16 @@ function addTicket() {
       })
 }
 
-function getTicket(ticket_id, action) {
+async function getTicket(ticket_id, action) {
     showLoader("Getting details...")
-    admin.ticket.ticketList({
-        params: {ticket_id},
-        onSuccess: (data) => {
-                //console.log(data);
-                $(".view-ticket-area").empty()
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.ticket.ticketList",
+        params: {ticket_id}, fetcher: admin.ticket.ticketList,
+        ttl: 20 * 60 * 60
+        })
+
+        $(".view-ticket-area").empty()
                 if(data.status == 'success') {
                     let e = data.data;
                     let a = e.files;
@@ -222,7 +230,7 @@ function getTicket(ticket_id, action) {
                         if(a.length > 0) {
                             for(let i in a) {
                                 var temp = `
-                                <a class="w-text-white" href="${base_url}${a[i].file}" target="_blank" download>
+                                <a class="w-text-white" href="${a[i].file}" target="_blank" download>
                                     <button class="transp-btn">
                                         ${a[i].file_name}&nbsp;&nbsp;
                                         <i class="fa fa-download"></i>
@@ -266,13 +274,12 @@ function getTicket(ticket_id, action) {
                     
                 }
                 hideLoader()
-        },
-        onError: (error) => {
-                console.error(error);
-                hideLoader()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
     
 }
 
@@ -285,12 +292,16 @@ function cancelTicket() {
 
     admin.ticket.cancelTicket({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".cancel-ticket-form")[0].reset();
                 $(".cancel-ticket-con").removeClass('active')
+
+                cache.clearFunction("admin.ticket.ticketList")
+                await cache.refresh("admin.school.schoolData", {page: "ticket"}, admin.school.schoolData)
+
                 getTickets()
                 getData()
             }
@@ -309,11 +320,14 @@ function cancelTicket() {
 initiateTiny(true)
 
 /* =========== Eduka Guide Section =============== */
-function getSections() {
-    admin.site.guideSections({
-        onSuccess: (data) => {
-            //console.log(data)
-                $("#section-filter").empty().append(`<option value="" selected>Select Section/Page</option>`)
+async function getSections() {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.site.guideSections",
+        fetcher: admin.site.guideSections
+        })
+
+        $("#section-filter").empty().append(`<option value="" selected>Select Section/Page</option>`)
                 if(data.status == 'success') {
                     let d = data.data;
                     for(let i in d) {
@@ -326,16 +340,15 @@ function getSections() {
                 else {
                     pushNotification("n_error", data.message, 3000)
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
-  }
+    }
+    catch(error) {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
+}
 getSections()
 
-function getGuides() {
+async function getGuides() {
     let section = $('#section-filter').val();
 
     if(!section || section.trim() == "") {
@@ -351,12 +364,13 @@ function getGuides() {
     //console.log(params)
     showLoader("Loading...")
 
-    admin.site.guideContents({
-        params: params,
-        onSuccess: (data) => {
-            //console.log(data);
-                
-            if(data.status == 'success') {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.site.guideContents",
+        params, fetcher: admin.site.guideContents
+        })
+
+        if(data.status == 'success') {
                 let e = data.data;
                 $(".g-tit").html(data.section)
                 $(".g-des").html(data.description || "No description provided")
@@ -400,13 +414,12 @@ function getGuides() {
                 pushNotification("n_error", data.message, 3000);
             }
             hideLoader()
-        },
-        onError: (error) => {
-            console.error(error);
-            hideLoader()
-            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 /*

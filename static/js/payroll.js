@@ -24,9 +24,10 @@ function setYearMonth() {
 }
 setYearMonth()
 
-function getPayroll() {
+
+async function getPayroll() {
     let page = $('#emp_page').val();
-    let pagesize = 20;
+    let pagesize = 30;
     let month = $("#month-filter").val();
     let year = $("#year-filter").val();
 
@@ -40,13 +41,13 @@ function getPayroll() {
 
     let params = {page, pagesize, month, year}
 
-    //console.log(params)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.payroll.getPayroll",
+        params, fetcher: admin.payroll.getPayroll
+        })
 
-    admin.payroll.getPayroll({
-        params: params,
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.pay-list').empty()
+        $('.pay-list').empty()
                 if(data.status == 'success') {
                     let pages = data.total_pages
                     //let count = data.total_count;
@@ -148,14 +149,14 @@ function getPayroll() {
                         $('.pay-list').append(temp)
                 }
                 hideLoader()
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.pay-list').empty()
-                hideLoader()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.pay-list').empty()
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
+
 }
 
 function generatePayroll() {
@@ -168,10 +169,15 @@ function generatePayroll() {
     //console.log(formData)
     admin.payroll.generatePayroll({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
+                
+                let page = $('#emp_page').val();
+                let pagesize = 30;
+                await cache.refresh("admin.payroll.getPayroll", {page, pagesize, month, year}, admin.payroll.getPayroll)
+
                 getPayroll()
             }
             else {
@@ -428,14 +434,16 @@ function initiateBulkPayroll() {
     })
 }
 
-function getTransaction(payroll_id) {
+async function getTransaction(payroll_id) {
     showLoader("Loading data...")
 
-    admin.payroll.getPayroll({
-        params: {payroll_id},
-        onSuccess: (data) => {
-            //console.log(data)
-            if(data.status == "success") {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.payroll.getPayroll",
+        params: {payroll_id}, fetcher: admin.payroll.getPayroll
+        })
+
+        if(data.status == "success") {
                 let d = data.data;
 
                 let stat_f = {
@@ -468,13 +476,12 @@ function getTransaction(payroll_id) {
                 pushNotification("n_error", data.message, 5000)
             }
             hideLoader()
-        },
-        onError: (error) => {
-            //console.error(error);
-            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-            hideLoader()
-        }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
 function makePayment() {
@@ -492,6 +499,7 @@ function makePayment() {
                 $(".pay-det-table").empty();
                 $(".pay-trans-con").removeClass("active")
                 $(".pay-trans-form")[0].reset()
+                cache.clearFunction("admin.payroll.getPayroll")
             }
             else {
                 pushNotification("n_error", data.message, 5000)
@@ -523,6 +531,7 @@ function makeBulkPayment() {
                 $(".pays-con").empty();
                 $(".pays-trans-con").removeClass("active")
                 $(".pays-trans-form")[0].reset()
+                cache.clearFunction("admin.payroll.getPayroll")
             }
             else {
                 pushNotification("n_error", data.message, 5000)
@@ -636,12 +645,19 @@ function deletePayrolls() {
     
     admin.payroll.deletePayroll({
       formData: formData,
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
           //console.log(data)
           if(data.status == "success") {
               pushNotification("n_success", data.message, 5000);
               $(".delete-pay-form")[0].reset();
               $(".delete-pay-con").removeClass("active")
+
+              let page = $('#emp_page').val();
+                let pagesize = 30;
+                let month = $("#month-filter").val();
+                let year = $("#year-filter").val();
+              await cache.refresh("admin.payroll.getPayroll", {page, pagesize, month, year}, admin.payroll.getPayroll)
+
               getPayroll();
           }
           else {
@@ -658,45 +674,49 @@ function deletePayrolls() {
   }
 
 /* =========== Bank Account Section =============== */
-function getBanks() {
+async function getBanks() {
     $(".bank-filter").empty()
-    admin.bank.list({
-        onSuccess: (data) => {
-            //console.log(data)
-            for(let i in data) {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.bank.list",
+        fetcher: admin.bank.list
+        })
+
+        for(let i in data) {
                 let temp = `
                 <option value="${data[i].bankCode}">${data[i].bankName}</option>`;
                 $(".bank-filter").append(temp);
             }
             $(".bank-filter").prepend(`<option value="" selected>-- Select Bank --</option>`)
-        },
-        onError: (error) => {
-            //console.error(error);
-            pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-            hideLoader()
-        }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 
-function getStaff() {
-    admin.staff.staffList({
-        params: {page:1, pagesize:200},
-            onSuccess: (data) => {
-                //console.log(data)
-                let d = data.data
+async function getStaff() {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.staff.staffList",
+        params: {page:1, pagesize:300}, fetcher: admin.staff.staffList
+        })
+
+        let d = data.data
                 $(".staff-filter").empty()
                 for(let i in d) {
                     let temp = `<option value="${d[i].id}">${d[i].firstName} ${d[i].lastName} (${d[i].qualification})</option>`;
                     $(".staff-filter").append(temp)
                 }
                 $(".staff-filter").prepend(`<option value="" selected>-- Select Staff --</option>`)
-            },
-            onError: (error) => console.error(error)
-    })
+    }
+    catch(error) {
+        console.error(error);
+    }
 }
 getStaff()
 
-function getBankAccounts() {
+async function getBankAccounts() {
     let page = $('#emp_page2').val();
     let search = $('#emp_search2').val();
     let pagesize = 20;
@@ -712,13 +732,13 @@ function getBankAccounts() {
 
     let params = {page, pagesize, status, search}
 
-    //console.log(params)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.bank.bankAccounts",
+        params, fetcher: admin.bank.bankAccounts
+        })
 
-    admin.bank.bankAccounts({
-        params: params,
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.acc-list').empty()
+        $('.acc-list').empty()
                 if(data.status == 'success') {
                     let pages = data.total_pages
                     //let count = data.total_count;
@@ -821,14 +841,13 @@ function getBankAccounts() {
                         $('.acc-list').append(temp)
                 }
                 hideLoader()
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.acc-list').empty()
-                hideLoader()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.acc-list').empty()
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 getBanks()
 getBankAccounts()
@@ -908,17 +927,17 @@ function addAccount() {
         pushNotification("n_error", "Bank account has not been verified", 5000);
         return
     }
-    
 
     let formData = {account_number, bank_code, staff_id}
     showLoader("Adding bank account...")
     admin.bank.addBankAccount({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 $(".add-bank-form")[0].reset()
                 pushNotification("n_success", data.message, 5000);
+                cache.clearFunction("admin.bank.bankAccounts")
                 getBankAccounts()
             }
             else {
@@ -941,10 +960,16 @@ function accountStatus(account_id, action) {
     showLoader("Updating status...")
     admin.bank.verifyBankAccount({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
+                
+                let page = $('#emp_page2').val();
+                let search = $('#emp_search2').val();
+                let pagesize = 20;
+                let status = $("#status-filter").val();
+                await cache.refresh("admin.bank.bankAccounts", {page, pagesize, status, search}, admin.bank.bankAccounts)
                 getBankAccounts()
             }
             else {

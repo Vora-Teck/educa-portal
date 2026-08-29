@@ -1,12 +1,13 @@
 showLoader("Loading Data...")
 
-function getData() {
+async function getData() {
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.school.schoolData",
+        params: {page: "calendar"}, fetcher: admin.school.schoolData
+        })
 
-    admin.school.schoolData({
-        params: {page: "calendar"},
-        onSuccess: (data) => {
-                //console.log(data);
-                if(data.status == 'success') {
+        if(data.status == 'success') {
                     let d = data.data;
                     $(".class-no").html(digify(d.total));
                     $(".sub-no").html(digify(d.past));
@@ -23,20 +24,19 @@ function getData() {
                         pushNotification("n_error", data.message, 3000)
                 }
                 hideLoader()
-        },
-        onError: (error) => {
-                console.error(error);
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-                hideLoader()
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        hideLoader()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
   }
 
 getData()
 
 
 /* =========== Calendar Section =============== */
-function getSessions() {
+async function getSessions() {
     $(".session-list").empty();
 
     loader = `<tr>
@@ -46,10 +46,13 @@ function getSessions() {
     </tr>`;
     $('.session-list').append(loader)
 
-    admin.calendar.sessionList({
-            onSuccess: (data) => {
-                //console.log(data)
-                $(".session-list").empty()
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.calendar.sessionList",
+        fetcher: admin.calendar.sessionList
+        })
+
+        $(".session-list").empty()
                 $(".session-filter").empty()
                 if(data.status == "success") {
                     let d = data.data
@@ -86,13 +89,12 @@ function getSessions() {
                         </tr>`;
                         $('.session-list').append(temp)
                 }
-            },
-            onError: (error) => {
-                console.error(error);
-                $('.session-list').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-            }
-    })
+    }
+    catch(error) {
+        console.error(error);
+        $('.session-list').empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 getSessions()
 
@@ -117,12 +119,13 @@ function addSession() {
 
     admin.calendar.createSession({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-sess-form")[0].reset();
                 $(".add-sess-con").removeClass('active')
+                await cache.refresh("admin.calendar.sessionList", {}, admin.calendar.sessionList)
                 getSessions()
             }
             else {
@@ -169,12 +172,13 @@ function updateSession() {
 
     admin.calendar.updateSession({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".update-sess-form")[0].reset();
                 $(".update-sess-con").removeClass('active')
+                await cache.refresh("admin.calendar.sessionList", {}, admin.calendar.sessionList)
                 getSessions()
             }
             else {
@@ -190,7 +194,7 @@ function updateSession() {
       })
 }
 
-function getTerms() {
+async function getTerms() {
     $('.term-list').empty()
 
     loader = `<tr>
@@ -200,10 +204,13 @@ function getTerms() {
     </tr>`;
     $('.term-list').append(loader)
 
-    admin.calendar.termList({
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.term-list').empty()
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.calendar.termList",
+        fetcher: admin.calendar.termList
+        })
+
+        $('.term-list').empty()
                 if(data.status == 'success') {
                     let e = data.data;
                         
@@ -236,15 +243,14 @@ function getTerms() {
                     let temp = `<tr>
                         <td colspan="8" class="w-text-gray w-italic">${data['message']}</td>
                         </tr>`;
-                        $('.exam-list').append(temp)
+                        $('.term-list').append(temp)
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.exam-list').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.term-list').empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 getTerms()
 
@@ -271,12 +277,13 @@ function addTerm() {
 
     admin.calendar.createTerm({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-term-form")[0].reset();
                 $(".add-term-con").removeClass('active')
+                await cache.refresh("admin.calendar.termList", {}, admin.calendar.termList)
                 getTerms()
             }
             else {
@@ -324,12 +331,13 @@ function updateTerm() {
 
     admin.calendar.updateTerm({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".update-term-form")[0].reset();
                 $(".update-term-con").removeClass('active')
+                await cache.refresh("admin.calendar.termList", {}, admin.calendar.termList)
                 getTerms()
             }
             else {
@@ -348,10 +356,10 @@ function updateTerm() {
 
 
 /* =========== Exam Section =============== */
-function getEvents() {
+async function getEvents() {
     let page = $('#emp_page').val();
     let pagesize = 10;
-    let search = $('#emp_search').val();
+    let search = $('#emp_search').val().trim();
     let status = $("#status-filter").val();
 
     $('.event-list').empty()
@@ -364,13 +372,13 @@ function getEvents() {
 
     let params = {page, pagesize, status, search}
 
-    //console.log(params)
+    try {
+        let data = await cache.fetchOrCache({
+        func: "admin.calendar.eventList",
+        params, fetcher: admin.calendar.eventList
+        })
 
-    admin.calendar.eventList({
-        params: params,
-        onSuccess: (data) => {
-                //console.log(data);
-                $('.event-list').empty()
+        $('.event-list').empty()
                 if(data.status == 'success') {
                     let pages = data.total_pages
                     //let count = data.total_count;
@@ -471,13 +479,12 @@ function getEvents() {
                         </tr>`;
                         $('.event-list').append(temp)
                 }
-        },
-        onError: (error) => {
-                console.error(error);
-                $('.event-list').empty()
-                pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
-        }
-  })
+    }
+    catch(error) {
+        console.error(error);
+        $('.event-list').empty()
+        pushNotification("n_network", "Error occurred. Kindly check your internet connection", 3000)
+    }
 }
 getEvents()
 
@@ -510,12 +517,14 @@ function addEvent() {
 
     admin.calendar.createEvent({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-event-form")[0].reset();
                 $(".add-event-con").removeClass('active')
+                
+                cache.clearFunction("admin.calendar.eventList")
                 getEvents()
             }
             else {
@@ -558,12 +567,15 @@ function updateEvent() {
 
     admin.calendar.updateEvent({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".update-event-form")[0].reset();
                 $(".update-event-con").removeClass('active')
+
+                cache.clearFunction("admin.calendar.eventList")
+                await cache.refresh("admin.school.schoolData", {page: "calendar"}, admin.school.schoolData)
                 getEvents()
                 getData()
             }
@@ -589,12 +601,16 @@ function deleteEvent() {
 
     admin.calendar.deleteEvent({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".delete-event-form")[0].reset();
                 $(".delete-event-con").removeClass('active')
+
+                cache.clearFunction("admin.calendar.eventList")
+                await cache.refresh("admin.school.schoolData", {page: "calendar"}, admin.school.schoolData)
+
                 getEvents()
                 getData()
             }
@@ -630,12 +646,19 @@ function broadcastEvent() {
 
     admin.calendar.broadcastEvent({
         formData: formData,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".broadcast-event-form")[0].reset();
                 $(".broadcast-event-con").removeClass('active')
+                
+                let page = $('#emp_page').val();
+                let pagesize = 10;
+                let search = $('#emp_search').val().trim();
+                let status = $("#status-filter").val();
+                await cache.refresh("admin.calendar.eventList", {page, pagesize, status, search}, admin.calendar.eventList)
+                
                 getEvents()
             }
             else {
