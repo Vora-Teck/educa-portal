@@ -69,14 +69,14 @@ async function getClassrooms() {
                 $("#import-class").empty().append(`<option value="" selected>Select classroom</option>`)
                 $(".class-list").empty();
                 for(let i in d) {
-                  let temp = `<option value="${d[i].id}">${d[i].level.title}</option>`;
+                  let temp = `<option value="${d[i].id}">${d[i].title}${d[i].division}</option>`;
                   $(".class-filter").append(temp)
                   $("#st-class").append(temp)
                   $("#import-class").append(temp)
                   let temp2 = `
                   <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" value="${d[i].id}" id="class_${d[i].id}" name="class_ids">
-                    <label class="custom-control-label" for="class_${d[i].id}">${d[i].level.title}</label>
+                    <label class="custom-control-label" for="class_${d[i].id}">${d[i].title}</label>
                   </div>`;
                   $(".class-list").append(temp2)
                 }
@@ -157,7 +157,8 @@ async function getStudents() {
                             <div>${e[i].studentId}</div>
                             </td>
                             <td class="w-center">${e[i].gender[0].toUpperCase()}</td>
-                            <td>${e[i].classroom.level.title}</td>
+                            <td>${e[i].classroom.title}${e[i].classroom.division}</td>
+                            <td class="w-center">${e[i].department || 'N/A'}</td>
                             <td class="w-bold-x">${e[i].is_active ? `
                                 <span class="success-btn">Active</span>` : `
                                 <span class="danger-btn">Inactive</span>`}</td>
@@ -234,7 +235,7 @@ async function getStudent(id) {
         params, fetcher: admin.student.studentList
       })
 
-      console.log(data)
+      //console.log(data)
 
       if(data.status == 'success') {
                 $(".std-side-con").addClass("active")
@@ -252,6 +253,7 @@ async function getStudent(id) {
                 $("#st-address2").val(d.address.address);
                 $("#st-state2").val(d.address.state);
                 $("#st-lga2").val(d.address.lga);
+                $("#st-dept2").val(d.department);
                 let parent = d.parentInfo;
                 for(let i in parent) {
                   let par = parent[i];
@@ -264,9 +266,9 @@ async function getStudent(id) {
                 // for display
                 $("#std-name2").html(`${d.firstName} ${d.middleName} ${d.lastName}`)
                 $("#std-id").html(`${d.studentId}`)
-                $("#std-class").html(`${d.classroom.level.title}`)
-                $("#std-dept").html(`${d.classroom.level.department || '-- --'}`)
-                $("#std-class2").html(`${d.classroom.level.title}`)
+                $("#std-class").html(`${d.classroom.title}${d.classroom.division}`)
+                $("#std-dept").html(`${d.department || '-- --'}`)
+                $("#std-class2").html(`${d.classroom.title}${d.classroom.division}`)
                 $("#std-gender").html(`${d.gender}`)
                 $("#std-dob").html(`${datify(d.dateOfBirth, false)}`)
                 $("#std-age").html(`${dateDiff(d.dateOfBirth)}`)
@@ -302,7 +304,7 @@ async function getStudent(id) {
                     `
                   }).join('')}
                 `)
-                $("#std-section").html(`${d.classroom.level.category}`)
+                $("#std-section").html(`${d.classroom.category}`)
                 if(d.is_active) {
                   $(".std-action").data('action', 'deactivate').html('Deactivate Student')
                 }
@@ -458,6 +460,7 @@ async function addStudent() {
     let address = $("#st-address").val();
     let state = $("#st-state").val();
     let lga = $("#st-lga").val();
+    let department = $("#st-dept").val()
 
     let parent_name1 = $("#st-pa-name1").val();
     let parent_rel1 = $("#st-pa-rel1").val();
@@ -479,7 +482,7 @@ async function addStudent() {
 
     let formData = {
         first_name, last_name, middle_name, gender, dob,
-        class_id, address, state, lga, parent_info
+        class_id, address, state, lga, parent_info, department
     }
 
     //console.log(formData)
@@ -532,6 +535,8 @@ async function updateStudent() {
     let address = $("#st-address2").val();
     let state = $("#st-state2").val();
     let lga = $("#st-lga2").val();
+    
+    let department = $("#st-dept2").val()
 
     let parent_name1 = $("#st-pa-name3").val();
     let parent_rel1 = $("#st-pa-rel3").val();
@@ -552,7 +557,7 @@ async function updateStudent() {
 
     let formData = {
         student_id, middle_name, address, state, lga,
-        parent_info
+        parent_info, department
     }
 
     //console.log(formData)
@@ -648,7 +653,7 @@ function exportList() {
           }).get();
   let format = $("#format").val();
 
-  let formData = {class_ids, columns,format}
+  let formData = {class_ids, columns, format}
   //console.log(formData)
 
   showLoader("Exporting List...")

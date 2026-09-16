@@ -90,7 +90,7 @@ function loadResult() {
                                         </td>
                                         <td class="orange">Name: ${user.firstName} ${user.middleName} ${user.lastName}</td>
                                         <td class="orange">Session: ${term.session.title}</td>
-                                        <td class="orange">Class: ${classroom.level.title}</td>
+                                        <td class="orange">Class: ${classroom.title}${classroom.division}</td>
                                     </tr>
                                     <tr>
                                         <td class="orange">Admission No: ${user.studentId}</td>
@@ -481,7 +481,7 @@ function loadResult() {
                                         </td>
                                         <td class="orange">Name: ${user.firstName} ${user.middleName} ${user.lastName}</td>
                                         <td class="orange">Session: ${term.session.title}</td>
-                                        <td class="orange">Class: ${classroom.level.title}</td>
+                                        <td class="orange">Class: ${classroom.title}${classroom.division}</td>
                                     </tr>
                                     <tr>
                                         <td class="orange">Admission No: ${user.studentId}</td>

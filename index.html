@@ -1284,6 +1284,16 @@
             </select>
           </div>
 
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+          <label for="st-lname">Department <small><i>(for senior classes)</i></small></label>
+          <select id="st-dept">
+              <option value="" selected>No department</option>
+              <option value="sciences">Sciences</option>
+              <option value="humanities">Humanities</option>
+              <option value="business">Business</option>
+          </select>
+        </div>
+
           <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <h4>Parent/Guardian 1</h4>
           </div>
@@ -1400,7 +1410,17 @@
             </select>
           </div>
 
-          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <div class="input-con col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+          <label for="st-lname">Department <small><i>(for senior classes)</i></small></label>
+          <select id="st-dept2">
+              <option value="" selected>No department</option>
+              <option value="sciences">Sciences</option>
+              <option value="humanities">Humanities</option>
+              <option value="business">Business</option>
+          </select>
+        </div>
+
+          <div class="input-con col-12 col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
             <label for="st-mname">Home Address</label>
             <input type="text" id="st-address2" />
           </div>
@@ -1509,6 +1529,11 @@
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" value="gender" id="col_gender" name="columns">
             <label class="custom-control-label" for="col_gender">Gender</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="department" id="col_department" name="columns">
+            <label class="custom-control-label" for="col_department">Department</label>
           </div>
 
           <div class="custom-control custom-checkbox">
@@ -2087,6 +2112,7 @@
                   <th>Student ID</th>
                   <th class="w-center">Gender</th>
                   <th>Class</th>
+                  <th class="w-center">Department</th>
                   <th>Status</th>
                   <th class="w-center">Actions</th>
                 </tr>
@@ -2900,6 +2926,11 @@
               <p id="dom-url"></p>
             </div>
 
+            <div class="w-padding col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+              <h5>CBT Portal</h5>
+              <p id="dom-cbt"></p>
+            </div>
+
           </div>
 
         </form>
@@ -3112,16 +3143,47 @@
       </div>
       <form class="modal-content mt-3 add-class-form">
 
+        <div class="input-con">
+          <label for="st-lname">Class Name</label>
+          <input type="text" id="cl-title" required placeholder="e.g JSS 1">
+        </div>
+
+        <div class="input-con">
+          <label for="st-lname">Class Division</label>
+          <input type="text" id="cl-division" placeholder="e.g A, B, C, etc">
+        </div>
+
+        <div class="input-con">
+          <label for="st-lname">Class Level</label>
+          <select id="cl-level">
+              <option value="" selected>select level</option>
+              <option value="1">NUR 1</option>
+              <option value="2">NUR 2</option>
+              <option value="3">PRY 1</option>
+              <option value="4">PRY 2</option>
+              <option value="5">PRY 3</option>
+              <option value="6">PRY 4</option>
+              <option value="7">PRY 5</option>
+              <option value="8">PRY 6</option>
+              <option value="9">JSS 1</option>
+              <option value="10">JSS 2</option>
+              <option value="11">JSS 3</option>
+              <option value="12">SSS 1</option>
+              <option value="13">SSS 2</option>
+              <option value="14">SSS 3</option>
+          </select>
+        </div>
+
           <div class="input-con">
-            <label for="st-lname">Class Level</label>
-            <select id="cl-level">
+            <label for="st-lname">Class Teacher <i class="w-small">(optional)</i></label>
+            <select id="cl-staff">
               <option value="" selected></option>
             </select>
           </div>
 
           <div class="input-con">
-            <label for="st-lname">Class Teacher <i class="w-small">(optional)</i></label>
-            <select id="cl-staff">
+            <label for="st-lname">Next Class <small><i>(for promoting students to next class)</i></small></label>
+            <select id="cl-next" class="cl-next">
               <option value="" selected></option>
             </select>
           </div>
@@ -3144,12 +3206,30 @@
       </div>
       <form class="modal-content mt-3 update-class-form">
 
+        <div class="input-con">
+          <label for="st-lname">Class Name</label>
+          <input type="text" id="cl-title2" required placeholder="e.g JSS 1">
+        </div>
+
+        <div class="input-con">
+          <label for="st-lname">Class Division</label>
+          <input type="text" id="cl-division2" placeholder="e.g A, B, C, etc">
+        </div>
+
           <div class="input-con">
             <label for="st-lname">Class Teacher <i class="w-small">(optional)</i></label>
             <select id="cl-staff2">
               <option value="" selected></option>
             </select>
           </div>
+
+          <div class="input-con">
+            <label for="st-lname">Next Class <small><i>(for promoting students to next class)</i></small></label>
+            <select id="cl-next2" class="cl-next">
+              <option value="" selected></option>
+            </select>
+          </div>
+
 
           <input type="hidden" class="class-id">
         
@@ -3218,16 +3298,78 @@
             <div class="subs-selected"></div>
           </div>
 
-          <div class="input-con">
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="create_syll">
-              <label class="custom-control-label" for="create_syll">Create Syllabus for Selected Subjects</label>
-            </div>
-          </div>
-        
+        <p>Didn't find what you were looking for? <a href="#" class="new-sub-btn w-text-blue w-text-hover-red w-bold">Click here to create a new subject</a></p>
         
         <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
           <button class="clear-btn canc-btn4">Cancel</button>
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-con modal-top small-con add-new-sub-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Add New Subjects</div>
+      </div>
+      <form class="modal-content mt-3 add-new-sub-form">
+
+          <div class="input-con">
+            <label for="st-lname">Subject Name</label>
+            <input type="text" id="sub-title" required>
+          </div>
+
+        <div class="h6 mt-2 w-bold">Select categories of classes the subject belongs to:</div>
+
+        <div class="mb-3 mt-2 w-flex w-flex-start w-align-center w-flex-wrap" style="gap:20px">
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="nursery" id="col_nur" name="sub_cats">
+            <label class="custom-control-label" for="col_nur">Nursery</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="primary" id="col_pry" name="sub_cats">
+            <label class="custom-control-label" for="col_pry">Primary</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="junior" id="col_jun" name="sub_cats">
+            <label class="custom-control-label" for="col_jun">Junior</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="senior" id="col_sen" name="sub_cats">
+            <label class="custom-control-label" for="col_sen">Senior</label>
+          </div>
+
+        </div>
+
+        <div class="h6 mt-2 w-bold">Select departments the subject belongs to (for senior class subjects):</div>
+
+        <div class="mb-3 mt-2 w-flex w-flex-start w-align-center w-flex-wrap" style="gap:20px">
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="sciences" id="col_sci" name="sub_depts">
+            <label class="custom-control-label" for="col_sci">Sciences</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="humanities" id="col_hum" name="sub_depts">
+            <label class="custom-control-label" for="col_hum">Humanities</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="business" id="col_bus" name="sub_depts">
+            <label class="custom-control-label" for="col_bus">Business</label>
+          </div>
+
+        </div>
+        
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn16">Cancel</button>
           <input type="submit" value="Save">
         </div>
       </form>
@@ -3244,8 +3386,55 @@
 
           <div class="input-con">
             <label for="st-lname">Title: <i class="w-small w-text-gray">(You can edit the subject title to fit your preference)</i></label>
-            <input type="text" id="sub-title" required>
+            <input type="text" id="sub-title2" required>
           </div>
+
+          <div class="h6 mt-2 w-bold">Select categories of classes the subject belongs to:</div>
+
+        <div class="mb-3 mt-2 w-flex w-flex-start w-align-center w-flex-wrap" style="gap:20px">
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="nursery" id="col_nursery" name="sub_cats2">
+            <label class="custom-control-label" for="col_nursery">Nursery</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="primary" id="col_primary" name="sub_cats2">
+            <label class="custom-control-label" for="col_primary">Primary</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="junior" id="col_junior" name="sub_cats2">
+            <label class="custom-control-label" for="col_junior">Junior</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="senior" id="col_senior" name="sub_cats2">
+            <label class="custom-control-label" for="col_senior">Senior</label>
+          </div>
+
+        </div>
+
+        <div class="h6 mt-2 w-bold">Select departments the subject belongs to (for senior class subjects):</div>
+
+        <div class="mb-3 mt-2 w-flex w-flex-start w-align-center w-flex-wrap" style="gap:20px">
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="sciences" id="col_sciences" name="sub_depts2">
+            <label class="custom-control-label" for="col_sciences">Sciences</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="humanities" id="col_humanities" name="sub_depts2">
+            <label class="custom-control-label" for="col_humanities">Humanities</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" value="business" id="col_business" name="sub_depts2">
+            <label class="custom-control-label" for="col_business">Business</label>
+          </div>
+
+        </div>
 
           <input type="hidden" value="" class="sub-id">
         <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
@@ -3305,7 +3494,7 @@
     </div>
 
     <div class="side-opt-con" style="gap:15px;">
-      <button class="side-btn gen-top-btn">Generate Topics</button>
+      <button class="side-btn gen-top-btn">Generate Topics with AI</button>
     </div>
 
     <div class="w-padding">
@@ -3347,6 +3536,36 @@
     </div>
 
 
+  </div>
+
+  <div class="modal-con modal-top small-con gen-top-con">
+    <div class="modal-body">
+      <div class="close-modal">X</div>
+      <div class="modal-header">
+        <div class="h5 w-bold-x w-text-blue">Generate Topics with Eduka AI</div>
+      </div>
+      <form class="modal-content mt-3 gen-top-form">
+
+        <p class="w-text-gray"><i>
+          IMPORTANT NOTICE:
+          <ul class="w-text-gray" style="padding-left:20px;">
+            <li>The A.I generated topics are based on available data from NERDC, WAEC, NECO, etc.</li>
+            <li>The generated topics may not be accurate. kindy confirm from necessary educational bodies.</li>
+          </ul>
+          
+        </i></p>
+
+        <div class="input-con">
+          <label for="">Number of Topics</label>
+          <input type="number" id="topic-count" min="1" value="12" required>
+        </div>
+
+        <div class="input-con w-flex w-flex-end w-align-center" style="gap:20px;">
+          <button class="clear-btn canc-btn17">Cancel</button>
+          <input type="submit" value="Generate">
+        </div>
+      </form>
+    </div>
   </div>
 
   <div class="modal-con modal-top add-top-con">
@@ -3548,7 +3767,7 @@
       <form class="modal-content mt-3 update-cur-form">
 
           <div class="input-con">
-            <label for="st-lname">Subject Teacher</label>
+            <label for="st-lname">Subject Teachers</label>
             <select id="cur-staff">
               <option value="" selected></option>
             </select>
@@ -3913,14 +4132,16 @@
                   <option value="3">Third Term</option>
                 </select>
                 
-                <div class="w-flex w-flex-start w-align-center" style="gap:10px;">
+                <!--
+                  <div class="w-flex w-flex-start w-align-center" style="gap:10px;">
                   <div><i class="fa fa-sort"></i> Sort By:</div>
                   <select id="sort-filter" class="sub-filter form-control mb-2" style="max-width:170px;">
                     <option value="term" selected>Term (Ascending)</option>
                     <option value="subject">Subject (A - Z)</option>
-                    <option value="classroom">Classroom (Ascending)</option>
+                    <option value="classrooms">Classroom (Ascending)</option>
                   </select>
                 </div>
+                -->
                 
               </div>
     
@@ -3932,7 +4153,7 @@
                       <th>Class(es)</th>
                       <th>Term</th>
                       <th class="w-center">No. of Topics</th>
-                      <th>Assigned Teacher</th>
+                      <th>Assigned Teacher(s)</th>
                       <th class="w-center">Actions</th>
                     </tr>
                   </thead>
@@ -4137,6 +4358,15 @@
     $(".canc-btn15").click(function(e) {
         e.preventDefault();
         $(".gen-time-con").removeClass('active')
+    })
+    $(".canc-btn16").click(function(e) {
+        e.preventDefault();
+        $(".add-new-sub-con").removeClass('active')
+    })
+
+    $(".canc-btn17").click(function(e) {
+        e.preventDefault();
+        $(".gen-top-con").removeClass('active')
     })
 
     $('#emp_search2').on('input', function(e) {
@@ -4597,7 +4827,8 @@
               <tr>
                 <th>Image</th>
                 <th>Student Name</th>
-                <th>Class</th>
+                <th class="w-text-center">Student ID</th>
+                <th class="w-text-center">Classroom</th>
                 <th>Score</th>
                 <th>Actions</th>
               </tr>
@@ -4644,6 +4875,7 @@
                 <th>Image</th>
                 <th>Student Name</th>
                 <th>Student ID</th>
+                <th>Department</th>
                 <th>Classroom</th>
               </tr>
             </thead>
@@ -4855,6 +5087,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#menu1">Results</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu4">Promotions</a>
       </li>
     </ul>
     <!-- Tab panes -->
@@ -5154,6 +5389,48 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="tab-pane container" id="menu4">
+        
+        <div class="w-padding">
+          <div class="row mt-2 w-white">
+            <div class="w-padding col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    
+              <div class="w-padding-top w-flex w-flex-between w-align-center w-flex-wrap" style="gap:15px;">
+                
+                <div class="w-flex w-flex-start w-align-center w-flex-wrap" style="gap:15px;width:fit-content;">
+                  <div class="h4 w-bold-x" style="color:orangered">Promotions</div>
+                 
+                </div>
+                
+    
+                <div class="w-flex w-flex-start w-align-center" style="gap:15px;width:fit-content;">
+                  <button class="dark-btn">Initiate Promotion&nbsp;&nbsp;<i class="fa fa-rocket"></i></button>
+                  
+                </div>
+    
+              </div>
+
+    
+              <div class="table-responsive">
+                <table class="table staff-table">
+                  <thead>
+                    <tr>
+                      <th><i class="w-text-gray">Coming Soon.</i></th>
+                    </tr>
+                  </thead>
+                  <tbody class="prom-list">
+                  </tbody>
+                </table>
+              </div>
+    
+              
+    
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>

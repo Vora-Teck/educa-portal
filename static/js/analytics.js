@@ -100,7 +100,7 @@ async function getClassrooms() {
                   if(data.data) {
                       let e = data.data;
                       for(var i in e) {
-                          $('.class-filter').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
+                          $('.class-filter').append(`<option value="${e[i].id}">${e[i].title}${e[i].division}</option>`);
                           
                       }
                   }
@@ -267,7 +267,7 @@ async function getFeesData() {
               let temp = `
               <tr>
                 <td>${e[i].student.firstName} ${e[i].student.middleName} ${e[i].student.lastName}</td>
-                <td>${e[i].student.classroom.level.title}</td>
+                <td>${e[i].student.classroom.title}${e[i].student.classroom.division}</td>
                 <td style="text-align:center;">&#8358;${digify(e[i].outstanding)}</td>
               </tr>`;
               $('.out-list').append(temp)

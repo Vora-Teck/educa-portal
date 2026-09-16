@@ -104,7 +104,7 @@ async function getClassrooms() {
                     if(data.data) {
                         let e = data.data;
                         for(var i in e) {
-                            $('#class-filter').append(`<option value="${e[i].id}" ${i == 0 ? 'selected' : ''}>${e[i].level.title}</option>`);
+                            $('#class-filter').append(`<option value="${e[i].id}" ${i == 0 ? 'selected' : ''}>${e[i].title}${e[i].division}</option>`);
                         }
                     }
                     getAttendance()

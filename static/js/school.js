@@ -244,6 +244,7 @@ async function getDomain() {
                     $("#dom-stat").html(d.status.toUpperCase());
                     $("#dom-app").html(d.approved_date ? datify(d.approved_date, true) : 'Not Approved Yet');
                     $("#dom-url").html(d.url ? `<a href="${d.url}" class="w-text-red" target="_blank"><i class="fa fa-chain"></i> ${d.url}</a>` : 'Not Approved Yet')
+                    $("#dom-cbt").html(d.url ? `<a href="${d.url}/cbt/" class="w-text-red" target="_blank"><i class="fa fa-chain"></i> ${d.url}/cbt/</a>` : 'Not Approved Yet')
                 }
                 else {
                     $(".new-port").show();

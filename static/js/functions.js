@@ -1,18 +1,21 @@
 const admin = new educaSDK.Admin();
 //const XLSX = educaSDK.XLSX;
 const base_url = educaSDK.BASE_URL;
-const cache = new ApiCache({persist: true})
 
+let persist = true;
 let file_storage_url = ""
 
 if(window.location.protocol == "http:") {
   file_storage_url = `http://127.0.0.1:5000`;
+  persist = false
 }
 else {
   file_storage_url = `https://files.eduka.ng`;
 }
 
 const FILE_STORAGE_URL = file_storage_url;
+
+const cache = new ApiCache({persist})
 
 cache.on('updated', (entry) => {
   //console.log("Cache updated:", entry)

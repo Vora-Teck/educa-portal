@@ -125,15 +125,15 @@ async function getClassrooms() {
                     if(data.data) {
                         let e = data.data;
                         for(var i in e) {
-                            $('#class-filter').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
-                            $('#class-filter2').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
-                            $('#class-filter1').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
-                            $('#class-filter5').append(`<option value="${e[i].id}">${e[i].level.title}</option>`);
+                            $('#class-filter').append(`<option value="${e[i].id}">${e[i].title}${e[i].division}</option>`);
+                            $('#class-filter2').append(`<option value="${e[i].id}">${e[i].title}${e[i].division}</option>`);
+                            $('#class-filter1').append(`<option value="${e[i].id}">${e[i].title}${e[i].division}</option>`);
+                            $('#class-filter5').append(`<option value="${e[i].id}">${e[i].title}${e[i].division}</option>`);
 
                             let temp2 = `
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" value="${e[i].id}" id="class_${e[i].id}" name="class_ids">
-                                <label class="custom-control-label" for="class_${e[i].id}">${e[i].level.title}</label>
+                                <label class="custom-control-label" for="class_${e[i].id}">${e[i].title}${e[i].division}</label>
                             </div>`;
                             $(".class-list2").append(temp2)
                         }
@@ -325,7 +325,7 @@ async function getTests() {
                             let classes = e[i].classrooms;
                             let clas = ``
                             for(let j in classes) {
-                                clas += `<li>${classes[j].level.title}</li>`
+                                clas += `<li>${classes[j].title}${classes[j].division}</li>`
                             }
                             let temp = `
                             <tr class="staff-row">
@@ -516,7 +516,7 @@ async function getExams() {
                             let classes = e[i].classrooms;
                             let clas = ``
                             for(let j in classes) {
-                                clas += `<li>${classes[j].level.title}</li>`
+                                clas += `<li>${classes[j].title}${classes[j].division}</li>`
                             }
                             let temp = `<tr class="staff-row">
                             <td>
@@ -769,7 +769,7 @@ async function getExam(exam_id, action) {
                 let d = data.data;
                 $(".exam-id").val(d.id)
                 $(".exam-name").html(`${d.term.title} ${d.course.title} ${capitalize(d.examType)} for ${d.classrooms.map(function(item) {
-                    return item.level.title;
+                    return `${item.title}${item.division}`;
                   }).join(', ')}`)
                   $(".ex-type").html(capitalize(d.examType))
                 $("#exam-date2").val(d.date)
@@ -1397,7 +1397,8 @@ async function getScores(exam_id) {
                                     src="${d[i].student.image ? `${d[i].student.image}` : `/static/image/avatar.png`}" alt="" />
                                 </td>
                                 <td>${d[i].student.firstName} ${d[i].student.middleName} ${d[i].student.lastName}</td>
-                                <td>${d[i].student.classroom.level.title}</td>
+                                <td class="w-text-center">${d[i].student.studentId}</td>
+                                <td class="w-text-center">${d[i].student.classroom.title}${d[i].student.classroom.division}</td>
                                 <td>
                                     <div class="input-con">
                                         <input type="number" name="score_values" 
@@ -1565,6 +1566,7 @@ async function getExamStudents(exam_id) {
                                 </td>
                                 <td>${d[i].name}</td>
                                 <td>${d[i].student_id}</td>
+                                <td>${capitalize(d[i].department) || 'N/A'}</td>
                                 <td>${d[i].classroom}</td>
                             </tr>`;
                             $('.std-list').append(temp)
@@ -1721,13 +1723,13 @@ function updateCBTStudents() {
 
     let formData = {exam_id, student_ids}
 
-    console.log(formData)
+    //console.log(formData)
     showLoader(`Updating data...`)
 
     admin.exam.resetTimer({
         formData: formData,
         onSuccess: async (data) => {
-            console.log(data)
+            //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 if(data.errors.length > 0) {
@@ -1817,7 +1819,7 @@ async function getResults() {
                                 src="${d[i].student.image ? `${d[i].student.image}` : `/static/image/avatar.png`}" alt="" />
                             </td>
                             <td>${d[i].student.firstName} ${d[i].student.middleName} ${d[i].student.lastName}</td>
-                            <td>${d[i].classroom.level.title}</td>
+                            <td>${d[i].classroom.title}${d[i].classroom.division}</td>
                             <td class="w-center">${digify(d[i].average_score)}</td>
                             <td class="w-center">${d[i].grade}</td>
                             <td class="w-center">${d[i].position || 'N/A'}</td>

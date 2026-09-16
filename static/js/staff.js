@@ -53,7 +53,7 @@ async function getClassrooms() {
                 $(".class-filter").empty().append(`<option value="" selected>All Classes</option>`)
                 $("#st-class").empty().append(`<option value="" selected>Select class</option>`)
                     for(let i in d) {
-                            let temp = `<option value="${d[i].id}">${d[i].level.title}</option>`;
+                            let temp = `<option value="${d[i].id}">${d[i].title}${d[i].division}</option>`;
                             $(".class-filter").append(temp)
                             $("#st-class").append(temp)
                     }

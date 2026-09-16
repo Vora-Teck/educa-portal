@@ -75,7 +75,7 @@ async function getStaff() {
         console.error(error);
     }
 }
-getLevels()
+//getLevels()
 getStaff()
 
 async function getClassrooms() {
@@ -97,22 +97,24 @@ async function getClassrooms() {
         })
 
         $(".class-list").empty()
+        $(".cl-next").empty().append(`<option value="" selected>Select Class</option>`)
                 //console.log(data)
                 if(data.status == "success") {
                     let d = data.data;
                     for(let i in d) {
-                        $("#class-filter").append(`<option value="${d[i].id}">${d[i].level.title}</option>`)
-                        $("#class-filter2").append(`<option value="${d[i].id}">${d[i].level.title}</option>`)
+                        $("#class-filter").append(`<option value="${d[i].id}">${d[i].title}${d[i].division}</option>`)
+                        $("#class-filter2").append(`<option value="${d[i].id}">${d[i].title}${d[i].division}</option>`)
+                        $(".cl-next").append(`<option value="${d[i].id}">${d[i].title}${d[i].division}</option>`)
                         let temp = `
-                        <tr class="class-rows" data-id="${d[i].level.title}">
+                        <tr class="class-rows" data-id="${d[i].title}${d[i].division}">
                             <td>
-                            ${d[i].level.title}
+                            ${d[i].title}${d[i].division}
                             </td>
                             <td>
                             ${d[i].teacher?.firstName || '<i class="w-small w-text-gray">No staff assigned</i>'} ${d[i].teacher?.lastName || ''}
                             </td>
                             <td>
-                            ${d[i].level.category}
+                            ${d[i].category}
                             </td>
                             <td>
                             ${d[i].data?.total_students || '0'} (${d[i].data?.female || '0'}F, ${d[i].data?.male || '0'}M)
@@ -122,7 +124,7 @@ async function getClassrooms() {
                                 <div class="dropdown">
                                     <i class="std-drop fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
                                     <div class="dropdown-menu">
-                                    <div class="dropdown-header">${d[i].level.title}</div>
+                                    <div class="dropdown-header">${d[i].title}${d[i].division}</div>
                                         <a class="dropdown-item emp-det-link" data-id="${d[i].id}" href="#">
                                             <i class="fa fa-edit"></i>&nbsp;
                                             Update Info
@@ -146,6 +148,7 @@ async function getClassrooms() {
                         // </div>`;
                         // $(".class-list2").append(temp2)
                     }
+
                     $('.emp-det-link').click(function(e) {
                         e.preventDefault();
                         let id = $(this).data('id');
@@ -181,10 +184,24 @@ getClassrooms()
 
 
 function addClassroom() {
-    let class_level_id = $("#cl-level").val();
+    let title = $("#cl-title").val();
+    let division = $("#cl-division").val();
+    let level = $("#cl-level").val();
+    let category = "";
     let staff_id = $("#cl-staff").val();
+    let next_class_id = $("#cl-next").val();
 
-    let formData = {class_level_id, staff_id};
+    level = parseInt(level);
+
+    if(level < 3) category = "nursery";
+    else if(level < 9) category = "primary";
+    else if(level < 12) category = "junior";
+    else category = "senior";
+
+    let formData = {
+        title, division, level, category, staff_id,
+        next_class_id
+    };
 
     showLoader("Adding Classroom...")
 
@@ -196,10 +213,10 @@ function addClassroom() {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-class-form")[0].reset();
                 await cache.refresh("admin.classroom.getClassrooms", {}, admin.classroom.getClassrooms)
-                await cache.refresh("admin.classroom.getClassLevels", {exclude: "true"}, admin.classroom.getClassLevels)
+                //await cache.refresh("admin.classroom.getClassLevels", {exclude: "true"}, admin.classroom.getClassLevels)
                 await cache.refresh("admin.school.schoolData", {page: "class"}, admin.school.schoolData)
                 getData();
-                getLevels();
+                //getLevels();
                 getClassrooms();
             }
             else {
@@ -230,10 +247,16 @@ async function getClassroom(class_id, action) {
         if(data.status == "success") {
                 let d = data.data;
                 $(".class-id").val(d.id)
-                $(".class-name").html(d.level.title)
+                $(".class-name").html(`${d.title}${d.division}`)
+                $("#cl-title2").val(d.title)
+                $("#cl-division2").val(d.division)
+                $("#cl-title2").val(d.title)
                 if(d.teacher) {
                     $("#cl-staff2").val(d.teacher.id)
                 } else {$("#cl-staff2").val('')}
+                if(d.next_class) {
+                    $("#cl-next2").val(d.next_class.id)
+                } else {$("#cl-next2").val('')}
                 
                 $(`.${action}-class-con`).addClass("active")
             }
@@ -252,9 +275,12 @@ async function getClassroom(class_id, action) {
 function updateClassroom() {
     let class_id = Number($(".class-id").val());
     let staff_id = $("#cl-staff2").val();
+    let title = $("#cl-title2").val();
+    let division = $("#cl-division2").val();
+    let next_class_id = $("#cl-next2").val();
     
 
-    let formData = {class_id, staff_id};
+    let formData = {class_id, staff_id, title, division, next_class_id};
 
     showLoader("Updating Classroom...")
 
@@ -394,7 +420,6 @@ async function getSubjects() {
         })
 
         $('.subject-list').empty()
-                selected_courses.length = 0;
                 if(data.status == 'success') {
                     let pages = data.total_pages
                     let count = data.total_count;
@@ -431,7 +456,6 @@ async function getSubjects() {
                     if(data.data) {
                         let e = data.data;
                         for(var i in e) {
-                            selected_courses.push(e[i].id)
                             let temp = `<tr class="staff-row">
                             <td>
                             <div class="w-bold-x">${e[i].title}</div>
@@ -517,26 +541,32 @@ function filterCourses() {
 
     $(".suggestion-item").each((index, elem) => {
         let nam = $(elem).data('name').toLowerCase();
-        let id = $(elem).data('id');
         //console.log(id)
-        if(nam.includes(value) && !selected_courses.includes(id)) {$(elem).show()}
+        if(nam.includes(value)) {$(elem).show()}
         else {$(elem).hide()}
     })
 
     $("#course-suggestions").addClass("active");
 }
 
-function addSubject() {
-    let subject_ids = []
-    $(".sub-selected").each((index, elem) => {
-        let id = $(elem).data('id')
-        subject_ids.push(id)
-    })
+function addSubject(create_new=false) {
+    let formData = {};
 
-    let create_syllabus = $("#create_syll").is(":checked")
-
-    let formData = {subject_ids, create_syllabus};
-
+    if(create_new === false) {
+        let subject_ids = selected_courses;
+        formData = {subject_ids, create_new};
+    }
+    else {
+        let title = $("#sub-title").val();
+        var categories = $("input[name='sub_cats']:checked").map(function() {
+            return $(this).val();
+        }).get();
+        var departments = $("input[name='sub_depts']:checked").map(function() {
+            return $(this).val();
+        }).get();
+        formData = {create_new, title, categories, departments}
+    }
+    
 
     showLoader("Adding Subjects...")
 
@@ -547,9 +577,13 @@ function addSubject() {
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
                 $(".add-sub-form")[0].reset();
+                $(".add-new-sub-form")[0].reset();
                 filterCourses()
                 $(".subs-selected").empty();
                 $(".add-sub-con").removeClass('active');
+                $(".add-new-sub-con").removeClass('active');
+
+                selected_courses.length = 0;
 
                 await cache.refresh("admin.school.schoolData", {page: "class"}, admin.school.schoolData)
                 await cache.refresh("admin.subject.getSubjects", {pagesize: 300}, admin.subject.getSubjects)
@@ -600,9 +634,21 @@ async function getSubject(subject_id, action) {
 
         if(data.status == "success") {
                 let d = data.data;
+                console.log(d)
                 $(".sub-id").val(d.id)
                 $(".sub-name").html(d.title)
-                $("#sub-title").val(d.title)
+                $("#sub-title2").val(d.title)
+
+                $(`input[name=sub_depts2]`).prop('checked', false)
+                $(`input[name=sub_cats2]`).prop('checked', false)
+
+                d.categories.map((item, index) => {
+                    $(`input[type=checkbox]#col_${item}`).prop('checked', true)
+                })
+
+                d.departments.map((item, index) => {
+                    $(`input[type=checkbox]#col_${item}`).prop('checked', true)
+                })
                 
                 $(`.${action}-sub-con`).addClass("active")
             }
@@ -621,9 +667,15 @@ async function getSubject(subject_id, action) {
 
 function updateSubject() {
     let subject_id = Number($(".sub-id").val());
-    let title = $("#sub-title").val();
+    let title = $("#sub-title2").val();
+    var categories = $("input[name='sub_cats2']:checked").map(function() {
+            return $(this).val();
+        }).get();
+        var departments = $("input[name='sub_depts2']:checked").map(function() {
+            return $(this).val();
+        }).get();
 
-    let formData = {subject_id, title};
+    let formData = {subject_id, title, categories, departments};
 
     showLoader("Updating Subject...")
 
@@ -739,7 +791,7 @@ async function getSyllabi() {
     let class_id = $("#class-filter").val();
     let subject_id = $("#sub-filter").val()
     let term = $("#term-filter").val()
-    let sort_by = $("#sort-filter").val()
+    //let sort_by = $("#sort-filter").val()
     //let search = $('#emp_search3').val();
 
     $('.curriculum-list').empty()
@@ -750,7 +802,7 @@ async function getSyllabi() {
     </tr>`;
     $('.curriculum-list').append(loader)
 
-    let params = {page, pagesize, class_id, term, subject_id, sort_by}
+    let params = {page, pagesize, class_id, term, subject_id}
 
     try {
         let data = await cache.fetchOrCache({
@@ -760,6 +812,7 @@ async function getSyllabi() {
 
         $('.curriculum-list').empty()
                 if(data.status == 'success') {
+                    //console.log(data.data)
                     let pages = data.total_pages
                     let count = data.total_count;
                     //$(".total_count").html(digify(count))
@@ -801,13 +854,16 @@ async function getSyllabi() {
                             <div class="w-bold-x">${e[i].subject.title}</div>
                             </td>
                             <td style="max-width:250px;white-space:wrap;">
-                            ${e[i].curriculum.classrooms.map((item, index) => {
-                                return `${item.title}`
+                            ${e[i].classrooms.map((item, index) => {
+                                return `${item.title}${item.division}`
                             }).join(', ')}
                             </td>
-                            <td>${terms[e[i].curriculum.term - 1]} Term</td>
+                            <td>${terms[e[i].term - 1]} Term</td>
                             <td class="w-center">${digify(e[i].no_of_topics)}</td>
-                            <td>${e[i].teacher?.firstName || '<i class="w-small w-text-gray">No teacher assigned</i>'} ${e[i].teacher?.lastName || ``}</td>
+                            <td> ${e[i].teacher.map((it, ind) => {
+                                return `${it.firstName} ${it.lastName}`
+                            }).join(", ")}
+                            </td>
                             
 
                             <td class="w-center">
@@ -943,10 +999,10 @@ function addSyllabus() {
                 let class_id = $("#class-filter").val();
                 let subject_id = $("#sub-filter").val()
                 let term = $("#term-filter").val()
-                let sort_by = $("#sort-filter").val();
+                //let sort_by = $("#sort-filter").val();
 
                 await cache.refresh("admin.subject.getSyllabus", {
-                    page, pagesize, class_id, term, subject_id, sort_by
+                    page, pagesize, class_id, term, subject_id
                 }, admin.subject.getSyllabus)
                 
                 getData();
@@ -979,11 +1035,17 @@ async function getSyllabus(syllabus_id, action) {
                 let d = data.data;
                 $(".cur-id").val(d.id)
                 $(".cur-name").html(`
-                    Term ${d.curriculum.term} ${d.subject.title} for ${d.curriculum.classrooms.map((item, index) => {
-                        return `${item.title}`
+                    Term ${d.term} ${d.subject.title} for ${d.classrooms.map((item, index) => {
+                        return `${item.title}${item.division}`
                     }).join(', ')}
                     `)
-                $("#cur-staff").val(d.teacher?.id || '')
+                if(d.teacher.length > 0) {
+                    $("#cur-staff").val(d.teacher[0].id)
+                }
+                else {
+                    $("#cur-staff").val('')
+                }
+                
                 
                 $(`.${action}-cur-con`).addClass("active")
             }
@@ -1003,7 +1065,9 @@ function updateSyllabus() {
     let syllabus_id = Number($(".cur-id").val());
     let staff_id = $("#cur-staff").val();
 
-    let formData = {syllabus_id, staff_id};
+    let staff_ids = [staff_id]
+
+    let formData = {syllabus_id, staff_ids};
 
     showLoader("Updating Curriculum...")
 
@@ -1023,10 +1087,10 @@ function updateSyllabus() {
                 let class_id = $("#class-filter").val();
                 let subject_id = $("#sub-filter").val()
                 let term = $("#term-filter").val()
-                let sort_by = $("#sort-filter").val();
+                //let sort_by = $("#sort-filter").val();
 
                 await cache.refresh("admin.subject.getSyllabus", {
-                    page, pagesize, class_id, term, subject_id, sort_by
+                    page, pagesize, class_id, term, subject_id
                 }, admin.subject.getSyllabus)
 
                 let spage = $('#emp_page2').val();
@@ -1075,9 +1139,9 @@ function deleteSyllabus() {
                 let class_id = $("#class-filter").val();
                 let subject_id = $("#sub-filter").val()
                 let term = $("#term-filter").val()
-                let sort_by = $("#sort-filter").val();
+                //let sort_by = $("#sort-filter").val();
                 await cache.refresh("admin.subject.getSyllabus", {
-                    page, pagesize, class_id, term, subject_id, sort_by
+                    page, pagesize, class_id, term, subject_id
                 }, admin.subject.getSyllabus)
 
                 let spage = $('#emp_page2').val();
@@ -1511,9 +1575,11 @@ function generateContent() {
 
 function generateTopics() {
     let syllabus_id = $(".cur-name").data('id');
+    let topic_count = $("#topic-count").val()
     syllabus_id = Number(syllabus_id)
+    topic_count = parseInt(topic_count)
 
-    let formData = {syllabus_id};
+    let formData = {syllabus_id, topic_count};
 
     showLoader("Generating topics...")
 
@@ -1523,7 +1589,8 @@ function generateTopics() {
             //console.log(data)
             if(data.status == "success") {
                 pushNotification("n_success", data.message, 5000);
-
+                $(".gen-top-form")[0].reset();
+                $(".gen-top-con").removeClass("active")
                 await cache.refresh("admin.subject.getTopics", { syllabus_id }, admin.subject.getTopics)
 
                 let page = $('#emp_page3').val();
@@ -1531,9 +1598,8 @@ function generateTopics() {
                 let class_id = $("#class-filter").val();
                 let subject_id = $("#sub-filter").val()
                 let term = $("#term-filter").val()
-                let sort_by = $("#sort-filter").val();
                 await cache.refresh("admin.subject.getSyllabus", {
-                    page, pagesize, class_id, term, subject_id, sort_by
+                    page, pagesize, class_id, term, subject_id
                 }, admin.subject.getSyllabus)
 
                 getSyllabi();
@@ -1628,7 +1694,8 @@ async function getTimetable() {
                 //console.log(data)
                 if(data.status == "success") {
                     let d = data.data;
-                    $(".time-name").html(`${d.classroom.level.title} Timetable`)
+                    $(".time-btns").removeClass("w-hide")
+                    $(".time-name").html(`${d.classroom.title}${d.classroom.division} Timetable`)
 
                     let periods = d.period;
                     let mon = d.monday;
@@ -1699,7 +1766,7 @@ async function getTimetable() {
                         $(".time-table-body2").append(temp)
                     }
 
-                    $(".time-btns").removeClass("w-hide")
+                    
                 }
                 else {
                     pushNotification("n_error", data.message, 3000)
@@ -2162,6 +2229,7 @@ initiateTiny()
 // ========== Event Listeners ======================
 $(".add-class-btn").click(function(e) {e.preventDefault();$(".add-class-con").addClass('active')})
 $(".add-sub-btn").click(function(e) {e.preventDefault();$(".add-sub-con").addClass('active')})
+$(".new-sub-btn").click(function(e) {e.preventDefault();$(".add-new-sub-con").addClass('active');$(".add-sub-con").removeClass('active')})
 $(".add-cur-btn").click(function(e) {e.preventDefault();$(".add-cur-con").addClass('active')})
 $(".add-top-btn").click(function(e) {e.preventDefault();$(".add-top-con").addClass('active')});
 $(".top-export-btn").click(function(e) {e.preventDefault();$(".export-top-con").addClass("active")})
@@ -2169,7 +2237,7 @@ $(".class-export-btn").click(function(e) {e.preventDefault();})
 $(".sub-export-btn").click(function(e) {e.preventDefault();})
 $(".edit-time-btn").click(function(e) {e.preventDefault();getTimetab()})
 $(".gen-content-btn").click(function(e) {e.preventDefault();generateContent()})
-$(".gen-top-btn").click(function(e) {e.preventDefault();generateTopics()})
+$(".gen-top-btn").click(function(e) {e.preventDefault();$(".gen-top-con").addClass("active")})
 $(".add-period-btn").click(function(e) {e.preventDefault();addPeriodRow()})
 $(".generate-time-btn").click(function(e) {e.preventDefault();$(".gen-time-con").addClass("active")})
 $(".down-time-btn").click(function(e) {e.preventDefault();downloadTimetable()})
@@ -2183,6 +2251,7 @@ $(".add-class-form").on('submit', function(e) {e.preventDefault();addClassroom()
 $(".update-class-form").on('submit', function(e) {e.preventDefault();updateClassroom()})
 $(".delete-class-form").on('submit', function(e) {e.preventDefault();deleteClassroom()})
 $(".add-sub-form").on('submit', function(e) {e.preventDefault();addSubject()})
+$(".add-new-sub-form").on('submit', function(e) {e.preventDefault();addSubject(true)})
 $(".update-sub-form").on('submit', function(e) {e.preventDefault();updateSubject()})
 $(".delete-sub-form").on('submit', function(e) {e.preventDefault();deleteSubject()})
 $(".add-cur-form").on('submit', function(e) {e.preventDefault();addSyllabus()})
@@ -2194,3 +2263,4 @@ $(".delete-top-form").on('submit', function(e) {e.preventDefault();deleteTopic()
 $(".export-top-form").on('submit', function(e) {e.preventDefault();exportTopics()})
 $(".update-time-form").on('submit', function(e) {e.preventDefault();updateTimetable()})
 $(".gen-time-form").on('submit', function(e) {e.preventDefault();generateTimetable()})
+$(".gen-top-form").on('submit', function(e) {e.preventDefault();generateTopics()})

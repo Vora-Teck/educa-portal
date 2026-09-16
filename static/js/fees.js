@@ -82,12 +82,12 @@ async function getClassrooms() {
         if(data.status == "success") {
                     let d = data.data;
                     for(let i in d) {
-                        $("#class-filter").append(`<option value="${d[i].id}">${d[i].level.title}</option>`);
+                        $("#class-filter").append(`<option value="${d[i].id}">${d[i].title}${d[i].division}</option>`);
 
                         let temp2 = `
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" value="${d[i].id}" id="class_${d[i].id}" name="class_ids">
-                                <label class="custom-control-label" for="class_${d[i].id}">${d[i].level.title}</label>
+                                <label class="custom-control-label" for="class_${d[i].id}">${d[i].title}${d[i].division}</label>
                             </div>`;
                         $(".class-list").append(temp2)
                     }
@@ -176,7 +176,7 @@ async function getTuitions() {
                             <div class="w-bold-x">
                                 <ul style="padding-left: 20px;">
                                     ${e[i].classrooms.map((item, index) => {
-                                        return `<li>${item.level.title}</li>`
+                                        return `<li>${item.title}${item.division}</li>`
                                     }).join('')}
                                 </ul>
                             </div>
@@ -292,7 +292,7 @@ function getTuition(obj, action) {
     if(action == "update") {
         $("#tuition-amount2").val(obj.amount);
         $(".tuition-class2").html(obj.classrooms.map((item, index) => {
-            return `${item.level.title}`
+            return `${item.title}${item.division}`
         }).join(', '))
         let det = obj.details
         $(".breakdown-con2").empty()
@@ -401,7 +401,7 @@ var current_fees = {}
 async function getTuitionFees(obj) {
     $(".fees-name").data('id', obj.id).html(`Tuition for ${obj.term.title} ${obj.term.session.title}`);
     $(".tuition-class2").html(obj.classrooms.map((item, index) => {
-        return `${item.level.title}`
+        return `${item.title}${item.division}`
     }).join(', '))
     $(".pay-side-con").addClass('active')
     $(".pay-list").empty()
@@ -421,7 +421,7 @@ async function getTuitionFees(obj) {
                         let temp = `
                         <tr>
                             <td class="w-bold-x">${d[i].student.firstName} ${d[i].student.middleName} ${d[i].student.lastName}</td>
-                            <td>${d[i].student.classroom.level.title}</td>
+                            <td>${d[i].student.classroom.title}${d[i].student.classroom.division}</td>
                             <td class="w-center">&#8358;${digify(d[i].tuition.amount)}</td>
                             <td class="w-center">
                             ${d[i].is_paid ? `
