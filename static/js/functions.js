@@ -101,6 +101,7 @@ async function changeHash() {
     hash = "#404"
   }
   showSection(hash);
+  closeNav()
 }
 window.onhashchange = changeHash;
 window.changeHash = changeHash;
@@ -119,6 +120,11 @@ $(document).ready(async () => {
 function openNav() {
     $(".sidenav").toggleClass('active');
     $("main").toggleClass('active');
+  }
+
+  function closeNav() {
+    $(".sidenav").removeClass('active');
+    $("main").removeClass('active');
   }
 
 
